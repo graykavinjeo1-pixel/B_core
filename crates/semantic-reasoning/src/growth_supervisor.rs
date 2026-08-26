@@ -4986,7 +4986,7 @@ fn build_lesson(observations: &[LearningObservation]) -> Result<LearnedCompositi
     })
 }
 
-fn lesson_semantic_sha256(lesson: &LearnedCompositionLesson) -> Result<String, String> {
+fn lesson_executable_goal_hashes(lesson: &LearnedCompositionLesson) -> Result<Vec<String>, String> {
     let mut executable_goal_hashes = lesson
         .public_contract_deltas
         .iter()
@@ -5006,6 +5006,11 @@ fn lesson_semantic_sha256(lesson: &LearnedCompositionLesson) -> Result<String, S
         .collect::<Result<Vec<_>, _>>()?;
     executable_goal_hashes.sort();
     executable_goal_hashes.dedup();
+    Ok(executable_goal_hashes)
+}
+
+fn lesson_semantic_sha256(lesson: &LearnedCompositionLesson) -> Result<String, String> {
+    let executable_goal_hashes = lesson_executable_goal_hashes(lesson)?;
     let mut executable_performance_operator_ids = lesson
         .performance_metrics
         .iter()
@@ -5016,6 +5021,23 @@ fn lesson_semantic_sha256(lesson: &LearnedCompositionLesson) -> Result<String, S
     executable_performance_operator_ids.sort();
     executable_performance_operator_ids.dedup();
     json_sha256(&(executable_goal_hashes, executable_performance_operator_ids))
+}
+
+fn memory_contains_all_executable_goals(
+    memory: &GrowthMemory,
+    candidate: &LearnedCompositionLesson,
+) -> Result<bool, String> {
+    let candidate_goals = lesson_executable_goal_hashes(candidate)?;
+    if candidate_goals.is_empty() {
+        return Ok(true);
+    }
+    let mut retained_goals = BTreeSet::new();
+    for lesson in &memory.lessons {
+        retained_goals.extend(lesson_executable_goal_hashes(lesson)?);
+    }
+    Ok(candidate_goals
+        .iter()
+        .all(|goal| retained_goals.contains(goal)))
 }
 
 fn memory_contains_semantic_lesson(
@@ -6659,6 +6681,109 @@ fn validate_plateau_probe_receipt(receipt: &PlateauGenerativeProbeReceipt) -> Re
         return Err("PLATEAU_GENERATIVE_PROBE_RECEIPT_DIVERGED".to_string());
     }
     Ok(())
+}
+
+/// Re-queues behaviorally verified executable outputs that were consumed by a
+/// pre-repair cohort aggregator before they could enter memory. The original
+/// receipt remains the evidence authority; the recovery observation gets a
+/// new content-addressed identity exactly once and is emitted only when it
+/// carries at least one executable goal absent from the current memory.
+fn recover_unpromoted_plateau_probe_observations(
+    config: &GrowthSupervisorConfig,
+    state: &SupervisorState,
+    memory: &GrowthMemory,
+    limit: usize,
+) -> Result<Vec<LearningObservation>, String> {
+    let probe_root = config.state_dir.join("generative_plateau_probes");
+    if !probe_root.is_dir() || limit == 0 {
+        return Ok(Vec::new());
+    }
+    let expected_schema =
+        format!("B_CORE_PLATEAU_GENERATIVE_PROBE_{PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION}");
+    let mut paths = fs::read_dir(&probe_root)
+        .map_err(|error| format!("PLATEAU_GENERATIVE_PROBE_DIR:{error}"))?
+        .collect::<Result<Vec<_>, _>>()
+        .map_err(|error| format!("PLATEAU_GENERATIVE_PROBE_ENTRY:{error}"))?
+        .into_iter()
+        .filter(|entry| {
+            entry
+                .file_type()
+                .map(|kind| kind.is_file() && !kind.is_symlink())
+                .unwrap_or(false)
+        })
+        .map(|entry| entry.path())
+        .collect::<Vec<_>>();
+    paths.sort();
+    let mut recovered = Vec::new();
+    for path in paths {
+        let value: serde_json::Value = read_json(&path)?;
+        if value.get("schema").and_then(serde_json::Value::as_str) != Some(expected_schema.as_str())
+        {
+            continue;
+        }
+        let receipt: PlateauGenerativeProbeReceipt = serde_json::from_value(value)
+            .map_err(|error| format!("PLATEAU_GENERATIVE_PROBE_PARSE:{error}"))?;
+        validate_plateau_probe_receipt(&receipt)?;
+        let Some(original) = receipt.observation.as_ref() else {
+            continue;
+        };
+        let original_path = config
+            .state_dir
+            .join("observations")
+            .join(format!("{}.json", original.observation_id));
+        if !original_path.is_file() {
+            continue;
+        }
+        let original_lesson = build_lesson(std::slice::from_ref(original))?;
+        if memory_contains_all_executable_goals(memory, &original_lesson)? {
+            continue;
+        }
+        let recovery_id = sha256(
+            format!(
+                "PLATEAU_AGGREGATION_RECOVERY_1:{}:{}",
+                receipt.receipt_sha256, state.current_memory_sha256
+            )
+            .as_bytes(),
+        );
+        let recovery_path = config
+            .state_dir
+            .join("observations")
+            .join(format!("{recovery_id}.json"));
+        if recovery_path.is_file() {
+            continue;
+        }
+        let mut observation = original.clone();
+        observation.observation_id = recovery_id.clone();
+        observation.logical_path =
+            format!("INTERNAL/.b_intrinsic_curiosity_recovery/{recovery_id}");
+        observation.content_sha256 = sha256(
+            format!(
+                "PLATEAU_AGGREGATION_RECOVERY_1:{}:{}:{}",
+                original.content_sha256, receipt.receipt_sha256, state.current_memory_sha256
+            )
+            .as_bytes(),
+        );
+        observation
+            .signals
+            .push("RECOVERED_EXECUTABLE_FRONTIER_AFTER_AGGREGATION_REPAIR".to_string());
+        observation.signals.sort();
+        observation.signals.dedup();
+        observation.reasons.push(
+            "a prior behaviorally verified executable output was consumed before the cohort could preserve single-owner typed-goal authority"
+                .to_string(),
+        );
+        observation
+            .verification_evidence_sha256
+            .push(receipt.receipt_sha256.clone());
+        observation.verification_evidence_sha256.sort();
+        observation.verification_evidence_sha256.dedup();
+        observation.observed_at_ms = state.generation;
+        recovered.push(observation);
+        if recovered.len() == limit {
+            break;
+        }
+    }
+    Ok(recovered)
 }
 
 fn reconcile_intrinsic_drive_receipts(
@@ -12325,17 +12450,34 @@ fn step_without_lease(
         && config.autonomous_campaigns
         && state.plateau_scans >= config.resources.plateau_scans_before_wait
     {
-        if let Some(observation) =
-            plateau_generative_probe_observation(config, &mut state, &memory)?
-        {
-            persist_scan_observations(config, std::slice::from_ref(&observation))?;
-            if !scan
-                .index
-                .consumed_observation_ids
-                .contains(&observation.observation_id)
-            {
-                high.push(observation);
+        let mut recovered = recover_unpromoted_plateau_probe_observations(
+            config,
+            &state,
+            &memory,
+            config.resources.max_observations_per_campaign,
+        )?;
+        if recovered.is_empty() {
+            recovered.extend(plateau_generative_probe_observation(
+                config, &mut state, &memory,
+            )?);
+        }
+        if !recovered.is_empty() {
+            persist_scan_observations(config, &recovered)?;
+            for observation in recovered {
+                if !scan
+                    .index
+                    .consumed_observation_ids
+                    .contains(&observation.observation_id)
+                {
+                    high.push(observation);
+                }
             }
+            high.sort_by_key(|observation| {
+                (
+                    std::cmp::Reverse(observation.learning_score),
+                    observation.observation_id.clone(),
+                )
+            });
         }
     }
     let high_count = high.len();
@@ -14890,6 +15032,86 @@ mod tests {
             2
         );
         assert!(state.intrinsic_drive.is_valid());
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn consumed_pre_repair_probe_is_requeued_once_when_its_goal_is_not_in_memory() {
+        let root = temp_root("intrinsic-curiosity-aggregation-recovery");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        let mut producer_delta = PublicContractDeltaIR {
+            schema: PUBLIC_CONTRACT_DELTA_SCHEMA.to_string(),
+            delta_id: "recovery-producer".to_string(),
+            observed_behavior: "verification is treated as execution".to_string(),
+            expected_behavior: "unverified or executable cohorts remain eligible".to_string(),
+            target_symbols: vec!["crate::engine::verified_queue_gate".to_string()],
+            typed_behavior_goals: vec![boolean_gate_goal_fixture("recovery_gate")],
+            provenance: vec!["PUBLIC_OBSERVATION".to_string()],
+        };
+        let mut consumer_delta = PublicContractDeltaIR {
+            schema: PUBLIC_CONTRACT_DELTA_SCHEMA.to_string(),
+            delta_id: "recovery-consumer".to_string(),
+            observed_behavior: "the typed value ignores its condition".to_string(),
+            expected_behavior: "the typed value is transported only when allowed".to_string(),
+            target_symbols: vec!["crate::engine::conditional_transport".to_string()],
+            typed_behavior_goals: vec![conditional_string_transport_goal_fixture(
+                "recovery_transport",
+            )],
+            provenance: vec!["PUBLIC_OBSERVATION".to_string()],
+        };
+        bind_public_contract_delta_fixture(&mut producer_delta);
+        bind_public_contract_delta_fixture(&mut consumer_delta);
+        let lesson = |id: &str, delta: PublicContractDeltaIR| LearnedCompositionLesson {
+            lesson_id: id.to_string(),
+            evidence_observation_sha256: vec![sha256(id.as_bytes())],
+            work_kinds: vec![WorkKind::CapabilitySynthesis],
+            diagnostic_signals: vec!["VERIFIED_PASS".to_string()],
+            composition_recipe: vec!["PROGRAM_COMPOSITION".to_string()],
+            applicability: vec!["BOUND_CONTEXT".to_string()],
+            verification_obligations: vec!["BEHAVIORAL_CANARY".to_string()],
+            performance_metrics: Vec::new(),
+            public_contract_deltas: vec![delta],
+            learning_score: 95,
+            exact_patch_data_present: false,
+            exact_source_fragment_present: false,
+            raw_source_bytes_present: false,
+        };
+        let memory = GrowthMemory {
+            schema: SUPERVISOR_SCHEMA.to_string(),
+            generation: 2,
+            predecessor_sha256: None,
+            lessons: vec![
+                lesson("RECOVERY-PRODUCER", producer_delta),
+                lesson("RECOVERY-CONSUMER", consumer_delta),
+            ],
+            classifier: ClassifierMemory::default(),
+            evaluator: EvaluatorMemory::default(),
+            generative: GenerativeGrowthMemory::default(),
+        };
+        let original = plateau_generative_probe_observation(&config, &mut state, &memory)
+            .unwrap()
+            .expect("verified compound observation");
+        persist_scan_observations(&config, std::slice::from_ref(&original)).unwrap();
+
+        let recovered =
+            recover_unpromoted_plateau_probe_observations(&config, &state, &memory, 8).unwrap();
+
+        assert_eq!(recovered.len(), 1);
+        assert_ne!(recovered[0].observation_id, original.observation_id);
+        assert_eq!(
+            recovered[0].public_contract_deltas,
+            original.public_contract_deltas
+        );
+        assert!(recovered[0]
+            .signals
+            .contains(&"RECOVERED_EXECUTABLE_FRONTIER_AFTER_AGGREGATION_REPAIR".to_string()));
+        persist_scan_observations(&config, &recovered).unwrap();
+        assert!(
+            recover_unpromoted_plateau_probe_observations(&config, &state, &memory, 8)
+                .unwrap()
+                .is_empty()
+        );
         fs::remove_dir_all(root).unwrap();
     }
 
