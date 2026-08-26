@@ -22,13 +22,13 @@ use crate::sem5::typed_mechanism::{
     TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
 };
 
-pub const CROSS_LANGUAGE_SYNTHESIS_SCHEMA: &str = "B_CROSS_LANGUAGE_SYNTHESIS_1";
+pub const CROSS_LANGUAGE_SYNTHESIS_SCHEMA: &str = "B_CROSS_LANGUAGE_SYNTHESIS_2";
 pub const MAX_CROSS_LANGUAGE_SOURCE_BYTES: usize = 1024 * 1024;
 pub const MAX_CROSS_LANGUAGE_PARAMETERS: usize = 16;
 pub const MAX_CROSS_LANGUAGE_EXAMPLES: usize = 64;
 static NATIVE_VALIDATION_SEQUENCE: AtomicU64 = AtomicU64::new(0);
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum CrossLanguage {
     JavaScript,
@@ -59,6 +59,8 @@ pub struct CrossLanguageSynthesisReceiptIR {
     pub language: CrossLanguage,
     pub function_name: String,
     pub parameter_names: Vec<String>,
+    #[serde(default)]
+    pub is_async: bool,
     pub predecessor_sha256: String,
     pub candidate_sha256: String,
     pub body_start: usize,
@@ -111,6 +113,7 @@ enum LexState {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct FunctionBoundary {
     pub(crate) parameter_names: Vec<String>,
+    pub(crate) is_async: bool,
     pub(crate) parameter_start: usize,
     pub(crate) parameter_end: usize,
     pub(crate) body_start: usize,
@@ -308,8 +311,20 @@ pub(crate) fn locate_function(
     let identifiers = code_identifiers(source);
     let matches = identifiers
         .windows(2)
-        .filter(|window| window[0].0 == keyword && window[1].0 == function_name)
-        .map(|window| window[1].2)
+        .enumerate()
+        .filter(|(_, window)| window[0].0 == keyword && window[1].0 == function_name)
+        .map(|(index, window)| {
+            (
+                window[1].2,
+                matches!(
+                    language,
+                    CrossLanguage::JavaScript | CrossLanguage::TypeScript
+                ) && index
+                    .checked_sub(1)
+                    .and_then(|previous| identifiers.get(previous))
+                    .is_some_and(|token| token.0 == "async"),
+            )
+        })
         .collect::<Vec<_>>();
     if matches.len() != 1 {
         return Err(if matches.is_empty() {
@@ -319,7 +334,7 @@ pub(crate) fn locate_function(
         }
         .to_string());
     }
-    let name_end = matches[0];
+    let (name_end, is_async) = matches[0];
     let open_parameters = source[name_end..]
         .find('(')
         .map(|offset| name_end + offset)
@@ -337,6 +352,7 @@ pub(crate) fn locate_function(
             &source[open_parameters + 1..close_parameters],
             language,
         )?,
+        is_async,
         parameter_start: open_parameters,
         parameter_end: close_parameters,
         body_start: open_body,
@@ -360,13 +376,23 @@ fn infer_signature(
         .map(Value::program_type)
         .collect::<Vec<_>>();
     let output_type = examples[0].expected.program_type();
-    let supported = |value_type: &ProgramType| {
+    let supported_input = |value_type: &ProgramType| {
+        matches!(
+            value_type,
+            ProgramType::Int
+                | ProgramType::Bool
+                | ProgramType::String
+                | ProgramType::SequenceInt
+                | ProgramType::NestedSequenceInt
+        )
+    };
+    let supported_output = |value_type: &ProgramType| {
         matches!(
             value_type,
             ProgramType::Int | ProgramType::Bool | ProgramType::String
         )
     };
-    if !input_types.iter().all(supported) || !supported(&output_type) {
+    if !input_types.iter().all(supported_input) || !supported_output(&output_type) {
         return Err("CROSS_LANGUAGE_UNSUPPORTED_TRANSPORT_TYPE".to_string());
     }
     for example in examples {
@@ -384,19 +410,33 @@ fn infer_signature(
     Ok((input_types, output_type))
 }
 
-fn declared_scalar_type(type_name: &str, language: CrossLanguage) -> Option<ProgramType> {
-    let normalized = type_name.trim().trim_end_matches(';');
+fn declared_program_type(type_name: &str, language: CrossLanguage) -> Option<ProgramType> {
+    let normalized = type_name
+        .trim()
+        .trim_end_matches(';')
+        .chars()
+        .filter(|character| !character.is_ascii_whitespace())
+        .collect::<String>();
     match language {
-        CrossLanguage::TypeScript => match normalized {
+        CrossLanguage::TypeScript => match normalized.as_str() {
             "number" => Some(ProgramType::Int),
             "boolean" => Some(ProgramType::Bool),
             "string" => Some(ProgramType::String),
+            "number[]" | "readonlynumber[]" | "Array<number>" | "ReadonlyArray<number>" => {
+                Some(ProgramType::SequenceInt)
+            }
+            "number[][]"
+            | "readonlynumber[][]"
+            | "Array<Array<number>>"
+            | "ReadonlyArray<ReadonlyArray<number>>" => Some(ProgramType::NestedSequenceInt),
             _ => None,
         },
-        CrossLanguage::Go => match normalized {
+        CrossLanguage::Go => match normalized.as_str() {
             "int" | "int64" => Some(ProgramType::Int),
             "bool" => Some(ProgramType::Bool),
             "string" => Some(ProgramType::String),
+            "[]int" | "[]int64" => Some(ProgramType::SequenceInt),
+            "[][]int" | "[][]int64" => Some(ProgramType::NestedSequenceInt),
             _ => None,
         },
         CrossLanguage::JavaScript => None,
@@ -426,7 +466,7 @@ fn validate_declared_signature(
                 CrossLanguage::JavaScript => None,
             }
             .ok_or_else(|| format!("CROSS_LANGUAGE_MISSING_DECLARED_TYPE:{parameter}"))?;
-            declared_scalar_type(type_name, language)
+            declared_program_type(type_name, language)
                 .ok_or_else(|| format!("CROSS_LANGUAGE_UNSUPPORTED_DECLARED_TYPE:{type_name}"))
         })
         .collect::<Result<Vec<_>, _>>()?;
@@ -440,7 +480,15 @@ fn validate_declared_signature(
         CrossLanguage::JavaScript => None,
     }
     .ok_or_else(|| "CROSS_LANGUAGE_MISSING_DECLARED_RETURN_TYPE".to_string())?;
-    let declared_output = declared_scalar_type(return_type_name, language).ok_or_else(|| {
+    let return_type_name = if language == CrossLanguage::TypeScript && boundary.is_async {
+        return_type_name
+            .strip_prefix("Promise<")
+            .and_then(|value| value.strip_suffix('>'))
+            .ok_or_else(|| "CROSS_LANGUAGE_ASYNC_PROMISE_RETURN_REQUIRED".to_string())?
+    } else {
+        return_type_name
+    };
+    let declared_output = declared_program_type(return_type_name, language).ok_or_else(|| {
         format!("CROSS_LANGUAGE_UNSUPPORTED_DECLARED_RETURN_TYPE:{return_type_name}")
     })?;
     if &declared_output != output_type {
@@ -645,7 +693,8 @@ pub fn synthesize_cross_language_function(
         definitions: Vec::new(),
         allowed_effects: vec![Effect::Pure],
         preconditions: vec![
-            "bounded scalar inputs avoid target-language numeric overflow".to_string(),
+            "bounded transported inputs avoid target-language numeric overflow and invalid indexes"
+                .to_string(),
         ],
         postconditions: vec!["match every repository-visible public example".to_string()],
         invariants: vec!["replace exactly one predecessor-bound function body".to_string()],
@@ -671,6 +720,7 @@ pub fn synthesize_cross_language_function(
         language: request.language,
         function_name: request.function_name.clone(),
         parameter_names: boundary.parameter_names,
+        is_async: boundary.is_async,
         predecessor_sha256,
         candidate_sha256,
         body_start: boundary.body_start,
@@ -692,6 +742,10 @@ fn render_js_value(value: &Value) -> Result<String, String> {
         Value::Bool(value) => Ok(value.to_string()),
         Value::String(value) => serde_json::to_string(value)
             .map_err(|error| format!("CROSS_LANGUAGE_JSON_VALUE:{error}")),
+        Value::Sequence(value) => serde_json::to_string(value)
+            .map_err(|error| format!("CROSS_LANGUAGE_JSON_VALUE:{error}")),
+        Value::NestedSequence(value) => serde_json::to_string(value)
+            .map_err(|error| format!("CROSS_LANGUAGE_JSON_VALUE:{error}")),
         _ => Err("CROSS_LANGUAGE_NATIVE_UNSUPPORTED_VALUE".to_string()),
     }
 }
@@ -702,6 +756,27 @@ fn render_go_value(value: &Value) -> Result<String, String> {
         Value::Bool(value) => Ok(value.to_string()),
         Value::String(value) => serde_json::to_string(value)
             .map_err(|error| format!("CROSS_LANGUAGE_JSON_VALUE:{error}")),
+        Value::Sequence(values) => Ok(format!(
+            "[]int64{{{}}}",
+            values
+                .iter()
+                .map(i64::to_string)
+                .collect::<Vec<_>>()
+                .join(", ")
+        )),
+        Value::NestedSequence(rows) => Ok(format!(
+            "[][]int64{{{}}}",
+            rows.iter()
+                .map(|row| format!(
+                    "{{{}}}",
+                    row.iter()
+                        .map(i64::to_string)
+                        .collect::<Vec<_>>()
+                        .join(", ")
+                ))
+                .collect::<Vec<_>>()
+                .join(", ")
+        )),
         _ => Err("CROSS_LANGUAGE_NATIVE_UNSUPPORTED_VALUE".to_string()),
     }
 }
@@ -734,8 +809,9 @@ fn native_harness(
                     render_js_value(&example.expected)?
                 ));
             }
+            let await_prefix = if receipt.is_async { "await " } else { "" };
             output.push_str(&format!(
-                "];\nfor (const [args, expected] of __bCases) {{\n  const actual = {}(...args);\n  if (JSON.stringify(actual) !== JSON.stringify(expected)) throw new Error(`mismatch:${{actual}}:${{expected}}`);\n}}\nconsole.log(`PASS:${{__bCases.length}}`);\n",
+                "];\nfor (const [args, expected] of __bCases) {{\n  const actual = {await_prefix}{}(...args);\n  if (JSON.stringify(actual) !== JSON.stringify(expected)) throw new Error(`mismatch:${{actual}}:${{expected}}`);\n}}\nconsole.log(`PASS:${{__bCases.length}}`);\n",
                 receipt.function_name
             ));
             Ok(output)
@@ -751,8 +827,9 @@ fn native_harness(
                     .join(", ");
                 let expected = render_js_value(&example.expected)?;
                 let output_type = typescript_type(&example.expected)?;
+                let await_prefix = if receipt.is_async { "await " } else { "" };
                 output.push_str(&format!(
-                    "\nconst __bActual{index}: {output_type} = {}({inputs});\nconst __bExpected{index}: {output_type} = {expected};\nif (__bActual{index} !== __bExpected{index}) throw new Error('mismatch:{index}');\n",
+                    "\nconst __bActual{index}: {output_type} = {await_prefix}{}({inputs});\nconst __bExpected{index}: {output_type} = {expected};\nif (__bActual{index} !== __bExpected{index}) throw new Error('mismatch:{index}');\n",
                     receipt.function_name
                 ));
             }
@@ -962,6 +1039,77 @@ mod tests {
             .collect()
     }
 
+    fn length_cases() -> Vec<CrossLanguageExampleIR> {
+        vec![
+            CrossLanguageExampleIR {
+                inputs: vec![Value::Sequence(vec![])],
+                expected: Value::Int(0),
+            },
+            CrossLanguageExampleIR {
+                inputs: vec![Value::Sequence(vec![7])],
+                expected: Value::Int(1),
+            },
+            CrossLanguageExampleIR {
+                inputs: vec![Value::Sequence(vec![2, 4, 6])],
+                expected: Value::Int(3),
+            },
+            CrossLanguageExampleIR {
+                inputs: vec![Value::Sequence(vec![-1, 0, 1, 2, 3])],
+                expected: Value::Int(5),
+            },
+        ]
+    }
+
+    fn index_cases() -> Vec<CrossLanguageExampleIR> {
+        vec![
+            CrossLanguageExampleIR {
+                inputs: vec![Value::Sequence(vec![7, 8, 9]), Value::Int(0)],
+                expected: Value::Int(7),
+            },
+            CrossLanguageExampleIR {
+                inputs: vec![Value::Sequence(vec![4, 5, 6]), Value::Int(2)],
+                expected: Value::Int(6),
+            },
+            CrossLanguageExampleIR {
+                inputs: vec![Value::Sequence(vec![-3, 2]), Value::Int(1)],
+                expected: Value::Int(2),
+            },
+        ]
+    }
+
+    fn nested_length_cases() -> Vec<CrossLanguageExampleIR> {
+        vec![
+            CrossLanguageExampleIR {
+                inputs: vec![
+                    Value::NestedSequence(vec![vec![1, 2], vec![3]]),
+                    Value::Int(0),
+                ],
+                expected: Value::Int(2),
+            },
+            CrossLanguageExampleIR {
+                inputs: vec![
+                    Value::NestedSequence(vec![vec![4], vec![5, 6, 7]]),
+                    Value::Int(1),
+                ],
+                expected: Value::Int(3),
+            },
+            CrossLanguageExampleIR {
+                inputs: vec![
+                    Value::NestedSequence(vec![vec![], vec![8, 9]]),
+                    Value::Int(0),
+                ],
+                expected: Value::Int(0),
+            },
+            CrossLanguageExampleIR {
+                inputs: vec![
+                    Value::NestedSequence(vec![vec![1], vec![2, 3], vec![4, 5, 6, 7]]),
+                    Value::Int(2),
+                ],
+                expected: Value::Int(4),
+            },
+        ]
+    }
+
     fn node_path() -> Option<PathBuf> {
         let path = PathBuf::from(r"C:\Program Files\nodejs\node.exe");
         path.is_file().then_some(path)
@@ -1085,6 +1233,137 @@ mod tests {
             assert!(validation.pass, "{validation:?}");
             assert!(validation.typecheck_pass);
             assert_eq!(validation.typecheck_tool_path, Some(tsc));
+        }
+    }
+
+    #[test]
+    fn async_typescript_promise_is_synthesized_typechecked_and_awaited() {
+        let examples = cases(&[(4, 3, 7), (-2, 8, 6), (10, -3, 7), (0, 5, 5)]);
+        let receipt = synthesize_cross_language_function(&CrossLanguageSynthesisRequestIR {
+            language: CrossLanguage::TypeScript,
+            function_name: "combineAsync".to_string(),
+            predecessor_source: "export async function combineAsync(left: number, right: number): Promise<number> { return 0; }\n".to_string(),
+            public_examples: examples.clone(),
+            require_conditional: false,
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+        })
+        .unwrap();
+        assert!(receipt.is_async);
+        assert!(receipt
+            .candidate_source
+            .contains("return ((left) + (right));"));
+        if let (Some(node), Some(tsc)) = (node_path(), tsc_path()) {
+            let validation = validate_cross_language_candidate_with_toolchain(
+                &receipt,
+                &examples,
+                &node,
+                Some(&tsc),
+            )
+            .unwrap();
+            assert!(validation.pass, "{validation:?}");
+        }
+    }
+
+    #[test]
+    fn readonly_typescript_array_length_uses_shared_typed_mechanism() {
+        let examples = length_cases();
+        let receipt = synthesize_cross_language_function(&CrossLanguageSynthesisRequestIR {
+            language: CrossLanguage::TypeScript,
+            function_name: "countValues".to_string(),
+            predecessor_source:
+                "export function countValues(values: readonly number[]): number { return -1; }\n"
+                    .to_string(),
+            public_examples: examples.clone(),
+            require_conditional: false,
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+        })
+        .unwrap();
+        assert!(receipt.candidate_source.contains("return (values).length;"));
+        if let (Some(node), Some(tsc)) = (node_path(), tsc_path()) {
+            let validation = validate_cross_language_candidate_with_toolchain(
+                &receipt,
+                &examples,
+                &node,
+                Some(&tsc),
+            )
+            .unwrap();
+            assert!(validation.pass, "{validation:?}");
+        }
+    }
+
+    #[test]
+    fn array_index_synthesis_executes_in_javascript() {
+        let examples = index_cases();
+        let receipt = synthesize_cross_language_function(&CrossLanguageSynthesisRequestIR {
+            language: CrossLanguage::JavaScript,
+            function_name: "selectAt".to_string(),
+            predecessor_source: "export function selectAt(values, position) { return 0; }\n"
+                .to_string(),
+            public_examples: examples.clone(),
+            require_conditional: false,
+            max_expression_depth: 2,
+            max_candidates: 1_024,
+        })
+        .unwrap();
+        assert!(receipt.candidate_source.contains("(values)[position]"));
+        if let Some(node) = node_path() {
+            let validation = validate_cross_language_candidate(&receipt, &examples, &node).unwrap();
+            assert!(validation.pass, "{validation:?}");
+        }
+    }
+
+    #[test]
+    fn go_slice_length_uses_the_same_length_mechanism() {
+        let examples = length_cases();
+        let receipt =
+            synthesize_cross_language_function(&CrossLanguageSynthesisRequestIR {
+                language: CrossLanguage::Go,
+                function_name: "countValues".to_string(),
+                predecessor_source:
+                    "package main\n\nfunc countValues(values []int64) int64 { return -1 }\n"
+                        .to_string(),
+                public_examples: examples.clone(),
+                require_conditional: false,
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+            })
+            .unwrap();
+        assert!(receipt
+            .candidate_source
+            .contains("return int64(len(values))"));
+        if let Some(go) = go_path() {
+            let validation = validate_cross_language_candidate(&receipt, &examples, &go).unwrap();
+            assert!(validation.pass, "{validation:?}");
+        }
+    }
+
+    #[test]
+    fn nested_typescript_index_and_length_compose_at_depth_three() {
+        let examples = nested_length_cases();
+        let receipt = synthesize_cross_language_function(&CrossLanguageSynthesisRequestIR {
+            language: CrossLanguage::TypeScript,
+            function_name: "rowWidth".to_string(),
+            predecessor_source: "export function rowWidth(matrix: readonly number[][], row: number): number { return -1; }\n".to_string(),
+            public_examples: examples.clone(),
+            require_conditional: false,
+            max_expression_depth: 3,
+            max_candidates: 1_024,
+        })
+        .unwrap();
+        assert!(receipt
+            .candidate_source
+            .contains("return ((matrix)[row]).length;"));
+        if let (Some(node), Some(tsc)) = (node_path(), tsc_path()) {
+            let validation = validate_cross_language_candidate_with_toolchain(
+                &receipt,
+                &examples,
+                &node,
+                Some(&tsc),
+            )
+            .unwrap();
+            assert!(validation.pass, "{validation:?}");
         }
     }
 

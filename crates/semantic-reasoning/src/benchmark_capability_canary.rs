@@ -28,8 +28,12 @@ use crate::repository_requirement_graph::{
 };
 use crate::self_repair_contract::sha256;
 use crate::sem5::model::Value;
+use crate::typescript_compiler_repair::{
+    parse_typescript_compiler_suggestions, synthesize_typescript_compiler_repair,
+    validate_typescript_compiler_repair_candidate,
+};
 
-pub const BENCHMARK_CAPABILITY_CANARY_SCHEMA: &str = "B_BENCHMARK_CAPABILITY_CANARY_2";
+pub const BENCHMARK_CAPABILITY_CANARY_SCHEMA: &str = "B_BENCHMARK_CAPABILITY_CANARY_3";
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct BenchmarkCapabilityCanaryReportIR {
@@ -45,6 +49,8 @@ pub struct BenchmarkCapabilityCanaryReportIR {
     pub requirement_conflicts_detected: usize,
     pub ambiguous_references_rejected: usize,
     pub source_synthesis_languages: usize,
+    #[serde(default)]
+    pub source_synthesis_tasks: usize,
     pub source_synthesis_examples_executed: usize,
     pub source_synthesis_native_passes: usize,
     #[serde(default)]
@@ -53,6 +59,20 @@ pub struct BenchmarkCapabilityCanaryReportIR {
     pub typescript_strict_typecheck_passes: usize,
     #[serde(default)]
     pub typescript_type_error_rejections: usize,
+    #[serde(default)]
+    pub typescript_async_synthesis_passes: usize,
+    #[serde(default)]
+    pub sequence_mechanism_transfer_languages: usize,
+    #[serde(default)]
+    pub nested_sequence_composition_passes: usize,
+    #[serde(default)]
+    pub typescript_compiler_diagnostic_tasks: usize,
+    #[serde(default)]
+    pub typescript_compiler_bound_candidates: usize,
+    #[serde(default)]
+    pub typescript_compiler_verified_repairs: usize,
+    #[serde(default)]
+    pub typescript_unsupported_diagnostic_abstentions: usize,
     pub api_migration_languages: usize,
     pub api_migration_native_passes: usize,
     #[serde(default)]
@@ -83,6 +103,81 @@ fn scalar_examples(rows: &[(i64, i64, i64)]) -> Vec<CrossLanguageExampleIR> {
             expected: Value::Int(*expected),
         })
         .collect()
+}
+
+fn sequence_length_examples() -> Vec<CrossLanguageExampleIR> {
+    vec![
+        CrossLanguageExampleIR {
+            inputs: vec![Value::Sequence(vec![])],
+            expected: Value::Int(0),
+        },
+        CrossLanguageExampleIR {
+            inputs: vec![Value::Sequence(vec![7])],
+            expected: Value::Int(1),
+        },
+        CrossLanguageExampleIR {
+            inputs: vec![Value::Sequence(vec![2, 4, 6])],
+            expected: Value::Int(3),
+        },
+        CrossLanguageExampleIR {
+            inputs: vec![Value::Sequence(vec![-1, 0, 1, 2, 3])],
+            expected: Value::Int(5),
+        },
+    ]
+}
+
+fn nested_sequence_length_examples() -> Vec<CrossLanguageExampleIR> {
+    vec![
+        CrossLanguageExampleIR {
+            inputs: vec![
+                Value::NestedSequence(vec![vec![1, 2], vec![3]]),
+                Value::Int(0),
+            ],
+            expected: Value::Int(2),
+        },
+        CrossLanguageExampleIR {
+            inputs: vec![
+                Value::NestedSequence(vec![vec![4], vec![5, 6, 7]]),
+                Value::Int(1),
+            ],
+            expected: Value::Int(3),
+        },
+        CrossLanguageExampleIR {
+            inputs: vec![
+                Value::NestedSequence(vec![vec![], vec![8, 9]]),
+                Value::Int(0),
+            ],
+            expected: Value::Int(0),
+        },
+        CrossLanguageExampleIR {
+            inputs: vec![
+                Value::NestedSequence(vec![vec![1], vec![2, 3], vec![4, 5, 6, 7]]),
+                Value::Int(2),
+            ],
+            expected: Value::Int(4),
+        },
+    ]
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum SynthesisCapability {
+    Scalar,
+    SequenceLength,
+    Async,
+    NestedSequence,
+}
+
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
+struct SynthesisMetrics {
+    languages: usize,
+    tasks: usize,
+    examples_executed: usize,
+    native_passes: usize,
+    typescript_typecheck_passes: usize,
+    type_error_rejections: usize,
+    async_passes: usize,
+    sequence_transfer_languages: usize,
+    nested_sequence_passes: usize,
 }
 
 fn compiler_version(tool: &Path) -> Result<String, String> {
@@ -197,18 +292,16 @@ fn long_requirement_metrics() -> (usize, usize, usize, usize, bool) {
     )
 }
 
-fn synthesis_metrics(
-    node: &Path,
-    tsc: &Path,
-    go: &Path,
-) -> Result<(usize, usize, usize, usize, usize), String> {
-    let cases = [
+fn synthesis_metrics(node: &Path, tsc: &Path, go: &Path) -> Result<SynthesisMetrics, String> {
+    let cases = vec![
         (
             CrossLanguage::JavaScript,
             "combine",
             "export function combine(left, right) { return 0; }\n",
             scalar_examples(&[(4, 3, 7), (-2, 8, 6), (10, -3, 7), (0, 5, 5)]),
             node,
+            2,
+            SynthesisCapability::Scalar,
         ),
         (
             CrossLanguage::TypeScript,
@@ -216,6 +309,8 @@ fn synthesis_metrics(
             "export function scale(left: number, right: number): number { return 0; }\n",
             scalar_examples(&[(4, 3, 12), (-2, 8, -16), (10, -3, -30), (0, 5, 0)]),
             node,
+            2,
+            SynthesisCapability::Scalar,
         ),
         (
             CrossLanguage::Go,
@@ -223,19 +318,69 @@ fn synthesis_metrics(
             "package main\n\nfunc delta(left int64, right int64) int64 { return 0 }\n",
             scalar_examples(&[(4, 3, 1), (-2, 8, -10), (10, -3, 13), (0, 5, -5)]),
             go,
+            2,
+            SynthesisCapability::Scalar,
+        ),
+        (
+            CrossLanguage::JavaScript,
+            "countValues",
+            "export function countValues(values) { return -1; }\n",
+            sequence_length_examples(),
+            node,
+            2,
+            SynthesisCapability::SequenceLength,
+        ),
+        (
+            CrossLanguage::TypeScript,
+            "countValues",
+            "export function countValues(values: readonly number[]): number { return -1; }\n",
+            sequence_length_examples(),
+            node,
+            2,
+            SynthesisCapability::SequenceLength,
+        ),
+        (
+            CrossLanguage::Go,
+            "countValues",
+            "package main\n\nfunc countValues(values []int64) int64 { return -1 }\n",
+            sequence_length_examples(),
+            go,
+            2,
+            SynthesisCapability::SequenceLength,
+        ),
+        (
+            CrossLanguage::TypeScript,
+            "combineAsync",
+            "export async function combineAsync(left: number, right: number): Promise<number> { return 0; }\n",
+            scalar_examples(&[(4, 3, 7), (-2, 8, 6), (10, -3, 7), (0, 5, 5)]),
+            node,
+            2,
+            SynthesisCapability::Async,
+        ),
+        (
+            CrossLanguage::TypeScript,
+            "rowWidth",
+            "export function rowWidth(matrix: readonly number[][], row: number): number { return -1; }\n",
+            nested_sequence_length_examples(),
+            node,
+            3,
+            SynthesisCapability::NestedSequence,
         ),
     ];
-    let mut passes = 0usize;
-    let mut examples_executed = 0usize;
-    let mut typescript_typecheck_passes = 0usize;
-    for (language, function_name, source, examples, tool) in cases {
+    let mut metrics = SynthesisMetrics {
+        languages: 3,
+        tasks: cases.len(),
+        ..SynthesisMetrics::default()
+    };
+    let mut sequence_languages = BTreeSet::new();
+    for (language, function_name, source, examples, tool, max_depth, capability) in cases {
         let receipt = synthesize_cross_language_function(&CrossLanguageSynthesisRequestIR {
             language,
             function_name: function_name.to_string(),
             predecessor_source: source.to_string(),
             public_examples: examples.clone(),
             require_conditional: false,
-            max_expression_depth: 2,
+            max_expression_depth: max_depth,
             max_candidates: 1_024,
         })?;
         let validation = if language == CrossLanguage::TypeScript {
@@ -244,11 +389,19 @@ fn synthesis_metrics(
             validate_cross_language_candidate(&receipt, &examples, tool)?
         };
         if validation.pass {
-            passes += 1;
-            examples_executed += validation.cases_executed;
+            metrics.native_passes += 1;
+            metrics.examples_executed += validation.cases_executed;
+            match capability {
+                SynthesisCapability::SequenceLength => {
+                    sequence_languages.insert(language);
+                }
+                SynthesisCapability::Async => metrics.async_passes += 1,
+                SynthesisCapability::NestedSequence => metrics.nested_sequence_passes += 1,
+                SynthesisCapability::Scalar => {}
+            }
         }
         if language == CrossLanguage::TypeScript && validation.typecheck_pass {
-            typescript_typecheck_passes += 1;
+            metrics.typescript_typecheck_passes += 1;
         }
     }
 
@@ -269,20 +422,132 @@ fn synthesis_metrics(
         node,
         Some(tsc),
     )?;
-    let type_error_rejections = usize::from(
+    metrics.type_error_rejections = usize::from(
         !invalid_validation.typecheck_pass
             && invalid_validation.command_status.is_none()
             && invalid_validation.cases_executed == 0
             && !invalid_validation.pass,
     );
+    metrics.sequence_transfer_languages = sequence_languages.len();
+    Ok(metrics)
+}
 
-    Ok((
-        3,
-        examples_executed,
-        passes,
-        typescript_typecheck_passes,
-        type_error_rejections,
-    ))
+fn typescript_compiler_repair_metrics(
+    node: &Path,
+    tsc: &Path,
+) -> Result<(usize, usize, usize, usize), String> {
+    let root = canary_workspace("typescript-repair");
+    if root.exists() {
+        fs::remove_dir_all(&root).map_err(|error| format!("CANARY_TS_REPAIR_CLEAN:{error}"))?;
+    }
+    fs::create_dir_all(&root).map_err(|error| format!("CANARY_TS_REPAIR_CREATE:{error}"))?;
+    fs::write(root.join("package.json"), "{\"type\":\"module\"}\n")
+        .map_err(|error| format!("CANARY_TS_REPAIR_WRITE:{error}"))?;
+    let cases = [
+        (
+            "property.ts",
+            "interface User { displayName: string }\nfunction format(user: User): string { const 접두사 = '>'; return 접두사 + user.displayNmae; }\nif (format({ displayName: 'Ada' }) !== '>Ada') throw new Error('behavior');\nconsole.log('PASS:TS_REPAIR_PROPERTY');\n",
+            "PASS:TS_REPAIR_PROPERTY",
+        ),
+        (
+            "object.ts",
+            "interface Style { color: string }\nconst style: Style = { colour: 'blue' };\nif (style.color !== 'blue') throw new Error('behavior');\nconsole.log('PASS:TS_REPAIR_OBJECT');\n",
+            "PASS:TS_REPAIR_OBJECT",
+        ),
+    ];
+    let mut candidates = 0usize;
+    let mut verified = 0usize;
+    for (index, (name, source, success_token)) in cases.iter().enumerate() {
+        let path = root.join(name);
+        fs::write(&path, source).map_err(|error| format!("CANARY_TS_REPAIR_WRITE:{error}"))?;
+        let diagnostic_output = Command::new(tsc)
+            .args([
+                "--strict", "--noEmit", "--pretty", "false", "--target", "ES2022",
+            ])
+            .arg(name)
+            .current_dir(&root)
+            .output()
+            .map_err(|error| format!("CANARY_TS_REPAIR_DIAGNOSE:{error}"))?;
+        if diagnostic_output.status.success() {
+            continue;
+        }
+        let diagnostics = format!(
+            "{}{}",
+            String::from_utf8_lossy(&diagnostic_output.stdout),
+            String::from_utf8_lossy(&diagnostic_output.stderr)
+        );
+        let suggestions = parse_typescript_compiler_suggestions(&diagnostics, &root)?;
+        let Some(suggestion) = suggestions
+            .iter()
+            .find(|suggestion| suggestion.relative_path == PathBuf::from(name))
+        else {
+            continue;
+        };
+        let candidate = synthesize_typescript_compiler_repair(
+            &[RepositorySourceFileIR {
+                relative_path: PathBuf::from(name),
+                source: (*source).to_string(),
+            }],
+            suggestion,
+        )?;
+        validate_typescript_compiler_repair_candidate(
+            &[RepositorySourceFileIR {
+                relative_path: PathBuf::from(name),
+                source: (*source).to_string(),
+            }],
+            suggestion,
+            &candidate,
+        )?;
+        if candidate.changed_identifiers != 1
+            || candidate.source_mutation_authorized
+            || candidate.external_llm_calls != 0
+        {
+            continue;
+        }
+        candidates += 1;
+        fs::write(&path, &candidate.candidate_source)
+            .map_err(|error| format!("CANARY_TS_REPAIR_WRITE:{error}"))?;
+        let emitted = root.join(format!("emitted-{index}"));
+        let compile = Command::new(tsc)
+            .args([
+                "--strict",
+                "--noEmitOnError",
+                "--target",
+                "ES2022",
+                "--module",
+                "ES2022",
+                "--moduleResolution",
+                "bundler",
+                "--outDir",
+            ])
+            .arg(&emitted)
+            .arg(name)
+            .current_dir(&root)
+            .output()
+            .map_err(|error| format!("CANARY_TS_REPAIR_COMPILE:{error}"))?;
+        if !compile.status.success() {
+            continue;
+        }
+        let runtime = Command::new(node)
+            .arg(emitted.join(name).with_extension("js"))
+            .current_dir(&root)
+            .output()
+            .map_err(|error| format!("CANARY_TS_REPAIR_RUNTIME:{error}"))?;
+        let combined = format!(
+            "{}{}",
+            String::from_utf8_lossy(&runtime.stdout),
+            String::from_utf8_lossy(&runtime.stderr)
+        );
+        if runtime.status.success() && combined.contains(success_token) {
+            verified += 1;
+        }
+    }
+    let unsupported =
+        "unknown.ts(1,1): error TS2339: Property 'missing' does not exist on type 'Value'.\n";
+    let abstentions =
+        usize::from(parse_typescript_compiler_suggestions(unsupported, &root)?.is_empty());
+    fs::remove_dir_all(root).map_err(|error| format!("CANARY_TS_REPAIR_CLEAN:{error}"))?;
+    Ok((cases.len(), candidates, verified, abstentions))
 }
 
 fn api_migration_metrics(
@@ -534,17 +799,27 @@ pub fn run_benchmark_capability_canary(
     if !requirement_pass {
         failed_boundaries.push("CANARY_REQUIREMENT_GRAPH".to_string());
     }
-    let (
-        synthesis_languages,
-        synthesis_examples,
-        synthesis_passes,
-        typescript_typecheck_passes,
-        typescript_type_error_rejections,
-    ) = match synthesis_metrics(node_path, tsc_path, go_path) {
+    let synthesis = match synthesis_metrics(node_path, tsc_path, go_path) {
         Ok(metrics) => metrics,
         Err(error) => {
             failed_boundaries.push(error);
-            (3, 0, 0, 0, 0)
+            SynthesisMetrics {
+                languages: 3,
+                tasks: 8,
+                ..SynthesisMetrics::default()
+            }
+        }
+    };
+    let (
+        compiler_diagnostic_tasks,
+        compiler_bound_candidates,
+        compiler_verified_repairs,
+        unsupported_diagnostic_abstentions,
+    ) = match typescript_compiler_repair_metrics(node_path, tsc_path) {
+        Ok(metrics) => metrics,
+        Err(error) => {
+            failed_boundaries.push(error);
+            (2, 0, 0, 0)
         }
     };
     let (migration_languages, migration_passes, shims, migration_typecheck_passes) =
@@ -563,11 +838,17 @@ pub fn run_benchmark_capability_canary(
         && rescans == 0
         && clauses == 91
         && requirement_pass
-        && synthesis_passes == synthesis_languages
-        && synthesis_examples == 12
+        && synthesis.native_passes == synthesis.tasks
+        && synthesis.examples_executed == 32
         && !typescript_compiler_version.is_empty()
-        && typescript_typecheck_passes == 1
-        && typescript_type_error_rejections == 1
+        && synthesis.typescript_typecheck_passes == 4
+        && synthesis.type_error_rejections == 1
+        && synthesis.async_passes == 1
+        && synthesis.sequence_transfer_languages == 3
+        && synthesis.nested_sequence_passes == 1
+        && compiler_bound_candidates == compiler_diagnostic_tasks
+        && compiler_verified_repairs == compiler_diagnostic_tasks
+        && unsupported_diagnostic_abstentions == 1
         && migration_passes == migration_languages
         && migration_typecheck_passes == 1
         && shims == 3
@@ -591,12 +872,20 @@ pub fn run_benchmark_capability_canary(
         implicit_constraints_preserved: implicit,
         requirement_conflicts_detected: conflicts,
         ambiguous_references_rejected: ambiguous,
-        source_synthesis_languages: synthesis_languages,
-        source_synthesis_examples_executed: synthesis_examples,
-        source_synthesis_native_passes: synthesis_passes,
+        source_synthesis_languages: synthesis.languages,
+        source_synthesis_tasks: synthesis.tasks,
+        source_synthesis_examples_executed: synthesis.examples_executed,
+        source_synthesis_native_passes: synthesis.native_passes,
         typescript_compiler_version,
-        typescript_strict_typecheck_passes: typescript_typecheck_passes,
-        typescript_type_error_rejections,
+        typescript_strict_typecheck_passes: synthesis.typescript_typecheck_passes,
+        typescript_type_error_rejections: synthesis.type_error_rejections,
+        typescript_async_synthesis_passes: synthesis.async_passes,
+        sequence_mechanism_transfer_languages: synthesis.sequence_transfer_languages,
+        nested_sequence_composition_passes: synthesis.nested_sequence_passes,
+        typescript_compiler_diagnostic_tasks: compiler_diagnostic_tasks,
+        typescript_compiler_bound_candidates: compiler_bound_candidates,
+        typescript_compiler_verified_repairs: compiler_verified_repairs,
+        typescript_unsupported_diagnostic_abstentions: unsupported_diagnostic_abstentions,
         api_migration_languages: migration_languages,
         api_migration_native_passes: migration_passes,
         typescript_api_migration_typecheck_passes: migration_typecheck_passes,
@@ -620,14 +909,14 @@ pub fn write_benchmark_capability_report(
     repository_root: &Path,
     report: &BenchmarkCapabilityCanaryReportIR,
 ) -> Result<PathBuf, String> {
-    let directory = repository_root.join("reports").join("swe-capability-r1");
+    let directory = repository_root.join("reports").join("swe-capability-r2");
     fs::create_dir_all(&directory).map_err(|error| format!("CANARY_REPORT_CREATE:{error}"))?;
     let json =
         serde_json::to_vec_pretty(report).map_err(|error| format!("CANARY_REPORT_JSON:{error}"))?;
     fs::write(directory.join("capability_report.json"), json)
         .map_err(|error| format!("CANARY_REPORT_WRITE:{error}"))?;
     let markdown = format!(
-        "# Benchmark-shaped capability canary R1\n\n- Status: `{}`\n- Long-horizon trace: {} files indexed, depth {}, {} files selected, {} rescans\n- Long requirements: {} clauses; {} implicit constraints; {} conflicts; {} ambiguous references rejected\n- Source synthesis: {}/{} languages passed natively; {} examples executed\n- TypeScript compiler: `{}`\n- TypeScript compiler boundary: {} source strict typecheck pass; {} type-error execution rejection; {} API-migration strict typecheck pass\n- API migration: {}/{} language migrations passed natively; {} compatibility shims\n- Environment diagnosis: {}/{} failure families\n- Nondeterminism diagnosis: {}/{} cause families\n- External LLM calls: {}\n- Network reads: {}\n- Official benchmark harness executed: {}\n- Official score claimed: {}\n\nThis controlled canary closes the named engineering gaps at the tested boundary. It is not an official SWE-bench/DeepSWE score.\n",
+        "# Benchmark-shaped capability canary R2\n\n- Status: `{}`\n- Long-horizon trace: {} files indexed, depth {}, {} files selected, {} rescans\n- Long requirements: {} clauses; {} implicit constraints; {} conflicts; {} ambiguous references rejected\n- Source synthesis: {}/{} tasks across {} languages passed natively; {} examples executed\n- TypeScript compiler: `{}`\n- TypeScript compiler boundary: {} source strict typecheck passes; {} type-error execution rejection; {} API-migration strict typecheck pass\n- Advanced TypeScript: {} async/Promise pass; {} nested-sequence composition pass\n- Sequence mechanism transfer: {} languages\n- Compiler-guided TypeScript repair: {}/{} candidates bound and {} verified; {} unsupported-diagnostic abstention\n- API migration: {}/{} language migrations passed natively; {} compatibility shims\n- Environment diagnosis: {}/{} failure families\n- Nondeterminism diagnosis: {}/{} cause families\n- External LLM calls: {}\n- Network reads: {}\n- Official benchmark harness executed: {}\n- Official score claimed: {}\n\nThis controlled canary closes the named engineering gaps at the tested boundary. It is not an official SWE-bench/DeepSWE score.\n",
         report.disposition,
         report.long_horizon_repository_files,
         report.long_horizon_causal_depth,
@@ -638,12 +927,20 @@ pub fn write_benchmark_capability_report(
         report.requirement_conflicts_detected,
         report.ambiguous_references_rejected,
         report.source_synthesis_native_passes,
+        report.source_synthesis_tasks,
         report.source_synthesis_languages,
         report.source_synthesis_examples_executed,
         report.typescript_compiler_version,
         report.typescript_strict_typecheck_passes,
         report.typescript_type_error_rejections,
         report.typescript_api_migration_typecheck_passes,
+        report.typescript_async_synthesis_passes,
+        report.nested_sequence_composition_passes,
+        report.sequence_mechanism_transfer_languages,
+        report.typescript_compiler_bound_candidates,
+        report.typescript_compiler_diagnostic_tasks,
+        report.typescript_compiler_verified_repairs,
+        report.typescript_unsupported_diagnostic_abstentions,
         report.api_migration_native_passes,
         report.api_migration_languages,
         report.compatibility_shims_validated,
@@ -676,8 +973,11 @@ mod tests {
         let report = run_benchmark_capability_canary(&node, &tsc, &go);
         assert!(report.pass, "{:#?}", report.failed_boundaries);
         assert!(!report.typescript_compiler_version.is_empty());
-        assert_eq!(report.typescript_strict_typecheck_passes, 1);
+        assert_eq!(report.source_synthesis_tasks, 8);
+        assert_eq!(report.typescript_strict_typecheck_passes, 4);
         assert_eq!(report.typescript_type_error_rejections, 1);
+        assert_eq!(report.sequence_mechanism_transfer_languages, 3);
+        assert_eq!(report.typescript_compiler_verified_repairs, 2);
         assert!(!report.official_benchmark_score_claimed);
         assert_eq!(report.external_llm_calls, 0);
     }

@@ -123,6 +123,7 @@ mod source_proposal_kernel;
 pub mod structural_source_repair;
 #[cfg(feature = "historical-campaigns")]
 pub mod tasks;
+pub mod typescript_compiler_repair;
 
 // The active supervisor needs only the executable engine lineage, not the
 // report/build machinery embedded in each sealed historical campaign module.
