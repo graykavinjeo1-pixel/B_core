@@ -605,6 +605,10 @@ fn repair_composition() -> RepairCompositionLessonIR {
 
 fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> {
     let mut hypotheses = Vec::new();
+    let executable_product_work_present = input.unconsumed_high_observations > 0
+        && !input.cohort_preflight_ready
+        && (input.core_cohort_validation_applicable
+            || input.repository_cohort_validation_applicable);
     if input.unconsumed_high_observations > 0 && !input.cohort_preflight_ready {
         hypotheses.push(InternalHypothesis {
             bottleneck: InternalBottleneckClass::CampaignCohortBlocked,
@@ -868,7 +872,12 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
         } else {
             0
         };
+        // An internal bootstrap action may remain causally open across a
+        // generation.  It must not monopolize selection after a concrete,
+        // executable product cohort arrives; real product work is the more
+        // informative intervention and has an independent verifier.
         let active_bonus = if intervention_executable
+            && !executable_product_work_present
             && input.diagnostic_policy.active_action_id.is_some()
             && input.diagnostic_policy.active_generation == Some(input.generation)
             && input.diagnostic_policy.active_experiment_id.as_deref()
@@ -878,11 +887,20 @@ fn candidate_hypotheses(input: &SelfInspectionInput) -> Vec<InternalHypothesis> 
         } else {
             0
         };
+        let executable_product_work_bonus = if hypothesis.bottleneck
+            == InternalBottleneckClass::CampaignCohortBlocked
+            && intervention_executable
+        {
+            2_000_u32
+        } else {
+            0
+        };
         hypothesis.policy_score_millis = u32::from(hypothesis.confidence_millis)
             .saturating_add(exploration_bonus)
             .saturating_add(support_bonus)
             .saturating_add(executable_productive_bonus)
             .saturating_add(active_bonus)
+            .saturating_add(executable_product_work_bonus)
             .saturating_sub(repetition_penalty)
             .saturating_sub(unsupported_penalty)
             .saturating_sub(failed_outcome_penalty)
@@ -1441,6 +1459,35 @@ mod tests {
         assert_eq!(
             receipt.repair_disposition,
             RepairDisposition::RuntimeRepairActive
+        );
+        assert_eq!(
+            receipt.repair_mechanism,
+            Some(RuntimeRepairMechanism::ValidateBlockedRepositoryCohort)
+        );
+    }
+
+    #[test]
+    fn executable_repository_work_preempts_an_open_internal_bootstrap_action() {
+        let mut value = input();
+        value.generation = 0;
+        value.autonomous_campaigns_enabled = true;
+        value.campaigns_started = 0;
+        value.mutual_revalidation_events = 0;
+        value.evaluator_challenge_cases = 6;
+        value.evaluator_required_challenge_cases = 10;
+        value.unconsumed_high_observations = 1;
+        value.cohort_preflight_ready = false;
+        value.repository_cohort_validation_applicable = true;
+        value.diagnostic_policy.active_action_id = Some("bootstrap-action".to_string());
+        value.diagnostic_policy.active_generation = Some(0);
+        value.diagnostic_policy.active_experiment_id =
+            Some("FROZEN_MUTUAL_REVALIDATION_BOOTSTRAP_CANARY".to_string());
+
+        let receipt = inspect(value).expect("inspect repository work");
+
+        assert_eq!(
+            receipt.selected_bottleneck,
+            InternalBottleneckClass::CampaignCohortBlocked
         );
         assert_eq!(
             receipt.repair_mechanism,

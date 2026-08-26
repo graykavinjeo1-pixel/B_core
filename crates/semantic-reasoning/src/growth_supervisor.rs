@@ -2483,7 +2483,21 @@ fn classify_observation(
     }
 
     match kind {
-        WorkKind::RegressionTest | WorkKind::Verification => {
+        WorkKind::RegressionTest => {
+            // A dedicated test file is an executable public contract, even
+            // when it arrives before an implementation event.  Giving it the
+            // same weight as an arbitrary verification artifact left ordinary
+            // fresh pytest issues just below the admission boundary and made
+            // the repository repair path unreachable from the product CLI.
+            score += if artifact_role == ObservationArtifactRole::TestSource {
+                30
+            } else {
+                22
+            };
+            signals.insert("REGRESSION_EVIDENCE".to_string());
+            roles.insert("REGRESSION_TEST".to_string());
+        }
+        WorkKind::Verification => {
             score += 22;
             signals.insert("REGRESSION_EVIDENCE".to_string());
             roles.insert("REGRESSION_TEST".to_string());
@@ -15420,6 +15434,41 @@ mod tests {
         assert_eq!(observation.learning_value, LearningValue::High);
         assert!(observation.signals.contains(&"VERIFIED_PASS".to_string()));
         assert_eq!(observation.raw_source_bytes_stored, 0);
+    }
+
+    #[test]
+    fn fresh_dedicated_test_is_an_admissible_repository_repair_contract() {
+        let current = FileFingerprint {
+            content_sha256: "a".repeat(64),
+            bytes: 180,
+            modified_ms: 1,
+            extension: "py".to_string(),
+            features: StructuralFeatures {
+                lines: 7,
+                non_empty_lines: 5,
+                assertion_tokens: 4,
+                public_symbols: 1,
+                ..StructuralFeatures::default()
+            },
+        };
+
+        let observation = classify_observation(
+            "ROOT_0/tests/test_fresh_contract.py".to_string(),
+            &current,
+            None,
+            None,
+            &ClassifierMemory::default(),
+            45,
+        );
+
+        assert_eq!(observation.work_kind, WorkKind::RegressionTest);
+        assert_eq!(observation.learning_value, LearningValue::High);
+        assert!(observation
+            .signals
+            .contains(&"REGRESSION_EVIDENCE".to_string()));
+        assert!(observation
+            .signals
+            .contains(&"ASSERTION_STRENGTHENED".to_string()));
     }
 
     #[test]
