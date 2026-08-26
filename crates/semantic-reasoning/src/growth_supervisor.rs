@@ -10066,6 +10066,93 @@ fn nearest_cargo_manifest(root: &Path, relative: &Path) -> Option<PathBuf> {
     None
 }
 
+fn python_module_relative_paths(module: &str) -> Vec<PathBuf> {
+    let components = module.split('.').collect::<Vec<_>>();
+    if components.is_empty()
+        || components.iter().any(|component| {
+            component.is_empty()
+                || !component
+                    .chars()
+                    .all(|character| character == '_' || character.is_ascii_alphanumeric())
+                || component
+                    .chars()
+                    .next()
+                    .is_none_or(|character| character.is_ascii_digit())
+        })
+    {
+        return Vec::new();
+    }
+    let module_path = components.iter().collect::<PathBuf>();
+    let mut source_file = module_path.clone();
+    source_file.set_extension("py");
+    vec![source_file, module_path.join("__init__.py")]
+}
+
+fn imported_python_product_paths(
+    root: &Path,
+    test_paths: &[PathBuf],
+    max_file_bytes: u64,
+) -> Result<Vec<PathBuf>, String> {
+    let mut modules = BTreeSet::new();
+    for test_path in test_paths {
+        let path = validated_repository_file(root, test_path)?;
+        let metadata =
+            fs::metadata(&path).map_err(|error| format!("PYTHON_TEST_IMPORT_METADATA:{error}"))?;
+        if metadata.len() > max_file_bytes {
+            return Err("PYTHON_TEST_IMPORT_SOURCE_TOO_LARGE".to_string());
+        }
+        let source = fs::read_to_string(&path)
+            .map_err(|error| format!("PYTHON_TEST_IMPORT_READ:{error}"))?;
+        for line in source.lines().map(str::trim_start) {
+            if let Some(rest) = line.strip_prefix("from ") {
+                let Some((module, imported)) = rest.split_once(" import ") else {
+                    continue;
+                };
+                let module = module.trim();
+                if !module.starts_with('.') {
+                    modules.insert(module.to_string());
+                    for symbol in imported.split(',').filter_map(|entry| {
+                        entry
+                            .trim()
+                            .split_ascii_whitespace()
+                            .next()
+                            .filter(|symbol| *symbol != "*")
+                    }) {
+                        modules.insert(format!("{module}.{symbol}"));
+                    }
+                }
+            } else if let Some(rest) = line.strip_prefix("import ") {
+                for module in rest.split(',').filter_map(|entry| {
+                    entry
+                        .trim()
+                        .split_ascii_whitespace()
+                        .next()
+                        .filter(|module| !module.starts_with('.'))
+                }) {
+                    modules.insert(module.to_string());
+                }
+            }
+        }
+    }
+
+    let mut product_paths = BTreeSet::new();
+    for relative in modules
+        .iter()
+        .flat_map(|module| python_module_relative_paths(module))
+    {
+        if !path_is_dedicated_test(&relative)
+            && root.join(&relative).is_file()
+            && validated_repository_file(root, &relative).is_ok()
+        {
+            product_paths.insert(relative);
+        }
+        if product_paths.len() >= MAX_REPOSITORY_REPAIR_SOURCE_PATHS {
+            break;
+        }
+    }
+    Ok(product_paths.into_iter().collect())
+}
+
 fn repository_validation_plan(
     config: &GrowthSupervisorConfig,
     observations: &[LearningObservation],
@@ -10130,6 +10217,11 @@ fn repository_validation_plan(
                     .map(|(_, relative)| relative.clone())
                     .collect::<Vec<_>>();
                 scope_paths.extend(test_paths.iter().cloned());
+                scope_paths.extend(imported_python_product_paths(
+                    &root,
+                    &test_paths,
+                    config.resources.max_file_bytes,
+                )?);
                 scope_paths.push(PathBuf::from("pyproject.toml"));
                 scope_paths.sort();
                 scope_paths.dedup();
@@ -16371,6 +16463,9 @@ mod tests {
             test_only_plan.input_observation_ids,
             vec!["python-test".to_string()]
         );
+        assert!(test_only_plan
+            .scope_paths
+            .contains(&PathBuf::from("core_module.py")));
         let mut exact_owner_observation = implementation.clone();
         let mut exact_owner_delta = public_contract_delta_fixture();
         exact_owner_delta.target_symbols = vec!["RenamedPolicy.marker".to_string()];
@@ -16930,7 +17025,11 @@ mod tests {
             reasons: vec!["public declaration observation".to_string()],
             ..implementation.clone()
         };
-        let cohort = vec![implementation, test_observation];
+        // A fresh SWE-style issue normally contributes a failing test before
+        // any implementation edit has occurred. The imported product module
+        // must therefore be discovered from that test, not from a synthetic
+        // high-value implementation observation.
+        let cohort = vec![test_observation];
         let diagnostic = inspect_self(SelfInspectionInput {
             generation: 5,
             supervisor_sequence: 12,
