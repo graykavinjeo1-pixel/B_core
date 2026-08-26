@@ -56,6 +56,8 @@ const BEHAVIORAL_HEURISTIC_EXCLUSION_CONTRACT_REVISION: u64 = 4;
 const WRAPPER_CAPABILITY_CONTRACT_REVISION: u64 = 5;
 const BEHAVIORAL_VALUE_CONTRACT_REVISION: u64 = 6;
 const IMPROVEMENT_OPERATOR_GRAPH_CONTRACT_REVISION: u64 = 2;
+const BEHAVIORAL_EXECUTION_SCHEMA_LEGACY: &str = "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_3";
+const BEHAVIORAL_EXECUTION_SCHEMA: &str = "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_4";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -1565,7 +1567,7 @@ fn execute_behavioral_composition(
         sha256(format!("{context}:{predictor_output_sha256}:{family}:{verifier_id}").as_bytes())
     });
     let mut receipt = BehavioralCompositionExecutionReceipt {
-        schema: "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_3".to_string(),
+        schema: BEHAVIORAL_EXECUTION_SCHEMA.to_string(),
         context_sha256: context,
         execution_plan: Some(execution_plan),
         predictor_id,
@@ -1975,8 +1977,10 @@ pub fn validate_behavioral_execution_receipt(result: &GenerativeCycleResult) -> 
                     )
                 },
             );
-            receipt.schema == "B_CORE_BEHAVIORAL_COMPOSITION_EXECUTION_3"
-                && receipt.context_sha256 == result.context_sha256
+            matches!(
+                receipt.schema.as_str(),
+                BEHAVIORAL_EXECUTION_SCHEMA | BEHAVIORAL_EXECUTION_SCHEMA_LEGACY
+            ) && receipt.context_sha256 == result.context_sha256
                 && receipt.execution_plan == Some(execution_plan)
                 && execution_plan_matches_metadata(&result.selected_composition, execution_plan)
                 && expected_receipt_sha256.as_deref() == Some(receipt.receipt_sha256.as_str())
@@ -2004,19 +2008,27 @@ pub fn validate_behavioral_execution_receipt(result: &GenerativeCycleResult) -> 
                                 && artifact.cases_executed > 0
                                 && artifact.cases_passed == artifact.cases_executed
                                 && match execution_plan.composer {
-                                    GenerativeComposerIR::Sem5Program => artifact
-                                        .typed_behavior_goal
-                                        .as_ref()
-                                        .zip(artifact.typed_mechanism_synthesis_receipt.as_ref())
-                                        .is_some_and(|(goal, synthesis)| {
-                                            validate_typed_behavior_goal_for_memory(goal)
-                                                && validate_typed_mechanism_synthesis_receipt(
-                                                    synthesis,
-                                                )
-                                                .is_ok()
-                                                && synthesis.synthesis_request.as_ref()
-                                                    == Some(goal)
-                                        }),
+                                    GenerativeComposerIR::Sem5Program => {
+                                        match (
+                                            artifact.typed_behavior_goal.as_ref(),
+                                            artifact.typed_mechanism_synthesis_receipt.as_ref(),
+                                        ) {
+                                            (Some(goal), Some(synthesis)) => {
+                                                validate_typed_behavior_goal_for_memory(goal)
+                                                    && validate_typed_mechanism_synthesis_receipt(
+                                                        synthesis,
+                                                    )
+                                                    .is_ok()
+                                                    && synthesis.synthesis_request.as_ref()
+                                                        == Some(goal)
+                                            }
+                                            (Some(goal), None) => {
+                                                receipt.schema == BEHAVIORAL_EXECUTION_SCHEMA_LEGACY
+                                                    && validate_typed_behavior_goal_for_memory(goal)
+                                            }
+                                            _ => false,
+                                        }
+                                    }
                                     _ => {
                                         artifact.typed_behavior_goal.is_none()
                                             && artifact.typed_mechanism_synthesis_receipt.is_none()
@@ -2516,6 +2528,32 @@ mod tests {
             synthesis.selected_operator_id.as_deref(),
             Some(program.operator_proposal.operator_id.as_str())
         );
+        let mut legacy_goal_only = cycle.clone();
+        {
+            let execution = legacy_goal_only
+                .behavioral_execution_receipt
+                .as_mut()
+                .unwrap();
+            execution.schema = BEHAVIORAL_EXECUTION_SCHEMA_LEGACY.to_string();
+            for artifact in &mut execution.verified_artifacts {
+                artifact.typed_mechanism_synthesis_receipt = None;
+            }
+            execution.receipt_sha256 = behavioral_execution_receipt_sha256(execution).unwrap();
+            legacy_goal_only.behavioral_verification_sha256 =
+                Some(execution.receipt_sha256.clone());
+        }
+        assert!(validate_behavioral_execution_receipt(&legacy_goal_only));
+        {
+            let execution = legacy_goal_only
+                .behavioral_execution_receipt
+                .as_mut()
+                .unwrap();
+            execution.schema = BEHAVIORAL_EXECUTION_SCHEMA.to_string();
+            execution.receipt_sha256 = behavioral_execution_receipt_sha256(execution).unwrap();
+            legacy_goal_only.behavioral_verification_sha256 =
+                Some(execution.receipt_sha256.clone());
+        }
+        assert!(!validate_behavioral_execution_receipt(&legacy_goal_only));
         let promoted =
             promote_generative_cycle(&GenerativeGrowthMemory::default(), &input, &cycle).unwrap();
         assert_eq!(promoted.frontier_advance_events, 1);
