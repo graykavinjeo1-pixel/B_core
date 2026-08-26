@@ -93,6 +93,7 @@ const SCAN_WATCHDOG_TICK_MS: u64 = 1_000;
 const MAX_SCAN_RUNTIME_MS: u64 = 60_000;
 const FULL_HASH_CANARY_INTERVAL: u64 = 64;
 const MAX_QUIET_IDLE_POLL_INTERVAL_MS: u64 = 60_000;
+const MAX_CONSECUTIVE_DAEMON_STEP_ERRORS: u32 = 3;
 const BASELINE_MAX_HASHED_FILES_PER_SCAN: usize = 1_024;
 const BASELINE_MAX_BYTES_PER_SCAN: u64 = 64 * 1024 * 1024;
 const MAX_CLASSIFIER_REFINEMENT_EVENTS: usize = 64;
@@ -1022,6 +1023,20 @@ struct InvalidGenerationRecoveryReceipt {
     restored_memory_sha256: String,
     reason: String,
     recovered_at_ms: u64,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct DaemonStepErrorReceipt {
+    schema: String,
+    state_sequence: u64,
+    generation: u64,
+    phase: SupervisorPhase,
+    error_class: String,
+    error_sha256: String,
+    consecutive_same_class_errors: u32,
+    retryable: bool,
+    bounded_retry_scheduled: bool,
+    occurred_at_ms: u64,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -3933,6 +3948,49 @@ fn validate_public_contract_deltas(deltas: &[PublicContractDeltaIR]) -> Result<(
     Ok(())
 }
 
+/// Selects one bounded, internally non-conflicting contract frontier.
+///
+/// A learned contract remains authoritative in its original sealed lesson. A
+/// later compound lesson may reference the same typed goal, but must not copy
+/// that goal into a second delta in the same event: doing so creates two owners
+/// for one goal identity. Preferred deltas (normally newly behavior-verified
+/// compound programs) win. Supplemental deltas are considered newest-first,
+/// and an atomic delta is shadowed as a whole when either its delta identity or
+/// any of its goal identities is already owned by the selected frontier.
+fn canonicalize_public_contract_delta_frontier(
+    preferred: &[PublicContractDeltaIR],
+    supplemental: &[PublicContractDeltaIR],
+) -> Result<Vec<PublicContractDeltaIR>, String> {
+    let mut selected = Vec::with_capacity(MAX_PUBLIC_CONTRACT_DELTAS_PER_EVENT);
+    let mut selected_delta_ids = BTreeSet::new();
+    let mut selected_goal_ids = BTreeSet::new();
+
+    for delta in preferred.iter().chain(supplemental.iter().rev()) {
+        validate_public_contract_deltas(std::slice::from_ref(delta))?;
+        let shadows_selected_identity = selected_delta_ids.contains(&delta.delta_id)
+            || delta
+                .typed_behavior_goals
+                .iter()
+                .any(|goal| selected_goal_ids.contains(&goal.goal_id));
+        if shadows_selected_identity {
+            continue;
+        }
+        if selected.len() == MAX_PUBLIC_CONTRACT_DELTAS_PER_EVENT {
+            break;
+        }
+        selected_delta_ids.insert(delta.delta_id.clone());
+        selected_goal_ids.extend(
+            delta
+                .typed_behavior_goals
+                .iter()
+                .map(|goal| goal.goal_id.clone()),
+        );
+        selected.push(delta.clone());
+    }
+    validate_public_contract_deltas(&selected)?;
+    Ok(selected)
+}
+
 fn public_contract_delta_binding_sha256(delta: &PublicContractDeltaIR) -> Result<String, String> {
     let mut target_symbols = delta
         .target_symbols
@@ -5757,7 +5815,7 @@ fn plateau_promotion_contract_deltas(
         }
     }
     if compound_goals.is_empty() {
-        return Ok(base_deltas.to_vec());
+        return canonicalize_public_contract_delta_frontier(&[], base_deltas);
     }
     if compound_goals.len() > MAX_TYPED_BEHAVIOR_GOALS_PER_DELTA {
         return Err("PLATEAU_COMPOUND_PROGRAM_GOAL_BOUND".to_string());
@@ -5813,16 +5871,7 @@ fn plateau_promotion_contract_deltas(
         goal.provenance.dedup();
     }
 
-    let mut deltas = Vec::with_capacity(MAX_PUBLIC_CONTRACT_DELTAS_PER_EVENT);
-    deltas.push(compound_delta);
-    deltas.extend(
-        base_deltas
-            .iter()
-            .take(MAX_PUBLIC_CONTRACT_DELTAS_PER_EVENT.saturating_sub(1))
-            .cloned(),
-    );
-    validate_public_contract_deltas(&deltas)?;
-    Ok(deltas)
+    canonicalize_public_contract_delta_frontier(&[compound_delta], base_deltas)
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -6523,6 +6572,54 @@ struct PlateauGenerativeProbeReceipt {
     receipt_sha256: String,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct PlateauGenerativeProbeFailureReceipt {
+    schema: String,
+    probe_id: String,
+    predecessor_memory_sha256: String,
+    hypothesis: IntrinsicCuriosityHypothesis,
+    input_sha256: String,
+    seed: u64,
+    failed_stage: String,
+    error_class: String,
+    error_sha256: String,
+    occurred_at_ms: u64,
+}
+
+fn persist_plateau_probe_failure(
+    probe_root: &Path,
+    probe_id: &str,
+    predecessor_memory_sha256: &str,
+    candidate: &PlateauCuriosityCandidate,
+    seed: u64,
+    failed_stage: &str,
+    error: &str,
+) -> Result<(), String> {
+    let receipt = PlateauGenerativeProbeFailureReceipt {
+        schema: "B_CORE_PLATEAU_GENERATIVE_PROBE_FAILURE_1".to_string(),
+        probe_id: probe_id.to_string(),
+        predecessor_memory_sha256: predecessor_memory_sha256.to_string(),
+        hypothesis: candidate.hypothesis.clone(),
+        input_sha256: json_sha256(&candidate.input)?,
+        seed,
+        failed_stage: failed_stage.to_string(),
+        error_class: error.split(':').next().unwrap_or("UNKNOWN").to_string(),
+        error_sha256: sha256(error.as_bytes()),
+        occurred_at_ms: now_ms(),
+    };
+    fs::create_dir_all(probe_root)
+        .map_err(|error| format!("PLATEAU_GENERATIVE_PROBE_DIR_CREATE:{error}"))?;
+    write_immutable_json(
+        &probe_root.join(format!("failure_{probe_id}.json")),
+        &receipt,
+    )?;
+    cleanup_recent_files(
+        probe_root,
+        "failure_",
+        MAX_RETAINED_INTRINSIC_CURIOSITY_RECEIPTS,
+    )
+}
+
 fn plateau_probe_receipt_hash(receipt: &PlateauGenerativeProbeReceipt) -> Result<String, String> {
     let mut clone = receipt.clone();
     clone.receipt_sha256.clear();
@@ -6699,6 +6796,10 @@ fn plateau_generative_probe_observation(
             .as_bytes(),
         );
         let receipt_path = probe_root.join(format!("{probe_id}.json"));
+        let failure_path = probe_root.join(format!("failure_{probe_id}.json"));
+        if failure_path.is_file() {
+            continue;
+        }
         if receipt_path.is_file() {
             let existing: PlateauGenerativeProbeReceipt = read_json(&receipt_path)?;
             validate_plateau_probe_receipt(&existing)?;
@@ -6736,7 +6837,24 @@ fn plateau_generative_probe_observation(
         }
         let seed = u64::from_str_radix(&probe_id[..16], 16)
             .map_err(|error| format!("PLATEAU_GENERATIVE_PROBE_SEED:{error}"))?;
-        let cycle = run_generative_cycle(&memory.generative, &candidate.input, seed)?;
+        let cycle = match run_generative_cycle(&memory.generative, &candidate.input, seed) {
+            Ok(cycle) => cycle,
+            Err(error) => {
+                state
+                    .intrinsic_drive
+                    .begin_attempt(&candidate.hypothesis, false, 0, 0);
+                persist_plateau_probe_failure(
+                    &probe_root,
+                    &probe_id,
+                    &state.current_memory_sha256,
+                    &candidate,
+                    seed,
+                    "GENERATIVE_CYCLE",
+                    &error,
+                )?;
+                continue;
+            }
+        };
         let behaviorally_verified =
             cycle.behavioral_composition_executed && validate_behavioral_execution_receipt(&cycle);
         let intrinsic_attempt_pending = state.intrinsic_drive.begin_attempt(
@@ -6746,16 +6864,46 @@ fn plateau_generative_probe_observation(
             cycle.novel_verified_artifact_count,
         );
         let observation = if intrinsic_attempt_pending {
-            let behavioral_receipt = cycle
+            let Some(behavioral_receipt) = cycle
                 .behavioral_execution_receipt
                 .as_ref()
                 .filter(|receipt| receipt.executed)
-                .ok_or_else(|| "PLATEAU_GENERATIVE_BEHAVIORAL_RECEIPT_MISSING".to_string())?;
-            let behavioral_sha256 = cycle
+            else {
+                let error = "PLATEAU_GENERATIVE_BEHAVIORAL_RECEIPT_MISSING";
+                let _ = state
+                    .intrinsic_drive
+                    .resolve_attempt(&candidate.hypothesis.hypothesis_id, false);
+                persist_plateau_probe_failure(
+                    &probe_root,
+                    &probe_id,
+                    &state.current_memory_sha256,
+                    &candidate,
+                    seed,
+                    "BEHAVIORAL_RECEIPT",
+                    error,
+                )?;
+                continue;
+            };
+            let Some(behavioral_sha256) = cycle
                 .behavioral_verification_sha256
                 .as_ref()
                 .filter(|hash| **hash == behavioral_receipt.receipt_sha256)
-                .ok_or_else(|| "PLATEAU_GENERATIVE_BEHAVIORAL_BINDING_FAILURE".to_string())?;
+            else {
+                let error = "PLATEAU_GENERATIVE_BEHAVIORAL_BINDING_FAILURE";
+                let _ = state
+                    .intrinsic_drive
+                    .resolve_attempt(&candidate.hypothesis.hypothesis_id, false);
+                persist_plateau_probe_failure(
+                    &probe_root,
+                    &probe_id,
+                    &state.current_memory_sha256,
+                    &candidate,
+                    seed,
+                    "BEHAVIORAL_BINDING",
+                    error,
+                )?;
+                continue;
+            };
             let frontier_before = memory.generative.distinct_verified_artifact_count();
             let frontier_after = frontier_before.saturating_add(cycle.frontier_advance_units);
             let artifact_sha256s = behavioral_receipt
@@ -6782,8 +6930,27 @@ fn plateau_generative_probe_observation(
             evidence.extend(artifact_sha256s);
             evidence.sort();
             evidence.dedup();
-            let promotion_deltas =
-                plateau_promotion_contract_deltas(&candidate.public_contract_deltas, &cycle)?;
+            let promotion_deltas = match plateau_promotion_contract_deltas(
+                &candidate.public_contract_deltas,
+                &cycle,
+            ) {
+                Ok(deltas) => deltas,
+                Err(error) => {
+                    let _ = state
+                        .intrinsic_drive
+                        .resolve_attempt(&candidate.hypothesis.hypothesis_id, false);
+                    persist_plateau_probe_failure(
+                        &probe_root,
+                        &probe_id,
+                        &state.current_memory_sha256,
+                        &candidate,
+                        seed,
+                        "CONTRACT_FRONTIER",
+                        &error,
+                    )?;
+                    continue;
+                }
+            };
             Some(LearningObservation {
                 observation_id: observation_id.clone(),
                 work_event_id: None,
@@ -12360,15 +12527,109 @@ pub fn cleanup_source_staging(config_path: &Path) -> Result<SourceMutationStagin
     cleanup_consumed_source_mutation_staging(&config.state_dir)
 }
 
+fn daemon_step_error_is_retryable(error: &str) -> bool {
+    matches!(
+        error.split(':').next().unwrap_or("UNKNOWN"),
+        "CREATE"
+            | "WRITE"
+            | "RENAME"
+            | "READ"
+            | "METADATA"
+            | "MKDIR"
+            | "VERIFIER_SPAWN"
+            | "VERIFIER_FAILED"
+    )
+}
+
+fn contain_daemon_step_error(
+    config: &GrowthSupervisorConfig,
+    error: &str,
+    consecutive_same_class_errors: u32,
+) -> Result<StepReport, String> {
+    let mut state = load_state(config)?;
+    let error_class = error.split(':').next().unwrap_or("UNKNOWN").to_string();
+    let retryable = daemon_step_error_is_retryable(error);
+    let bounded_retry_scheduled =
+        retryable && consecutive_same_class_errors < MAX_CONSECUTIVE_DAEMON_STEP_ERRORS;
+    let receipt = DaemonStepErrorReceipt {
+        schema: "B_CORE_DAEMON_STEP_ERROR_1".to_string(),
+        state_sequence: state.sequence,
+        generation: state.generation,
+        phase: state.phase,
+        error_class: error_class.clone(),
+        error_sha256: sha256(error.as_bytes()),
+        consecutive_same_class_errors,
+        retryable,
+        bounded_retry_scheduled,
+        occurred_at_ms: now_ms(),
+    };
+    let receipt_sha256 = json_sha256(&receipt)?;
+    let diagnostics = config.state_dir.join("diagnostics");
+    fs::create_dir_all(&diagnostics)
+        .map_err(|error| format!("DAEMON_STEP_ERROR_DIAGNOSTICS_CREATE:{error}"))?;
+    write_immutable_json(
+        &diagnostics.join(format!(
+            "daemon_step_error_{:020}_{}.json",
+            state.sequence,
+            &receipt_sha256[..16]
+        )),
+        &receipt,
+    )?;
+    cleanup_recent_files(&diagnostics, "daemon_step_error_", 32)?;
+
+    if bounded_retry_scheduled {
+        state.stop_reason = None;
+        save_transition(
+            config,
+            &mut state,
+            SupervisorPhase::WaitingPlateau,
+            "TRANSIENT_DAEMON_STEP_ERROR_ISOLATED_FOR_BOUNDED_RETRY",
+        )?;
+    } else {
+        state.stop_reason = Some(format!("DAEMON_STEP_ERROR_BOUNDED_STOP:{error_class}"));
+        save_transition(
+            config,
+            &mut state,
+            SupervisorPhase::SafeStopped,
+            "DAEMON_STEP_ERROR_RECORDED_AND_FAIL_CLOSED",
+        )?;
+    }
+    Ok(report_from_state(&state, false, 0, 0, 0, None, None))
+}
+
 pub fn run_daemon(config_path: &Path) -> Result<StepReport, String> {
     let config = load_config(config_path)?;
     let _ = initialize(config_path)?;
     let lease = SupervisorLease::acquire(&config)?;
     let _ = recover_repository_install_transactions(&config)?;
     let _ = cleanup_consumed_source_mutation_staging(&config.state_dir);
+    let mut last_error_class = String::new();
+    let mut consecutive_same_class_errors = 0_u32;
     loop {
         lease.heartbeat()?;
-        let report = step_without_lease(&config, &lease)?;
+        let report = match step_without_lease(&config, &lease) {
+            Ok(report) => {
+                last_error_class.clear();
+                consecutive_same_class_errors = 0;
+                report
+            }
+            Err(error) => {
+                let error_class = error.split(':').next().unwrap_or("UNKNOWN");
+                if last_error_class == error_class {
+                    consecutive_same_class_errors = consecutive_same_class_errors.saturating_add(1);
+                } else {
+                    last_error_class = error_class.to_string();
+                    consecutive_same_class_errors = 1;
+                }
+                let report =
+                    contain_daemon_step_error(&config, &error, consecutive_same_class_errors)?;
+                if report.phase == SupervisorPhase::SafeStopped {
+                    return Ok(report);
+                }
+                thread::sleep(Duration::from_millis(config.poll_interval_ms));
+                continue;
+            }
+        };
         if report.phase == SupervisorPhase::SafeStopped {
             return Ok(report);
         }
@@ -17445,6 +17706,105 @@ mod tests {
             validate_public_contract_deltas(&[delta]),
             Err("EVENT_PUBLIC_CONTRACT_DELTA_INVALID".to_string())
         );
+    }
+
+    #[test]
+    fn contract_frontier_keeps_one_owner_per_goal_and_preserves_independent_goals() {
+        let older = public_contract_delta_fixture();
+        let mut newer = older.clone();
+        newer.delta_id = "newer-observed-return-to-expected-sum".to_string();
+        newer.observed_behavior = "newer observation still returns base".to_string();
+        bind_public_contract_delta_fixture(&mut newer);
+        let mut independent = public_contract_delta_fixture();
+        independent.delta_id = "independent-goal".to_string();
+        independent.typed_behavior_goals[0].goal_id = "independent_contract".to_string();
+        bind_public_contract_delta_fixture(&mut independent);
+
+        let selected = canonicalize_public_contract_delta_frontier(
+            &[],
+            &[older, newer.clone(), independent.clone()],
+        )
+        .unwrap();
+
+        assert_eq!(selected.len(), 2);
+        assert_eq!(selected[0], independent);
+        assert_eq!(selected[1], newer);
+        validate_public_contract_deltas(&selected).unwrap();
+    }
+
+    #[test]
+    fn verified_compound_frontier_shadows_historical_goal_owner() {
+        let historical = public_contract_delta_fixture();
+        let mut verified = historical.clone();
+        verified.delta_id = "verified-compound-owner".to_string();
+        verified.observed_behavior = "components existed separately".to_string();
+        verified.expected_behavior = "verified compound program owns the reusable goal".to_string();
+        bind_public_contract_delta_fixture(&mut verified);
+
+        let selected = canonicalize_public_contract_delta_frontier(
+            std::slice::from_ref(&verified),
+            std::slice::from_ref(&historical),
+        )
+        .unwrap();
+
+        assert_eq!(selected, vec![verified]);
+    }
+
+    #[test]
+    fn daemon_step_errors_retry_only_transient_failures_and_then_fail_closed() {
+        let root = temp_root("daemon-step-containment");
+        let (config_path, config) = test_config(&root);
+        initialize(&config_path).unwrap();
+
+        let retry = contain_daemon_step_error(
+            &config,
+            "RENAME:temporary contention",
+            MAX_CONSECUTIVE_DAEMON_STEP_ERRORS - 1,
+        )
+        .unwrap();
+        assert_eq!(retry.phase, SupervisorPhase::WaitingPlateau);
+        assert!(retry.stop_reason.is_none());
+
+        let stopped = contain_daemon_step_error(
+            &config,
+            "RENAME:temporary contention",
+            MAX_CONSECUTIVE_DAEMON_STEP_ERRORS,
+        )
+        .unwrap();
+        assert_eq!(stopped.phase, SupervisorPhase::SafeStopped);
+        assert_eq!(
+            stopped.stop_reason.as_deref(),
+            Some("DAEMON_STEP_ERROR_BOUNDED_STOP:RENAME")
+        );
+        assert_eq!(
+            fs::read_dir(config.state_dir.join("diagnostics"))
+                .unwrap()
+                .filter_map(Result::ok)
+                .filter(|entry| entry
+                    .file_name()
+                    .to_string_lossy()
+                    .starts_with("daemon_step_error_"))
+                .count(),
+            2
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn structural_daemon_error_is_recorded_without_blind_retry() {
+        let root = temp_root("daemon-structural-stop");
+        let (config_path, config) = test_config(&root);
+        initialize(&config_path).unwrap();
+
+        let report =
+            contain_daemon_step_error(&config, "EVENT_TYPED_BEHAVIOR_GOAL_DUPLICATE", 1).unwrap();
+
+        assert_eq!(report.phase, SupervisorPhase::SafeStopped);
+        assert_eq!(
+            report.stop_reason.as_deref(),
+            Some("DAEMON_STEP_ERROR_BOUNDED_STOP:EVENT_TYPED_BEHAVIOR_GOAL_DUPLICATE")
+        );
+        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
