@@ -4660,10 +4660,23 @@ fn observation_is_bound_verification_evidence(observation: &LearningObservation)
             .any(|signal| signal == "VERIFIED_PASS")
 }
 
+fn observation_is_verified_executable_internal(observation: &LearningObservation) -> bool {
+    observation.actor == WorkActor::LocalTool
+        && observation.work_outcome == WorkOutcome::Pass
+        && !observation.verification_evidence_sha256.is_empty()
+        && !observation.public_contract_deltas.is_empty()
+        && validate_public_contract_deltas(&observation.public_contract_deltas).is_ok()
+        && observation
+            .signals
+            .iter()
+            .any(|signal| signal == "BEHAVIORALLY_VERIFIED_NOVEL_ARTIFACT")
+}
+
 fn observation_is_campaign_relevant(observation: &LearningObservation) -> bool {
     artifact_role_can_carry_source_semantics(observation_artifact_role(Path::new(
         &observation.logical_path,
     ))) || observation_is_bound_verification_evidence(observation)
+        || observation_is_verified_executable_internal(observation)
         || (observation.actor == WorkActor::LocalTool
             && observation.work_outcome == WorkOutcome::Pass
             && !observation.verification_evidence_sha256.is_empty()
@@ -5221,6 +5234,7 @@ fn cohort_has_promotable_growth_subject(
                 == ObservationArtifactRole::ProductSource
                 && (observation.work_kind != WorkKind::Verification
                     || !observation.public_contract_deltas.is_empty()))
+                || observation_is_verified_executable_internal(observation)
                 || (observation.actor == WorkActor::LocalTool
                     && observation.work_outcome == WorkOutcome::Pass
                     && !observation.verification_evidence_sha256.is_empty()
@@ -15993,6 +16007,44 @@ mod tests {
                 .count(),
             1
         );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn verified_internal_typed_frontier_is_campaign_work_not_evidence_only_artifact() {
+        let root = temp_root("internal-typed-frontier-campaign");
+        let (_, config) = test_config(&root);
+        let observation = LearningObservation {
+            observation_id: "verified-internal-typed-frontier".to_string(),
+            work_event_id: None,
+            logical_path: "INTERNAL/.b_intrinsic_curiosity/verified-frontier".to_string(),
+            content_sha256: "a".repeat(64),
+            predecessor_content_sha256: None,
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::CapabilitySynthesis,
+            work_outcome: WorkOutcome::Pass,
+            features_before: None,
+            features_after: StructuralFeatures::default(),
+            signals: vec![
+                "AUTONOMOUS_INTRINSIC_CURIOSITY".to_string(),
+                "BEHAVIORALLY_VERIFIED_NOVEL_ARTIFACT".to_string(),
+                "VERIFIED_PASS".to_string(),
+            ],
+            composition_roles: vec!["COMPOSE".to_string(), "REGRESSION_TEST".to_string()],
+            learning_score: 95,
+            learning_value: LearningValue::High,
+            reasons: vec!["typed public behavior was independently replayed".to_string()],
+            verification_evidence_sha256: vec!["b".repeat(64)],
+            performance_metrics: Vec::new(),
+            public_contract_deltas: vec![public_contract_delta_fixture()],
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+
+        assert!(observation_is_verified_executable_internal(&observation));
+        assert!(observation_is_campaign_relevant(&observation));
+        assert!(campaign_preflight_ready(&config, std::slice::from_ref(&observation)).unwrap());
         fs::remove_dir_all(root).unwrap();
     }
 
