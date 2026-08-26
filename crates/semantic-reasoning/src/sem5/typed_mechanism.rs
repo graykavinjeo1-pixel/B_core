@@ -1135,6 +1135,44 @@ fn typed_operator_probe_value(
     }
 }
 
+/// Produces fresh, name-independent observations from an already validated
+/// typed operator.  Callers use a disjoint case range from the public
+/// examples so source lowering can be falsified without exposing those
+/// counterexamples to the synthesizer first.
+pub fn typed_mechanism_operator_probe_observations(
+    operator: &TypedMechanismImprovementOperatorIR,
+    case_start: usize,
+    case_count: usize,
+) -> Result<Vec<TypedMechanismObservationIR>, String> {
+    validate_typed_mechanism_improvement_operator(operator)?;
+    if case_count == 0 || case_count > 32 {
+        return Err("TYPED_OPERATOR_PROBE_CASE_BUDGET".to_string());
+    }
+    let mut observations = Vec::with_capacity(case_count);
+    for case in case_start..case_start.saturating_add(case_count) {
+        let arguments = operator
+            .operand_types
+            .iter()
+            .enumerate()
+            .map(|(index, value_type)| {
+                typed_operator_probe_value(value_type, case, index)
+                    .ok_or_else(|| "TYPED_OPERATOR_PROBE_UNSUPPORTED_TYPE".to_string())
+            })
+            .collect::<Result<Vec<_>, _>>()?;
+        let expected_postimage = evaluate_typed_operator(operator, &arguments)?;
+        let operands = arguments
+            .into_iter()
+            .enumerate()
+            .map(|(index, value)| (format!("ARG_{index}"), value))
+            .collect();
+        observations.push(TypedMechanismObservationIR {
+            operands,
+            expected_postimage,
+        });
+    }
+    Ok(observations)
+}
+
 fn composed_operator_goal(
     producer: &TypedMechanismImprovementOperatorIR,
     consumer: &TypedMechanismImprovementOperatorIR,

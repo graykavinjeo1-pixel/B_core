@@ -57,17 +57,19 @@ use crate::same_attempt_revision::{
     MAX_SAME_ATTEMPT_EXECUTIONS,
 };
 use crate::self_repair_contract::sha256;
+use crate::sem5::model::{ProgramType, Value};
 #[cfg(test)]
 use crate::sem5::typed_mechanism::select_bounded_typed_mechanism_operator_ids;
 use crate::sem5::typed_mechanism::{
     compose_authorized_typed_operator_programs, load_authorized_typed_mechanism_operators,
     persist_authorized_typed_mechanism_operator, typed_mechanism_improvement_operator_from_receipt,
     typed_mechanism_operator_authority_directory, typed_mechanism_operator_directory,
-    validate_typed_mechanism_improvement_operator, validate_typed_mechanism_operator_authority,
-    validate_typed_mechanism_synthesis_goal, TypedMechanismImprovementOperatorIR,
-    TypedMechanismOperatorAuthorityReceiptIR, TypedMechanismOperatorPromotionEvidenceIR,
-    TypedMechanismSynthesisGoalIR, TypedMechanismSynthesisReceiptIR,
-    INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
+    typed_mechanism_operator_probe_observations, validate_typed_mechanism_improvement_operator,
+    validate_typed_mechanism_operator_authority, validate_typed_mechanism_synthesis_goal,
+    TypedMechanismImprovementOperatorIR, TypedMechanismOperatorAuthorityReceiptIR,
+    TypedMechanismOperatorPromotionEvidenceIR, TypedMechanismSynthesisGoalIR,
+    TypedMechanismSynthesisReceiptIR, INSTALLED_TYPED_OPERATOR_AUTHORITY_SCHEMA,
+    MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
 };
 use crate::source_bound_causal_frontend::{
     discover_and_synthesize_python_repository_paths_with_operators, replay_source_bound_patch,
@@ -86,7 +88,10 @@ const MAX_COMPOUND_INPUT_BYTES: u64 = 16 * 1024 * 1024;
 const MAX_COMPOUND_RECEIPT_BYTES: u64 = 64 * 1024 * 1024;
 const MAX_SUMMARY_BYTES: usize = 512;
 const SOURCE_PATCH_VALIDATION_CONTRACT_REVISION: u64 = 2;
-const PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION: u64 = 6;
+const PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION: u64 = 7;
+const AUTONOMOUS_SWE_CURRICULUM_SCHEMA: &str = "B_CORE_AUTONOMOUS_SWE_CURRICULUM_1";
+const AUTONOMOUS_SWE_CURRICULUM_HIDDEN_CASES: usize = 12;
+const AUTONOMOUS_SWE_CURRICULUM_MAX_REVISIONS: usize = 4;
 const MAX_INTRINSIC_CURIOSITY_HYPOTHESES: usize = 48;
 const MAX_RETAINED_INTRINSIC_CURIOSITY_RECEIPTS: usize = 96;
 const SCAN_WATCHDOG_TICK_MS: u64 = 1_000;
@@ -6769,6 +6774,86 @@ fn run_independent_verifier(
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+struct AutonomousSweCurriculumProof {
+    schema: String,
+    challenge_id: String,
+    goal_sha256: String,
+    target_operator_id: String,
+    public_case_commitment_sha256: String,
+    hidden_case_commitment_sha256: String,
+    public_cases_initial: usize,
+    public_cases_final: usize,
+    hidden_cases: usize,
+    counterexamples_promoted: usize,
+    synthesis_revisions: usize,
+    source_bound_receipt_sha256s: Vec<String>,
+    patch_variants_attempted: usize,
+    selected_patch_variant_id: String,
+    candidate_sha256: String,
+    public_validation_output_sha256: String,
+    hidden_validation_output_sha256: String,
+    candidate_materialization_is_one_to_one: bool,
+    sandbox_cleaned: bool,
+    authoritative_source_write_events: u64,
+    codex_calls: u64,
+    external_llm_calls: u64,
+    network_reads: u64,
+    network_writes: u64,
+    exact_source_fragments_stored: usize,
+    raw_source_bytes_stored: usize,
+    proof_sha256: String,
+}
+
+fn autonomous_swe_curriculum_proof_hash(
+    proof: &AutonomousSweCurriculumProof,
+) -> Result<String, String> {
+    let mut clone = proof.clone();
+    clone.proof_sha256.clear();
+    json_sha256(&clone)
+}
+
+fn validate_autonomous_swe_curriculum_proof(
+    proof: &AutonomousSweCurriculumProof,
+) -> Result<(), String> {
+    if proof.schema != AUTONOMOUS_SWE_CURRICULUM_SCHEMA
+        || proof.challenge_id.len() != 64
+        || proof.goal_sha256.len() != 64
+        || proof.target_operator_id.len() != 64
+        || proof.public_case_commitment_sha256.len() != 64
+        || proof.hidden_case_commitment_sha256.len() != 64
+        || proof.public_cases_initial == 0
+        || proof.public_cases_final < proof.public_cases_initial
+        || proof.hidden_cases == 0
+        || proof.hidden_cases > AUTONOMOUS_SWE_CURRICULUM_HIDDEN_CASES
+        || proof.counterexamples_promoted > AUTONOMOUS_SWE_CURRICULUM_MAX_REVISIONS - 1
+        || !(1..=AUTONOMOUS_SWE_CURRICULUM_MAX_REVISIONS).contains(&proof.synthesis_revisions)
+        || proof.source_bound_receipt_sha256s.is_empty()
+        || proof
+            .source_bound_receipt_sha256s
+            .iter()
+            .any(|hash| hash.len() != 64)
+        || proof.patch_variants_attempted == 0
+        || proof.selected_patch_variant_id.is_empty()
+        || proof.candidate_sha256.len() != 64
+        || proof.public_validation_output_sha256.len() != 64
+        || proof.hidden_validation_output_sha256.len() != 64
+        || !proof.candidate_materialization_is_one_to_one
+        || !proof.sandbox_cleaned
+        || proof.authoritative_source_write_events != 0
+        || proof.codex_calls != 0
+        || proof.external_llm_calls != 0
+        || proof.network_reads != 0
+        || proof.network_writes != 0
+        || proof.exact_source_fragments_stored != 0
+        || proof.raw_source_bytes_stored != 0
+        || proof.proof_sha256 != autonomous_swe_curriculum_proof_hash(proof)?
+    {
+        return Err("AUTONOMOUS_SWE_CURRICULUM_PROOF_INVALID".to_string());
+    }
+    Ok(())
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 struct PlateauGenerativeProbeReceipt {
     schema: String,
     probe_id: String,
@@ -6780,6 +6865,8 @@ struct PlateauGenerativeProbeReceipt {
     public_contract_deltas: Vec<PublicContractDeltaIR>,
     seed: u64,
     cycle: GenerativeCycleResult,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    autonomous_swe_curriculum_proof: Option<AutonomousSweCurriculumProof>,
     intrinsic_attempt_pending: bool,
     observation: Option<LearningObservation>,
     receipt_sha256: String,
@@ -6833,6 +6920,425 @@ fn persist_plateau_probe_failure(
     )
 }
 
+fn curriculum_python_annotation(value_type: &ProgramType) -> Result<&'static str, String> {
+    match value_type {
+        ProgramType::Int => Ok("int"),
+        ProgramType::Bool => Ok("bool"),
+        ProgramType::String => Ok("str"),
+        _ => Err("AUTONOMOUS_SWE_CURRICULUM_UNSUPPORTED_TYPE".to_string()),
+    }
+}
+
+fn curriculum_python_literal(value: &Value) -> Result<String, String> {
+    match value {
+        Value::Int(value) => Ok(value.to_string()),
+        Value::Bool(value) => Ok(if *value { "True" } else { "False" }.to_string()),
+        Value::String(value) => serde_json::to_string(value)
+            .map_err(|error| format!("AUTONOMOUS_SWE_CURRICULUM_STRING:{error}")),
+        _ => Err("AUTONOMOUS_SWE_CURRICULUM_UNSUPPORTED_VALUE".to_string()),
+    }
+}
+
+fn curriculum_stub_value(
+    output_type: &ProgramType,
+    observations: &[crate::sem5::typed_mechanism::TypedMechanismObservationIR],
+) -> Result<&'static str, String> {
+    match output_type {
+        ProgramType::Int => Ok(
+            if observations
+                .iter()
+                .all(|observation| observation.expected_postimage == Value::Int(0))
+            {
+                "1"
+            } else {
+                "0"
+            },
+        ),
+        ProgramType::Bool => Ok(
+            if observations
+                .iter()
+                .all(|observation| observation.expected_postimage == Value::Bool(false))
+            {
+                "True"
+            } else {
+                "False"
+            },
+        ),
+        ProgramType::String => Ok(
+            if observations
+                .iter()
+                .all(|observation| observation.expected_postimage == Value::String(String::new()))
+            {
+                "\"__b_core_hole__\""
+            } else {
+                "\"\""
+            },
+        ),
+        _ => Err("AUTONOMOUS_SWE_CURRICULUM_UNSUPPORTED_OUTPUT".to_string()),
+    }
+}
+
+fn curriculum_python_call(
+    function_name: &str,
+    operands: &[crate::sem5::typed_mechanism::SourceOperandIR],
+    observation: &crate::sem5::typed_mechanism::TypedMechanismObservationIR,
+) -> Result<String, String> {
+    let arguments = operands
+        .iter()
+        .map(|operand| {
+            observation
+                .operands
+                .get(&operand.role)
+                .ok_or_else(|| "AUTONOMOUS_SWE_CURRICULUM_OPERAND_MISSING".to_string())
+                .and_then(curriculum_python_literal)
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    Ok(format!("{function_name}({})", arguments.join(", ")))
+}
+
+fn curriculum_public_test_source(
+    module_name: &str,
+    function_name: &str,
+    operands: &[crate::sem5::typed_mechanism::SourceOperandIR],
+    observations: &[crate::sem5::typed_mechanism::TypedMechanismObservationIR],
+) -> Result<String, String> {
+    let mut source =
+        format!("from {module_name} import {function_name}\n\ndef test_public_contract():\n");
+    for observation in observations {
+        let call = curriculum_python_call(function_name, operands, observation)?;
+        let expected = curriculum_python_literal(&observation.expected_postimage)?;
+        source.push_str(&format!("    assert {call} == {expected}\n"));
+    }
+    Ok(source)
+}
+
+fn curriculum_runner_source(
+    module_name: &str,
+    function_name: &str,
+    operands: &[crate::sem5::typed_mechanism::SourceOperandIR],
+    observations: &[crate::sem5::typed_mechanism::TypedMechanismObservationIR],
+) -> Result<String, String> {
+    let mut source = format!("from {module_name} import {function_name}\n\n");
+    for (index, observation) in observations.iter().enumerate() {
+        let call = curriculum_python_call(function_name, operands, observation)?;
+        let expected = curriculum_python_literal(&observation.expected_postimage)?;
+        source.push_str(&format!(
+            "if {call} != {expected}:\n    raise SystemExit({})\n",
+            index + 10
+        ));
+    }
+    source.push_str("print('B_CORE_CURRICULUM_PASS')\n");
+    Ok(source)
+}
+
+fn remap_curriculum_probe_observations(
+    goal: &TypedMechanismSynthesisGoalIR,
+    observations: Vec<crate::sem5::typed_mechanism::TypedMechanismObservationIR>,
+) -> Result<Vec<crate::sem5::typed_mechanism::TypedMechanismObservationIR>, String> {
+    observations
+        .into_iter()
+        .map(|observation| {
+            let mut operands = BTreeMap::new();
+            for (index, operand) in goal.operands.iter().enumerate() {
+                let value = observation
+                    .operands
+                    .get(&format!("ARG_{index}"))
+                    .cloned()
+                    .ok_or_else(|| {
+                        "AUTONOMOUS_SWE_CURRICULUM_CANONICAL_OPERAND_MISSING".to_string()
+                    })?;
+                operands.insert(operand.role.clone(), value);
+            }
+            Ok(crate::sem5::typed_mechanism::TypedMechanismObservationIR {
+                operands,
+                expected_postimage: observation.expected_postimage,
+            })
+        })
+        .collect()
+}
+
+fn run_autonomous_swe_curriculum_probe(
+    config: &GrowthSupervisorConfig,
+    state: &SupervisorState,
+    candidate: &PlateauCuriosityCandidate,
+) -> Result<Option<AutonomousSweCurriculumProof>, String> {
+    let Some(goal) = candidate.input.typed_behavior_goals.first() else {
+        return Ok(None);
+    };
+    let goal_types = goal
+        .operands
+        .iter()
+        .map(|operand| operand.value_type.clone())
+        .collect::<Vec<_>>();
+    let Some(target_operator) = candidate
+        .input
+        .typed_behavior_operator_proposals
+        .iter()
+        .find(|operator| {
+            operator.operand_types == goal_types && operator.output_type == goal.output_type
+        })
+    else {
+        return Ok(None);
+    };
+    validate_typed_mechanism_synthesis_goal(goal)?;
+    validate_typed_mechanism_improvement_operator(target_operator)?;
+    if goal.public_observations.is_empty() {
+        return Err("AUTONOMOUS_SWE_CURRICULUM_PUBLIC_CASES_MISSING".to_string());
+    }
+
+    let goal_sha256 = json_sha256(goal)?;
+    let challenge_id = sha256(
+        format!(
+            "AUTONOMOUS_SWE_CURRICULUM_1:{}:{}:{}:{}",
+            state.current_memory_sha256, state.generation, goal_sha256, target_operator.operator_id
+        )
+        .as_bytes(),
+    );
+    let module_name = format!("curriculum_{}", &challenge_id[..16]);
+    let function_name = format!("solve_{}", &challenge_id[16..32]);
+    let source_relative_path = PathBuf::from(format!("{module_name}.py"));
+    let public_test_relative_path = PathBuf::from("test_public_contract.py");
+    let public_runner_relative_path = PathBuf::from("verify_public.py");
+    let hidden_runner_relative_path = PathBuf::from("verify_hidden.py");
+    let arguments = goal
+        .operands
+        .iter()
+        .enumerate()
+        .map(|(index, operand)| {
+            Ok(format!(
+                "input_{index}: {}",
+                curriculum_python_annotation(&operand.value_type)?
+            ))
+        })
+        .collect::<Result<Vec<_>, String>>()?;
+    let source = format!(
+        "def {function_name}({}) -> {}:\n    return {}\n",
+        arguments.join(", "),
+        curriculum_python_annotation(&goal.output_type)?,
+        curriculum_stub_value(&goal.output_type, &goal.public_observations)?,
+    );
+
+    let probe_start = 64_usize.saturating_add((state.generation as usize % 512) * 37);
+    let generated_hidden =
+        typed_mechanism_operator_probe_observations(target_operator, probe_start, 32)?;
+    let generated_hidden = remap_curriculum_probe_observations(goal, generated_hidden)?;
+    let public_case_ids = goal
+        .public_observations
+        .iter()
+        .map(json_sha256)
+        .collect::<Result<BTreeSet<_>, _>>()?;
+    let mut hidden_observations = Vec::new();
+    let mut hidden_case_ids = BTreeSet::new();
+    for observation in generated_hidden {
+        let identity = json_sha256(&observation)?;
+        if !public_case_ids.contains(&identity) && hidden_case_ids.insert(identity) {
+            hidden_observations.push(observation);
+        }
+        if hidden_observations.len() == AUTONOMOUS_SWE_CURRICULUM_HIDDEN_CASES {
+            break;
+        }
+    }
+    if hidden_observations.len() < 4 {
+        return Err("AUTONOMOUS_SWE_CURRICULUM_HIDDEN_DIVERSITY".to_string());
+    }
+    let public_case_commitment_sha256 = json_sha256(&goal.public_observations)?;
+    let hidden_case_commitment_sha256 = json_sha256(&hidden_observations)?;
+    let public_cases_initial = goal.public_observations.len();
+    let python = resolve_local_program("python")?;
+    let available_operators = load_source_bound_improvement_operators(config)?;
+    let sandbox_parent = config.state_dir.join("coding_curriculum_sandboxes");
+    let sandbox = sandbox_parent.join(&challenge_id);
+    if sandbox.parent() != Some(sandbox_parent.as_path()) || sandbox == sandbox_parent {
+        return Err("AUTONOMOUS_SWE_CURRICULUM_SANDBOX_SCOPE".to_string());
+    }
+    if sandbox.exists() {
+        fs::remove_dir_all(&sandbox)
+            .map_err(|error| format!("AUTONOMOUS_SWE_CURRICULUM_STALE_CLEANUP:{error}"))?;
+    }
+    fs::create_dir_all(&sandbox)
+        .map_err(|error| format!("AUTONOMOUS_SWE_CURRICULUM_SANDBOX_CREATE:{error}"))?;
+    let diagnostics = config.state_dir.join("diagnostics");
+    fs::create_dir_all(&diagnostics)
+        .map_err(|error| format!("AUTONOMOUS_SWE_CURRICULUM_DIAGNOSTICS:{error}"))?;
+
+    let result = (|| -> Result<AutonomousSweCurriculumProof, String> {
+        let source_path = sandbox.join(&source_relative_path);
+        let public_test_path = sandbox.join(&public_test_relative_path);
+        let public_runner_path = sandbox.join(&public_runner_relative_path);
+        let hidden_runner_path = sandbox.join(&hidden_runner_relative_path);
+        let mut public_observations = goal.public_observations.clone();
+        let mut source_bound_receipt_sha256s = Vec::new();
+        let mut patch_variants_attempted = 0_usize;
+        let mut counterexamples_promoted = 0_usize;
+
+        for revision in 0..AUTONOMOUS_SWE_CURRICULUM_MAX_REVISIONS {
+            fs::write(&source_path, &source)
+                .map_err(|error| format!("AUTONOMOUS_SWE_CURRICULUM_SOURCE_WRITE:{error}"))?;
+            let public_test_source = curriculum_public_test_source(
+                &module_name,
+                &function_name,
+                &goal.operands,
+                &public_observations,
+            )?;
+            fs::write(&public_test_path, public_test_source)
+                .map_err(|error| format!("AUTONOMOUS_SWE_CURRICULUM_TEST_WRITE:{error}"))?;
+            let request = SourceBoundRepositoryPathDiscoveryRequestIR {
+                schema: SOURCE_BOUND_REPOSITORY_PATH_DISCOVERY_SCHEMA.to_string(),
+                repository_root: sandbox.clone(),
+                source_relative_path: source_relative_path.clone(),
+                test_relative_paths: vec![public_test_relative_path.clone()],
+                python_executable: python.clone(),
+                target_symbols: vec![function_name.clone()],
+                allowed_effects: goal.allowed_effects.clone(),
+                max_expression_depth: goal.max_expression_depth.clamp(1, 3),
+                max_candidates: goal.max_candidates.clamp(256, 2_048),
+            };
+            let source_bound = discover_and_synthesize_python_repository_paths_with_operators(
+                &request,
+                &available_operators,
+            )
+            .map_err(|error| {
+                format!(
+                    "AUTONOMOUS_SWE_CURRICULUM_SYNTHESIS:{}:{}",
+                    error.kind.as_code(),
+                    sha256(error.detail.as_bytes())
+                )
+            })?;
+            source_bound_receipt_sha256s.push(json_sha256(&source_bound)?);
+            let public_runner_source = curriculum_runner_source(
+                &module_name,
+                &function_name,
+                &goal.operands,
+                &public_observations,
+            )?;
+            let hidden_runner_source = curriculum_runner_source(
+                &module_name,
+                &function_name,
+                &goal.operands,
+                &hidden_observations,
+            )?;
+            fs::write(&public_runner_path, public_runner_source)
+                .map_err(|error| format!("AUTONOMOUS_SWE_CURRICULUM_PUBLIC_RUNNER:{error}"))?;
+            fs::write(&hidden_runner_path, hidden_runner_source)
+                .map_err(|error| format!("AUTONOMOUS_SWE_CURRICULUM_HIDDEN_RUNNER:{error}"))?;
+            let mut revision_counterexample = None;
+            for variant in &source_bound.patch_variants {
+                patch_variants_attempted = patch_variants_attempted.saturating_add(1);
+                let candidate_source =
+                    replay_source_bound_patch(&source, &variant.replayable_patch).map_err(
+                        |error| {
+                            format!(
+                                "AUTONOMOUS_SWE_CURRICULUM_REPLAY:{}:{}",
+                                error.kind.as_code(),
+                                sha256(error.detail.as_bytes())
+                            )
+                        },
+                    )?;
+                fs::write(&source_path, candidate_source)
+                    .map_err(|error| format!("AUTONOMOUS_SWE_CURRICULUM_CANDIDATE:{error}"))?;
+                let public_log =
+                    diagnostics.join(format!("curriculum_{challenge_id}_{revision}_public.log"));
+                let public_arg = public_runner_relative_path.to_string_lossy().to_string();
+                let public_receipt = command_receipt_with_incremental(
+                    &python,
+                    &[public_arg.as_str()],
+                    &sandbox,
+                    &runtime_validation_target_dir(config),
+                    30_000,
+                    &public_log,
+                    false,
+                )?;
+                let _ = fs::remove_file(&public_log);
+                if !public_receipt.success {
+                    continue;
+                }
+                let hidden_log =
+                    diagnostics.join(format!("curriculum_{challenge_id}_{revision}_hidden.log"));
+                let hidden_arg = hidden_runner_relative_path.to_string_lossy().to_string();
+                let hidden_receipt = command_receipt_with_incremental(
+                    &python,
+                    &[hidden_arg.as_str()],
+                    &sandbox,
+                    &runtime_validation_target_dir(config),
+                    30_000,
+                    &hidden_log,
+                    false,
+                )?;
+                let _ = fs::remove_file(&hidden_log);
+                if hidden_receipt.success {
+                    return Ok(AutonomousSweCurriculumProof {
+                        schema: AUTONOMOUS_SWE_CURRICULUM_SCHEMA.to_string(),
+                        challenge_id: challenge_id.clone(),
+                        goal_sha256: goal_sha256.clone(),
+                        target_operator_id: target_operator.operator_id.clone(),
+                        public_case_commitment_sha256: public_case_commitment_sha256.clone(),
+                        hidden_case_commitment_sha256: hidden_case_commitment_sha256.clone(),
+                        public_cases_initial,
+                        public_cases_final: public_observations.len(),
+                        hidden_cases: hidden_observations.len(),
+                        counterexamples_promoted,
+                        synthesis_revisions: revision + 1,
+                        source_bound_receipt_sha256s,
+                        patch_variants_attempted,
+                        selected_patch_variant_id: variant.variant_id.clone(),
+                        candidate_sha256: variant.replayable_patch.candidate_sha256.clone(),
+                        public_validation_output_sha256: public_receipt.output_sha256,
+                        hidden_validation_output_sha256: hidden_receipt.output_sha256,
+                        candidate_materialization_is_one_to_one: variant
+                            .replayable_patch
+                            .candidate_materialization_is_one_to_one,
+                        sandbox_cleaned: false,
+                        authoritative_source_write_events: 0,
+                        codex_calls: 0,
+                        external_llm_calls: 0,
+                        network_reads: 0,
+                        network_writes: 0,
+                        exact_source_fragments_stored: 0,
+                        raw_source_bytes_stored: 0,
+                        proof_sha256: String::new(),
+                    });
+                }
+                if let Some(exit_code) = hidden_receipt.exit_code {
+                    let index = exit_code.saturating_sub(10) as usize;
+                    if index < hidden_observations.len() {
+                        revision_counterexample.get_or_insert(index);
+                    }
+                }
+            }
+            let Some(counterexample_index) = revision_counterexample else {
+                return Err("AUTONOMOUS_SWE_CURRICULUM_NO_ACTIONABLE_COUNTEREXAMPLE".to_string());
+            };
+            let counterexample = hidden_observations[counterexample_index].clone();
+            let counterexample_sha256 = json_sha256(&counterexample)?;
+            if public_observations
+                .iter()
+                .map(json_sha256)
+                .collect::<Result<BTreeSet<_>, _>>()?
+                .contains(&counterexample_sha256)
+            {
+                return Err("AUTONOMOUS_SWE_CURRICULUM_COUNTEREXAMPLE_DUPLICATE".to_string());
+            }
+            public_observations.push(counterexample);
+            counterexamples_promoted = counterexamples_promoted.saturating_add(1);
+        }
+        Err("AUTONOMOUS_SWE_CURRICULUM_REVISION_BUDGET_EXHAUSTED".to_string())
+    })();
+
+    let cleanup = fs::remove_dir_all(&sandbox)
+        .map_err(|error| format!("AUTONOMOUS_SWE_CURRICULUM_SANDBOX_CLEANUP:{error}"));
+    match (result, cleanup) {
+        (Ok(mut proof), Ok(())) if !sandbox.exists() => {
+            proof.sandbox_cleaned = true;
+            proof.proof_sha256 = autonomous_swe_curriculum_proof_hash(&proof)?;
+            validate_autonomous_swe_curriculum_proof(&proof)?;
+            Ok(Some(proof))
+        }
+        (Ok(_), Ok(())) => Err("AUTONOMOUS_SWE_CURRICULUM_SANDBOX_RETAINED".to_string()),
+        (Ok(_), Err(error)) | (Err(_), Err(error)) => Err(error),
+        (Err(error), Ok(())) => Err(error),
+    }
+}
+
 fn plateau_probe_receipt_hash(receipt: &PlateauGenerativeProbeReceipt) -> Result<String, String> {
     let mut clone = receipt.clone();
     clone.receipt_sha256.clear();
@@ -6840,8 +7346,30 @@ fn plateau_probe_receipt_hash(receipt: &PlateauGenerativeProbeReceipt) -> Result
 }
 
 fn validate_plateau_probe_receipt(receipt: &PlateauGenerativeProbeReceipt) -> Result<(), String> {
-    let behaviorally_verified = receipt.cycle.behavioral_composition_executed
+    let ir_behaviorally_verified = receipt.cycle.behavioral_composition_executed
         && validate_behavioral_execution_receipt(&receipt.cycle);
+    let source_transfer_required = !receipt.input.typed_behavior_operator_proposals.is_empty();
+    if let Some(proof) = &receipt.autonomous_swe_curriculum_proof {
+        validate_autonomous_swe_curriculum_proof(proof)?;
+        if receipt
+            .input
+            .typed_behavior_goals
+            .first()
+            .map(json_sha256)
+            .transpose()?
+            .as_deref()
+            != Some(proof.goal_sha256.as_str())
+            || !receipt
+                .input
+                .typed_behavior_operator_proposals
+                .iter()
+                .any(|operator| operator.operator_id == proof.target_operator_id)
+        {
+            return Err("PLATEAU_GENERATIVE_SOURCE_PROOF_BINDING".to_string());
+        }
+    }
+    let behaviorally_verified = ir_behaviorally_verified
+        && (!source_transfer_required || receipt.autonomous_swe_curriculum_proof.is_some());
     let mut attempt_contract = IntrinsicDriveMemory::default();
     let expected_pending = attempt_contract.begin_attempt(
         &receipt.hypothesis,
@@ -7128,7 +7656,9 @@ fn plateau_generative_probe_observation(
             let pending = state.intrinsic_drive.begin_attempt(
                 &existing.hypothesis,
                 existing.cycle.behavioral_composition_executed
-                    && validate_behavioral_execution_receipt(&existing.cycle),
+                    && validate_behavioral_execution_receipt(&existing.cycle)
+                    && (existing.input.typed_behavior_operator_proposals.is_empty()
+                        || existing.autonomous_swe_curriculum_proof.is_some()),
                 existing.cycle.frontier_advance_units,
                 existing.cycle.novel_verified_artifact_count,
             );
@@ -7171,8 +7701,50 @@ fn plateau_generative_probe_observation(
                 continue;
             }
         };
-        let behaviorally_verified =
+        let ir_behaviorally_verified =
             cycle.behavioral_composition_executed && validate_behavioral_execution_receipt(&cycle);
+        let autonomous_swe_curriculum_proof = if ir_behaviorally_verified
+            && !candidate.input.typed_behavior_operator_proposals.is_empty()
+        {
+            match run_autonomous_swe_curriculum_probe(config, state, &candidate) {
+                Ok(Some(proof)) => Some(proof),
+                Ok(None) => {
+                    state
+                        .intrinsic_drive
+                        .begin_attempt(&candidate.hypothesis, false, 0, 0);
+                    persist_plateau_probe_failure(
+                        &probe_root,
+                        &probe_id,
+                        &state.current_memory_sha256,
+                        &candidate,
+                        seed,
+                        "AUTONOMOUS_SWE_CURRICULUM",
+                        "AUTONOMOUS_SWE_CURRICULUM_PROOF_REQUIRED",
+                    )?;
+                    continue;
+                }
+                Err(error) => {
+                    state
+                        .intrinsic_drive
+                        .begin_attempt(&candidate.hypothesis, false, 0, 0);
+                    persist_plateau_probe_failure(
+                        &probe_root,
+                        &probe_id,
+                        &state.current_memory_sha256,
+                        &candidate,
+                        seed,
+                        "AUTONOMOUS_SWE_CURRICULUM",
+                        &error,
+                    )?;
+                    continue;
+                }
+            }
+        } else {
+            None
+        };
+        let behaviorally_verified = ir_behaviorally_verified
+            && (candidate.input.typed_behavior_operator_proposals.is_empty()
+                || autonomous_swe_curriculum_proof.is_some());
         let intrinsic_attempt_pending = state.intrinsic_drive.begin_attempt(
             &candidate.hypothesis,
             behaviorally_verified,
@@ -7227,6 +7799,9 @@ fn plateau_generative_probe_observation(
                 .iter()
                 .map(|artifact| artifact.artifact_sha256.clone())
                 .collect::<Vec<_>>();
+            let source_proof_sha256 = autonomous_swe_curriculum_proof
+                .as_ref()
+                .map(|proof| proof.proof_sha256.clone());
             let content_sha256 = json_sha256(&(
                 format!(
                     "B_CORE_PLATEAU_GENERATIVE_PROBE_{PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION}"
@@ -7238,11 +7813,15 @@ fn plateau_generative_probe_observation(
                 seed,
                 behavioral_sha256,
                 &artifact_sha256s,
+                &source_proof_sha256,
                 intrinsic_attempt_pending,
             ))?;
             let observation_id =
                 sha256(format!("INTRINSIC_CURIOSITY_OBSERVATION:{content_sha256}").as_bytes());
             let mut evidence = vec![behavioral_sha256.clone()];
+            if let Some(proof) = &autonomous_swe_curriculum_proof {
+                evidence.push(proof.proof_sha256.clone());
+            }
             evidence.extend(artifact_sha256s);
             evidence.sort();
             evidence.dedup();
@@ -7267,6 +7846,36 @@ fn plateau_generative_probe_observation(
                     continue;
                 }
             };
+            let mut signals = vec![
+                "AUTONOMOUS_INTRINSIC_CURIOSITY".to_string(),
+                "BEHAVIORALLY_VERIFIED_NOVEL_ARTIFACT".to_string(),
+                "INTRINSIC_REWARD_PENDING_PROMOTION".to_string(),
+                "VERIFIED_PASS".to_string(),
+            ];
+            let mut composition_roles = vec![
+                "HYPOTHESIS_SELECTION".to_string(),
+                "CROSS_LESSON_PREDICTION".to_string(),
+                "PROGRAM_COMPOSITION".to_string(),
+                "BEHAVIORAL_FALSIFICATION".to_string(),
+                "REWARD_ELIGIBILITY_GATE".to_string(),
+            ];
+            let mut reasons = vec![
+                "bounded intrinsic curiosity selected an executable cross-lesson hypothesis without external work input"
+                    .to_string(),
+                "reward remains pending until the independent campaign verifier accepts a non-duplicate generation"
+                    .to_string(),
+            ];
+            if autonomous_swe_curriculum_proof.is_some() {
+                signals.extend([
+                    "FRESH_SOURCE_TRANSFER_VERIFIED".to_string(),
+                    "HIDDEN_COUNTEREXAMPLE_SUITE_PASSED".to_string(),
+                ]);
+                composition_roles.push("SOURCE_BOUND_LOWERING".to_string());
+                reasons.push(
+                    "a fresh content-addressed repository function was synthesized from public cases and passed a separately committed hidden suite"
+                        .to_string(),
+                );
+            }
             Some(LearningObservation {
                 observation_id: observation_id.clone(),
                 work_event_id: None,
@@ -7278,27 +7887,11 @@ fn plateau_generative_probe_observation(
                 work_outcome: WorkOutcome::Pass,
                 features_before: None,
                 features_after: StructuralFeatures::default(),
-                signals: vec![
-                    "AUTONOMOUS_INTRINSIC_CURIOSITY".to_string(),
-                    "BEHAVIORALLY_VERIFIED_NOVEL_ARTIFACT".to_string(),
-                    "INTRINSIC_REWARD_PENDING_PROMOTION".to_string(),
-                    "VERIFIED_PASS".to_string(),
-                ],
-                composition_roles: vec![
-                    "HYPOTHESIS_SELECTION".to_string(),
-                    "CROSS_LESSON_PREDICTION".to_string(),
-                    "PROGRAM_COMPOSITION".to_string(),
-                    "BEHAVIORAL_FALSIFICATION".to_string(),
-                    "REWARD_ELIGIBILITY_GATE".to_string(),
-                ],
+                signals,
+                composition_roles,
                 learning_score: 95,
                 learning_value: LearningValue::High,
-                reasons: vec![
-                    "bounded intrinsic curiosity selected an executable cross-lesson hypothesis without external work input"
-                        .to_string(),
-                    "reward remains pending until the independent campaign verifier accepts a non-duplicate generation"
-                        .to_string(),
-                ],
+                reasons,
                 verification_evidence_sha256: evidence,
                 performance_metrics: vec![PerformanceMetricEvidence {
                     metric: "GENERATIVE_VERIFIED_ARTIFACT_COUNT".to_string(),
@@ -7328,6 +7921,7 @@ fn plateau_generative_probe_observation(
             public_contract_deltas: candidate.public_contract_deltas,
             seed,
             cycle,
+            autonomous_swe_curriculum_proof,
             intrinsic_attempt_pending,
             observation: observation.clone(),
             receipt_sha256: String::new(),
@@ -13294,6 +13888,64 @@ mod tests {
             max_candidates: 1_024,
             provenance: vec!["PUBLIC_CONTRACT_DELTA".to_string()],
         }
+    }
+
+    #[test]
+    fn autonomous_swe_curriculum_lowers_to_fresh_source_and_hidden_cases() {
+        let root = temp_root("autonomous-swe-curriculum");
+        let (config_path, config) = test_config(&root);
+        let goal = typed_behavior_goal_fixture("autonomous-swe-addition");
+        let canary = crate::integrated_development::execute_typed_behavior_goal_canary(
+            &"a".repeat(64),
+            &goal,
+        )
+        .unwrap();
+        let synthesis = canary.typed_mechanism_synthesis_receipt.unwrap();
+        let operator =
+            typed_mechanism_improvement_operator_from_receipt(&synthesis, canary.receipt_sha256)
+                .unwrap();
+        let candidate = PlateauCuriosityCandidate {
+            hypothesis: IntrinsicCuriosityHypothesis {
+                hypothesis_id: "b".repeat(64),
+                lesson_ids: vec!["producer".to_string(), "consumer".to_string()],
+                signal_diversity: 3,
+                executable_goal_count: 1,
+                structural_novelty: 5,
+                prediction_uncertainty: 10,
+                expected_information_gain: 90,
+                predicted_cost_units: 10,
+            },
+            input: GenerativeInput {
+                source_lesson_id: "AUTONOMOUS-SWE-CURRICULUM-TEST".to_string(),
+                diagnostic_signals: vec!["SOURCE_BOUND_TRANSFER".to_string()],
+                observed_composition_roles: vec!["COMPOSE".to_string(), "VERIFY".to_string()],
+                learning_score: 100,
+                verification_evidence_count: 2,
+                measured_performance_gain: false,
+                typed_behavior_goals: vec![goal],
+                typed_behavior_operator_proposals: vec![operator],
+                executable_performance_operators: Vec::new(),
+            },
+            public_contract_deltas: Vec::new(),
+        };
+        let mut state = initialize(&config_path).unwrap();
+        state.generation = 7;
+        let proof = run_autonomous_swe_curriculum_probe(&config, &state, &candidate)
+            .unwrap()
+            .unwrap();
+        validate_autonomous_swe_curriculum_proof(&proof).unwrap();
+        assert_eq!(proof.hidden_cases, AUTONOMOUS_SWE_CURRICULUM_HIDDEN_CASES);
+        assert!(proof.patch_variants_attempted > 0);
+        assert_eq!(proof.codex_calls, 0);
+        assert_eq!(proof.external_llm_calls, 0);
+        assert_eq!(proof.network_reads, 0);
+        assert_eq!(proof.network_writes, 0);
+        assert!(!config
+            .state_dir
+            .join("coding_curriculum_sandboxes")
+            .join(proof.challenge_id)
+            .exists());
+        fs::remove_dir_all(root).unwrap();
     }
 
     fn boolean_gate_goal_fixture(goal_id: &str) -> TypedMechanismSynthesisGoalIR {
