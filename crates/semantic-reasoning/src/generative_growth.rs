@@ -34,14 +34,18 @@ use crate::sem25_engine::{run_growth_probe, GrowthProbeRequest};
 use crate::sem5::typed_mechanism::{
     validate_typed_mechanism_improvement_operator, validate_typed_mechanism_synthesis_receipt,
     TypedMechanismImprovementOperatorIR, TypedMechanismSynthesisGoalIR,
-    TypedMechanismSynthesisReceiptIR,
+    TypedMechanismSynthesisReceiptIR, MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
 };
 
 pub const GENERATIVE_GROWTH_SCHEMA: &str = "B_CORE_GENERATIVE_GROWTH_1";
 const MAX_REUSABLE_COMPOSITIONS: usize = 64;
 const MAX_COMPOSITION_TRIALS: usize = 256;
 const MAX_VERIFIED_ARTIFACTS_PER_CYCLE: usize = 32;
-const MAX_SEM5_VERIFIED_ARTIFACTS: u64 = 64;
+// Every independently verified SEM-5 program may become one authorized typed
+// improvement operator. Keep both repositories under the same bounded
+// authority contract; a smaller unrelated artifact ceiling would strand
+// executable operator candidates before the authority store is full.
+const MAX_SEM5_VERIFIED_ARTIFACTS: u64 = MAX_ACTIVE_TYPED_MECHANISM_OPERATORS as u64;
 const MAX_IMPROVEMENT_OPERATOR_SELECTORS: usize = 25;
 // The 5 x 5 canary product lowers to 20 distinct generalized operator
 // identities because normalized edit/postcondition contracts intentionally
@@ -2759,6 +2763,64 @@ mod tests {
         assert_eq!(legacy_text_only.distinct_verified_artifact_count(), 0);
         assert!(executable_generative_substrate_available(&legacy_text_only));
         assert!(run_generative_cycle(&legacy_text_only, &input(), 11).is_ok());
+    }
+
+    #[test]
+    fn sem5_program_capacity_tracks_the_authorized_typed_operator_store() {
+        assert_eq!(
+            MAX_SEM5_VERIFIED_ARTIFACTS,
+            MAX_ACTIVE_TYPED_MECHANISM_OPERATORS as u64
+        );
+        let execution_plan = GenerativeExecutionPlanIR {
+            predictor: GENERATIVE_PREDICTORS[0],
+            composer: GenerativeComposerIR::Sem5Program,
+            verifier: GENERATIVE_VERIFIERS[0],
+        };
+        let historical_artifacts = 64_u64;
+        let mut artifact_ids = Vec::new();
+        let mut contexts = BTreeMap::new();
+        let mut goals = BTreeMap::new();
+        for ordinal in 0..historical_artifacts {
+            let artifact = sha256(format!("historical-sem5-{ordinal}").as_bytes());
+            let mut goal = executable_goal();
+            goal.goal_id = format!("historical_sem5_goal_{ordinal}");
+            contexts.insert(
+                artifact.clone(),
+                sha256(format!("historical-context-{ordinal}").as_bytes()),
+            );
+            goals.insert(artifact.clone(), goal);
+            artifact_ids.push(artifact);
+        }
+        let memory = GenerativeGrowthMemory {
+            accepted_compositions: vec![ReusableCompositionMemory {
+                composition: candidate_composition(execution_plan),
+                execution_plan: Some(execution_plan),
+                trigger_signals: Vec::new(),
+                source_lesson_ids: Vec::new(),
+                predicted_value: 100,
+                observed_value: 100,
+                reuse_count: 0,
+                context_use_counts: BTreeMap::new(),
+                successful_uses: 1,
+                observed_value_total: 100,
+                verified_artifact_sha256s: artifact_ids,
+                verified_artifact_contexts: contexts,
+                verified_typed_behavior_goals: goals,
+                verified_typed_mechanism_receipts: BTreeMap::new(),
+            }],
+            ..GenerativeGrowthMemory::default()
+        };
+        assert_eq!(
+            distinct_verified_artifact_count_for_composer(
+                &memory,
+                GenerativeComposerIR::Sem5Program
+            ),
+            historical_artifacts
+        );
+        assert!(executable_generative_substrate_available(&memory));
+        let next = run_generative_cycle(&memory, &input(), 71).unwrap();
+        assert!(next.behavioral_composition_executed);
+        assert!(next.novel_verified_artifact);
     }
 
     #[test]
