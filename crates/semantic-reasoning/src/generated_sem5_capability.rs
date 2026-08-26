@@ -5,10 +5,10 @@ use std::collections::BTreeMap;
 
 pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
 pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 4;
-pub const GENERATED_PROGRAM_ID: &str = "P-T-003-46657ac5-FirstPrinciplesD";
+pub const GENERATED_PROGRAM_ID: &str = "P-plateau_typed_contract_transport-FirstPrinciplesD";
 pub const GENERATED_PROGRAM_IR_SHA256: &str =
-    "0815a71cd0f718cafb7582572e9eeac88e25df692e96c01f7c6473c59bf436fc";
-pub const GENERATED_CAPABILITY_COUNT: usize = 62;
+    "09ea2e1e6745ca9b4c86b15eaa7fb8d370f8ff59510d64369ce9bb4d82ae27ef";
+pub const GENERATED_CAPABILITY_COUNT: usize = 64;
 
 // B_CORE_CAPABILITY_BEGIN:dda8fe9adfe0e2c09c4a0e47496e5ea51dbf929863626df3e0d6cda87b449717
 mod capability_dda8fe9adfe0e2c0 {
@@ -2934,6 +2934,87 @@ mod capability_0815a71cd0f718ca {
 }
 // B_CORE_CAPABILITY_END:0815a71cd0f718cafb7582572e9eeac88e25df692e96c01f7c6473c59bf436fc
 
+// B_CORE_CAPABILITY_BEGIN:e9f57ed266578e776ec9d7e9b67208e14656a2f05ea02e7b2019e8e7f0a7c862
+mod capability_e9f57ed266578e77 {
+    #![allow(dead_code, unused_imports, unused_parens, unused_variables)]
+
+    use crate::sem5::model::{ImageValue, Value};
+    use std::collections::BTreeMap;
+
+    #[derive(Clone, Debug)]
+    struct Sem5Image {
+        width: usize,
+        height: usize,
+        channels: usize,
+        pixels: Vec<i64>,
+    }
+
+    pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
+    pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 26;
+    pub const GENERATED_PROGRAM_ID: &str =
+        "P-conditional_typed_string_transport_with_literal_fallback-FirstPrinciplesD";
+    pub const GENERATED_PROGRAM_IR_SHA256: &str =
+        "e9f57ed266578e776ec9d7e9b67208e14656a2f05ea02e7b2019e8e7f0a7c862";
+
+    pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
+        let condition: bool = match inputs.get("condition") {
+            Some(Value::Bool(value)) => *value,
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:condition".to_string()),
+        };
+        let typed_value: String = match inputs.get("typed_value") {
+            Some(Value::String(value)) => value.clone(),
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:typed_value".to_string()),
+        };
+        let sem5_result: String = if condition {
+            typed_value
+        } else {
+            "".to_string()
+        };
+        Ok(Value::String(sem5_result))
+    }
+}
+// B_CORE_CAPABILITY_END:e9f57ed266578e776ec9d7e9b67208e14656a2f05ea02e7b2019e8e7f0a7c862
+
+// B_CORE_CAPABILITY_BEGIN:09ea2e1e6745ca9b4c86b15eaa7fb8d370f8ff59510d64369ce9bb4d82ae27ef
+mod capability_09ea2e1e6745ca9b {
+    #![allow(dead_code, unused_imports, unused_parens, unused_variables)]
+
+    use crate::sem5::model::{ImageValue, Value};
+    use std::collections::BTreeMap;
+
+    #[derive(Clone, Debug)]
+    struct Sem5Image {
+        width: usize,
+        height: usize,
+        channels: usize,
+        pixels: Vec<i64>,
+    }
+
+    pub const GENERATED_CAPABILITY_ACTIVE: bool = true;
+    pub const GENERATED_SOURCE_SCHEMA_REVISION: u64 = 26;
+    pub const GENERATED_PROGRAM_ID: &str = "P-plateau_typed_contract_transport-FirstPrinciplesD";
+    pub const GENERATED_PROGRAM_IR_SHA256: &str =
+        "09ea2e1e6745ca9b4c86b15eaa7fb8d370f8ff59510d64369ce9bb4d82ae27ef";
+
+    pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
+        let frontier_advance: bool = match inputs.get("frontier_advance") {
+            Some(Value::Bool(value)) => *value,
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:frontier_advance".to_string()),
+        };
+        let typed_contract: String = match inputs.get("typed_contract") {
+            Some(Value::String(value)) => value.clone(),
+            _ => return Err("GENERATED_CAPABILITY_INPUT_TYPE:typed_contract".to_string()),
+        };
+        let sem5_result: String = if frontier_advance {
+            typed_contract
+        } else {
+            "".to_string()
+        };
+        Ok(Value::String(sem5_result))
+    }
+}
+// B_CORE_CAPABILITY_END:09ea2e1e6745ca9b4c86b15eaa7fb8d370f8ff59510d64369ce9bb4d82ae27ef
+
 pub fn generated_capability_hashes() -> &'static [&'static str] {
     &[
         "dda8fe9adfe0e2c09c4a0e47496e5ea51dbf929863626df3e0d6cda87b449717",
@@ -2998,11 +3079,13 @@ pub fn generated_capability_hashes() -> &'static [&'static str] {
         "13813b318fdb898dfc51e90f671d0d8774f7886d883e8567adece44e860ddd47",
         "0d85347ab8f6d5a8ca6614ee52d7d77c38b3096465c64d9b9f24d750b9dc0e56",
         "0815a71cd0f718cafb7582572e9eeac88e25df692e96c01f7c6473c59bf436fc",
+        "e9f57ed266578e776ec9d7e9b67208e14656a2f05ea02e7b2019e8e7f0a7c862",
+        "09ea2e1e6745ca9b4c86b15eaa7fb8d370f8ff59510d64369ce9bb4d82ae27ef",
     ]
 }
 
 pub fn run_generated_capability(inputs: &BTreeMap<String, Value>) -> Result<Value, String> {
-    capability_0815a71cd0f718ca::run_generated_capability(inputs)
+    capability_09ea2e1e6745ca9b::run_generated_capability(inputs)
 }
 
 pub fn run_generated_capability_by_sha256(
@@ -3195,6 +3278,12 @@ pub fn run_generated_capability_by_sha256(
         }
         "0815a71cd0f718cafb7582572e9eeac88e25df692e96c01f7c6473c59bf436fc" => {
             capability_0815a71cd0f718ca::run_generated_capability(inputs)
+        }
+        "e9f57ed266578e776ec9d7e9b67208e14656a2f05ea02e7b2019e8e7f0a7c862" => {
+            capability_e9f57ed266578e77::run_generated_capability(inputs)
+        }
+        "09ea2e1e6745ca9b4c86b15eaa7fb8d370f8ff59510d64369ce9bb4d82ae27ef" => {
+            capability_09ea2e1e6745ca9b::run_generated_capability(inputs)
         }
         _ => Err("GENERATED_CAPABILITY_NOT_FOUND".to_string()),
     }

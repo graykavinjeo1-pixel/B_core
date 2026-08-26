@@ -417,7 +417,7 @@ pub fn persist_authorized_typed_mechanism_operator(
         operator_sha256,
         repair_id: evidence.repair_id.clone(),
         repair_receipt_sha256: evidence.repair_receipt_sha256.clone(),
-        sandbox_output_sha256: operator.evidence_sha256.clone(),
+        sandbox_output_sha256: operator.evidence_sha256,
         candidate_sha256: evidence.candidate_sha256.clone(),
         sandbox_verified: evidence.sandbox_verified,
         sandbox_cleaned: evidence.sandbox_cleaned,
