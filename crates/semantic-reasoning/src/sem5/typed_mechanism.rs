@@ -1135,6 +1135,113 @@ fn typed_operator_probe_value(
     }
 }
 
+fn typed_expression_references_role(
+    expression: &TypedSyntaxExpressionIR,
+    expected_role: &str,
+) -> bool {
+    match expression {
+        TypedSyntaxExpressionIR::Operand { role } => role == expected_role,
+        TypedSyntaxExpressionIR::IntLiteral { .. }
+        | TypedSyntaxExpressionIR::BoolLiteral { .. }
+        | TypedSyntaxExpressionIR::StringLiteral { .. } => false,
+        TypedSyntaxExpressionIR::Unary { input, .. }
+        | TypedSyntaxExpressionIR::StringTransform { input, .. }
+        | TypedSyntaxExpressionIR::Length { input } => {
+            typed_expression_references_role(input, expected_role)
+        }
+        TypedSyntaxExpressionIR::Binary { left, right, .. } => {
+            typed_expression_references_role(left, expected_role)
+                || typed_expression_references_role(right, expected_role)
+        }
+        TypedSyntaxExpressionIR::Index { collection, index } => {
+            typed_expression_references_role(collection, expected_role)
+                || typed_expression_references_role(index, expected_role)
+        }
+        TypedSyntaxExpressionIR::Call { arguments, .. } => arguments
+            .iter()
+            .any(|argument| typed_expression_references_role(argument, expected_role)),
+    }
+}
+
+fn typed_operator_operand_is_structurally_referenced(
+    operator: &TypedMechanismImprovementOperatorIR,
+    operand_index: usize,
+) -> bool {
+    let role = format!("ARG_{operand_index}");
+    operator
+        .condition
+        .iter()
+        .chain(std::iter::once(&operator.postimage))
+        .chain(operator.otherwise.iter())
+        .any(|expression| typed_expression_references_role(expression, &role))
+}
+
+fn typed_probe_counterfactuals(value: &Value) -> Vec<Value> {
+    match value {
+        Value::Int(value) => vec![
+            Value::Int(value.saturating_add(1)),
+            Value::Int(value.saturating_sub(1)),
+            Value::Int(0),
+        ],
+        Value::Bool(value) => vec![Value::Bool(!value)],
+        Value::String(value) => vec![
+            Value::String(if value.is_empty() {
+                "causal_probe".to_string()
+            } else {
+                String::new()
+            }),
+            Value::String(format!("{value}#causal_probe")),
+        ],
+        _ => Vec::new(),
+    }
+}
+
+/// Requires more than type compatibility before one authorized operator may
+/// feed another. The selected consumer operand must occur in executable
+/// syntax and changing only that operand must change at least one bounded
+/// public outcome. This keeps semantically dead wires from consuming the
+/// finite composition frontier or creating observationally ambiguous source
+/// synthesis tasks.
+fn typed_operator_operand_has_observed_influence(
+    operator: &TypedMechanismImprovementOperatorIR,
+    operand_index: usize,
+) -> Result<bool, String> {
+    if !typed_operator_operand_is_structurally_referenced(operator, operand_index) {
+        return Ok(false);
+    }
+    for case in 0..MAX_IDENTIFIABILITY_PROBES {
+        let Some(arguments) = operator
+            .operand_types
+            .iter()
+            .enumerate()
+            .map(|(index, value_type)| typed_operator_probe_value(value_type, case, index))
+            .collect::<Option<Vec<_>>>()
+        else {
+            return Ok(false);
+        };
+        let baseline = match evaluate_typed_operator(operator, &arguments) {
+            Ok(value) => value,
+            Err(_) => continue,
+        };
+        let Some(selected) = arguments.get(operand_index) else {
+            return Ok(false);
+        };
+        for counterfactual in typed_probe_counterfactuals(selected) {
+            if counterfactual == *selected {
+                continue;
+            }
+            let mut counterfactual_arguments = arguments.clone();
+            counterfactual_arguments[operand_index] = counterfactual;
+            if let Ok(output) = evaluate_typed_operator(operator, &counterfactual_arguments) {
+                if output != baseline {
+                    return Ok(true);
+                }
+            }
+        }
+    }
+    Ok(false)
+}
+
 /// Produces fresh, name-independent observations from an already validated
 /// typed operator.  Callers use a disjoint case range from the public
 /// examples so source lowering can be falsified without exposing those
@@ -1173,17 +1280,17 @@ pub fn typed_mechanism_operator_probe_observations(
     Ok(observations)
 }
 
-fn composed_operator_goal(
+fn composed_operator_goal_from_validated(
     producer: &TypedMechanismImprovementOperatorIR,
     consumer: &TypedMechanismImprovementOperatorIR,
     wire_index: usize,
+    consumer_operand_influential: bool,
 ) -> Result<Option<TypedMechanismOperatorCompositionIR>, String> {
-    validate_typed_mechanism_improvement_operator(producer)?;
-    validate_typed_mechanism_improvement_operator(consumer)?;
     if producer.operator_id == consumer.operator_id
         || producer.condition.is_some()
         || producer.otherwise.is_some()
         || consumer.operand_types.get(wire_index) != Some(&producer.output_type)
+        || !consumer_operand_influential
     {
         return Ok(None);
     }
@@ -1402,11 +1509,32 @@ pub fn compose_authorized_typed_operator_programs(
     operators: &[TypedMechanismImprovementOperatorIR],
     limit: usize,
 ) -> Result<Vec<TypedMechanismOperatorCompositionIR>, String> {
+    for operator in operators {
+        validate_typed_mechanism_improvement_operator(operator)?;
+    }
+    let mut consumer_influence = BTreeMap::new();
+    for consumer in operators {
+        for wire_index in 0..consumer.operand_types.len() {
+            consumer_influence.insert(
+                (consumer.operator_id.as_str(), wire_index),
+                typed_operator_operand_has_observed_influence(consumer, wire_index)?,
+            );
+        }
+    }
     let mut goals = BTreeMap::new();
     for producer in operators {
         for consumer in operators {
             for wire_index in 0..consumer.operand_types.len() {
-                if let Some(composition) = composed_operator_goal(producer, consumer, wire_index)? {
+                let consumer_operand_influential = consumer_influence
+                    .get(&(consumer.operator_id.as_str(), wire_index))
+                    .copied()
+                    .unwrap_or(false);
+                if let Some(composition) = composed_operator_goal_from_validated(
+                    producer,
+                    consumer,
+                    wire_index,
+                    consumer_operand_influential,
+                )? {
                     goals
                         .entry(composition.goal.goal_id.clone())
                         .or_insert(composition);
@@ -4613,6 +4741,92 @@ mod tests {
         assert!(compose_authorized_typed_operator_goals(&[addition], 8)
             .unwrap()
             .is_empty());
+    }
+
+    #[test]
+    fn operator_composition_rejects_structurally_dead_and_behaviorally_masked_wires() {
+        fn seal(
+            mut operator: TypedMechanismImprovementOperatorIR,
+        ) -> TypedMechanismImprovementOperatorIR {
+            operator.operator_id.clear();
+            let mut identity = operator.clone();
+            identity.evidence_sha256.clear();
+            operator.operator_id = sha256(&serde_json::to_vec(&identity).unwrap());
+            validate_typed_mechanism_improvement_operator(&operator).unwrap();
+            operator
+        }
+
+        let validation_contract = vec![
+            "PUBLIC_OBSERVATION_REPLAY".to_string(),
+            "TYPE_EFFECT_CHECK".to_string(),
+            "SOURCE_BOUND_ATOMIC_MATERIALIZATION".to_string(),
+            "SANDBOX_PUBLIC_REGRESSION".to_string(),
+            "AUTHORITATIVE_SCOPE_STABLE".to_string(),
+        ];
+        let producer = seal(TypedMechanismImprovementOperatorIR {
+            schema: "B_CORE_TYPED_MECHANISM_IMPROVEMENT_OPERATOR_1".to_string(),
+            operator_id: String::new(),
+            operand_types: vec![ProgramType::Int],
+            output_type: ProgramType::Int,
+            condition: None,
+            postimage: role("ARG_0"),
+            otherwise: None,
+            validation_contract: validation_contract.clone(),
+            evidence_sha256: "a".repeat(64),
+        });
+        let dead_consumer = seal(TypedMechanismImprovementOperatorIR {
+            schema: "B_CORE_TYPED_MECHANISM_IMPROVEMENT_OPERATOR_1".to_string(),
+            operator_id: String::new(),
+            operand_types: vec![ProgramType::Int, ProgramType::Int],
+            output_type: ProgramType::Int,
+            condition: None,
+            postimage: role("ARG_0"),
+            otherwise: None,
+            validation_contract: validation_contract.clone(),
+            evidence_sha256: "b".repeat(64),
+        });
+        assert!(typed_operator_operand_has_observed_influence(&dead_consumer, 0).unwrap());
+        assert!(!typed_operator_operand_is_structurally_referenced(
+            &dead_consumer,
+            1
+        ));
+        assert!(!typed_operator_operand_has_observed_influence(&dead_consumer, 1).unwrap());
+        assert!(
+            composed_operator_goal_from_validated(&producer, &dead_consumer, 0, true)
+                .unwrap()
+                .is_some()
+        );
+        assert!(
+            composed_operator_goal_from_validated(&producer, &dead_consumer, 1, false)
+                .unwrap()
+                .is_none()
+        );
+
+        let masked_consumer = seal(TypedMechanismImprovementOperatorIR {
+            schema: "B_CORE_TYPED_MECHANISM_IMPROVEMENT_OPERATOR_1".to_string(),
+            operator_id: String::new(),
+            operand_types: vec![ProgramType::Int],
+            output_type: ProgramType::Int,
+            condition: None,
+            postimage: TypedSyntaxExpressionIR::Binary {
+                operator: BinaryOperator::Subtract,
+                left: Box::new(role("ARG_0")),
+                right: Box::new(role("ARG_0")),
+            },
+            otherwise: None,
+            validation_contract,
+            evidence_sha256: "c".repeat(64),
+        });
+        assert!(typed_operator_operand_is_structurally_referenced(
+            &masked_consumer,
+            0
+        ));
+        assert!(!typed_operator_operand_has_observed_influence(&masked_consumer, 0).unwrap());
+        assert!(
+            composed_operator_goal_from_validated(&producer, &masked_consumer, 0, false)
+                .unwrap()
+                .is_none()
+        );
     }
 
     #[test]
