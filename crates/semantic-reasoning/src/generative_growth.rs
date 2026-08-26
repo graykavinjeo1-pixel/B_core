@@ -18,7 +18,8 @@ use crate::autonomous_source_mutation::{
 };
 use crate::fullstack_ops_knowledge::{execute_fullstack_recipe_behavioral_canary, promoted_bundle};
 use crate::integrated_development::{
-    execute_behavioral_composition_canary, execute_typed_behavior_goal_canary,
+    execute_behavioral_composition_canary,
+    execute_typed_behavior_goal_canary_with_operator_proposals,
 };
 use crate::self_healing_pipeline::{
     execute_self_healing_behavioral_canary, validate_composition_lesson, CompositionEdgeIR,
@@ -31,7 +32,8 @@ use crate::sem23_engine::{
 };
 use crate::sem25_engine::{run_growth_probe, GrowthProbeRequest};
 use crate::sem5::typed_mechanism::{
-    validate_typed_mechanism_synthesis_receipt, TypedMechanismSynthesisGoalIR,
+    validate_typed_mechanism_improvement_operator, validate_typed_mechanism_synthesis_receipt,
+    TypedMechanismImprovementOperatorIR, TypedMechanismSynthesisGoalIR,
     TypedMechanismSynthesisReceiptIR,
 };
 
@@ -167,6 +169,10 @@ pub struct GenerativeInput {
     pub measured_performance_gain: bool,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub typed_behavior_goals: Vec<TypedMechanismSynthesisGoalIR>,
+    /// Executable proposals derived from already-authorized operators. The
+    /// public goals and independent verifier remain the acceptance authority.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub typed_behavior_operator_proposals: Vec<TypedMechanismImprovementOperatorIR>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub executable_performance_operators: Vec<ImprovementOperatorIR>,
 }
@@ -632,9 +638,17 @@ fn context_sha256(input: &GenerativeInput) -> String {
         .into_iter()
         .collect::<Vec<_>>()
         .join(":");
+    let typed_operator_proposal_ids = input
+        .typed_behavior_operator_proposals
+        .iter()
+        .map(|operator| operator.operator_id.as_str())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect::<Vec<_>>()
+        .join(":");
     sha256(
         format!(
-            "signals={signals}|roles={roles}|goals={goal_hashes}|performance_operators={performance_operator_ids}|measured_gain={}",
+            "signals={signals}|roles={roles}|goals={goal_hashes}|typed_operator_proposals={typed_operator_proposal_ids}|performance_operators={performance_operator_ids}|measured_gain={}",
             input.measured_performance_gain,
         )
         .as_bytes(),
@@ -985,7 +999,11 @@ fn execute_composer(
                         )
                         .as_bytes(),
                     );
-                    let receipt = execute_typed_behavior_goal_canary(&artifact_context, goal)?;
+                    let receipt = execute_typed_behavior_goal_canary_with_operator_proposals(
+                        &artifact_context,
+                        goal,
+                        &input.typed_behavior_operator_proposals,
+                    )?;
                     if receipt.cases_executed == 0 || receipt.cases_passed != receipt.cases_executed
                     {
                         return Err("TYPED_BEHAVIOR_GOAL_CANARY_INCOMPLETE".to_string());
@@ -1725,6 +1743,24 @@ pub fn run_generative_cycle(
     if memory.schema != GENERATIVE_GROWTH_SCHEMA || input.source_lesson_id.is_empty() {
         return Err("GENERATIVE_INPUT_OR_MEMORY_INVALID".to_string());
     }
+    if input.typed_behavior_operator_proposals.len() > MAX_VERIFIED_ARTIFACTS_PER_CYCLE {
+        return Err("GENERATIVE_TYPED_OPERATOR_PROPOSAL_BOUND".to_string());
+    }
+    let mut proposal_ids = BTreeSet::new();
+    for proposal in &input.typed_behavior_operator_proposals {
+        validate_typed_mechanism_improvement_operator(proposal)?;
+        let compatible_goal = input.typed_behavior_goals.iter().any(|goal| {
+            goal.output_type == proposal.output_type
+                && goal
+                    .operands
+                    .iter()
+                    .map(|operand| &operand.value_type)
+                    .eq(proposal.operand_types.iter())
+        });
+        if !proposal_ids.insert(proposal.operator_id.as_str()) || !compatible_goal {
+            return Err("GENERATIVE_TYPED_OPERATOR_PROPOSAL_UNBOUND".to_string());
+        }
+    }
     // Verification is not an optimization arm. Every candidate must pass the
     // same independent verifier and the evaluator mutation audit is already a
     // mandatory check inside that boundary. Treating both as selectable
@@ -2383,8 +2419,113 @@ mod tests {
             verification_evidence_count: 1,
             measured_performance_gain: false,
             typed_behavior_goals: vec![executable_goal()],
+            typed_behavior_operator_proposals: Vec::new(),
             executable_performance_operators: Vec::new(),
         }
+    }
+
+    #[test]
+    fn derived_operator_proposal_executes_and_promotes_through_the_normal_frontier() {
+        use crate::sem5::model::{DataSplit, Effect, ProgramType, Value};
+        use crate::sem5::typed_mechanism::{
+            compose_authorized_typed_operator_programs, synthesize_typed_mechanism_goal,
+            typed_mechanism_improvement_operator_from_receipt, SourceOperandIR,
+            TypedMechanismObservationIR, TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA,
+        };
+
+        let operator = |goal_id: &str, samples: &[(i64, i64, i64)], evidence: char| {
+            let request = TypedMechanismSynthesisGoalIR {
+                schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+                goal_id: goal_id.to_string(),
+                split: DataSplit::FreshBlind,
+                operands: vec![
+                    SourceOperandIR {
+                        role: "left".to_string(),
+                        source: "input.left".to_string(),
+                        value_type: ProgramType::Int,
+                    },
+                    SourceOperandIR {
+                        role: "right".to_string(),
+                        source: "input.right".to_string(),
+                        value_type: ProgramType::Int,
+                    },
+                ],
+                output_type: ProgramType::Int,
+                definitions: Vec::new(),
+                allowed_effects: vec![Effect::Pure],
+                preconditions: Vec::new(),
+                postconditions: Vec::new(),
+                invariants: Vec::new(),
+                public_observations: samples
+                    .iter()
+                    .map(|(left, right, expected)| TypedMechanismObservationIR {
+                        operands: BTreeMap::from([
+                            ("left".to_string(), Value::Int(*left)),
+                            ("right".to_string(), Value::Int(*right)),
+                        ]),
+                        expected_postimage: Value::Int(*expected),
+                    })
+                    .collect(),
+                require_conditional: false,
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+                provenance: vec!["AUTHORIZED_COMPONENT_TEST".to_string()],
+            };
+            let receipt = synthesize_typed_mechanism_goal(&request).unwrap();
+            typed_mechanism_improvement_operator_from_receipt(
+                &receipt,
+                evidence.to_string().repeat(64),
+            )
+            .unwrap()
+        };
+        let addition = operator("frontier-add", &[(2, 3, 5), (-4, 9, 5)], 'a');
+        let multiplication = operator("frontier-mul", &[(2, 3, 6), (-4, 2, -8)], 'b');
+        let program = compose_authorized_typed_operator_programs(
+            &[addition.clone(), multiplication.clone()],
+            8,
+        )
+        .unwrap()
+        .into_iter()
+        .find(|program| {
+            program.producer_operator_id == addition.operator_id
+                && program.consumer_operator_id == multiplication.operator_id
+        })
+        .unwrap();
+        let input = GenerativeInput {
+            source_lesson_id: "recursive-operator-frontier".to_string(),
+            diagnostic_signals: vec!["AUTONOMOUS_OPERATOR_RECURSIVE_COMPOSITION".to_string()],
+            observed_composition_roles: vec!["PREDICT".to_string(), "COMPOSE".to_string()],
+            learning_score: 100,
+            verification_evidence_count: 2,
+            measured_performance_gain: false,
+            typed_behavior_goals: vec![program.goal.clone()],
+            typed_behavior_operator_proposals: vec![program.operator_proposal.clone()],
+            executable_performance_operators: Vec::new(),
+        };
+        let cycle = run_generative_cycle(&GenerativeGrowthMemory::default(), &input, 27).unwrap();
+        assert!(cycle.frontier_advance);
+        let synthesis = cycle
+            .behavioral_execution_receipt
+            .as_ref()
+            .unwrap()
+            .verified_artifacts[0]
+            .typed_mechanism_synthesis_receipt
+            .as_ref()
+            .unwrap();
+        assert_eq!(
+            synthesis.selected_operator_id.as_deref(),
+            Some(program.operator_proposal.operator_id.as_str())
+        );
+        let promoted =
+            promote_generative_cycle(&GenerativeGrowthMemory::default(), &input, &cycle).unwrap();
+        assert_eq!(promoted.frontier_advance_events, 1);
+
+        let mut unbound = input;
+        unbound.typed_behavior_goals[0].output_type = ProgramType::Bool;
+        assert_eq!(
+            run_generative_cycle(&GenerativeGrowthMemory::default(), &unbound, 28),
+            Err("GENERATIVE_TYPED_OPERATOR_PROPOSAL_UNBOUND".to_string())
+        );
     }
 
     #[test]

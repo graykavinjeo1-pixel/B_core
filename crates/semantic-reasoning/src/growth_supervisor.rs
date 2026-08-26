@@ -60,8 +60,8 @@ use crate::self_repair_contract::sha256;
 #[cfg(test)]
 use crate::sem5::typed_mechanism::select_bounded_typed_mechanism_operator_ids;
 use crate::sem5::typed_mechanism::{
-    load_authorized_typed_mechanism_operators, persist_authorized_typed_mechanism_operator,
-    typed_mechanism_improvement_operator_from_receipt,
+    compose_authorized_typed_operator_programs, load_authorized_typed_mechanism_operators,
+    persist_authorized_typed_mechanism_operator, typed_mechanism_improvement_operator_from_receipt,
     typed_mechanism_operator_authority_directory, typed_mechanism_operator_directory,
     validate_typed_mechanism_improvement_operator, validate_typed_mechanism_operator_authority,
     validate_typed_mechanism_synthesis_goal, TypedMechanismImprovementOperatorIR,
@@ -4991,22 +4991,23 @@ fn lesson_executable_goal_hashes(lesson: &LearnedCompositionLesson) -> Result<Ve
         .public_contract_deltas
         .iter()
         .flat_map(|delta| &delta.typed_behavior_goals)
-        .map(|goal| {
-            let mut executable_identity = goal.clone();
-            // These fields are useful explanation/provenance, but neither is
-            // consumed by the typed grammar evaluator. Changing prose or an
-            // identifier cannot create another learned capability.
-            executable_identity.goal_id.clear();
-            executable_identity.preconditions.clear();
-            executable_identity.postconditions.clear();
-            executable_identity.invariants.clear();
-            executable_identity.provenance.clear();
-            json_sha256(&executable_identity)
-        })
+        .map(typed_goal_executable_sha256)
         .collect::<Result<Vec<_>, _>>()?;
     executable_goal_hashes.sort();
     executable_goal_hashes.dedup();
     Ok(executable_goal_hashes)
+}
+
+fn typed_goal_executable_sha256(goal: &TypedMechanismSynthesisGoalIR) -> Result<String, String> {
+    let mut executable_identity = goal.clone();
+    // These fields are explanation/provenance, not evaluator inputs. A prose
+    // rewrite or identifier rename cannot create another capability.
+    executable_identity.goal_id.clear();
+    executable_identity.preconditions.clear();
+    executable_identity.postconditions.clear();
+    executable_identity.invariants.clear();
+    executable_identity.provenance.clear();
+    json_sha256(&executable_identity)
 }
 
 fn lesson_semantic_sha256(lesson: &LearnedCompositionLesson) -> Result<String, String> {
@@ -5678,6 +5679,7 @@ fn generative_input(lesson: &LearnedCompositionLesson) -> GenerativeInput {
             .flat_map(|delta| delta.typed_behavior_goals.iter().cloned())
             .take(MAX_TYPED_BEHAVIOR_GOALS_PER_GENERATIVE_INPUT)
             .collect(),
+        typed_behavior_operator_proposals: Vec::new(),
         executable_performance_operators: executable_performance_operators(lesson),
     }
 }
@@ -5780,6 +5782,7 @@ fn plateau_generative_input_from_lessons(
                     .any(PerformanceMetricEvidence::has_executable_knowledge)
             }),
             typed_behavior_goals,
+            typed_behavior_operator_proposals: Vec::new(),
             executable_performance_operators: {
                 let mut operators = BTreeMap::new();
                 for operator in lessons
@@ -5911,7 +5914,129 @@ struct PlateauCuriosityCandidate {
     public_contract_deltas: Vec<PublicContractDeltaIR>,
 }
 
+fn operator_composition_plateau_candidates(
+    config: &GrowthSupervisorConfig,
+    state: &SupervisorState,
+    memory: &GrowthMemory,
+    prediction_uncertainty: u16,
+) -> Result<Vec<PlateauCuriosityCandidate>, String> {
+    let authorized = load_authorized_typed_mechanism_operators(
+        &config.state_dir,
+        MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
+    )?;
+    if authorized.len() < 2 {
+        return Ok(Vec::new());
+    }
+    let authorized_ids = authorized
+        .iter()
+        .map(|operator| operator.operator_id.as_str())
+        .collect::<BTreeSet<_>>();
+    let mut retained_goal_hashes = BTreeSet::new();
+    for lesson in &memory.lessons {
+        retained_goal_hashes.extend(lesson_executable_goal_hashes(lesson)?);
+    }
+    let compositions = compose_authorized_typed_operator_programs(
+        &authorized,
+        MAX_INTRINSIC_CURIOSITY_HYPOTHESES / 2,
+    )?;
+    let mut candidates = Vec::new();
+    for composition in compositions {
+        if authorized_ids.contains(composition.operator_proposal.operator_id.as_str())
+            || retained_goal_hashes.contains(&typed_goal_executable_sha256(&composition.goal)?)
+        {
+            continue;
+        }
+        let mut delta = PublicContractDeltaIR {
+            schema: PUBLIC_CONTRACT_DELTA_SCHEMA.to_string(),
+            delta_id: format!(
+                "operator-composition-{}",
+                &sha256(composition.goal.goal_id.as_bytes())[..32]
+            ),
+            observed_behavior:
+                "authorized typed operators execute only as isolated component programs".to_string(),
+            expected_behavior:
+                "a type-compatible producer output feeds a consumer as one falsifiable ProgramIR"
+                    .to_string(),
+            target_symbols: vec![
+                "sem5::typed_mechanism::compose_authorized_typed_operator_programs".to_string(),
+            ],
+            typed_behavior_goals: vec![composition.goal.clone()],
+            provenance: vec![
+                format!(
+                    "AUTHORIZED_PRODUCER_OPERATOR:{}",
+                    composition.producer_operator_id
+                ),
+                format!(
+                    "AUTHORIZED_CONSUMER_OPERATOR:{}",
+                    composition.consumer_operator_id
+                ),
+                format!("TYPED_OPERATOR_WIRE_INDEX:{}", composition.wire_index),
+                "AUTONOMOUS_RECURSIVE_OPERATOR_COMPOSITION".to_string(),
+            ],
+        };
+        let contract_binding = format!(
+            "PUBLIC_CONTRACT_DELTA_SHA256:{}",
+            public_contract_delta_binding_sha256(&delta)?
+        );
+        let delta_id_binding = format!("PUBLIC_CONTRACT_DELTA_ID:{}", delta.delta_id);
+        for goal in &mut delta.typed_behavior_goals {
+            goal.provenance.push(delta_id_binding.clone());
+            goal.provenance.push(contract_binding.clone());
+            goal.provenance.sort();
+            goal.provenance.dedup();
+        }
+        validate_public_contract_deltas(std::slice::from_ref(&delta))?;
+        let goal = delta.typed_behavior_goals[0].clone();
+        let lesson_ids = vec![
+            composition.producer_operator_id.clone(),
+            composition.consumer_operator_id.clone(),
+        ];
+        let structural_novelty = goal.operands.len().saturating_add(3).min(100) as u16;
+        let hypothesis_id = sha256(
+            format!(
+                "INTRINSIC_OPERATOR_COMPOSITION_{PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION}:{}:{}:{}",
+                state.current_memory_sha256, goal.goal_id, composition.operator_proposal.operator_id
+            )
+            .as_bytes(),
+        );
+        candidates.push(PlateauCuriosityCandidate {
+            hypothesis: IntrinsicCuriosityHypothesis {
+                hypothesis_id,
+                lesson_ids,
+                signal_diversity: 4,
+                executable_goal_count: 1,
+                structural_novelty,
+                prediction_uncertainty,
+                expected_information_gain: 100,
+                predicted_cost_units: (10_u16).saturating_add(structural_novelty),
+            },
+            input: GenerativeInput {
+                source_lesson_id: format!("OPERATOR-COMPOSITION-{}", &goal.goal_id[..32]),
+                diagnostic_signals: vec![
+                    "AUTONOMOUS_OPERATOR_RECURSIVE_COMPOSITION".to_string(),
+                    "AUTHORIZED_TYPED_OPERATOR_GRAPH".to_string(),
+                    "BEHAVIORAL_COUNTEREXAMPLE_FALSIFICATION".to_string(),
+                ],
+                observed_composition_roles: vec![
+                    "PREDICT".to_string(),
+                    "COMPOSE".to_string(),
+                    "VERIFY".to_string(),
+                ],
+                learning_score: 100,
+                verification_evidence_count: 2,
+                measured_performance_gain: false,
+                typed_behavior_goals: vec![goal],
+                typed_behavior_operator_proposals: vec![composition.operator_proposal],
+                executable_performance_operators: Vec::new(),
+            },
+            public_contract_deltas: vec![delta],
+        });
+    }
+    Ok(candidates)
+}
+
 fn plateau_curiosity_candidates(
+    config: &GrowthSupervisorConfig,
     state: &SupervisorState,
     memory: &GrowthMemory,
 ) -> Result<Vec<PlateauCuriosityCandidate>, String> {
@@ -5923,15 +6048,28 @@ fn plateau_curiosity_candidates(
         .take(8)
         .collect::<Vec<_>>();
     recent_lessons.reverse();
-    if recent_lessons.len() < 2 {
-        return Ok(Vec::new());
-    }
-
     let prediction_uncertainty = state
         .generative_prediction_absolute_error_total
         .checked_div(state.generative_calibrated_prediction_records.max(1))
         .unwrap_or(0)
         .min(100) as u16;
+    let mut candidates =
+        operator_composition_plateau_candidates(config, state, memory, prediction_uncertainty)?;
+    if recent_lessons.len() < 2 {
+        candidates.sort_by(|left, right| {
+            state
+                .intrinsic_drive
+                .score(&right.hypothesis)
+                .cmp(&state.intrinsic_drive.score(&left.hypothesis))
+                .then_with(|| {
+                    left.hypothesis
+                        .hypothesis_id
+                        .cmp(&right.hypothesis.hypothesis_id)
+                })
+        });
+        candidates.truncate(MAX_INTRINSIC_CURIOSITY_HYPOTHESES);
+        return Ok(candidates);
+    }
     let mut lesson_groups = Vec::new();
     for first in 0..recent_lessons.len() {
         for second in first + 1..recent_lessons.len() {
@@ -5945,7 +6083,6 @@ fn plateau_curiosity_candidates(
             }
         }
     }
-    let mut candidates = Vec::new();
     for lessons in lesson_groups {
         let Some((input, public_contract_deltas)) =
             plateau_generative_input_from_lessons(&lessons)?
@@ -6915,7 +7052,7 @@ fn plateau_generative_probe_observation(
     if !executable_generative_substrate_available(&memory.generative) {
         return Ok(None);
     }
-    let candidates = plateau_curiosity_candidates(state, memory)?;
+    let candidates = plateau_curiosity_candidates(config, state, memory)?;
     if candidates.is_empty() {
         return Ok(None);
     }
@@ -13293,6 +13430,7 @@ mod tests {
             verification_evidence_count: 1,
             measured_performance_gain: false,
             typed_behavior_goals: vec![typed_behavior_goal_fixture("frontier-continuation-goal")],
+            typed_behavior_operator_proposals: Vec::new(),
             executable_performance_operators: Vec::new(),
         };
         let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input, 17).unwrap();
@@ -14439,6 +14577,7 @@ mod tests {
                 typed_behavior_goals: vec![typed_behavior_goal_fixture(&format!(
                     "pending-install-goal-{ordinal}"
                 ))],
+                typed_behavior_operator_proposals: Vec::new(),
                 executable_performance_operators: Vec::new(),
             };
             let result = run_generative_cycle(&GenerativeGrowthMemory::default(), &input, ordinal)
@@ -14896,7 +15035,7 @@ mod tests {
     #[test]
     fn intrinsic_curiosity_enumerates_multiple_bounded_executable_hypotheses() {
         let root = temp_root("intrinsic-curiosity-hypotheses");
-        let (config_path, _) = test_config(&root);
+        let (config_path, config) = test_config(&root);
         let state = initialize(&config_path).unwrap();
         let delta = public_contract_delta_fixture();
         let lesson = |id: &str, role: &str| LearnedCompositionLesson {
@@ -14929,7 +15068,7 @@ mod tests {
             generative: GenerativeGrowthMemory::default(),
         };
 
-        let candidates = plateau_curiosity_candidates(&state, &memory).unwrap();
+        let candidates = plateau_curiosity_candidates(&config, &state, &memory).unwrap();
         assert_eq!(candidates.len(), 10);
         assert_eq!(
             candidates

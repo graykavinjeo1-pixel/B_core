@@ -184,6 +184,20 @@ pub struct TypedMechanismImprovementOperatorIR {
     pub evidence_sha256: String,
 }
 
+/// A derived operator graph proposal and the public behavior contract that
+/// independently falsifies it. Component authority permits exploration only;
+/// the derived operator must still pass the normal verifier and promotion
+/// boundary before it can enter the authorized repository.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct TypedMechanismOperatorCompositionIR {
+    pub schema: String,
+    pub goal: TypedMechanismSynthesisGoalIR,
+    pub operator_proposal: TypedMechanismImprovementOperatorIR,
+    pub producer_operator_id: String,
+    pub consumer_operator_id: String,
+    pub wire_index: usize,
+}
+
 /// Immutable execution authority for a reusable typed expression operator.
 /// The historical directory names remain stable, but the operator itself is
 /// language-neutral and may be consumed by both Python and Rust source
@@ -992,6 +1006,392 @@ pub fn validate_typed_mechanism_improvement_operator(
         return Err("TYPED_MECHANISM_IMPROVEMENT_OPERATOR_ID_MISMATCH".to_string());
     }
     Ok(())
+}
+
+fn substitute_operator_expression(
+    expression: &TypedSyntaxExpressionIR,
+    bindings: &BTreeMap<String, TypedSyntaxExpressionIR>,
+) -> Result<TypedSyntaxExpressionIR, String> {
+    Ok(match expression {
+        TypedSyntaxExpressionIR::Operand { role } => bindings
+            .get(role)
+            .cloned()
+            .ok_or_else(|| format!("TYPED_OPERATOR_COMPOSITION_ROLE_MISSING:{role}"))?,
+        TypedSyntaxExpressionIR::IntLiteral { value } => {
+            TypedSyntaxExpressionIR::IntLiteral { value: *value }
+        }
+        TypedSyntaxExpressionIR::BoolLiteral { value } => {
+            TypedSyntaxExpressionIR::BoolLiteral { value: *value }
+        }
+        TypedSyntaxExpressionIR::StringLiteral { value } => {
+            TypedSyntaxExpressionIR::StringLiteral {
+                value: value.clone(),
+            }
+        }
+        TypedSyntaxExpressionIR::Unary { operator, input } => TypedSyntaxExpressionIR::Unary {
+            operator: *operator,
+            input: Box::new(substitute_operator_expression(input, bindings)?),
+        },
+        TypedSyntaxExpressionIR::StringTransform { operator, input } => {
+            TypedSyntaxExpressionIR::StringTransform {
+                operator: *operator,
+                input: Box::new(substitute_operator_expression(input, bindings)?),
+            }
+        }
+        TypedSyntaxExpressionIR::Binary {
+            operator,
+            left,
+            right,
+        } => TypedSyntaxExpressionIR::Binary {
+            operator: *operator,
+            left: Box::new(substitute_operator_expression(left, bindings)?),
+            right: Box::new(substitute_operator_expression(right, bindings)?),
+        },
+        TypedSyntaxExpressionIR::Length { input } => TypedSyntaxExpressionIR::Length {
+            input: Box::new(substitute_operator_expression(input, bindings)?),
+        },
+        TypedSyntaxExpressionIR::Index { collection, index } => TypedSyntaxExpressionIR::Index {
+            collection: Box::new(substitute_operator_expression(collection, bindings)?),
+            index: Box::new(substitute_operator_expression(index, bindings)?),
+        },
+        TypedSyntaxExpressionIR::Call {
+            api_token,
+            arguments,
+        } => TypedSyntaxExpressionIR::Call {
+            api_token: api_token.clone(),
+            arguments: arguments
+                .iter()
+                .map(|argument| substitute_operator_expression(argument, bindings))
+                .collect::<Result<Vec<_>, _>>()?,
+        },
+    })
+}
+
+fn evaluate_typed_operator(
+    operator: &TypedMechanismImprovementOperatorIR,
+    arguments: &[Value],
+) -> Result<Value, String> {
+    if arguments.len() != operator.operand_types.len()
+        || arguments
+            .iter()
+            .zip(&operator.operand_types)
+            .any(|(value, expected)| value.program_type() != *expected)
+    {
+        return Err("TYPED_OPERATOR_COMPOSITION_ARGUMENT_TYPE".to_string());
+    }
+    let indices = (0..arguments.len())
+        .flat_map(|index| {
+            [
+                (format!("ARG_{index}"), index),
+                (format!("arg_{index}"), index),
+            ]
+        })
+        .collect::<BTreeMap<_, _>>();
+    let api_map = BTreeMap::new();
+    match (&operator.condition, &operator.otherwise) {
+        (Some(condition), Some(otherwise)) => {
+            match eval_scalar(&lower_expression(condition, &indices)?, arguments, &api_map)? {
+                Value::Bool(true) => eval_scalar(
+                    &lower_expression(&operator.postimage, &indices)?,
+                    arguments,
+                    &api_map,
+                ),
+                Value::Bool(false) => {
+                    eval_scalar(&lower_expression(otherwise, &indices)?, arguments, &api_map)
+                }
+                _ => Err("TYPED_OPERATOR_COMPOSITION_CONDITION_TYPE".to_string()),
+            }
+        }
+        (None, None) => eval_scalar(
+            &lower_expression(&operator.postimage, &indices)?,
+            arguments,
+            &api_map,
+        ),
+        _ => Err("TYPED_OPERATOR_COMPOSITION_CONDITIONAL_SHAPE".to_string()),
+    }
+}
+
+fn typed_operator_probe_value(
+    value_type: &ProgramType,
+    case: usize,
+    index: usize,
+) -> Option<Value> {
+    match value_type {
+        ProgramType::Int => Some(Value::Int(
+            (case as i64)
+                .saturating_sub(15)
+                .saturating_add((index as i64).saturating_mul(3)),
+        )),
+        ProgramType::Bool => Some(Value::Bool(((case >> (index % 4)) & 1) == 1)),
+        ProgramType::String => Some(Value::String(match (case + index) % 6 {
+            0 => String::new(),
+            1 => "A".to_string(),
+            2 => "xy".to_string(),
+            3 => "Rust".to_string(),
+            4 => "한글".to_string(),
+            _ => format!("probe_{index}_{case}"),
+        })),
+        _ => None,
+    }
+}
+
+fn composed_operator_goal(
+    producer: &TypedMechanismImprovementOperatorIR,
+    consumer: &TypedMechanismImprovementOperatorIR,
+    wire_index: usize,
+) -> Result<Option<TypedMechanismOperatorCompositionIR>, String> {
+    validate_typed_mechanism_improvement_operator(producer)?;
+    validate_typed_mechanism_improvement_operator(consumer)?;
+    if producer.operator_id == consumer.operator_id
+        || producer.condition.is_some()
+        || producer.otherwise.is_some()
+        || consumer.operand_types.get(wire_index) != Some(&producer.output_type)
+    {
+        return Ok(None);
+    }
+    let mut operand_types = producer.operand_types.clone();
+    operand_types.extend(
+        consumer
+            .operand_types
+            .iter()
+            .enumerate()
+            .filter(|(index, _)| *index != wire_index)
+            .map(|(_, value_type)| value_type.clone()),
+    );
+    if operand_types.len() > MAX_MECHANISM_OPERANDS
+        || operand_types.iter().any(|value_type| {
+            !matches!(
+                value_type,
+                ProgramType::Int | ProgramType::Bool | ProgramType::String
+            )
+        })
+    {
+        return Ok(None);
+    }
+    let producer_bindings = (0..producer.operand_types.len())
+        .map(|index| {
+            (
+                format!("ARG_{index}"),
+                TypedSyntaxExpressionIR::Operand {
+                    role: format!("ARG_{index}"),
+                },
+            )
+        })
+        .collect::<BTreeMap<_, _>>();
+    let producer_expression =
+        substitute_operator_expression(&producer.postimage, &producer_bindings)?;
+    let mut consumer_bindings = BTreeMap::new();
+    let mut next_argument = producer.operand_types.len();
+    for index in 0..consumer.operand_types.len() {
+        let expression = if index == wire_index {
+            producer_expression.clone()
+        } else {
+            let expression = TypedSyntaxExpressionIR::Operand {
+                role: format!("ARG_{next_argument}"),
+            };
+            next_argument += 1;
+            expression
+        };
+        consumer_bindings.insert(format!("ARG_{index}"), expression);
+    }
+    let condition = consumer
+        .condition
+        .as_ref()
+        .map(|expression| substitute_operator_expression(expression, &consumer_bindings))
+        .transpose()?;
+    let postimage = substitute_operator_expression(&consumer.postimage, &consumer_bindings)?;
+    let otherwise = consumer
+        .otherwise
+        .as_ref()
+        .map(|expression| substitute_operator_expression(expression, &consumer_bindings))
+        .transpose()?;
+    let mut composed_operator = TypedMechanismImprovementOperatorIR {
+        schema: "B_CORE_TYPED_MECHANISM_IMPROVEMENT_OPERATOR_1".to_string(),
+        operator_id: String::new(),
+        operand_types: operand_types.clone(),
+        output_type: consumer.output_type.clone(),
+        condition,
+        postimage,
+        otherwise,
+        validation_contract: producer.validation_contract.clone(),
+        evidence_sha256: sha256(
+            format!(
+                "TYPED_OPERATOR_COMPOSITION_PROBE_1:{}:{}:{wire_index}",
+                producer.evidence_sha256, consumer.evidence_sha256
+            )
+            .as_bytes(),
+        ),
+    };
+    let mut identity = composed_operator.clone();
+    identity.evidence_sha256.clear();
+    identity.operator_id.clear();
+    composed_operator.operator_id = sha256(
+        &serde_json::to_vec(&identity)
+            .map_err(|error| format!("TYPED_OPERATOR_COMPOSITION_SERIALIZE:{error}"))?,
+    );
+    validate_typed_mechanism_improvement_operator(&composed_operator)?;
+
+    let mut public_observations = Vec::new();
+    for case in 0..32 {
+        let Some(arguments) = operand_types
+            .iter()
+            .enumerate()
+            .map(|(index, value_type)| typed_operator_probe_value(value_type, case, index))
+            .collect::<Option<Vec<_>>>()
+        else {
+            return Ok(None);
+        };
+        let producer_arguments = &arguments[..producer.operand_types.len()];
+        let producer_output = match evaluate_typed_operator(producer, producer_arguments) {
+            Ok(output) => output,
+            Err(_) => continue,
+        };
+        let mut consumer_arguments = Vec::with_capacity(consumer.operand_types.len());
+        let mut remaining = arguments[producer.operand_types.len()..].iter();
+        for index in 0..consumer.operand_types.len() {
+            consumer_arguments.push(if index == wire_index {
+                producer_output.clone()
+            } else {
+                remaining
+                    .next()
+                    .cloned()
+                    .ok_or_else(|| "TYPED_OPERATOR_COMPOSITION_ARGUMENT_BINDING".to_string())?
+            });
+        }
+        let staged = match evaluate_typed_operator(consumer, &consumer_arguments) {
+            Ok(output) => output,
+            Err(_) => continue,
+        };
+        let flattened = match evaluate_typed_operator(&composed_operator, &arguments) {
+            Ok(output) => output,
+            Err(_) => continue,
+        };
+        if staged != flattened {
+            return Err("TYPED_OPERATOR_COMPOSITION_POSTIMAGE_MISMATCH".to_string());
+        }
+        public_observations.push(TypedMechanismObservationIR {
+            operands: arguments
+                .into_iter()
+                .enumerate()
+                .map(|(index, value)| (format!("arg_{index}"), value))
+                .collect(),
+            expected_postimage: flattened,
+        });
+    }
+    public_observations
+        .sort_by_key(|observation| serde_json::to_vec(observation).unwrap_or_default());
+    public_observations.dedup();
+    let distinct_outputs = public_observations
+        .iter()
+        .map(|observation| {
+            serde_json::to_vec(&observation.expected_postimage)
+                .map_err(|error| format!("TYPED_OPERATOR_COMPOSITION_OUTPUT_SERIALIZE:{error}"))
+        })
+        .collect::<Result<BTreeSet<_>, _>>()?;
+    if public_observations.len() < 8 || distinct_outputs.len() < 2 {
+        return Ok(None);
+    }
+    let goal_identity = sha256(
+        format!(
+            "TYPED_OPERATOR_COMPOSITION_GOAL_1:{}:{}:{wire_index}",
+            producer.operator_id, consumer.operator_id
+        )
+        .as_bytes(),
+    );
+    let goal = TypedMechanismSynthesisGoalIR {
+        schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+        goal_id: format!("compound_operator_{}", &goal_identity[..32]),
+        split: DataSplit::FreshBlind,
+        operands: operand_types
+            .into_iter()
+            .enumerate()
+            .map(|(index, value_type)| SourceOperandIR {
+                role: format!("arg_{index}"),
+                source: format!("input.arg_{index}"),
+                value_type,
+            })
+            .collect(),
+        output_type: consumer.output_type.clone(),
+        definitions: Vec::new(),
+        allowed_effects: vec![Effect::Pure],
+        preconditions: vec![
+            "both component operators have immutable execution authority".to_string(),
+        ],
+        postconditions: vec![
+            "the producer postimage is transported into the typed consumer operand".to_string(),
+            "the flattened postimage equals staged component execution".to_string(),
+        ],
+        invariants: vec![
+            "operator composition is independent of repository and operand names".to_string(),
+            "every public observation is replayed by both staged and flattened execution"
+                .to_string(),
+        ],
+        public_observations,
+        require_conditional: composed_operator.condition.is_some(),
+        max_expression_depth: MAX_SYNTHESIS_DEPTH,
+        max_candidates: MAX_SYNTHESIS_CANDIDATES,
+        provenance: vec![
+            format!("AUTHORIZED_PRODUCER_OPERATOR:{}", producer.operator_id),
+            format!("AUTHORIZED_CONSUMER_OPERATOR:{}", consumer.operator_id),
+            format!("TYPED_OPERATOR_WIRE_INDEX:{wire_index}"),
+            "COMPOSED_BY_TYPE_EFFECT_KERNEL".to_string(),
+        ],
+    };
+    validate_typed_mechanism_synthesis_goal(&goal)?;
+    // Pre-falsify the derived public contract through the same bounded
+    // synthesizer used by the production generative path. An ambiguous or too
+    // deep composition never becomes a curiosity candidate.
+    if synthesize_typed_mechanism_goal_with_priors(&goal, std::slice::from_ref(&composed_operator))
+        .is_err()
+    {
+        return Ok(None);
+    }
+    Ok(Some(TypedMechanismOperatorCompositionIR {
+        schema: "B_CORE_TYPED_MECHANISM_OPERATOR_COMPOSITION_1".to_string(),
+        goal,
+        operator_proposal: composed_operator,
+        producer_operator_id: producer.operator_id.clone(),
+        consumer_operator_id: consumer.operator_id.clone(),
+        wire_index,
+    }))
+}
+
+/// Builds bounded higher-arity behavior goals by wiring the output of one
+/// already-authorized typed operator into a compatible input of another.
+/// Results contain observations from staged-vs-flattened execution and still
+/// require the ordinary independent campaign verifier before promotion.
+pub fn compose_authorized_typed_operator_programs(
+    operators: &[TypedMechanismImprovementOperatorIR],
+    limit: usize,
+) -> Result<Vec<TypedMechanismOperatorCompositionIR>, String> {
+    let mut goals = BTreeMap::new();
+    for producer in operators {
+        for consumer in operators {
+            for wire_index in 0..consumer.operand_types.len() {
+                if let Some(composition) = composed_operator_goal(producer, consumer, wire_index)? {
+                    goals
+                        .entry(composition.goal.goal_id.clone())
+                        .or_insert(composition);
+                }
+                if goals.len() >= limit.min(32) {
+                    return Ok(goals.into_values().collect());
+                }
+            }
+        }
+    }
+    Ok(goals.into_values().collect())
+}
+
+pub fn compose_authorized_typed_operator_goals(
+    operators: &[TypedMechanismImprovementOperatorIR],
+    limit: usize,
+) -> Result<Vec<TypedMechanismSynthesisGoalIR>, String> {
+    Ok(
+        compose_authorized_typed_operator_programs(operators, limit)?
+            .into_iter()
+            .map(|composition| composition.goal)
+            .collect(),
+    )
 }
 
 pub fn typed_mechanism_improvement_operator_from_receipt(
@@ -4089,6 +4489,92 @@ mod tests {
             validate_typed_mechanism_improvement_operator(&tampered),
             Err("TYPED_MECHANISM_IMPROVEMENT_OPERATOR_ID_MISMATCH".to_string())
         );
+    }
+
+    #[test]
+    fn authorized_operators_compose_into_a_new_behaviorally_falsified_goal() {
+        fn binary_operator(
+            goal_id: &str,
+            samples: &[(i64, i64, i64)],
+            evidence: char,
+        ) -> TypedMechanismImprovementOperatorIR {
+            let request = TypedMechanismSynthesisGoalIR {
+                schema: TYPED_MECHANISM_SYNTHESIS_GOAL_SCHEMA.to_string(),
+                goal_id: goal_id.to_string(),
+                split: DataSplit::FreshBlind,
+                operands: vec![
+                    operand("left", "input.left", ProgramType::Int),
+                    operand("right", "input.right", ProgramType::Int),
+                ],
+                output_type: ProgramType::Int,
+                definitions: Vec::new(),
+                allowed_effects: vec![Effect::Pure],
+                preconditions: Vec::new(),
+                postconditions: Vec::new(),
+                invariants: Vec::new(),
+                public_observations: samples
+                    .iter()
+                    .map(|(left, right, expected)| TypedMechanismObservationIR {
+                        operands: BTreeMap::from([
+                            ("left".to_string(), Value::Int(*left)),
+                            ("right".to_string(), Value::Int(*right)),
+                        ]),
+                        expected_postimage: Value::Int(*expected),
+                    })
+                    .collect(),
+                require_conditional: false,
+                max_expression_depth: 2,
+                max_candidates: 1_024,
+                provenance: vec!["AUTHORIZED_COMPONENT_TEST".to_string()],
+            };
+            let receipt = synthesize_typed_mechanism_goal(&request).unwrap();
+            typed_mechanism_improvement_operator_from_receipt(
+                &receipt,
+                evidence.to_string().repeat(64),
+            )
+            .unwrap()
+        }
+
+        let addition = binary_operator("operator_add", &[(2, 3, 5), (-4, 9, 5)], 'a');
+        let multiplication = binary_operator("operator_multiply", &[(2, 3, 6), (-4, 2, -8)], 'b');
+        let programs = compose_authorized_typed_operator_programs(
+            &[addition.clone(), multiplication.clone()],
+            8,
+        )
+        .unwrap();
+
+        assert!(!programs.is_empty());
+        let program = programs
+            .iter()
+            .find(|program| {
+                program.goal.provenance.contains(&format!(
+                    "AUTHORIZED_PRODUCER_OPERATOR:{}",
+                    addition.operator_id
+                )) && program.goal.provenance.contains(&format!(
+                    "AUTHORIZED_CONSUMER_OPERATOR:{}",
+                    multiplication.operator_id
+                ))
+            })
+            .expect("addition output should wire into multiplication");
+        let goal = &program.goal;
+        assert!(goal.goal_id.starts_with("compound_operator_"));
+        assert_eq!(goal.operands.len(), 3);
+        assert!(goal.public_observations.len() >= 8);
+        validate_typed_mechanism_synthesis_goal(goal).unwrap();
+        let receipt = synthesize_typed_mechanism_goal_with_priors(
+            goal,
+            std::slice::from_ref(&program.operator_proposal),
+        )
+        .unwrap();
+        assert_eq!(
+            receipt.selected_operator_id.as_deref(),
+            Some(program.operator_proposal.operator_id.as_str())
+        );
+        validate_typed_mechanism_synthesis_receipt(&receipt).unwrap();
+
+        assert!(compose_authorized_typed_operator_goals(&[addition], 8)
+            .unwrap()
+            .is_empty());
     }
 
     #[test]

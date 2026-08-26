@@ -40,9 +40,10 @@ use crate::sem5::{
         programming_primitive_catalog,
     },
     typed_mechanism::{
-        lower_typed_mechanism_goal, synthesize_typed_mechanism_goal,
+        lower_typed_mechanism_goal, synthesize_typed_mechanism_goal_with_priors,
         typed_mechanism_improvement_operator_from_receipt, ConcreteSyntaxTemplateIR,
-        TypedMechanismGoalIR, TypedMechanismSynthesisGoalIR, TypedMechanismSynthesisReceiptIR,
+        TypedMechanismGoalIR, TypedMechanismImprovementOperatorIR, TypedMechanismSynthesisGoalIR,
+        TypedMechanismSynthesisReceiptIR,
     },
 };
 use crate::structural_source_repair::synthesize_structural_repair;
@@ -79,6 +80,10 @@ pub struct CompositionWork {
     pub typed_mechanism_goal: Option<TypedMechanismGoalIR>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub typed_mechanism_synthesis_goal: Option<TypedMechanismSynthesisGoalIR>,
+    /// Behaviorally verified operator recipes proposed to the common typed
+    /// synthesizer. They are hypotheses, never installation authority.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub typed_mechanism_operator_proposals: Vec<TypedMechanismImprovementOperatorIR>,
     pub promotions: Vec<ProgrammingPromotion>,
     pub predecessor_tree_hash: String,
 }
@@ -247,7 +252,12 @@ pub fn compose_existing_sem5_capability(
     let typed_mechanism_synthesis_receipt = work
         .typed_mechanism_synthesis_goal
         .as_ref()
-        .map(synthesize_typed_mechanism_goal)
+        .map(|goal| {
+            synthesize_typed_mechanism_goal_with_priors(
+                goal,
+                &work.typed_mechanism_operator_proposals,
+            )
+        })
         .transpose()?;
     let typed_syntax_template = if let Some(receipt) = &typed_mechanism_synthesis_receipt {
         Some(receipt.template.clone())
@@ -817,6 +827,7 @@ pub fn compose_behavioral_canary_candidate(
             task: task.clone(),
             typed_mechanism_goal: None,
             typed_mechanism_synthesis_goal: None,
+            typed_mechanism_operator_proposals: Vec::new(),
             promotions: promotions.clone(),
             predecessor_tree_hash: AUTHORITATIVE_PREDECESSOR.to_string(),
         });
@@ -932,6 +943,14 @@ pub fn compose_typed_behavior_goal_candidate(
     context_sha256: &str,
     goal: &TypedMechanismSynthesisGoalIR,
 ) -> Result<(CompositeProgramCandidateIR, ProgramTask), String> {
+    compose_typed_behavior_goal_candidate_with_operator_proposals(context_sha256, goal, &[])
+}
+
+pub fn compose_typed_behavior_goal_candidate_with_operator_proposals(
+    context_sha256: &str,
+    goal: &TypedMechanismSynthesisGoalIR,
+    operator_proposals: &[TypedMechanismImprovementOperatorIR],
+) -> Result<(CompositeProgramCandidateIR, ProgramTask), String> {
     if context_sha256.len() != 64 || !context_sha256.bytes().all(|byte| byte.is_ascii_hexdigit()) {
         return Err("TYPED_BEHAVIOR_CONTEXT_INVALID".to_string());
     }
@@ -973,6 +992,7 @@ pub fn compose_typed_behavior_goal_candidate(
         task: fallback_task,
         typed_mechanism_goal: None,
         typed_mechanism_synthesis_goal: Some(goal.clone()),
+        typed_mechanism_operator_proposals: operator_proposals.to_vec(),
         promotions,
         predecessor_tree_hash: AUTHORITATIVE_PREDECESSOR.to_string(),
     })?;
@@ -989,10 +1009,22 @@ pub fn execute_typed_behavior_goal_canary(
     context_sha256: &str,
     goal: &TypedMechanismSynthesisGoalIR,
 ) -> Result<BehavioralCompositionCanaryReceipt, String> {
+    execute_typed_behavior_goal_canary_with_operator_proposals(context_sha256, goal, &[])
+}
+
+pub fn execute_typed_behavior_goal_canary_with_operator_proposals(
+    context_sha256: &str,
+    goal: &TypedMechanismSynthesisGoalIR,
+    operator_proposals: &[TypedMechanismImprovementOperatorIR],
+) -> Result<BehavioralCompositionCanaryReceipt, String> {
     let goal_bytes = serde_json::to_vec(goal)
         .map_err(|error| format!("TYPED_BEHAVIOR_GOAL_SERIALIZE:{error}"))?;
     let goal_sha256 = sha256(&goal_bytes);
-    let (candidate, task) = compose_typed_behavior_goal_candidate(context_sha256, goal)?;
+    let (candidate, task) = compose_typed_behavior_goal_candidate_with_operator_proposals(
+        context_sha256,
+        goal,
+        operator_proposals,
+    )?;
     let mut outputs = Vec::with_capacity(goal.public_observations.len());
     for (index, observation) in goal.public_observations.iter().enumerate() {
         let actual = execute(
@@ -1222,6 +1254,7 @@ mod tests {
             task: sets.adversarial[0].visible.clone(),
             typed_mechanism_goal: None,
             typed_mechanism_synthesis_goal: None,
+            typed_mechanism_operator_proposals: Vec::new(),
             promotions,
             predecessor_tree_hash: AUTHORITATIVE_PREDECESSOR.to_string(),
         }
