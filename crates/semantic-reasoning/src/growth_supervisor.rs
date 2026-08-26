@@ -4929,9 +4929,17 @@ fn build_lesson(observations: &[LearningObservation]) -> Result<LearnedCompositi
             .entry(json_sha256(delta)?)
             .or_insert_with(|| delta.clone());
     }
-    let public_contract_deltas = public_contract_delta_index
+    let indexed_public_contract_deltas = public_contract_delta_index
         .into_values()
         .collect::<Vec<_>>();
+    // A cohort may contain several independently verified curiosity outputs.
+    // Each output is valid on its own, but their historical component deltas
+    // can share a typed-goal identity. Apply the same single-owner frontier
+    // contract used by plateau promotion before deriving lesson authority;
+    // otherwise valid executable outputs are misclassified as text-only at
+    // the aggregation boundary.
+    let public_contract_deltas =
+        canonicalize_public_contract_delta_frontier(&[], &indexed_public_contract_deltas)?;
     let learning_score = observations
         .iter()
         .map(|observation| u32::from(observation.learning_score))
@@ -17748,6 +17756,62 @@ mod tests {
         .unwrap();
 
         assert_eq!(selected, vec![verified]);
+    }
+
+    #[test]
+    fn lesson_aggregation_preserves_executable_outputs_with_shared_historical_goals() {
+        let older = public_contract_delta_fixture();
+        let mut newer = older.clone();
+        newer.delta_id = "newer-shared-goal".to_string();
+        newer.observed_behavior = "a later verified program still receives the base".to_string();
+        bind_public_contract_delta_fixture(&mut newer);
+        let mut independent = public_contract_delta_fixture();
+        independent.delta_id = "independent-aggregated-goal".to_string();
+        independent.typed_behavior_goals[0].goal_id = "independent_aggregated_goal".to_string();
+        bind_public_contract_delta_fixture(&mut independent);
+        let fingerprint = FileFingerprint {
+            content_sha256: "c".repeat(64),
+            bytes: 100,
+            modified_ms: 1,
+            extension: "rs".to_string(),
+            features: StructuralFeatures {
+                public_symbols: 1,
+                ..StructuralFeatures::default()
+            },
+        };
+        let observation = |id: &str, deltas: Vec<PublicContractDeltaIR>| {
+            let event = WorkEvent {
+                event_id: id.to_string(),
+                actor: WorkActor::LocalTool,
+                kind: WorkKind::CapabilitySynthesis,
+                paths: Vec::new(),
+                outcome: WorkOutcome::Pass,
+                summary: "behaviorally verified executable output".to_string(),
+                evidence_sha256: vec![sha256(id.as_bytes())],
+                evidence_artifacts: Vec::new(),
+                performance_metrics: Vec::new(),
+                public_contract_deltas: deltas,
+                occurred_at_ms: 1,
+            };
+            classify_observation(
+                format!("ROOT_0/src/{id}.rs"),
+                &fingerprint,
+                None,
+                Some(&event),
+                &ClassifierMemory::default(),
+                10,
+            )
+        };
+
+        let lesson = build_lesson(&[
+            observation("older", vec![older]),
+            observation("newer", vec![newer, independent]),
+        ])
+        .unwrap();
+
+        assert_eq!(lesson.public_contract_deltas.len(), 2);
+        validate_public_contract_deltas(&lesson.public_contract_deltas).unwrap();
+        assert!(lesson_has_executable_knowledge(&lesson));
     }
 
     #[test]
