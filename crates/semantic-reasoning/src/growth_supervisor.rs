@@ -14,6 +14,7 @@ use std::io::{Read, Write};
 use std::path::{Component, Path, PathBuf};
 use std::process::Command;
 use std::sync::mpsc::{self, RecvTimeoutError};
+use std::sync::OnceLock;
 use std::thread;
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
@@ -5965,11 +5966,26 @@ struct PlateauCuriosityCandidate {
     public_contract_deltas: Vec<PublicContractDeltaIR>,
 }
 
+fn plateau_hypothesis_id(
+    family: &str,
+    probe_engine_sha256: &str,
+    memory_sha256: &str,
+    payload: &str,
+) -> String {
+    sha256(
+        format!(
+            "INTRINSIC_{family}_{PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION}:{probe_engine_sha256}:{memory_sha256}:{payload}"
+        )
+        .as_bytes(),
+    )
+}
+
 fn operator_composition_plateau_candidates(
     config: &GrowthSupervisorConfig,
     state: &SupervisorState,
     memory: &GrowthMemory,
     prediction_uncertainty: u16,
+    probe_engine_sha256: &str,
 ) -> Result<Vec<PlateauCuriosityCandidate>, String> {
     let authorized = load_authorized_typed_mechanism_operators(
         &config.state_dir,
@@ -6043,12 +6059,14 @@ fn operator_composition_plateau_candidates(
             composition.consumer_operator_id.clone(),
         ];
         let structural_novelty = goal.operands.len().saturating_add(3).min(100) as u16;
-        let hypothesis_id = sha256(
-            format!(
-                "INTRINSIC_OPERATOR_COMPOSITION_{PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION}:{}:{}:{}",
-                state.current_memory_sha256, goal.goal_id, composition.operator_proposal.operator_id
-            )
-            .as_bytes(),
+        let hypothesis_id = plateau_hypothesis_id(
+            "OPERATOR_COMPOSITION",
+            probe_engine_sha256,
+            &state.current_memory_sha256,
+            &format!(
+                "{}:{}",
+                goal.goal_id, composition.operator_proposal.operator_id
+            ),
         );
         candidates.push(PlateauCuriosityCandidate {
             hypothesis: IntrinsicCuriosityHypothesis {
@@ -6091,6 +6109,14 @@ fn plateau_curiosity_candidates(
     state: &SupervisorState,
     memory: &GrowthMemory,
 ) -> Result<Vec<PlateauCuriosityCandidate>, String> {
+    static PROBE_ENGINE_SHA256: OnceLock<Result<String, String>> = OnceLock::new();
+    let probe_engine_sha256 = PROBE_ENGINE_SHA256
+        .get_or_init(|| {
+            let executable =
+                env::current_exe().map_err(|error| format!("PLATEAU_PROBE_CURRENT_EXE:{error}"))?;
+            file_sha256(&executable, 512 * 1024 * 1024)
+        })
+        .clone()?;
     let mut recent_lessons = memory
         .lessons
         .iter()
@@ -6104,8 +6130,13 @@ fn plateau_curiosity_candidates(
         .checked_div(state.generative_calibrated_prediction_records.max(1))
         .unwrap_or(0)
         .min(100) as u16;
-    let mut candidates =
-        operator_composition_plateau_candidates(config, state, memory, prediction_uncertainty)?;
+    let mut candidates = operator_composition_plateau_candidates(
+        config,
+        state,
+        memory,
+        prediction_uncertainty,
+        &probe_engine_sha256,
+    )?;
     if recent_lessons.len() < 2 {
         candidates.sort_by(|left, right| {
             state
@@ -6118,7 +6149,6 @@ fn plateau_curiosity_candidates(
                         .cmp(&right.hypothesis.hypothesis_id)
                 })
         });
-        candidates.truncate(MAX_INTRINSIC_CURIOSITY_HYPOTHESES);
         return Ok(candidates);
     }
     let mut lesson_groups = Vec::new();
@@ -6167,13 +6197,11 @@ fn plateau_curiosity_candidates(
             .saturating_add(executable_goal_count.saturating_mul(4))
             .saturating_add(input.executable_performance_operators.len().min(20) as u16)
             .min(100);
-        let hypothesis_id = sha256(
-            format!(
-                "INTRINSIC_CURIOSITY_{PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION}:{}:{}",
-                state.current_memory_sha256,
-                lesson_ids.join(":")
-            )
-            .as_bytes(),
+        let hypothesis_id = plateau_hypothesis_id(
+            "CURIOSITY",
+            &probe_engine_sha256,
+            &state.current_memory_sha256,
+            &lesson_ids.join(":"),
         );
         candidates.push(PlateauCuriosityCandidate {
             hypothesis: IntrinsicCuriosityHypothesis {
@@ -6201,7 +6229,6 @@ fn plateau_curiosity_candidates(
                     .cmp(&right.hypothesis.hypothesis_id)
             })
     });
-    candidates.truncate(MAX_INTRINSIC_CURIOSITY_HYPOTHESES);
     Ok(candidates)
 }
 
@@ -7631,6 +7658,7 @@ fn plateau_generative_probe_observation(
         return Ok(None);
     }
     let probe_root = config.state_dir.join("generative_plateau_probes");
+    let mut new_attempts = 0_usize;
     for candidate in candidates {
         let probe_id = sha256(
             format!(
@@ -7681,6 +7709,10 @@ fn plateau_generative_probe_observation(
             }
             continue;
         }
+        if new_attempts >= MAX_INTRINSIC_CURIOSITY_HYPOTHESES {
+            break;
+        }
+        new_attempts = new_attempts.saturating_add(1);
         let seed = u64::from_str_radix(&probe_id[..16], 16)
             .map_err(|error| format!("PLATEAU_GENERATIVE_PROBE_SEED:{error}"))?;
         let cycle = match run_generative_cycle(&memory.generative, &candidate.input, seed) {
@@ -15825,7 +15857,7 @@ mod tests {
     }
 
     #[test]
-    fn intrinsic_curiosity_enumerates_multiple_bounded_executable_hypotheses() {
+    fn intrinsic_curiosity_keeps_the_complete_backlog_beyond_the_per_scan_attempt_quota() {
         let root = temp_root("intrinsic-curiosity-hypotheses");
         let (config_path, config) = test_config(&root);
         let state = initialize(&config_path).unwrap();
@@ -15854,6 +15886,10 @@ mod tests {
                 lesson("B", "COMPOSE"),
                 lesson("C", "VERIFY"),
                 lesson("D", "REVISE"),
+                lesson("E", "LOCALIZE"),
+                lesson("F", "LOWER"),
+                lesson("G", "EXECUTE"),
+                lesson("H", "FALSIFY"),
             ],
             classifier: ClassifierMemory::default(),
             evaluator: EvaluatorMemory::default(),
@@ -15861,7 +15897,8 @@ mod tests {
         };
 
         let candidates = plateau_curiosity_candidates(&config, &state, &memory).unwrap();
-        assert_eq!(candidates.len(), 10);
+        assert_eq!(candidates.len(), 84);
+        assert!(candidates.len() > MAX_INTRINSIC_CURIOSITY_HYPOTHESES);
         assert_eq!(
             candidates
                 .iter()
@@ -15876,6 +15913,31 @@ mod tests {
                 && !candidate.input.typed_behavior_goals.is_empty()
         }));
         fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn plateau_failure_identity_reopens_only_after_the_running_engine_changes() {
+        let memory_sha256 = "a".repeat(64);
+        let first = plateau_hypothesis_id(
+            "OPERATOR_COMPOSITION",
+            &"b".repeat(64),
+            &memory_sha256,
+            "goal:operator",
+        );
+        let replay = plateau_hypothesis_id(
+            "OPERATOR_COMPOSITION",
+            &"b".repeat(64),
+            &memory_sha256,
+            "goal:operator",
+        );
+        let improved_engine = plateau_hypothesis_id(
+            "OPERATOR_COMPOSITION",
+            &"c".repeat(64),
+            &memory_sha256,
+            "goal:operator",
+        );
+        assert_eq!(first, replay);
+        assert_ne!(first, improved_engine);
     }
 
     #[test]
