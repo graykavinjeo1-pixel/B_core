@@ -5392,6 +5392,16 @@ fn campaign_preflight_ready(
     Ok(false)
 }
 
+fn autonomous_plateau_probe_ready(
+    config: &GrowthSupervisorConfig,
+    state: &SupervisorState,
+    observations: &[LearningObservation],
+) -> Result<bool, String> {
+    Ok(config.autonomous_campaigns
+        && state.plateau_scans >= config.resources.plateau_scans_before_wait
+        && (observations.is_empty() || !campaign_preflight_ready(config, observations)?))
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 struct DeferredNonExecutableCohortReceipt {
     schema: String,
@@ -12583,10 +12593,12 @@ fn step_without_lease(
             &mut high,
         )?;
     }
-    if high.is_empty()
-        && config.autonomous_campaigns
-        && state.plateau_scans >= config.resources.plateau_scans_before_wait
-    {
+    // Unknown or evidence-only source observations may remain valuable repair
+    // context, but they cannot freeze the executable curiosity queue forever.
+    // When no currently observed cohort can pass campaign preflight, let the
+    // plateau path propose one independently falsified executable experiment
+    // alongside (without deleting) that source context.
+    if autonomous_plateau_probe_ready(config, &state, &high)? {
         let mut recovered = recover_unpromoted_plateau_probe_observations(
             config,
             &state,
@@ -15478,7 +15490,9 @@ mod tests {
     #[test]
     fn unverifiable_cohort_is_deferred_without_failure_budget() {
         let root = temp_root("preflight-defer");
-        let (_, config) = test_config(&root);
+        let (config_path, mut config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        config.autonomous_campaigns = true;
         let observation = LearningObservation {
             observation_id: "repair-without-test".to_string(),
             work_event_id: None,
@@ -15502,7 +15516,16 @@ mod tests {
             raw_source_bytes_stored: 0,
             observed_at_ms: 1,
         };
-        assert!(!campaign_preflight_ready(&config, &[observation]).unwrap());
+        assert!(!campaign_preflight_ready(&config, std::slice::from_ref(&observation)).unwrap());
+        state.plateau_scans = config.resources.plateau_scans_before_wait;
+        assert!(autonomous_plateau_probe_ready(
+            &config,
+            &state,
+            std::slice::from_ref(&observation)
+        )
+        .unwrap());
+        state.plateau_scans = state.plateau_scans.saturating_sub(1);
+        assert!(!autonomous_plateau_probe_ready(&config, &state, &[observation]).unwrap());
         let diagnostics = config.state_dir.join("diagnostics");
         assert_eq!(fs::read_dir(diagnostics).unwrap().count(), 1);
         fs::remove_dir_all(root).unwrap();
