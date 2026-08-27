@@ -39,6 +39,18 @@ function Resolve-BLocalPath {
     return [IO.Path]::GetFullPath($candidate)
 }
 
+function Resolve-BWindowsPowerShell {
+    $command = Get-Command powershell.exe -ErrorAction SilentlyContinue
+    if ($null -ne $command -and (Test-Path -LiteralPath $command.Source -PathType Leaf)) {
+        return $command.Source
+    }
+    $fallback = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
+    if (-not (Test-Path -LiteralPath $fallback -PathType Leaf)) {
+        throw "WINDOWS_POWERSHELL_NOT_FOUND"
+    }
+    return $fallback
+}
+
 $root = Resolve-BLocalPath $PackageRoot
 $config = Resolve-BLocalPath $ConfigPath
 $configObject = Get-Content -Raw -LiteralPath $config | ConvertFrom-Json
@@ -122,7 +134,7 @@ if ($Foreground) {
     }
 }
 
-$powershell = Join-Path $PSHOME "powershell.exe"
+$powershell = Resolve-BWindowsPowerShell
 $arguments = '-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "{0}" -PackageRoot "{1}" -ConfigPath "{2}" -Foreground' -f $PSCommandPath, $root, $config
 $process = Start-Process `
     -FilePath $powershell `

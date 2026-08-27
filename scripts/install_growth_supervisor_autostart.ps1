@@ -13,14 +13,35 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+function Resolve-BWindowsPowerShell {
+    $command = Get-Command powershell.exe -ErrorAction SilentlyContinue
+    if ($null -ne $command -and (Test-Path -LiteralPath $command.Source -PathType Leaf)) {
+        return $command.Source
+    }
+    $fallback = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
+    if (-not (Test-Path -LiteralPath $fallback -PathType Leaf)) {
+        throw "WINDOWS_POWERSHELL_NOT_FOUND"
+    }
+    return $fallback
+}
+
 $root = [IO.Path]::GetFullPath($PackageRoot)
 $config = [IO.Path]::GetFullPath($ConfigPath)
 $runner = Join-Path $root "scripts\run_growth_supervisor.ps1"
-$supervisor = Join-Path $root "bin\b-core-growth-supervisor.exe"
-foreach ($path in @($runner, $supervisor, $config)) {
+foreach ($path in @($runner, $config)) {
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
         throw "AUTOSTART_INPUT_MISSING:$path"
     }
+}
+$configObject = Get-Content -Raw -LiteralPath $config | ConvertFrom-Json
+$runtimeBin = if ($null -ne $configObject.source_mutation -and $configObject.source_mutation.enabled) {
+    [IO.Path]::GetFullPath([string]$configObject.source_mutation.runtime_bin_dir)
+} else {
+    Join-Path $root "bin"
+}
+$supervisor = Join-Path $runtimeBin "b-core-growth-supervisor.exe"
+if (-not (Test-Path -LiteralPath $supervisor -PathType Leaf)) {
+    throw "AUTOSTART_INPUT_MISSING:$supervisor"
 }
 
 & $supervisor init $config | Out-Null
@@ -29,7 +50,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 $identity = [Security.Principal.WindowsIdentity]::GetCurrent().Name
-$powershell = Join-Path $PSHOME "powershell.exe"
+$powershell = Resolve-BWindowsPowerShell
 $taskArguments = '-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "{0}" -PackageRoot "{1}" -ConfigPath "{2}" -Foreground' -f $runner, $root, $config
 $action = New-ScheduledTaskAction -Execute $powershell -Argument $taskArguments
 $trigger = New-ScheduledTaskTrigger -AtLogOn -User $identity
