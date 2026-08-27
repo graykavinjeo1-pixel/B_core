@@ -25,6 +25,7 @@ pub mod intrinsic_drive;
 pub mod mining;
 #[cfg(feature = "historical-campaigns")]
 pub mod reporting;
+pub mod repository_experience;
 pub mod same_attempt_revision;
 pub mod self_healing_execution;
 pub mod self_healing_pipeline;

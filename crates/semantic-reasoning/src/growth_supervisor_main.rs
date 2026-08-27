@@ -6,11 +6,14 @@ use semantic_reasoning::compound_growth::{
 };
 use semantic_reasoning::growth_supervisor::{
     cleanup_source_staging, compound_growth_status, continue_lineage, initialize, make_config,
-    preview_source_repair, record_compound_growth_input, record_work_event, request_resume,
-    request_stop, run_daemon, self_check, status, supervisor_step, WorkEvent,
+    preview_source_repair, record_compound_growth_input, record_repository_issue,
+    record_work_event, request_resume, request_stop, run_daemon, self_check, status,
+    supervisor_step, WorkEvent,
 };
+use semantic_reasoning::repository_experience::RepositoryIssueIntakeRequestIR;
 
 const MAX_COMPOUND_INPUT_BYTES: u64 = 16 * 1024 * 1024;
+const MAX_REPOSITORY_ISSUE_INPUT_BYTES: u64 = 1024 * 1024;
 
 fn main() {
     if let Err(error) = run() {
@@ -136,6 +139,31 @@ fn run() -> Result<(), String> {
                     .map_err(|e| e.to_string())?
             );
         }
+        "record-repository-issue" => {
+            let config = next_path(&mut args, "CONFIG_PATH_MISSING")?;
+            let request_path = next_path(&mut args, "REPOSITORY_ISSUE_PATH_MISSING")?;
+            ensure_no_more(&mut args)?;
+            let metadata = std::fs::symlink_metadata(&request_path)
+                .map_err(|e| format!("REPOSITORY_ISSUE_METADATA:{}:{e}", request_path.display()))?;
+            if !metadata.file_type().is_file()
+                || metadata.file_type().is_symlink()
+                || metadata.len() > MAX_REPOSITORY_ISSUE_INPUT_BYTES
+            {
+                return Err(format!(
+                    "REPOSITORY_ISSUE_NOT_BOUNDED_REGULAR_FILE:{}",
+                    request_path.display()
+                ));
+            }
+            let bytes = std::fs::read(&request_path)
+                .map_err(|e| format!("REPOSITORY_ISSUE_READ:{}:{e}", request_path.display()))?;
+            let request: RepositoryIssueIntakeRequestIR =
+                serde_json::from_slice(&bytes).map_err(|e| format!("REPOSITORY_ISSUE_JSON:{e}"))?;
+            println!(
+                "{}",
+                serde_json::to_string_pretty(&record_repository_issue(&config, request)?)
+                    .map_err(|e| e.to_string())?
+            );
+        }
         "record-compound-input" => {
             let config = next_path(&mut args, "CONFIG_PATH_MISSING")?;
             let input_path = next_path(&mut args, "COMPOUND_INPUT_PATH_MISSING")?;
@@ -209,5 +237,5 @@ fn ensure_no_more(args: &mut impl Iterator<Item = std::ffi::OsString>) -> Result
 }
 
 fn usage() -> String {
-    "USAGE:<self-check|make-config|init|continue-lineage|step|run|status|cleanup-source-staging|preview-source-repair|stop|resume|record-event|record-compound-input|compound-status|compound-cycle> ...".to_string()
+    "USAGE:<self-check|make-config|init|continue-lineage|step|run|status|cleanup-source-staging|preview-source-repair|stop|resume|record-event|record-repository-issue|record-compound-input|compound-status|compound-cycle> ...".to_string()
 }

@@ -127,4 +127,31 @@ Use `tools\install-growth-autostart.ps1` to register a limited-privilege `ONLOGO
 
 An explicit `PASS` is evidence, not automatic authority. The independent verifier still decides whether the frozen structural lesson is promotable.
 
+### Repository issue intake and autonomous repair contracts
+
+Repository problems may enter the same product path as structured public
+evidence. The statement must contain both observed and expected behavior and
+must bind existing files inside a configured watched root.
+
+```powershell
+.\bin\b-core-growth-supervisor.exe record-repository-issue `
+  .\config\growth.json `
+  .\repository-issue.json
+```
+
+The request schema is `B_CORE_REPOSITORY_ISSUE_INTAKE_REQUEST_1` and contains
+`issue_id`, `problem_statement`, `paths`, optional `evidence_artifacts`, and
+optional `occurred_at_ms`. Natural language is localization evidence only. It
+cannot authorize a patch or become executable knowledge by itself.
+
+For a failing native validation, the supervisor autonomously derives a
+`RepositoryRepairContractIR` that binds the issue evidence, exact target
+symbols, bounded composition budget, generic edit atoms, public behavioral
+verification, and atomic install/rollback obligations. That contract controls
+the common typed compiler path. A successful materialized repair is promoted
+to `ImprovementOperatorIR` only after sandbox verification and, when mutation
+is enabled, authoritative installation plus revalidation. The issue,
+validation, contract, synthesis, candidate, verifier output, installation, and
+operator promotion remain connected by a validated causal provenance graph.
+
 For a `PERFORMANCE_OPTIMIZATION` event, `-PerformanceMetricsPath` may point to a JSON array. Each entry contains `metric`, integer `before`, integer `after`, `lower_is_better`, and `evidence_sha256`. The digest must be bound to one of the supplied evidence files. A non-improving measurement is retained as negative evidence and is not promoted as a performance gain.

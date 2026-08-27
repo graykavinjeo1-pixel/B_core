@@ -53,6 +53,14 @@ use crate::integrated_development::{
     install_composite_candidate_family, MAX_INSTALLED_TYPED_CAPABILITIES,
 };
 use crate::intrinsic_drive::{IntrinsicCuriosityHypothesis, IntrinsicDriveMemory};
+use crate::repository_experience::{
+    build_repository_repair_provenance, derive_repository_repair_contract, ground_repository_issue,
+    repository_issue_intake_receipt_hash, validate_repository_issue_evidence,
+    validate_repository_pipeline_provenance, validate_repository_repair_contract,
+    RepositoryIssueIntakeReceiptIR, RepositoryIssueIntakeRequestIR, RepositoryIssuePathBindingIR,
+    RepositoryPipelineProvenanceGraphIR, RepositoryRepairContractIR,
+    RepositoryRepairProvenanceInput, REPOSITORY_ISSUE_INTAKE_RECEIPT_SCHEMA,
+};
 use crate::same_attempt_revision::{
     CandidateAdmission, SameAttemptCounterexample, SameAttemptRevisionTracker,
     MAX_SAME_ATTEMPT_EXECUTIONS,
@@ -117,7 +125,7 @@ const MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS: usize = MAX_ACTIVE_TYPED_ME
 const MAX_COMPOSITE_INSTALL_FAMILY: usize = 32;
 const REPOSITORY_INSTALL_TRANSACTION_SCHEMA: &str = "B_REPOSITORY_INSTALL_TRANSACTION_1";
 const REPOSITORY_INSTALL_COMMIT_SCHEMA: &str = "B_REPOSITORY_INSTALL_COMMIT_1";
-const REPOSITORY_REPAIR_SYNTHESIS_SCHEMA: &str = "B_REPOSITORY_REPAIR_SYNTHESIS_3";
+const REPOSITORY_REPAIR_SYNTHESIS_SCHEMA: &str = "B_REPOSITORY_REPAIR_SYNTHESIS_4";
 
 fn u64_is_zero(value: &u64) -> bool {
     *value == 0
@@ -4145,6 +4153,141 @@ pub fn record_work_event(config_path: &Path, mut event: WorkEvent) -> Result<Wor
         .join(format!("{}.json", event.event_id));
     write_immutable_json(&path, &event)?;
     Ok(event)
+}
+
+fn validate_repository_issue_intake_receipt(
+    receipt: &RepositoryIssueIntakeReceiptIR,
+) -> Result<(), String> {
+    validate_repository_issue_evidence(&receipt.issue)?;
+    let mut bindings = BTreeSet::new();
+    if receipt.schema != REPOSITORY_ISSUE_INTAKE_RECEIPT_SCHEMA
+        || receipt.work_event_id.is_empty()
+        || receipt.path_bindings.is_empty()
+        || receipt.path_bindings.iter().any(|binding| {
+            binding.relative_path.as_os_str().is_empty()
+                || binding.relative_path.is_absolute()
+                || binding.relative_path.components().any(|component| {
+                    matches!(
+                        component,
+                        Component::ParentDir
+                            | Component::CurDir
+                            | Component::RootDir
+                            | Component::Prefix(_)
+                    )
+                })
+                || !bindings.insert((binding.root_index, binding.relative_path.clone()))
+        })
+        || receipt.evidence_artifact_sha256s.len() > 32
+        || receipt
+            .evidence_artifact_sha256s
+            .iter()
+            .any(|hash| hash.len() != 64 || !hash.bytes().all(|byte| byte.is_ascii_hexdigit()))
+        || receipt.receipt_sha256 != repository_issue_intake_receipt_hash(receipt)?
+    {
+        return Err("REPOSITORY_ISSUE_INTAKE_RECEIPT_INVALID".to_string());
+    }
+    Ok(())
+}
+
+/// Records public issue evidence without allowing prose to become source-edit
+/// authority.  Exact repository paths are transported through the ordinary
+/// work-event scanner; the separate issue receipt preserves observed/expected
+/// claims and owner hints for the typed source frontend.
+pub fn record_repository_issue(
+    config_path: &Path,
+    request: RepositoryIssueIntakeRequestIR,
+) -> Result<RepositoryIssueIntakeReceiptIR, String> {
+    let config = load_config(config_path)?;
+    let _ = load_state(&config)?;
+    let issue = ground_repository_issue(&request)?;
+    let mut event = WorkEvent {
+        event_id: format!("repository-issue-{}", &issue.evidence_sha256[..32]),
+        actor: WorkActor::User,
+        kind: WorkKind::DefectRepair,
+        paths: request.paths,
+        outcome: WorkOutcome::Unknown,
+        summary: format!(
+            "structured repository issue {}; natural language is localization evidence only",
+            issue.issue_id
+        ),
+        evidence_sha256: Vec::new(),
+        evidence_artifacts: request.evidence_artifacts,
+        performance_metrics: Vec::new(),
+        public_contract_deltas: Vec::new(),
+        occurred_at_ms: request.occurred_at_ms,
+    };
+    validate_event(&config, &mut event)?;
+
+    let canonical_roots = config
+        .watched_roots
+        .iter()
+        .map(|root| {
+            fs::canonicalize(root)
+                .map_err(|error| format!("REPOSITORY_ISSUE_ROOT_CANONICALIZE:{error}"))
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    let mut path_bindings = event
+        .paths
+        .iter()
+        .map(|path| {
+            canonical_roots
+                .iter()
+                .enumerate()
+                .find_map(|(root_index, root)| {
+                    path.strip_prefix(root)
+                        .ok()
+                        .map(|relative_path| RepositoryIssuePathBindingIR {
+                            root_index,
+                            relative_path: relative_path.to_path_buf(),
+                        })
+                })
+                .ok_or_else(|| "REPOSITORY_ISSUE_PATH_UNBOUND".to_string())
+        })
+        .collect::<Result<Vec<_>, _>>()?;
+    path_bindings.sort_by(|left, right| {
+        left.root_index
+            .cmp(&right.root_index)
+            .then_with(|| left.relative_path.cmp(&right.relative_path))
+    });
+    path_bindings.dedup();
+    let mut receipt = RepositoryIssueIntakeReceiptIR {
+        schema: REPOSITORY_ISSUE_INTAKE_RECEIPT_SCHEMA.to_string(),
+        issue,
+        path_bindings,
+        evidence_artifact_sha256s: event.evidence_sha256.clone(),
+        work_event_id: event.event_id.clone(),
+        occurred_at_ms: event.occurred_at_ms,
+        receipt_sha256: String::new(),
+    };
+    receipt.receipt_sha256 = repository_issue_intake_receipt_hash(&receipt)?;
+    validate_repository_issue_intake_receipt(&receipt)?;
+
+    let issue_path = config
+        .state_dir
+        .join("repository_issues")
+        .join(format!("{}.json", receipt.issue.issue_id));
+    if issue_path.exists() {
+        let stored: RepositoryIssueIntakeReceiptIR = read_json(&issue_path)?;
+        validate_repository_issue_intake_receipt(&stored)?;
+        if stored != receipt {
+            return Err("REPOSITORY_ISSUE_INTAKE_COLLISION".to_string());
+        }
+    } else {
+        write_immutable_json(&issue_path, &receipt)?;
+    }
+    let event_path = config
+        .state_dir
+        .join("events")
+        .join(format!("{}.json", event.event_id));
+    if event_path.exists() {
+        let stored: WorkEvent = read_json(&event_path)?;
+        if stored != event {
+            return Err("REPOSITORY_ISSUE_WORK_EVENT_COLLISION".to_string());
+        }
+    } else {
+        write_immutable_json(&event_path, &event)?;
+    }
+    Ok(receipt)
 }
 
 pub fn request_stop(config_path: &Path) -> Result<serde_json::Value, String> {
@@ -8684,6 +8827,9 @@ struct RepositoryValidationPlan {
     root_index: usize,
     root: PathBuf,
     input_observation_ids: Vec<String>,
+    repository_issue_ids: Vec<String>,
+    repository_issue_evidence_sha256s: Vec<String>,
+    repository_issue_target_symbols: Vec<String>,
     public_contract_target_symbols: Vec<String>,
     scope_paths: Vec<PathBuf>,
     test_paths: Vec<PathBuf>,
@@ -8714,6 +8860,10 @@ struct RepositoryCohortValidationReceipt {
     #[serde(default)]
     reused_validation_receipt_sha256: Option<String>,
     input_observation_ids: Vec<String>,
+    #[serde(default)]
+    repository_issue_ids: Vec<String>,
+    #[serde(default)]
+    repository_issue_evidence_sha256s: Vec<String>,
     test_paths: Vec<PathBuf>,
     scope_fingerprint_before: String,
     scope_fingerprint_after: String,
@@ -8744,6 +8894,14 @@ struct RepositoryRepairSynthesisReceipt {
     generation: u64,
     root_index: usize,
     root_sha256: String,
+    #[serde(default)]
+    repository_issue_ids: Vec<String>,
+    #[serde(default)]
+    repository_issue_evidence_sha256s: Vec<String>,
+    #[serde(default)]
+    repository_repair_contract: RepositoryRepairContractIR,
+    #[serde(default)]
+    repository_pipeline_provenance: RepositoryPipelineProvenanceGraphIR,
     source_relative_path: PathBuf,
     predecessor_sha256: String,
     candidate_sha256: Option<String>,
@@ -8900,7 +9058,9 @@ fn repository_repair_history(
         };
         if matches!(
             receipt.schema.as_str(),
-            "B_REPOSITORY_REPAIR_SYNTHESIS_2" | REPOSITORY_REPAIR_SYNTHESIS_SCHEMA
+            "B_REPOSITORY_REPAIR_SYNTHESIS_2"
+                | "B_REPOSITORY_REPAIR_SYNTHESIS_3"
+                | REPOSITORY_REPAIR_SYNTHESIS_SCHEMA
         ) && receipt.originating_validation_id == validation_id
             && receipt.source_relative_path == relative
             && receipt.predecessor_sha256 == predecessor_sha256
@@ -8946,6 +9106,66 @@ fn logical_root_relative(logical_path: &str) -> Option<(usize, PathBuf)> {
         return None;
     }
     Some((root_index, relative))
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+struct RepositoryIssueContext {
+    issue_ids: Vec<String>,
+    evidence_sha256s: Vec<String>,
+    target_symbols: Vec<String>,
+}
+
+fn repository_issue_context(
+    config: &GrowthSupervisorConfig,
+    root_index: usize,
+    event_ids: &BTreeSet<String>,
+) -> Result<RepositoryIssueContext, String> {
+    if event_ids.is_empty() {
+        return Ok(RepositoryIssueContext::default());
+    }
+    let directory = config.state_dir.join("repository_issues");
+    let Ok(entries) = fs::read_dir(&directory) else {
+        return Ok(RepositoryIssueContext::default());
+    };
+    let mut paths = entries
+        .filter_map(Result::ok)
+        .map(|entry| entry.path())
+        .filter(|path| path.extension().and_then(OsStr::to_str) == Some("json"))
+        .collect::<Vec<_>>();
+    paths.sort();
+    let mut context = RepositoryIssueContext::default();
+    for path in paths {
+        let receipt: RepositoryIssueIntakeReceiptIR = read_json(&path)?;
+        validate_repository_issue_intake_receipt(&receipt)?;
+        if path.file_stem().and_then(OsStr::to_str) != Some(receipt.issue.issue_id.as_str()) {
+            return Err("REPOSITORY_ISSUE_INTAKE_PATH_ID_MISMATCH".to_string());
+        }
+        if !event_ids.contains(&receipt.work_event_id)
+            || !receipt
+                .path_bindings
+                .iter()
+                .any(|binding| binding.root_index == root_index)
+        {
+            continue;
+        }
+        context.issue_ids.push(receipt.issue.issue_id.clone());
+        context
+            .evidence_sha256s
+            .push(receipt.issue.evidence_sha256.clone());
+        context
+            .target_symbols
+            .extend(receipt.issue.referenced_symbols.iter().cloned());
+    }
+    context.issue_ids.sort();
+    context.issue_ids.dedup();
+    context.evidence_sha256s.sort();
+    context.evidence_sha256s.dedup();
+    context.target_symbols.sort();
+    context.target_symbols.dedup();
+    context
+        .target_symbols
+        .truncate(MAX_REPOSITORY_REPAIR_TARGET_SYMBOLS);
+    Ok(context)
 }
 
 fn resolve_local_program(name: &str) -> Result<PathBuf, String> {
@@ -10042,6 +10262,25 @@ fn persist_source_bound_improvement_operator(
     repair_receipt_sha256: &str,
 ) -> Result<(), String> {
     validate_typed_mechanism_improvement_operator(operator)?;
+    if repair.schema == REPOSITORY_REPAIR_SYNTHESIS_SCHEMA {
+        validate_repository_repair_contract(&repair.repository_repair_contract)?;
+        validate_repository_pipeline_provenance(&repair.repository_pipeline_provenance)?;
+        if repair.repository_repair_contract.issue_evidence_sha256s
+            != repair.repository_issue_evidence_sha256s
+            || repair.repository_repair_contract.validation_id != repair.originating_validation_id
+            || !repair
+                .repository_pipeline_provenance
+                .nodes
+                .iter()
+                .any(|node| {
+                    node.kind == "REPAIR_CONTRACT"
+                        && node.semantic_identity
+                            == repair.repository_repair_contract.contract_sha256
+                })
+        {
+            return Err("SOURCE_BOUND_OPERATOR_REPAIR_CONTRACT_UNBOUND".to_string());
+        }
+    }
     let sandbox_only_authority = !repair.candidate_installed
         && repair.authoritative_source_write_events == 0
         && repair.authoritative_command.is_none();
@@ -10151,7 +10390,15 @@ fn repository_repair_target_symbols(
     plan: &RepositoryValidationPlan,
     diagnostic_tail: &str,
 ) -> Vec<String> {
-    let mut targets = plan.public_contract_target_symbols.clone();
+    // Public issue evidence may localize an exact owner, but it cannot create
+    // an edit.  The source-bound frontend must still prove the symbol exists
+    // and derive an executable typed template from source plus public tests.
+    let mut targets = plan.repository_issue_target_symbols.clone();
+    for contract_symbol in &plan.public_contract_target_symbols {
+        if !targets.contains(contract_symbol) {
+            targets.push(contract_symbol.clone());
+        }
+    }
     for diagnostic_symbol in python_pytest_target_symbols(diagnostic_tail) {
         if !targets.contains(&diagnostic_symbol) {
             targets.push(diagnostic_symbol);
@@ -10273,19 +10520,23 @@ fn try_synthesize_failed_python_cohort(
         let mut typed_candidates_enumerated = 0_usize;
         let mut successful_syntheses = Vec::new();
 
+        let repair_target_symbols =
+            repository_repair_target_symbols(plan, &validation.command.diagnostic_tail);
+        let repository_repair_contract = derive_repository_repair_contract(
+            &plan.repository_issue_evidence_sha256s,
+            &validation.validation_id,
+            &repair_target_symbols,
+        )?;
         let request = SourceBoundRepositoryPathDiscoveryRequestIR {
             schema: SOURCE_BOUND_REPOSITORY_PATH_DISCOVERY_SCHEMA.to_string(),
             repository_root: plan.root.clone(),
             source_relative_path: relative.clone(),
             test_relative_paths: plan.test_paths.clone(),
             python_executable: plan.program.clone(),
-            target_symbols: repository_repair_target_symbols(
-                plan,
-                &validation.command.diagnostic_tail,
-            ),
+            target_symbols: repository_repair_contract.target_symbols.clone(),
             allowed_effects: Vec::new(),
-            max_expression_depth: 3,
-            max_candidates: 2_048,
+            max_expression_depth: repository_repair_contract.max_expression_depth,
+            max_candidates: repository_repair_contract.max_candidates,
         };
         match discover_and_synthesize_python_repository_paths_with_operators(
             &request,
@@ -10538,6 +10789,24 @@ fn try_synthesize_failed_python_cohort(
             promoted_improvement_operator_ids.sort();
             promoted_improvement_operator_ids.dedup();
         }
+        let repository_pipeline_provenance =
+            build_repository_repair_provenance(&RepositoryRepairProvenanceInput {
+                issue_evidence_sha256s: &plan.repository_issue_evidence_sha256s,
+                validation_id: &validation.validation_id,
+                target_symbols: &repository_repair_contract.target_symbols,
+                repair_contract_sha256: Some(&repository_repair_contract.contract_sha256),
+                source_bound_receipt_sha256: source_bound_receipt_sha256.as_deref(),
+                candidate_sha256: candidate_sha256.as_deref(),
+                sandbox_output_sha256: sandbox_command
+                    .as_ref()
+                    .filter(|command| sandbox_verified && command.success)
+                    .map(|command| command.output_sha256.as_str()),
+                authoritative_output_sha256: authoritative_command
+                    .as_ref()
+                    .filter(|command| candidate_installed && command.success)
+                    .map(|command| command.output_sha256.as_str()),
+                promoted_operator_ids: &promoted_improvement_operator_ids,
+            })?;
         let receipt = RepositoryRepairSynthesisReceipt {
             schema: REPOSITORY_REPAIR_SYNTHESIS_SCHEMA.to_string(),
             repair_id,
@@ -10549,6 +10818,10 @@ fn try_synthesize_failed_python_cohort(
             generation: diagnostic.generation,
             root_index: plan.root_index,
             root_sha256: sha256(plan.root.to_string_lossy().as_bytes()),
+            repository_issue_ids: plan.repository_issue_ids.clone(),
+            repository_issue_evidence_sha256s: plan.repository_issue_evidence_sha256s.clone(),
+            repository_repair_contract,
+            repository_pipeline_provenance,
             source_relative_path: relative,
             predecessor_sha256,
             candidate_sha256,
@@ -10857,6 +11130,11 @@ fn repository_validation_plan(
                     .collect::<Vec<_>>();
                 input_observation_ids.sort();
                 input_observation_ids.dedup();
+                let issue_event_ids = python_entries
+                    .iter()
+                    .filter_map(|(observation, _)| observation.work_event_id.clone())
+                    .collect::<BTreeSet<_>>();
+                let issue_context = repository_issue_context(config, root_index, &issue_event_ids)?;
                 // Structured requirement targets have exact-owner priority.
                 // Diagnostic text is useful fallback evidence, but cannot
                 // displace a product symbol already bound by a validated
@@ -10893,6 +11171,9 @@ fn repository_validation_plan(
                     root_index,
                     root,
                     input_observation_ids,
+                    repository_issue_ids: issue_context.issue_ids,
+                    repository_issue_evidence_sha256s: issue_context.evidence_sha256s,
+                    repository_issue_target_symbols: issue_context.target_symbols,
                     public_contract_target_symbols,
                     scope_paths,
                     test_paths,
@@ -10925,6 +11206,11 @@ fn repository_validation_plan(
                 .collect::<Vec<_>>();
             input_observation_ids.sort();
             input_observation_ids.dedup();
+            let issue_event_ids = rust_entries
+                .iter()
+                .filter_map(|(observation, _)| observation.work_event_id.clone())
+                .collect::<BTreeSet<_>>();
+            let issue_context = repository_issue_context(config, root_index, &issue_event_ids)?;
             let mut scope_paths = rust_entries
                 .iter()
                 .map(|(_, relative)| relative.clone())
@@ -10946,6 +11232,9 @@ fn repository_validation_plan(
                 root_index,
                 root,
                 input_observation_ids,
+                repository_issue_ids: issue_context.issue_ids,
+                repository_issue_evidence_sha256s: issue_context.evidence_sha256s,
+                repository_issue_target_symbols: issue_context.target_symbols,
                 public_contract_target_symbols: Vec::new(),
                 scope_paths,
                 test_paths: vec![manifest],
@@ -11390,7 +11679,7 @@ fn validate_blocked_repository_cohort(
     let program_sha256 = file_sha256(&plan.program, 512 * 1024 * 1024)?;
     let validation_id = sha256(
         format!(
-            "REPOSITORY_COHORT_VALIDATION_2:{}:{:?}:{}:{}:{}:{}:{}:{}",
+            "REPOSITORY_COHORT_VALIDATION_3:{}:{:?}:{}:{}:{}:{}:{}:{}:{}",
             plan.root_index,
             plan.validator_kind,
             plan.test_selection_source,
@@ -11400,6 +11689,7 @@ fn validate_blocked_repository_cohort(
             scope_fingerprint_before,
             program_sha256,
             plan.input_observation_ids.join(":"),
+            plan.repository_issue_evidence_sha256s.join(":"),
             plan.args.join("\u{1f}")
         )
         .as_bytes(),
@@ -11419,6 +11709,8 @@ fn validate_blocked_repository_cohort(
             || existing.reused_validation_receipt_sha256.as_ref()
                 != plan.reused_validation_receipt_sha256.as_ref()
             || existing.input_observation_ids != plan.input_observation_ids
+            || existing.repository_issue_ids != plan.repository_issue_ids
+            || existing.repository_issue_evidence_sha256s != plan.repository_issue_evidence_sha256s
             || existing.test_paths != plan.test_paths
             || existing.scope_fingerprint_before != scope_fingerprint_before
             || existing.program_sha256 != program_sha256
@@ -11458,6 +11750,8 @@ fn validate_blocked_repository_cohort(
             test_selection_source: plan.test_selection_source.clone(),
             reused_validation_receipt_sha256: plan.reused_validation_receipt_sha256.clone(),
             input_observation_ids: plan.input_observation_ids.clone(),
+            repository_issue_ids: plan.repository_issue_ids.clone(),
+            repository_issue_evidence_sha256s: plan.repository_issue_evidence_sha256s.clone(),
             test_paths: plan.test_paths.clone(),
             scope_fingerprint_before,
             scope_fingerprint_after,
@@ -13734,6 +14028,56 @@ mod tests {
     }
 
     #[test]
+    fn repository_issue_intake_binds_public_owner_hints_without_patch_authority() {
+        let root = temp_root("repository-issue-intake");
+        let (config_path, config) = test_config(&root);
+        let repository = &config.watched_roots[0];
+        fs::create_dir_all(repository.join("tests")).unwrap();
+        fs::write(
+            repository.join("policy.py"),
+            "class Policy:\n    def resolve(self):\n        return self.owner\n",
+        )
+        .unwrap();
+        fs::write(
+            repository.join("tests/test_policy.py"),
+            "from policy import Policy\n",
+        )
+        .unwrap();
+        initialize(&config_path).unwrap();
+
+        let receipt = record_repository_issue(
+            &config_path,
+            RepositoryIssueIntakeRequestIR {
+                schema: crate::repository_experience::REPOSITORY_ISSUE_INTAKE_REQUEST_SCHEMA
+                    .to_string(),
+                issue_id: "policy-owner-identity".to_string(),
+                problem_statement: "Observed: Policy.resolve() returns the wrong owner.\nExpected: Policy.resolve() should preserve Policy.owner.\nConstraint: must not modify tests/test_policy.py".to_string(),
+                paths: vec![
+                    repository.join("policy.py"),
+                    repository.join("tests/test_policy.py"),
+                ],
+                evidence_artifacts: Vec::new(),
+                occurred_at_ms: 1,
+            },
+        )
+        .unwrap();
+        assert!(!receipt.issue.natural_language_is_patch_authority);
+        assert_eq!(receipt.path_bindings.len(), 2);
+        let context = repository_issue_context(
+            &config,
+            0,
+            &[receipt.work_event_id.clone()].into_iter().collect(),
+        )
+        .unwrap();
+        assert_eq!(context.issue_ids, ["policy-owner-identity"]);
+        assert!(context
+            .target_symbols
+            .contains(&"Policy.resolve".to_string()));
+        assert_eq!(context.evidence_sha256s, [receipt.issue.evidence_sha256]);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn sealed_resource_stop_continues_with_memory_and_executable_knowledge_only() {
         let root = temp_root("lineage-continuation");
         let watched = root.join("watched");
@@ -14617,7 +14961,7 @@ mod tests {
     #[test]
     fn runtime_validation_cache_isolated_from_source_state_and_developer_target() {
         let root = temp_root("runtime-validation-target-isolation");
-        let (_, mut config) = test_config(&root);
+        let (_config_path, mut config) = test_config(&root);
         config.source_mutation.source_root = config.watched_roots[0].clone();
         config.source_mutation.build_target_dir = root.join("developer-target");
         config.source_mutation.runtime_bin_dir = root.join("runtime/bin");
@@ -17326,7 +17670,7 @@ mod tests {
             return;
         }
         let root = temp_root("failed-python-source-bound-repair");
-        let (_, mut config) = test_config(&root);
+        let (config_path, mut config) = test_config(&root);
         let repository = config.watched_roots[0].clone();
         fs::create_dir_all(repository.join("tests")).unwrap();
         fs::create_dir_all(config.state_dir.join("diagnostics")).unwrap();
@@ -17342,9 +17686,26 @@ mod tests {
             "from core_module import add, stable_zero\n\ndef test_add():\n    assert add(2, 3) == 5\n    assert add(4, 7) == 11\n\n\ndef test_stable_zero():\n    assert stable_zero(2, 3) == 0\n    assert stable_zero(4, 7) == 0\n",
         )
         .unwrap();
+        initialize(&config_path).unwrap();
+        let issue_receipt = record_repository_issue(
+            &config_path,
+            RepositoryIssueIntakeRequestIR {
+                schema: crate::repository_experience::REPOSITORY_ISSUE_INTAKE_REQUEST_SCHEMA
+                    .to_string(),
+                issue_id: "public-add-closure".to_string(),
+                problem_statement: "Observed: add() returns zero through add_impl().\nExpected: add() should preserve the public addition behavior.\nConstraint: must not change tests/test_core_module.py".to_string(),
+                paths: vec![
+                    repository.join("core_module.py"),
+                    repository.join("tests/test_core_module.py"),
+                ],
+                evidence_artifacts: Vec::new(),
+                occurred_at_ms: 1,
+            },
+        )
+        .unwrap();
         let implementation = LearningObservation {
             observation_id: "failed-python-implementation".to_string(),
-            work_event_id: None,
+            work_event_id: Some(issue_receipt.work_event_id.clone()),
             logical_path: "ROOT_0/core_module.py".to_string(),
             content_sha256: sha256(predecessor.as_bytes()),
             predecessor_content_sha256: Some("e".repeat(64)),
@@ -17454,6 +17815,19 @@ mod tests {
         );
         assert_eq!(repair.repair_problem_id.len(), 64);
         assert_eq!(repair.synthesis_capability_sha256.len(), 64);
+        assert_eq!(repair.repository_issue_ids, ["public-add-closure"]);
+        assert_eq!(
+            repair.repository_issue_evidence_sha256s,
+            [issue_receipt.issue.evidence_sha256]
+        );
+        validate_repository_repair_contract(&repair.repository_repair_contract).unwrap();
+        validate_repository_pipeline_provenance(&repair.repository_pipeline_provenance).unwrap();
+        assert!(repair
+            .repository_pipeline_provenance
+            .nodes
+            .iter()
+            .any(|node| node.kind == "REPAIR_CONTRACT"
+                && node.semantic_identity == repair.repository_repair_contract.contract_sha256));
         assert_eq!(
             repair.source_bound_patch_variant_sha256s_attempted.len(),
             repair.source_bound_patch_variant_ids_attempted.len()
