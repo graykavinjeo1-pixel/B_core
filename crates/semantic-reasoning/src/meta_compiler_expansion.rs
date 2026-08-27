@@ -46,6 +46,97 @@ pub const META_COMPILER_KNOWLEDGE_MECHANISMS: &[(&str, &str)] = &[
         "static_typing",
         "FEE4EDE168E80A7995BA1309A316975B24BA06583284A666833DA480499A2BCA",
     ),
+    (
+        "control_flow",
+        "2A8146DC0C136D77F93C3CCD2FD3FD16E6E0208415454A1B0199D9451BDEF5C2",
+    ),
+    (
+        "branching",
+        "DB2ADB1A3FE916D5E1D3C474DC5E41DFF4EEBFA10578F2C4F41889E8639E2F75",
+    ),
+    (
+        "iteration",
+        "7ADEB295E7767F16ABC57085CB24EEC141B8C1BC4AD358642EDDB31F0E883C01",
+    ),
+    (
+        "functions",
+        "BA2BD374B37D64DECC661E7B8D76075A72BAB3F071F250DE4E1FD86964B904B1",
+    ),
+    (
+        "function_call",
+        "83EFC80D4652C504646FF8151B68025DEA972FD8A1DB0DB1CBD89A1937B739CB",
+    ),
+    (
+        "error_handling",
+        "33B98337222D9F3C441AB736BD20D1B79540FA960D243791F5BC17E49B38BF5B",
+    ),
+    (
+        "exception",
+        "D519FF9C1A958FD3AEFF191B764D57E662C8CA546EC20CD8DF0BCD420D224120",
+    ),
+    (
+        "result_value",
+        "8FD4C643FF7A8DE5A0911DB01D069A0572514CADF978B031610A6B89AB202985",
+    ),
+    (
+        "data_structures_algorithms",
+        "998B949857F9516EBF06C0C0F575A1538E2F28F68476153DCA41ABB711C47D65",
+    ),
+    (
+        "sequence",
+        "64CC5EA56D069858772822C5943D6726A9C0E3D51BB9029C8C2CFCFCA2EFD59A",
+    ),
+    (
+        "associative_map",
+        "A4B88E86EFC178F156BC1CDF9082A1E6B3CCD08CDE24F8641EE5A03975BD1A2E",
+    ),
+    (
+        "concurrency",
+        "C207DC781E584D1D31BEB4DA4B25C0DD876C05CDCB7B5AAD66105718CE06668E",
+    ),
+    (
+        "async_await",
+        "055B68B3F8686854D9042B8404C8DE84638E28FD12CF09734890CBA45E5142B9",
+    ),
+    (
+        "memory",
+        "B52F5DA12A333136B22A795F8B107E6BF4A7910DD15B372E164FE383102694A1",
+    ),
+    (
+        "ownership",
+        "36AC78A7DF197ACBF350606FDCE4026714E09896B4EC077EF474C0107E8D4FB8",
+    ),
+    (
+        "borrow_checker",
+        "AB1F9E0E664B5370D7E1D80C76073C7CB0E1AC804046D6AE096A4EEEFF154CF8",
+    ),
+    (
+        "ecosystem",
+        "EFFCBD9E5DF32056B2AF69F78B16EE7CF62883132E12C98F9A093654CC7DA727",
+    ),
+    (
+        "build_tool",
+        "447B64D634C060EEE2B1A922A5E2E075CD7946EF1134FB2DA5548BB136B471FE",
+    ),
+];
+
+// Parent edges are the executable subset of the canonical Synapse A2
+// mechanism graph used by repair composition.  Statements from the knowledge
+// corpus are intentionally not copied: only content-addressed operational
+// identities and their type-like parent relation can influence synthesis.
+const META_COMPILER_MECHANISM_PARENTS: &[(&str, &str)] = &[
+    ("branching", "control_flow"),
+    ("iteration", "control_flow"),
+    ("pattern_matching", "control_flow"),
+    ("function_call", "functions"),
+    ("exception", "error_handling"),
+    ("result_value", "error_handling"),
+    ("sequence", "data_structures_algorithms"),
+    ("associative_map", "data_structures_algorithms"),
+    ("async_await", "concurrency"),
+    ("ownership", "memory"),
+    ("borrow_checker", "ownership"),
+    ("build_tool", "ecosystem"),
 ];
 
 const MAX_EXAMPLES: usize = 128;
@@ -552,6 +643,16 @@ impl MetaCompilerRegistryIR {
         source_relative_path: &Path,
         source: &str,
     ) -> Vec<MaterializedPrimitiveApplicationIR> {
+        self.materialize_candidates_for_requirements(language_id, source_relative_path, source, &[])
+    }
+
+    pub fn materialize_candidates_for_requirements(
+        &self,
+        language_id: &str,
+        source_relative_path: &Path,
+        source: &str,
+        required_mechanism_ids: &[String],
+    ) -> Vec<MaterializedPrimitiveApplicationIR> {
         let extension = source_relative_path
             .extension()
             .and_then(|value| value.to_str())
@@ -562,7 +663,8 @@ impl MetaCompilerRegistryIR {
         {
             return Vec::new();
         }
-        self.edit_primitives
+        let mut candidates = self
+            .edit_primitives
             .iter()
             .filter(|primitive| {
                 primitive.promoted
@@ -570,8 +672,21 @@ impl MetaCompilerRegistryIR {
                     && primitive.source_extension == extension
             })
             .filter_map(|primitive| {
-                materialize_induced_primitive(primitive, source_relative_path, source).ok()
+                materialize_induced_primitive(primitive, source_relative_path, source)
+                    .ok()
+                    .map(|candidate| {
+                        let relevance = required_mechanism_ids
+                            .iter()
+                            .filter(|required| primitive.required_mechanism_ids.contains(*required))
+                            .count();
+                        (relevance, primitive.primitive_id.clone(), candidate)
+                    })
             })
+            .collect::<Vec<_>>();
+        candidates.sort_by(|left, right| right.0.cmp(&left.0).then_with(|| left.1.cmp(&right.1)));
+        candidates
+            .into_iter()
+            .map(|(_, _, candidate)| candidate)
             .collect()
     }
 
@@ -708,6 +823,111 @@ fn sorted_unique(mut values: Vec<String>) -> Vec<String> {
     values.sort();
     values.dedup();
     values
+}
+
+fn add_mechanism_with_parents(mechanisms: &mut BTreeSet<String>, mechanism: &str) {
+    if !META_COMPILER_KNOWLEDGE_MECHANISMS
+        .iter()
+        .any(|(known, _)| *known == mechanism)
+        || !mechanisms.insert(mechanism.to_string())
+    {
+        return;
+    }
+    if let Some((_, parent)) = META_COMPILER_MECHANISM_PARENTS
+        .iter()
+        .find(|(child, _)| *child == mechanism)
+    {
+        add_mechanism_with_parents(mechanisms, parent);
+    }
+}
+
+fn mechanism_ids_for_text_and_topology(text: &str, topology: &[String]) -> Vec<String> {
+    let mut mechanisms = BTreeSet::new();
+    for core in [
+        "abstraction",
+        "compiler_runtime",
+        "macro_system",
+        "pattern_matching",
+        "static_typing",
+    ] {
+        add_mechanism_with_parents(&mut mechanisms, core);
+    }
+    let lower = text.to_ascii_lowercase();
+    let topology = topology.join("|");
+    if topology.contains("INSERT")
+        || topology.contains("DELETE")
+        || topology.contains("MOVE")
+        || topology.contains("ATOMIC_MULTI_EDIT")
+    {
+        add_mechanism_with_parents(&mut mechanisms, "control_flow");
+    }
+    if lower.contains(" if ")
+        || lower.contains("if(")
+        || lower.contains("if (")
+        || lower.contains("match ")
+    {
+        add_mechanism_with_parents(&mut mechanisms, "branching");
+    }
+    if lower.contains(" for ")
+        || lower.contains("for(")
+        || lower.contains("for (")
+        || lower.contains(" while ")
+        || lower.contains("while(")
+        || lower.contains("while (")
+    {
+        add_mechanism_with_parents(&mut mechanisms, "iteration");
+    }
+    if text.contains('(') && text.contains(')') {
+        add_mechanism_with_parents(&mut mechanisms, "function_call");
+    }
+    if lower.contains("async ") || lower.contains("await") {
+        add_mechanism_with_parents(&mut mechanisms, "async_await");
+    }
+    if lower.contains("try")
+        || lower.contains("except")
+        || lower.contains("catch")
+        || lower.contains("raise")
+        || lower.contains("panic")
+    {
+        add_mechanism_with_parents(&mut mechanisms, "exception");
+    }
+    if lower.contains("result<") || lower.contains("option<") || text.contains('?') {
+        add_mechanism_with_parents(&mut mechanisms, "result_value");
+    }
+    if text.contains('[') && text.contains(']') {
+        add_mechanism_with_parents(&mut mechanisms, "sequence");
+    }
+    if text.contains('{') && text.contains('}') {
+        add_mechanism_with_parents(&mut mechanisms, "associative_map");
+    }
+    if text.contains('&') || lower.contains("borrow") {
+        add_mechanism_with_parents(&mut mechanisms, "borrow_checker");
+    }
+    if lower.contains("cargo")
+        || lower.contains("pyproject")
+        || lower.contains("package.json")
+        || lower.contains("build")
+    {
+        add_mechanism_with_parents(&mut mechanisms, "build_tool");
+    }
+    mechanisms.into_iter().collect()
+}
+
+/// Converts an observed compiler/lowering failure into callable mechanism
+/// requirements.  This is used as a typed retrieval key, never as patch or
+/// acceptance authority.
+pub fn required_mechanism_ids_for_gap(failure_code: &str, source: &str) -> Vec<String> {
+    let upper = failure_code.to_ascii_uppercase();
+    let mut topology = vec!["REPLACE".to_string()];
+    if upper.contains("CONFLICT") || upper.contains("ATOMIC") || upper.contains("COMPOSITION") {
+        topology.push("ATOMIC_MULTI_EDIT".to_string());
+    }
+    let mut text = String::with_capacity(failure_code.len() + source.len().min(16 * 1024));
+    text.push_str(failure_code);
+    text.push('\n');
+    let source_end = floor_char_boundary(source, source.len().min(16 * 1024));
+    text.push_str(&source[..source_end]);
+    mechanism_ids_for_text_and_topology(&text, &topology)
 }
 
 fn validate_sha256(value: &str, label: &str) -> Result<(), String> {
@@ -933,13 +1153,18 @@ fn canonical_example_templates(
         ) && !(token.kind == LexicalTokenKind::Identifier
             && is_language_keyword(language_id, &token.text));
         if dynamic {
-            let hole_id = roles
-                .get(&(token.kind, token.text.clone()))
-                .ok_or_else(|| "META_COMPILER_AFTER_ONLY_DYNAMIC_HOLE".to_string())?;
-            after_segments.push(SyntaxTemplateSegment::Hole {
-                hole_id: hole_id.clone(),
-                kind: token.kind,
-            });
+            if let Some(hole_id) = roles.get(&(token.kind, token.text.clone())) {
+                after_segments.push(SyntaxTemplateSegment::Hole {
+                    hole_id: hole_id.clone(),
+                    kind: token.kind,
+                });
+            } else {
+                // A verified repair may introduce a new constant or helper
+                // name. It remains a literal until an independent example
+                // produces the exact same template, so one observation can
+                // never authorize an unconstrained fresh symbol.
+                after_segments.push(SyntaxTemplateSegment::Literal { text: token.text });
+            }
         } else {
             after_segments.push(SyntaxTemplateSegment::Literal { text: token.text });
         }
@@ -990,13 +1215,14 @@ pub fn induce_edit_primitive(
     if before_template == after_template {
         return Err("META_COMPILER_INDUCTION_NO_OP".to_string());
     }
-    let required_mechanism_ids = vec![
-        "abstraction".to_string(),
-        "compiler_runtime".to_string(),
-        "macro_system".to_string(),
-        "pattern_matching".to_string(),
-        "static_typing".to_string(),
-    ];
+    let required_mechanism_ids = mechanism_ids_for_text_and_topology(
+        &format!(
+            "{}\n{}",
+            template_mechanism_text(&before_template),
+            template_mechanism_text(&after_template)
+        ),
+        topology,
+    );
     let evidence_example_ids = sorted_unique(
         examples
             .iter()
@@ -1149,6 +1375,17 @@ fn render_template(
     Ok(rendered)
 }
 
+fn template_mechanism_text(template: &SyntaxTemplateIR) -> String {
+    template
+        .segments
+        .iter()
+        .map(|segment| match segment {
+            SyntaxTemplateSegment::Literal { text } => text.as_str(),
+            SyntaxTemplateSegment::Hole { .. } => " ",
+        })
+        .collect::<String>()
+}
+
 pub fn materialize_induced_primitive(
     primitive: &InducedEditPrimitiveIR,
     source_relative_path: &Path,
@@ -1238,6 +1475,131 @@ pub fn verified_examples_from_edit(
     Ok(examples)
 }
 
+fn edit_topology(edit: &SourceEditAtom, output: &mut Vec<String>) {
+    match edit {
+        SourceEditAtom::Replace { .. } => output.push("REPLACE".to_string()),
+        SourceEditAtom::Insert { .. } => output.push("INSERT".to_string()),
+        SourceEditAtom::Delete { .. } => output.push("DELETE".to_string()),
+        SourceEditAtom::Move { .. } => output.push("MOVE".to_string()),
+        SourceEditAtom::AtomicMultiEdit { edits } => {
+            output.push("ATOMIC_MULTI_EDIT".to_string());
+            for child in edits {
+                edit_topology(child, output);
+            }
+        }
+    }
+}
+
+fn floor_char_boundary(value: &str, mut index: usize) -> usize {
+    index = index.min(value.len());
+    while index > 0 && !value.is_char_boundary(index) {
+        index -= 1;
+    }
+    index
+}
+
+fn ceil_char_boundary(value: &str, mut index: usize) -> usize {
+    index = index.min(value.len());
+    while index < value.len() && !value.is_char_boundary(index) {
+        index += 1;
+    }
+    index
+}
+
+fn common_prefix_bytes(left: &str, right: &str) -> usize {
+    let mut bytes: usize = 0;
+    for (left_character, right_character) in left.chars().zip(right.chars()) {
+        if left_character != right_character {
+            break;
+        }
+        bytes += left_character.len_utf8();
+    }
+    bytes
+}
+
+fn common_suffix_bytes(left: &str, right: &str, prefix: usize) -> usize {
+    let maximum = left.len().min(right.len()).saturating_sub(prefix);
+    let mut bytes: usize = 0;
+    for (left_character, right_character) in left.chars().rev().zip(right.chars().rev()) {
+        if left_character != right_character
+            || bytes.saturating_add(left_character.len_utf8()) > maximum
+        {
+            break;
+        }
+        bytes += left_character.len_utf8();
+    }
+    bytes
+}
+
+fn contextual_changed_fragments(before: &str, after: &str) -> Option<(String, String)> {
+    if before == after || before.is_empty() || after.is_empty() {
+        return None;
+    }
+    const CONTEXT_BYTES: usize = 96;
+    let prefix = common_prefix_bytes(before, after);
+    let suffix = common_suffix_bytes(before, after, prefix);
+    let start = floor_char_boundary(before, prefix.saturating_sub(CONTEXT_BYTES));
+    let before_change_end = before.len().saturating_sub(suffix);
+    let after_change_end = after.len().saturating_sub(suffix);
+    let before_end = ceil_char_boundary(
+        before,
+        before_change_end
+            .saturating_add(CONTEXT_BYTES)
+            .min(before.len()),
+    );
+    let after_end = ceil_char_boundary(
+        after,
+        after_change_end
+            .saturating_add(CONTEXT_BYTES)
+            .min(after.len()),
+    );
+    let before_fragment = before.get(start..before_end)?.to_string();
+    let after_fragment = after.get(start..after_end)?.to_string();
+    if before_fragment == after_fragment
+        || before_fragment.len() > MAX_FRAGMENT_BYTES
+        || after_fragment.len() > MAX_FRAGMENT_BYTES
+    {
+        return None;
+    }
+    Some((before_fragment, after_fragment))
+}
+
+#[allow(clippy::too_many_arguments)]
+fn collect_contextual_verified_example(
+    independent_context_id: &str,
+    language_id: &str,
+    source_extension: &str,
+    source_relative_path: &Path,
+    predecessor_source: &str,
+    edit: &SourceEditAtom,
+    public_verification_sha256: &str,
+    compile_verification_sha256: &str,
+    output: &mut Vec<VerifiedRepairExampleIR>,
+) -> Result<(), String> {
+    let candidate_source = apply_edit_atom(predecessor_source, edit)?;
+    let Some((before_fragment, after_fragment)) =
+        contextual_changed_fragments(predecessor_source, &candidate_source)
+    else {
+        return Ok(());
+    };
+    let mut topology = Vec::new();
+    edit_topology(edit, &mut topology);
+    if let Ok(example) = VerifiedRepairExampleIR::new(
+        independent_context_id,
+        language_id,
+        source_extension,
+        source_relative_path.to_path_buf(),
+        before_fragment,
+        after_fragment,
+        topology,
+        public_verification_sha256,
+        compile_verification_sha256,
+    ) {
+        output.push(example);
+    }
+    Ok(())
+}
+
 #[allow(clippy::too_many_arguments)]
 fn collect_verified_examples(
     independent_context_id: &str,
@@ -1277,6 +1639,17 @@ fn collect_verified_examples(
             }
         }
         SourceEditAtom::AtomicMultiEdit { edits } => {
+            collect_contextual_verified_example(
+                independent_context_id,
+                language_id,
+                source_extension,
+                source_relative_path,
+                predecessor_source,
+                edit,
+                public_verification_sha256,
+                compile_verification_sha256,
+                output,
+            )?;
             for child in edits {
                 collect_verified_examples(
                     independent_context_id,
@@ -1293,11 +1666,17 @@ fn collect_verified_examples(
         }
         SourceEditAtom::Insert { .. }
         | SourceEditAtom::Delete { .. }
-        | SourceEditAtom::Move { .. } => {
-            // Insert/delete/move remain executable base atoms.  Their safe
-            // anti-unification needs anchor context, so a bare atom is not
-            // promoted as a context-free macro.
-        }
+        | SourceEditAtom::Move { .. } => collect_contextual_verified_example(
+            independent_context_id,
+            language_id,
+            source_extension,
+            source_relative_path,
+            predecessor_source,
+            edit,
+            public_verification_sha256,
+            compile_verification_sha256,
+            output,
+        )?,
     }
     Ok(())
 }
@@ -1422,9 +1801,28 @@ pub fn load_registry(path: &Path) -> Result<MetaCompilerRegistryIR, String> {
         return Ok(MetaCompilerRegistryIR::default());
     }
     let bytes = fs::read(path).map_err(|error| format!("META_COMPILER_REGISTRY_READ:{error}"))?;
-    let registry: MetaCompilerRegistryIR = serde_json::from_slice(&bytes)
+    let mut registry: MetaCompilerRegistryIR = serde_json::from_slice(&bytes)
         .map_err(|error| format!("META_COMPILER_REGISTRY_PARSE:{error}"))?;
     registry.validate()?;
+    // The A2 mechanism universe is content-addressed. Adding a newly
+    // recognized node upgrades retrieval vocabulary without trusting or
+    // changing any learned repair.
+    let mut upgraded = false;
+    for (mechanism, node_sha256) in META_COMPILER_KNOWLEDGE_MECHANISMS {
+        if !registry
+            .knowledge_mechanism_node_sha256s
+            .contains_key(*mechanism)
+        {
+            registry
+                .knowledge_mechanism_node_sha256s
+                .insert((*mechanism).to_string(), (*node_sha256).to_string());
+            upgraded = true;
+        }
+    }
+    if upgraded {
+        registry.refresh_hash()?;
+        registry.validate()?;
+    }
     Ok(registry)
 }
 
@@ -1551,6 +1949,103 @@ mod tests {
             .unwrap();
         assert_eq!(promoted.len(), 1);
         registry.validate().unwrap();
+    }
+
+    #[test]
+    fn independently_verified_insert_repairs_become_an_executable_primitive() {
+        let learn_insert = |context: &str, path: &str, source: &str, marker: &str| {
+            let offset = source.find("    return").unwrap();
+            verified_examples_from_edit(
+                context,
+                "python",
+                "py",
+                Path::new(path),
+                source,
+                &SourceEditAtom::Insert {
+                    offset,
+                    content: format!("    if {marker} is None:\n        return 0\n"),
+                },
+                &digest(&format!("public:{context}")),
+                &digest(&format!("compile:{context}")),
+            )
+            .unwrap()
+            .remove(0)
+        };
+        let mut registry = MetaCompilerRegistryIR::default();
+        registry
+            .learn_verified_example(learn_insert(
+                "repo-a",
+                "src/a.py",
+                "def normalize(value):\n    return value\n",
+                "value",
+            ))
+            .unwrap();
+        let promoted = registry
+            .learn_verified_example(learn_insert(
+                "repo-b",
+                "src/b.py",
+                "def normalize(total):\n    return total\n",
+                "total",
+            ))
+            .unwrap();
+        assert!(!promoted.is_empty());
+        let candidates = registry.materialize_candidates(
+            "python",
+            Path::new("src/c.py"),
+            "def normalize(balance):\n    return balance\n",
+        );
+        assert_eq!(candidates.len(), 1);
+        assert!(candidates[0]
+            .candidate_source
+            .contains("if balance is None:"));
+        assert!(candidates[0].candidate_source.contains("return 0"));
+    }
+
+    #[test]
+    fn atomic_edit_learning_preserves_composite_topology_and_mechanism_requirements() {
+        let source = "async def load(value):\n    stale = True\n    return await fetch(value)\n";
+        let delete_start = source.find("    stale").unwrap();
+        let delete_end = delete_start + "    stale = True\n".len();
+        let insert_at = source.find("    return").unwrap();
+        let edit = SourceEditAtom::AtomicMultiEdit {
+            edits: vec![
+                SourceEditAtom::Delete {
+                    range: ByteRange {
+                        start: delete_start,
+                        end: delete_end,
+                    },
+                    expected_sha256: digest("    stale = True\n"),
+                },
+                SourceEditAtom::Insert {
+                    offset: insert_at,
+                    content: "    if value is None:\n        return None\n".to_string(),
+                },
+            ],
+        };
+        let examples = verified_examples_from_edit(
+            "repo-a",
+            "python",
+            "py",
+            Path::new("src/load.py"),
+            source,
+            &edit,
+            &digest("public"),
+            &digest("compile"),
+        )
+        .unwrap();
+        assert!(examples.iter().any(|example| {
+            example.base_edit_topology
+                == vec![
+                    "ATOMIC_MULTI_EDIT".to_string(),
+                    "DELETE".to_string(),
+                    "INSERT".to_string(),
+                ]
+        }));
+        let mechanisms =
+            required_mechanism_ids_for_gap("CONFLICTING_SOURCE_BOUND_EDITS:COMPOSITION", source);
+        for required in ["async_await", "concurrency", "function_call", "functions"] {
+            assert!(mechanisms.iter().any(|mechanism| mechanism == required));
+        }
     }
 
     #[test]

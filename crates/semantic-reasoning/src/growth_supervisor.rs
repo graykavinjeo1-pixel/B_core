@@ -55,8 +55,8 @@ use crate::integrated_development::{
 use crate::intrinsic_drive::{IntrinsicCuriosityHypothesis, IntrinsicDriveMemory};
 use crate::meta_compiler_expansion::{
     load_registry as load_meta_compiler_registry,
-    persist_registry as persist_meta_compiler_registry, verified_examples_from_edit,
-    MetaCompilerGapIR, MetaCompilerGapKind, MetaCompilerRegistryIR,
+    persist_registry as persist_meta_compiler_registry, required_mechanism_ids_for_gap,
+    verified_examples_from_edit, MetaCompilerGapIR, MetaCompilerGapKind, MetaCompilerRegistryIR,
 };
 use crate::repository_experience::{
     build_repository_repair_provenance, derive_repository_repair_contract, ground_repository_issue,
@@ -108,6 +108,11 @@ const AUTONOMOUS_SWE_CURRICULUM_HIDDEN_CASES: usize = 12;
 const AUTONOMOUS_SWE_CURRICULUM_MAX_REVISIONS: usize = 4;
 const MAX_INTRINSIC_CURIOSITY_HYPOTHESES: usize = 48;
 const MAX_RETAINED_INTRINSIC_CURIOSITY_RECEIPTS: usize = 96;
+// A completed campaign directory is a verifier work area, not semantic
+// authority.  The immutable history receipt and current/predecessor memory
+// retain the accepted lineage, so keeping every full predecessor snapshot
+// only makes state usage grow quadratically with generation count.
+const MAX_RETAINED_CAMPAIGN_WORKDIRS: usize = 2;
 const SCAN_WATCHDOG_TICK_MS: u64 = 1_000;
 const MAX_SCAN_RUNTIME_MS: u64 = 60_000;
 const FULL_HASH_CANARY_INTERVAL: u64 = 64;
@@ -2968,6 +2973,100 @@ fn cleanup_recent_files(directory: &Path, prefix: &str, keep: usize) -> Result<(
         fs::remove_file(&path).map_err(|error| format!("CLEANUP:{}:{error}", path.display()))?;
     }
     Ok(())
+}
+
+fn completed_campaign_history_valid(
+    config: &GrowthSupervisorConfig,
+    campaign_id: &str,
+    freeze: &CampaignFreeze,
+) -> Result<bool, String> {
+    let history_root = config.state_dir.join("history");
+    let accepted_path = history_root.join(format!("{campaign_id}.json"));
+    if accepted_path.is_file() {
+        let history: CampaignHistory = read_json(&accepted_path)?;
+        return Ok(history.campaign_id == campaign_id
+            && history.generation_attempted == freeze.generation
+            && history.predecessor_memory_sha256 == freeze.predecessor_memory_sha256
+            && history.freeze_sha256 == json_sha256(freeze)?
+            && history.verification_receipt_sha256.len() == 64
+            && history
+                .verification_receipt_sha256
+                .bytes()
+                .all(|byte| byte.is_ascii_hexdigit()));
+    }
+    let failure_path = history_root.join(format!("{campaign_id}.failure.json"));
+    if failure_path.is_file() {
+        let failure: CampaignFailure = read_json(&failure_path)?;
+        return Ok(failure.campaign_id == campaign_id
+            && failure.predecessor_preserved
+            && failure.error_sha256.len() == 64
+            && failure
+                .error_sha256
+                .bytes()
+                .all(|byte| byte.is_ascii_hexdigit()));
+    }
+    Ok(false)
+}
+
+/// Retains full predecessor snapshots only for the current and immediately
+/// preceding completed verifier work areas. Freeze, candidate, observation,
+/// verifier receipt and request remain sealed in every campaign directory.
+/// Semantic/rollback memory and history are never removed here. An incomplete
+/// or pending campaign is also never touched.
+fn compact_completed_campaign_workdirs(
+    config: &GrowthSupervisorConfig,
+    pending_campaign_id: Option<&str>,
+) -> Result<u64, String> {
+    let root = config.state_dir.join("campaigns");
+    if !root.exists() {
+        return Ok(0);
+    }
+    let mut completed = Vec::new();
+    for entry in fs::read_dir(&root)
+        .map_err(|error| format!("CAMPAIGN_CLEANUP_READ_DIR:{}:{error}", root.display()))?
+    {
+        let entry = entry.map_err(|error| format!("CAMPAIGN_CLEANUP_ENTRY:{error}"))?;
+        if !entry
+            .file_type()
+            .map_err(|error| format!("CAMPAIGN_CLEANUP_TYPE:{error}"))?
+            .is_dir()
+        {
+            continue;
+        }
+        let campaign_id = entry.file_name().to_string_lossy().to_string();
+        if pending_campaign_id == Some(campaign_id.as_str()) {
+            continue;
+        }
+        let freeze_path = entry.path().join("freeze.json");
+        if !freeze_path.is_file() {
+            continue;
+        }
+        let freeze: CampaignFreeze = read_json(&freeze_path)?;
+        if freeze.campaign_id != campaign_id
+            || !completed_campaign_history_valid(config, &campaign_id, &freeze)?
+        {
+            continue;
+        }
+        completed.push((freeze.generation, campaign_id, entry.path()));
+    }
+    completed.sort_by(|left, right| left.0.cmp(&right.0).then_with(|| left.1.cmp(&right.1)));
+    let remove_count = completed
+        .len()
+        .saturating_sub(MAX_RETAINED_CAMPAIGN_WORKDIRS);
+    let mut removed = 0_u64;
+    for (_, _, path) in completed.into_iter().take(remove_count) {
+        let predecessor = path.join("predecessor_memory.json");
+        if predecessor.is_file() {
+            fs::remove_file(&predecessor).map_err(|error| {
+                format!(
+                    "CAMPAIGN_COMPACTION_REMOVE:{}:{error}",
+                    predecessor.display()
+                )
+            })?;
+            removed = removed.saturating_add(1);
+        }
+    }
+    Ok(removed)
 }
 
 fn load_state(config: &GrowthSupervisorConfig) -> Result<SupervisorState, String> {
@@ -8500,6 +8599,7 @@ fn complete_campaign(
             "FAILED_GENERATION_DISCARDED_PREDECESSOR_PRESERVED"
         },
     )?;
+    compact_completed_campaign_workdirs(config, state.pending_campaign_id.as_deref())?;
     Ok(accepted)
 }
 
@@ -10719,8 +10819,18 @@ fn try_synthesize_failed_python_cohort(
         // induced primitives enter the same sandbox/public verifier path.
         // The registry never approves or installs its own output.
         if !sandbox_verified {
-            let meta_candidates =
-                meta_compiler_registry.materialize_candidates("python", &relative, &source);
+            let required_meta_mechanisms = required_mechanism_ids_for_gap(
+                failure_code
+                    .as_deref()
+                    .unwrap_or("PUBLIC_INFORMATION_INSUFFICIENT"),
+                &source,
+            );
+            let meta_candidates = meta_compiler_registry.materialize_candidates_for_requirements(
+                "python",
+                &relative,
+                &source,
+                &required_meta_mechanisms,
+            );
             for meta_candidate in meta_candidates {
                 if prior_counterexample_candidate_sha256s.contains(&meta_candidate.candidate_sha256)
                 {
@@ -10930,16 +11040,13 @@ fn try_synthesize_failed_python_cohort(
                 } else {
                     MetaCompilerGapKind::MissingCompositeEditPrimitive
                 };
+                let required_meta_mechanisms = required_mechanism_ids_for_gap(code, &source);
                 let gap = MetaCompilerGapIR::new(
                     kind,
                     code,
                     "python",
                     "py",
-                    vec![
-                        "abstraction".to_string(),
-                        "compiler_runtime".to_string(),
-                        "pattern_matching".to_string(),
-                    ],
+                    required_meta_mechanisms,
                     plan.repository_issue_evidence_sha256s.clone(),
                     prior_counterexample_candidate_sha256s
                         .iter()
@@ -14030,6 +14137,9 @@ pub fn supervisor_step(config_path: &Path) -> Result<StepReport, String> {
     // Cleanup is deliberately outside the semantic step transaction and may
     // never turn a valid sealed state into a failed campaign.
     let _ = cleanup_consumed_source_mutation_staging(&config.state_dir);
+    if let Ok(state) = load_state(&config) {
+        let _ = compact_completed_campaign_workdirs(&config, state.pending_campaign_id.as_deref());
+    }
     step_without_lease(&config, &lease)
 }
 
@@ -14116,6 +14226,9 @@ pub fn run_daemon(config_path: &Path) -> Result<StepReport, String> {
     let lease = SupervisorLease::acquire(&config)?;
     let _ = recover_repository_install_transactions(&config)?;
     let _ = cleanup_consumed_source_mutation_staging(&config.state_dir);
+    if let Ok(state) = load_state(&config) {
+        let _ = compact_completed_campaign_workdirs(&config, state.pending_campaign_id.as_deref());
+    }
     let mut last_error_class = String::new();
     let mut consecutive_same_class_errors = 0_u32;
     loop {
@@ -15121,6 +15234,89 @@ mod tests {
 
         assert!(!old.exists());
         assert!(newest.exists());
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn completed_campaign_compaction_keeps_evidence_and_two_predecessor_snapshots() {
+        let root = temp_root("campaign-workdir-retention");
+        let (config_path, config) = test_config(&root);
+        initialize(&config_path).unwrap();
+        for generation in 1..=4_u64 {
+            let campaign_id = format!("G{generation:020}-retention{generation:02}");
+            let directory = campaign_dir(&config, &campaign_id);
+            fs::create_dir_all(&directory).unwrap();
+            let freeze = CampaignFreeze {
+                schema: SUPERVISOR_SCHEMA.to_string(),
+                campaign_id: campaign_id.clone(),
+                generation,
+                predecessor_memory_sha256: format!("{generation:064x}"),
+                config_sha256: config_hash(&config).unwrap(),
+                observation_ids: vec![format!("observation-{generation}")],
+                observation_sha256: vec!["a".repeat(64)],
+                proposer_executable_sha256: "b".repeat(64),
+                verifier_executable_sha256: "c".repeat(64),
+                seed: generation,
+                budget_observations: 1,
+                frozen_before_candidate: true,
+                operator_selected_difficulty: false,
+                human_difficulty_escalation_events: 0,
+                created_at_ms: generation,
+            };
+            write_immutable_json(&directory.join("freeze.json"), &freeze).unwrap();
+            fs::write(
+                directory.join("predecessor_memory.json"),
+                vec![b'x'; generation as usize * 1_024],
+            )
+            .unwrap();
+            let history = CampaignHistory {
+                campaign_id: campaign_id.clone(),
+                generation_attempted: generation,
+                accepted: true,
+                predecessor_memory_sha256: freeze.predecessor_memory_sha256.clone(),
+                resulting_memory_sha256: Some("d".repeat(64)),
+                freeze_sha256: json_sha256(&freeze).unwrap(),
+                candidate_sha256: "e".repeat(64),
+                verification_receipt_sha256: "f".repeat(64),
+                rollback_reference: freeze.predecessor_memory_sha256.clone(),
+                failed_candidate_deleted: false,
+            };
+            write_immutable_json(
+                &config
+                    .state_dir
+                    .join("history")
+                    .join(format!("{campaign_id}.json")),
+                &history,
+            )
+            .unwrap();
+        }
+
+        assert_eq!(
+            compact_completed_campaign_workdirs(&config, None).unwrap(),
+            2
+        );
+        let retained = fs::read_dir(config.state_dir.join("campaigns"))
+            .unwrap()
+            .filter_map(Result::ok)
+            .map(|entry| entry.file_name().to_string_lossy().to_string())
+            .collect::<BTreeSet<_>>();
+        assert_eq!(retained.len(), 4);
+        for generation in 1..=4_u64 {
+            let campaign_id = format!("G{generation:020}-retention{generation:02}");
+            let directory = campaign_dir(&config, &campaign_id);
+            assert!(directory.join("freeze.json").is_file());
+            assert_eq!(
+                directory.join("predecessor_memory.json").is_file(),
+                generation >= 3
+            );
+        }
+        assert_eq!(
+            fs::read_dir(config.state_dir.join("history"))
+                .unwrap()
+                .filter_map(Result::ok)
+                .count(),
+            4
+        );
         fs::remove_dir_all(root).unwrap();
     }
 
