@@ -24,6 +24,7 @@ pub mod intrinsic_drive;
 pub mod meta_compiler_expansion;
 #[cfg(feature = "historical-campaigns")]
 pub mod mining;
+pub mod north_star;
 #[cfg(feature = "historical-campaigns")]
 pub mod reporting;
 pub mod repository_experience;

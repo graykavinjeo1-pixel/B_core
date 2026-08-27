@@ -1,8 +1,20 @@
 {
-  "manifest_version": "1.11.0",
-  "canonical_version": "1.11.0",
+  "manifest_version": "1.12.0",
+  "canonical_version": "1.12.0",
   "hash_algorithm": "SHA-256",
   "canonical_files": [
+    {
+      "relative_path": "AGENTS.md",
+      "byte_length": 1256,
+      "sha256": "6138e6b450cf35b08fc7f01749bce8eea5a9dcc986a5196c8743fda4e81a3e11",
+      "canonical_version": "1.0.0"
+    },
+    {
+      "relative_path": "docs/B_CORE_NORTH_STAR.md",
+      "byte_length": 4302,
+      "sha256": "e20c1ef511d0f82df2fcb31ffa0b77b477c6cd9c50bcb8faf1cacc181944040f",
+      "canonical_version": "1.0.0"
+    },
     {
       "relative_path": "CONSTITUTION.md",
       "byte_length": 9274,
@@ -47,11 +59,11 @@
     },
     {
       "relative_path": "docs/CANONICAL_READING_ORDER.md",
-      "byte_length": 1617,
-      "sha256": "b1c31f84ef1001e13a982ae24a7cf77b85255ede9b4b722eff41a9348cab19fa",
+      "byte_length": 1860,
+      "sha256": "bd58e0f359bd74bfb7c9a4f38b83691064f174b4e2437a40f7c6d9bfebdb366d",
       "canonical_version": "1.0.0"
     }
   ],
   "manifest_self_hash_method": "Read this UTF-8 JSON file as exact text, replace the single 64-hex value of manifest_self_hash_sha256 with 64 lowercase zero characters while preserving every other byte, encode the normalized text as UTF-8 without BOM, and compute SHA-256.",
-  "manifest_self_hash_sha256": "2b01a4fc03e14d89a1bc20a64fd863f399fc12f2410856389ff35a90bf4b7ee3"
+  "manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
 }

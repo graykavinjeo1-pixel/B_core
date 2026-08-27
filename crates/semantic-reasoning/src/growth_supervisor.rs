@@ -58,6 +58,7 @@ use crate::meta_compiler_expansion::{
     persist_registry as persist_meta_compiler_registry, required_mechanism_ids_for_gap,
     verified_examples_from_edit, MetaCompilerGapIR, MetaCompilerGapKind, MetaCompilerRegistryIR,
 };
+use crate::north_star::{north_star_integrity_locked, north_star_sha256};
 use crate::repository_experience::{
     build_repository_repair_provenance, derive_repository_repair_contract, ground_repository_issue,
     repository_issue_intake_receipt_hash, validate_repository_issue_evidence,
@@ -1183,6 +1184,8 @@ pub struct StepReport {
 pub struct SelfCheck {
     pub schema: String,
     pub pass: bool,
+    pub north_star_integrity_locked: bool,
+    pub north_star_sha256: String,
     pub proposer_cannot_self_approve: bool,
     pub raw_source_retention_forbidden: bool,
     pub network_and_llm_disabled: bool,
@@ -1326,9 +1329,12 @@ pub struct SelfCheck {
 }
 
 pub fn self_check() -> SelfCheck {
+    let north_star_integrity_locked = north_star_integrity_locked();
     SelfCheck {
         schema: SUPERVISOR_SCHEMA.to_string(),
-        pass: true,
+        pass: north_star_integrity_locked,
+        north_star_integrity_locked,
+        north_star_sha256: north_star_sha256(),
         proposer_cannot_self_approve: false,
         raw_source_retention_forbidden: true,
         network_and_llm_disabled: true,
@@ -15881,6 +15887,11 @@ mod tests {
     fn self_check_locks_constitutional_boundaries() {
         let check = self_check();
         assert!(check.pass);
+        assert!(check.north_star_integrity_locked);
+        assert_eq!(
+            check.north_star_sha256,
+            crate::north_star::B_CORE_NORTH_STAR_SHA256
+        );
         assert!(!check.proposer_cannot_self_approve);
         assert!(check.raw_source_retention_forbidden);
         assert!(check.network_and_llm_disabled);

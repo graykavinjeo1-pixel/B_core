@@ -2,6 +2,8 @@
 
 SYNAPSE 원본 프로젝트에서 인간 사고 회로 모방 실험에 직접 필요한 부분만 분리한 최소 Rust 워크스페이스입니다.
 
+모든 설계·구현·검증·릴리스는 [B_Core North Star](docs/B_CORE_NORTH_STAR.md)를 먼저 읽고 그 방향과 사용자 선택권을 보존해야 합니다. 이 목표의 무결성은 canonical manifest와 런타임 자체점검에서 함께 검증됩니다.
+
 ## 포함 범위
 
 - `crates/synapse-core`: 희소 후보 인덱싱, top-k 활성화, 활성 노드 전파, 억제, 경쟁, 공명, Thought Crystal
