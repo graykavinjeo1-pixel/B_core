@@ -75,7 +75,8 @@ use crate::sem5::model::{ProgramType, Value};
 #[cfg(test)]
 use crate::sem5::typed_mechanism::select_bounded_typed_mechanism_operator_ids;
 use crate::sem5::typed_mechanism::{
-    compose_authorized_typed_operator_programs, load_authorized_typed_mechanism_operators,
+    compose_authorized_typed_operator_programs_excluding,
+    load_authorized_typed_mechanism_operators, native_typed_operator_genesis_programs,
     persist_authorized_typed_mechanism_operator, typed_mechanism_improvement_operator_from_receipt,
     typed_mechanism_operator_authority_directory, typed_mechanism_operator_directory,
     typed_mechanism_operator_probe_observations, validate_typed_mechanism_improvement_operator,
@@ -102,8 +103,10 @@ const MAX_COMPOUND_INPUT_BYTES: u64 = 16 * 1024 * 1024;
 const MAX_COMPOUND_RECEIPT_BYTES: u64 = 64 * 1024 * 1024;
 const MAX_SUMMARY_BYTES: usize = 512;
 const SOURCE_PATCH_VALIDATION_CONTRACT_REVISION: u64 = 2;
-const PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION: u64 = 7;
-const AUTONOMOUS_SWE_CURRICULUM_SCHEMA: &str = "B_CORE_AUTONOMOUS_SWE_CURRICULUM_1";
+const PLATEAU_GENERATIVE_PROBE_CONTRACT_REVISION: u64 = 8;
+const AUTONOMOUS_SWE_CURRICULUM_SCHEMA: &str = "B_CORE_AUTONOMOUS_SWE_CURRICULUM_2";
+const AUTONOMOUS_SWE_HELD_OUT_MODE: &str = "HELD_OUT_COUNTEREXAMPLE";
+const AUTONOMOUS_SWE_EXHAUSTIVE_FINITE_MODE: &str = "EXHAUSTIVE_FINITE_DOMAIN";
 const AUTONOMOUS_SWE_CURRICULUM_HIDDEN_CASES: usize = 12;
 const AUTONOMOUS_SWE_CURRICULUM_MAX_REVISIONS: usize = 4;
 const MAX_INTRINSIC_CURIOSITY_HYPOTHESES: usize = 48;
@@ -6239,24 +6242,113 @@ fn operator_composition_plateau_candidates(
         &config.state_dir,
         MAX_ACTIVE_TYPED_MECHANISM_OPERATORS,
     )?;
-    if authorized.len() < 2 {
-        return Ok(Vec::new());
-    }
     let authorized_ids = authorized
         .iter()
-        .map(|operator| operator.operator_id.as_str())
+        .map(|operator| operator.operator_id.clone())
         .collect::<BTreeSet<_>>();
     let mut retained_goal_hashes = BTreeSet::new();
     for lesson in &memory.lessons {
         retained_goal_hashes.extend(lesson_executable_goal_hashes(lesson)?);
     }
-    let compositions = compose_authorized_typed_operator_programs(
-        &authorized,
+    let mut candidates = Vec::new();
+    let native_programs = native_typed_operator_genesis_programs(
+        &authorized_ids,
         MAX_INTRINSIC_CURIOSITY_HYPOTHESES / 2,
     )?;
-    let mut candidates = Vec::new();
+    for native in native_programs {
+        if retained_goal_hashes.contains(&typed_goal_executable_sha256(&native.goal)?) {
+            continue;
+        }
+        let mut delta = PublicContractDeltaIR {
+            schema: PUBLIC_CONTRACT_DELTA_SCHEMA.to_string(),
+            delta_id: format!(
+                "native-operator-{}",
+                &sha256(native.goal.goal_id.as_bytes())[..32]
+            ),
+            observed_behavior:
+                "the product grammar primitive has no independently verified execution authority"
+                    .to_string(),
+            expected_behavior:
+                "B_Core materializes the typed primitive in fresh source and passes public plus hidden behavior checks"
+                    .to_string(),
+            target_symbols: vec![
+                "sem5::typed_mechanism::native_typed_operator_genesis_programs".to_string(),
+            ],
+            typed_behavior_goals: vec![native.goal.clone()],
+            provenance: vec![
+                format!("B_CORE_NATIVE_TYPED_PRIMITIVE:{}", native.primitive_id),
+                "AUTONOMOUS_PRODUCT_OPERATOR_GENESIS".to_string(),
+                "EXTERNAL_KNOWLEDGE_RUNTIME_DEPENDENCY:false".to_string(),
+            ],
+        };
+        let contract_binding = format!(
+            "PUBLIC_CONTRACT_DELTA_SHA256:{}",
+            public_contract_delta_binding_sha256(&delta)?
+        );
+        let delta_id_binding = format!("PUBLIC_CONTRACT_DELTA_ID:{}", delta.delta_id);
+        for goal in &mut delta.typed_behavior_goals {
+            goal.provenance.push(delta_id_binding.clone());
+            goal.provenance.push(contract_binding.clone());
+            goal.provenance.sort();
+            goal.provenance.dedup();
+        }
+        validate_public_contract_deltas(std::slice::from_ref(&delta))?;
+        let goal = delta.typed_behavior_goals[0].clone();
+        let structural_novelty = goal.operands.len().saturating_add(2).min(100) as u16;
+        let hypothesis_id = plateau_hypothesis_id(
+            "NATIVE_OPERATOR_GENESIS",
+            probe_engine_sha256,
+            &state.current_memory_sha256,
+            &format!("{}:{}", goal.goal_id, native.operator_proposal.operator_id),
+        );
+        candidates.push(PlateauCuriosityCandidate {
+            hypothesis: IntrinsicCuriosityHypothesis {
+                hypothesis_id,
+                lesson_ids: vec![
+                    "B_CORE_NATIVE_TYPED_GRAMMAR".to_string(),
+                    format!("B_CORE_NATIVE_PRIMITIVE:{}", native.primitive_id),
+                ],
+                signal_diversity: 4,
+                executable_goal_count: 1,
+                structural_novelty,
+                prediction_uncertainty,
+                expected_information_gain: 100,
+                predicted_cost_units: (8_u16).saturating_add(structural_novelty),
+            },
+            input: GenerativeInput {
+                source_lesson_id: format!("NATIVE-OPERATOR-{}", &goal.goal_id[..32]),
+                diagnostic_signals: vec![
+                    "AUTONOMOUS_NATIVE_OPERATOR_GENESIS".to_string(),
+                    "FRESH_SOURCE_PUBLIC_HIDDEN_CANARY".to_string(),
+                    "NO_EXTERNAL_KNOWLEDGE_AUTHORITY".to_string(),
+                ],
+                observed_composition_roles: vec![
+                    "GENERATE".to_string(),
+                    "MATERIALIZE".to_string(),
+                    "FALSIFY".to_string(),
+                    "PROMOTE".to_string(),
+                ],
+                learning_score: 100,
+                verification_evidence_count: 2,
+                measured_performance_gain: false,
+                typed_behavior_goals: vec![goal],
+                typed_behavior_operator_proposals: vec![native.operator_proposal],
+                executable_performance_operators: Vec::new(),
+            },
+            public_contract_deltas: vec![delta],
+        });
+    }
+    let compositions = if authorized.len() >= 2 {
+        compose_authorized_typed_operator_programs_excluding(
+            &authorized,
+            &authorized_ids,
+            MAX_INTRINSIC_CURIOSITY_HYPOTHESES / 2,
+        )?
+    } else {
+        Vec::new()
+    };
     for composition in compositions {
-        if authorized_ids.contains(composition.operator_proposal.operator_id.as_str())
+        if authorized_ids.contains(&composition.operator_proposal.operator_id)
             || retained_goal_hashes.contains(&typed_goal_executable_sha256(&composition.goal)?)
         {
             continue;
@@ -6467,10 +6559,22 @@ fn plateau_curiosity_candidates(
         });
     }
     candidates.sort_by(|left, right| {
-        state
-            .intrinsic_drive
-            .score(&right.hypothesis)
-            .cmp(&state.intrinsic_drive.score(&left.hypothesis))
+        let left_foundation_gap = left
+            .input
+            .diagnostic_signals
+            .contains(&"AUTONOMOUS_NATIVE_OPERATOR_GENESIS".to_string());
+        let right_foundation_gap = right
+            .input
+            .diagnostic_signals
+            .contains(&"AUTONOMOUS_NATIVE_OPERATOR_GENESIS".to_string());
+        right_foundation_gap
+            .cmp(&left_foundation_gap)
+            .then_with(|| {
+                state
+                    .intrinsic_drive
+                    .score(&right.hypothesis)
+                    .cmp(&state.intrinsic_drive.score(&left.hypothesis))
+            })
             .then_with(|| {
                 left.hypothesis
                     .hypothesis_id
@@ -7058,6 +7162,8 @@ struct AutonomousSweCurriculumProof {
     hidden_case_commitment_sha256: String,
     public_cases_initial: usize,
     public_cases_final: usize,
+    validation_mode: String,
+    exhaustive_domain_cases: usize,
     hidden_cases: usize,
     counterexamples_promoted: usize,
     synthesis_revisions: usize,
@@ -7090,6 +7196,19 @@ fn autonomous_swe_curriculum_proof_hash(
 fn validate_autonomous_swe_curriculum_proof(
     proof: &AutonomousSweCurriculumProof,
 ) -> Result<(), String> {
+    let validation_cases_valid = match proof.validation_mode.as_str() {
+        AUTONOMOUS_SWE_HELD_OUT_MODE => {
+            proof.exhaustive_domain_cases == 0
+                && proof.hidden_cases > 0
+                && proof.hidden_cases <= AUTONOMOUS_SWE_CURRICULUM_HIDDEN_CASES
+        }
+        AUTONOMOUS_SWE_EXHAUSTIVE_FINITE_MODE => {
+            proof.exhaustive_domain_cases > 0
+                && proof.public_cases_initial == proof.exhaustive_domain_cases
+                && proof.hidden_cases == 0
+        }
+        _ => false,
+    };
     if proof.schema != AUTONOMOUS_SWE_CURRICULUM_SCHEMA
         || proof.challenge_id.len() != 64
         || proof.goal_sha256.len() != 64
@@ -7098,8 +7217,7 @@ fn validate_autonomous_swe_curriculum_proof(
         || proof.hidden_case_commitment_sha256.len() != 64
         || proof.public_cases_initial == 0
         || proof.public_cases_final < proof.public_cases_initial
-        || proof.hidden_cases == 0
-        || proof.hidden_cases > AUTONOMOUS_SWE_CURRICULUM_HIDDEN_CASES
+        || !validation_cases_valid
         || proof.counterexamples_promoted > AUTONOMOUS_SWE_CURRICULUM_MAX_REVISIONS - 1
         || !(1..=AUTONOMOUS_SWE_CURRICULUM_MAX_REVISIONS).contains(&proof.synthesis_revisions)
         || proof.source_bound_receipt_sha256s.is_empty()
@@ -7332,6 +7450,34 @@ fn remap_curriculum_probe_observations(
         .collect()
 }
 
+fn exhaustive_boolean_domain_cases(goal: &TypedMechanismSynthesisGoalIR) -> Option<usize> {
+    if goal.operands.is_empty()
+        || goal.operands.len() > 8
+        || goal
+            .operands
+            .iter()
+            .any(|operand| operand.value_type != ProgramType::Bool)
+    {
+        return None;
+    }
+    let domain_cases = 1_usize.checked_shl(goal.operands.len() as u32)?;
+    let mut observed_inputs = BTreeSet::new();
+    for observation in &goal.public_observations {
+        let mut bits = 0_usize;
+        for (index, operand) in goal.operands.iter().enumerate() {
+            match observation.operands.get(&operand.role) {
+                Some(Value::Bool(true)) => bits |= 1_usize << index,
+                Some(Value::Bool(false)) => {}
+                _ => return None,
+            }
+        }
+        if !observed_inputs.insert(bits) {
+            return None;
+        }
+    }
+    (observed_inputs.len() == domain_cases).then_some(domain_cases)
+}
+
 fn run_autonomous_swe_curriculum_probe(
     config: &GrowthSupervisorConfig,
     state: &SupervisorState,
@@ -7393,10 +7539,20 @@ fn run_autonomous_swe_curriculum_probe(
         curriculum_stub_value(&goal.output_type, &goal.public_observations)?,
     );
 
+    let exhaustive_domain_cases = exhaustive_boolean_domain_cases(goal);
+    let validation_mode = if exhaustive_domain_cases.is_some() {
+        AUTONOMOUS_SWE_EXHAUSTIVE_FINITE_MODE
+    } else {
+        AUTONOMOUS_SWE_HELD_OUT_MODE
+    };
     let probe_start = 64_usize.saturating_add((state.generation as usize % 512) * 37);
-    let generated_hidden =
-        typed_mechanism_operator_probe_observations(target_operator, probe_start, 32)?;
-    let generated_hidden = remap_curriculum_probe_observations(goal, generated_hidden)?;
+    let generated_hidden = if exhaustive_domain_cases.is_some() {
+        Vec::new()
+    } else {
+        let observations =
+            typed_mechanism_operator_probe_observations(target_operator, probe_start, 32)?;
+        remap_curriculum_probe_observations(goal, observations)?
+    };
     let public_case_ids = goal
         .public_observations
         .iter()
@@ -7413,7 +7569,7 @@ fn run_autonomous_swe_curriculum_probe(
             break;
         }
     }
-    if hidden_observations.len() < 4 {
+    if exhaustive_domain_cases.is_none() && hidden_observations.len() < 4 {
         return Err("AUTONOMOUS_SWE_CURRICULUM_HIDDEN_DIVERSITY".to_string());
     }
     let public_case_commitment_sha256 = json_sha256(&goal.public_observations)?;
@@ -7550,6 +7706,8 @@ fn run_autonomous_swe_curriculum_probe(
                         hidden_case_commitment_sha256: hidden_case_commitment_sha256.clone(),
                         public_cases_initial,
                         public_cases_final: public_observations.len(),
+                        validation_mode: validation_mode.to_string(),
+                        exhaustive_domain_cases: exhaustive_domain_cases.unwrap_or(0),
                         hidden_cases: hidden_observations.len(),
                         counterexamples_promoted,
                         synthesis_revisions: revision + 1,
@@ -8145,16 +8303,22 @@ fn plateau_generative_probe_observation(
                 "reward remains pending until the independent campaign verifier accepts a non-duplicate generation"
                     .to_string(),
             ];
-            if autonomous_swe_curriculum_proof.is_some() {
-                signals.extend([
-                    "FRESH_SOURCE_TRANSFER_VERIFIED".to_string(),
-                    "HIDDEN_COUNTEREXAMPLE_SUITE_PASSED".to_string(),
-                ]);
+            if let Some(proof) = &autonomous_swe_curriculum_proof {
+                signals.push("FRESH_SOURCE_TRANSFER_VERIFIED".to_string());
                 composition_roles.push("SOURCE_BOUND_LOWERING".to_string());
-                reasons.push(
-                    "a fresh content-addressed repository function was synthesized from public cases and passed a separately committed hidden suite"
-                        .to_string(),
-                );
+                if proof.validation_mode == AUTONOMOUS_SWE_EXHAUSTIVE_FINITE_MODE {
+                    signals.push("EXHAUSTIVE_FINITE_DOMAIN_SUITE_PASSED".to_string());
+                    reasons.push(
+                        "a fresh content-addressed repository function was synthesized and passed every input in its finite typed domain"
+                            .to_string(),
+                    );
+                } else {
+                    signals.push("HIDDEN_COUNTEREXAMPLE_SUITE_PASSED".to_string());
+                    reasons.push(
+                        "a fresh content-addressed repository function was synthesized from public cases and passed a separately committed hidden suite"
+                            .to_string(),
+                    );
+                }
             }
             Some(LearningObservation {
                 observation_id: observation_id.clone(),
@@ -14600,6 +14764,69 @@ mod tests {
             .join("coding_curriculum_sandboxes")
             .join(proof.challenge_id)
             .exists());
+
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn native_operator_genesis_crosses_fresh_source_hidden_canary_without_external_knowledge() {
+        let root = temp_root("native-operator-product-canary");
+        let (config_path, config) = test_config(&root);
+        let mut state = initialize(&config_path).unwrap();
+        state.generation = 9;
+        let memory = load_memory(&config, 0).unwrap();
+        let candidates =
+            operator_composition_plateau_candidates(&config, &state, &memory, 10, &"c".repeat(64))
+                .unwrap();
+        let candidate = candidates
+            .iter()
+            .find(|candidate| {
+                candidate.public_contract_deltas.iter().any(|delta| {
+                    delta
+                        .provenance
+                        .contains(&"B_CORE_NATIVE_TYPED_PRIMITIVE:INT_ADD".to_string())
+                })
+            })
+            .expect("native integer addition candidate");
+        assert!(candidate
+            .input
+            .diagnostic_signals
+            .contains(&"NO_EXTERNAL_KNOWLEDGE_AUTHORITY".to_string()));
+        let proof = run_autonomous_swe_curriculum_probe(&config, &state, candidate)
+            .unwrap()
+            .unwrap();
+        validate_autonomous_swe_curriculum_proof(&proof).unwrap();
+        assert_eq!(proof.hidden_cases, AUTONOMOUS_SWE_CURRICULUM_HIDDEN_CASES);
+        assert_eq!(proof.codex_calls, 0);
+        assert_eq!(proof.external_llm_calls, 0);
+        assert_eq!(proof.network_reads, 0);
+        assert_eq!(proof.network_writes, 0);
+        assert!(!config
+            .state_dir
+            .join("coding_curriculum_sandboxes")
+            .join(proof.challenge_id)
+            .exists());
+
+        let boolean_candidate = candidates
+            .iter()
+            .find(|candidate| {
+                candidate.public_contract_deltas.iter().any(|delta| {
+                    delta
+                        .provenance
+                        .contains(&"B_CORE_NATIVE_TYPED_PRIMITIVE:BOOL_AND".to_string())
+                })
+            })
+            .expect("native boolean conjunction candidate");
+        let finite_proof = run_autonomous_swe_curriculum_probe(&config, &state, boolean_candidate)
+            .unwrap()
+            .unwrap();
+        validate_autonomous_swe_curriculum_proof(&finite_proof).unwrap();
+        assert_eq!(
+            finite_proof.validation_mode,
+            AUTONOMOUS_SWE_EXHAUSTIVE_FINITE_MODE
+        );
+        assert_eq!(finite_proof.exhaustive_domain_cases, 4);
+        assert_eq!(finite_proof.hidden_cases, 0);
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -14936,10 +15163,10 @@ mod tests {
     }
 
     #[test]
-    fn plateau_cross_lesson_probe_rejects_text_only_lessons() {
+    fn plateau_cross_lesson_probe_rejects_text_only_lessons_but_keeps_native_product_genesis() {
         let root = temp_root("plateau-cross-lesson-probe");
         let (config_path, config) = test_config(&root);
-        let mut state = initialize(&config_path).unwrap();
+        let state = initialize(&config_path).unwrap();
         let mut memory = load_memory(&config, 0).unwrap();
         let lesson = |id: &str, signal: &str, role: &str| LearnedCompositionLesson {
             lesson_id: id.to_string(),
@@ -14961,11 +15188,19 @@ mod tests {
             lesson("LESSON-B", "COUNTEREXAMPLE_REVISION", "COMPOSE"),
         ];
 
-        assert!(
-            plateau_generative_probe_observation(&config, &mut state, &memory)
-                .unwrap()
-                .is_none()
-        );
+        let candidates = plateau_curiosity_candidates(&config, &state, &memory).unwrap();
+        assert!(!candidates.is_empty());
+        assert!(candidates.iter().all(|candidate| {
+            !candidate
+                .hypothesis
+                .lesson_ids
+                .iter()
+                .any(|lesson_id| matches!(lesson_id.as_str(), "LESSON-A" | "LESSON-B"))
+                && candidate
+                    .input
+                    .diagnostic_signals
+                    .contains(&"AUTONOMOUS_NATIVE_OPERATOR_GENESIS".to_string())
+        }));
         assert!(!config.state_dir.join("generative_plateau_probes").exists());
         fs::remove_dir_all(root).unwrap();
     }
@@ -16603,8 +16838,16 @@ mod tests {
         };
 
         let candidates = plateau_curiosity_candidates(&config, &state, &memory).unwrap();
-        assert_eq!(candidates.len(), 84);
+        assert!(candidates.len() >= 84);
         assert!(candidates.len() > MAX_INTRINSIC_CURIOSITY_HYPOTHESES);
+        assert!(candidates.iter().any(|candidate| candidate
+            .input
+            .diagnostic_signals
+            .contains(&"AUTONOMOUS_NATIVE_OPERATOR_GENESIS".to_string())));
+        assert!(candidates[0]
+            .input
+            .diagnostic_signals
+            .contains(&"AUTONOMOUS_NATIVE_OPERATOR_GENESIS".to_string()));
         assert_eq!(
             candidates
                 .iter()
@@ -16694,11 +16937,12 @@ mod tests {
             }
         }
 
-        assert_eq!(state.intrinsic_drive.hypotheses_attempted, 2);
+        assert!(state.intrinsic_drive.hypotheses_attempted >= 2);
         assert_eq!(state.intrinsic_drive.pending_attempts.len(), 2);
         assert_eq!(state.intrinsic_drive.hypotheses_succeeded, 0);
         assert_eq!(state.intrinsic_drive.intrinsic_reward_events, 0);
         assert_eq!(observation_ids.len(), 2);
+        let failed_before_resolution = state.intrinsic_drive.hypotheses_failed;
         assert_eq!(
             resolve_intrinsic_observation_outcomes(
                 &config,
@@ -16721,7 +16965,10 @@ mod tests {
             .unwrap(),
             1
         );
-        assert_eq!(state.intrinsic_drive.hypotheses_failed, 1);
+        assert_eq!(
+            state.intrinsic_drive.hypotheses_failed,
+            failed_before_resolution + 1
+        );
         assert_eq!(state.intrinsic_drive.pending_attempts.len(), 0);
         assert_eq!(
             fs::read_dir(config.state_dir.join("generative_plateau_probes"))

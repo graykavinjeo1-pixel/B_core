@@ -22,6 +22,7 @@ pub const COMPOUND_TYPED_GOAL_SCHEMA_REVISION: u64 = 1;
 pub const MAX_COMPOUND_TYPED_GOAL_COMPONENTS: usize = 3;
 pub const MAX_COMPOUND_TYPED_GOAL_CANDIDATES: usize = 32;
 const MAX_COMPOUND_PUBLIC_OBSERVATIONS: usize = 64;
+const MAX_COMPOUND_OPERANDS: usize = 32;
 
 #[derive(Debug, Clone)]
 struct GoalState {
@@ -151,6 +152,13 @@ fn compose_over_operand(
         &mut operands_by_identity,
         &mut role_map,
     )?;
+    // A valid pair of bounded components can still exceed the shared SEM-5
+    // operand budget after its public join. That is a rejected composition
+    // candidate, not a daemon-fatal compiler invariant. Historical large
+    // programs remain valid on their own and are simply not expanded further.
+    if operands_by_identity.len() > MAX_COMPOUND_OPERANDS {
+        return Ok(None);
+    }
 
     let mut observations = BTreeMap::new();
     let mut producer_outputs = BTreeSet::new();
@@ -623,6 +631,35 @@ mod tests {
             );
         }
         let compounds = derive_compound_typed_behavior_goals(&[producer(), incompatible]).unwrap();
+        assert!(compounds.is_empty());
+    }
+
+    #[test]
+    fn over_budget_join_is_rejected_locally_instead_of_stopping_the_product_loop() {
+        let mut large_producer = producer();
+        let mut large_consumer = consumer();
+        for index in 0..16 {
+            let producer_role = format!("producer_context_{index}");
+            large_producer
+                .operands
+                .push(operand(&producer_role, ProgramType::Int));
+            for observation in &mut large_producer.public_observations {
+                observation
+                    .operands
+                    .insert(producer_role.clone(), Value::Int(index));
+            }
+            let consumer_role = format!("consumer_context_{index}");
+            large_consumer
+                .operands
+                .push(operand(&consumer_role, ProgramType::Int));
+            for observation in &mut large_consumer.public_observations {
+                observation
+                    .operands
+                    .insert(consumer_role.clone(), Value::Int(index));
+            }
+        }
+        let compounds =
+            derive_compound_typed_behavior_goals(&[large_producer, large_consumer]).unwrap();
         assert!(compounds.is_empty());
     }
 
