@@ -119,11 +119,11 @@ authority fail closed. Compound cycles perform no network or external-model
 calls and do not install source changes without the existing atomic validation
 and rollback path.
 
-Use `tools\install-growth-autostart.ps1` to register a limited-privilege `ONLOGON` scheduled task. Registration is never performed automatically by the package.
+Use `scripts\install_growth_supervisor_autostart.ps1` to register a limited-privilege `ONLOGON` scheduled task. Registration is never performed automatically by the package.
 
 ## Work-event integration
 
-`tools\record-growth-work-event.ps1` records bounded provenance for work performed by a user, Codex, or a local tool. It stores actor, kind, outcome, scoped paths, a short summary, and optional evidence hashes—not command transcripts, chats, or source text.
+`scripts\record_growth_work_event.ps1` records bounded provenance for work performed by a user, Codex, or a local tool. It stores actor, kind, outcome, scoped paths, a short summary, and optional evidence hashes—not command transcripts, chats, or source text.
 
 An explicit `PASS` is evidence, not automatic authority. The independent verifier still decides whether the frozen structural lesson is promotable.
 

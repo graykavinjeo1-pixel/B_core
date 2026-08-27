@@ -15,7 +15,7 @@ $ErrorActionPreference = "Stop"
 
 $root = [IO.Path]::GetFullPath($PackageRoot)
 $config = [IO.Path]::GetFullPath($ConfigPath)
-$runner = Join-Path $root "tools\run-growth-supervisor.ps1"
+$runner = Join-Path $root "scripts\run_growth_supervisor.ps1"
 $supervisor = Join-Path $root "bin\b-core-growth-supervisor.exe"
 foreach ($path in @($runner, $supervisor, $config)) {
     if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
