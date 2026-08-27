@@ -21,6 +21,7 @@ pub mod grammar_repair_synthesis;
 pub mod growth_supervisor;
 pub mod integrated_development;
 pub mod intrinsic_drive;
+pub mod meta_compiler_expansion;
 #[cfg(feature = "historical-campaigns")]
 pub mod mining;
 #[cfg(feature = "historical-campaigns")]

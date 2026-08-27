@@ -53,6 +53,11 @@ use crate::integrated_development::{
     install_composite_candidate_family, MAX_INSTALLED_TYPED_CAPABILITIES,
 };
 use crate::intrinsic_drive::{IntrinsicCuriosityHypothesis, IntrinsicDriveMemory};
+use crate::meta_compiler_expansion::{
+    load_registry as load_meta_compiler_registry,
+    persist_registry as persist_meta_compiler_registry, verified_examples_from_edit,
+    MetaCompilerGapIR, MetaCompilerGapKind, MetaCompilerRegistryIR,
+};
 use crate::repository_experience::{
     build_repository_repair_provenance, derive_repository_repair_contract, ground_repository_issue,
     repository_issue_intake_receipt_hash, validate_repository_issue_evidence,
@@ -125,7 +130,8 @@ const MAX_ACTIVE_SOURCE_BOUND_IMPROVEMENT_OPERATORS: usize = MAX_ACTIVE_TYPED_ME
 const MAX_COMPOSITE_INSTALL_FAMILY: usize = 32;
 const REPOSITORY_INSTALL_TRANSACTION_SCHEMA: &str = "B_REPOSITORY_INSTALL_TRANSACTION_1";
 const REPOSITORY_INSTALL_COMMIT_SCHEMA: &str = "B_REPOSITORY_INSTALL_COMMIT_1";
-const REPOSITORY_REPAIR_SYNTHESIS_SCHEMA: &str = "B_REPOSITORY_REPAIR_SYNTHESIS_4";
+const REPOSITORY_REPAIR_SYNTHESIS_SCHEMA: &str = "B_REPOSITORY_REPAIR_SYNTHESIS_5";
+const META_COMPILER_REGISTRY_FILE: &str = "meta_compiler/registry.json";
 
 fn u64_is_zero(value: &u64) -> bool {
     *value == 0
@@ -8917,6 +8923,12 @@ struct RepositoryRepairSynthesisReceipt {
     selected_source_bound_patch_variant_id: Option<String>,
     #[serde(default)]
     selected_source_bound_template_symbols: Vec<String>,
+    #[serde(default)]
+    selected_meta_compiler_primitive_id: Option<String>,
+    #[serde(default)]
+    promoted_meta_compiler_primitive_ids: Vec<String>,
+    #[serde(default)]
+    meta_compiler_registry_sha256: String,
     operator_family: String,
     edit_atom_kinds: Vec<String>,
     #[serde(default)]
@@ -8972,13 +8984,22 @@ fn repository_repair_problem_id(
 
 fn repository_repair_synthesis_capability_sha256(
     operators: &[TypedMechanismImprovementOperatorIR],
+    meta_compiler_registry: &MetaCompilerRegistryIR,
 ) -> Result<String, String> {
     let mut operator_bindings = operators
         .iter()
         .map(|operator| Ok((operator.operator_id.clone(), json_sha256(operator)?)))
         .collect::<Result<Vec<_>, String>>()?;
     operator_bindings.sort();
-    json_sha256(&(SOURCE_REPAIR_ENGINE_REVISION, operator_bindings))
+    json_sha256(&(
+        SOURCE_REPAIR_ENGINE_REVISION,
+        operator_bindings,
+        meta_compiler_registry.capability_sha256()?,
+    ))
+}
+
+fn meta_compiler_registry_path(config: &GrowthSupervisorConfig) -> PathBuf {
+    config.state_dir.join(META_COMPILER_REGISTRY_FILE)
 }
 
 fn repository_repair_attempt_id(problem_id: &str, capability_sha256: &str) -> String {
@@ -10434,12 +10455,16 @@ fn try_synthesize_failed_python_cohort(
     fs::create_dir_all(&diagnostics)
         .map_err(|error| format!("REPOSITORY_REPAIR_DIAGNOSTICS_CREATE:{error}"))?;
     let available_operators = load_source_bound_improvement_operators(config)?;
+    let meta_compiler_path = meta_compiler_registry_path(config);
+    let mut meta_compiler_registry = load_meta_compiler_registry(&meta_compiler_path)?;
     let available_operator_ids = available_operators
         .iter()
         .map(|operator| operator.operator_id.clone())
         .collect::<BTreeSet<_>>();
-    let synthesis_capability_sha256 =
-        repository_repair_synthesis_capability_sha256(&available_operators)?;
+    let synthesis_capability_sha256 = repository_repair_synthesis_capability_sha256(
+        &available_operators,
+        &meta_compiler_registry,
+    )?;
     let mut authoritative_installation_attempts = 0_usize;
     for relative in implementation_paths {
         let source_path = validated_repository_file(&plan.root, &relative)?;
@@ -10502,6 +10527,9 @@ fn try_synthesize_failed_python_cohort(
         let mut source_bound_patch_variant_sha256s_attempted = Vec::new();
         let mut selected_source_bound_patch_variant_id = None;
         let mut selected_source_bound_template_symbols = Vec::new();
+        let mut selected_meta_compiler_primitive_id = None;
+        let mut selected_materialized_edit = None;
+        let mut promoted_meta_compiler_primitive_ids = Vec::new();
         let mut edit_atom_kinds = BTreeSet::new();
         let mut materialization_is_one_to_one = false;
         let mut failure_code = None;
@@ -10663,6 +10691,7 @@ fn try_synthesize_failed_python_cohort(
                     if sandbox_verified {
                         selected_source_bound_patch_variant_id = Some(variant_id);
                         selected_source_bound_template_symbols = template_symbols;
+                        selected_materialized_edit = Some(patch.edit.clone());
                         successful_syntheses = variant_syntheses;
                         selected_candidate_source = Some(candidate_source);
                         failure_code = None;
@@ -10681,6 +10710,90 @@ fn try_synthesize_failed_python_cohort(
                         "PUBLIC_INFORMATION_INSUFFICIENT:{}",
                         sha256(error.as_bytes())
                     ));
+                }
+            }
+        }
+
+        // The normal typed frontend is the first proposal source.  If its
+        // fixed grammar cannot materialize a repair, independently verified
+        // induced primitives enter the same sandbox/public verifier path.
+        // The registry never approves or installs its own output.
+        if !sandbox_verified {
+            let meta_candidates =
+                meta_compiler_registry.materialize_candidates("python", &relative, &source);
+            for meta_candidate in meta_candidates {
+                if prior_counterexample_candidate_sha256s.contains(&meta_candidate.candidate_sha256)
+                {
+                    continue;
+                }
+                let variant_id = format!("META_PRIMITIVE:{}", meta_candidate.primitive_id);
+                source_bound_patch_variant_ids_attempted.push(variant_id.clone());
+                source_bound_patch_variant_sha256s_attempted
+                    .push(meta_candidate.candidate_sha256.clone());
+                candidate_sha256 = Some(meta_candidate.candidate_sha256.clone());
+                materialization_is_one_to_one = true;
+                edit_atom_kinds.clear();
+                source_edit_atom_kinds(&meta_candidate.edit, &mut edit_atom_kinds);
+                let sandbox_parent = config.state_dir.join("repository_repair_sandboxes");
+                fs::create_dir_all(&sandbox_parent)
+                    .map_err(|error| format!("REPOSITORY_REPAIR_SANDBOX_PARENT:{error}"))?;
+                let sandbox = sandbox_parent.join(&repair_id);
+                if sandbox.exists() {
+                    remove_repository_repair_sandbox(config, &sandbox)?;
+                }
+                let log_path =
+                    diagnostics.join(format!("repository_repair_synthesis_{repair_id}.log"));
+                let verification = (|| -> Result<LocalCommandReceipt, String> {
+                    copy_repository_to_repair_sandbox(config, &plan.root, &sandbox)?;
+                    let destination = sandbox.join(&relative);
+                    ensure_repository_repair_file_writable(&destination)?;
+                    fs::write(&destination, &meta_candidate.candidate_source).map_err(|error| {
+                        format!("REPOSITORY_REPAIR_META_CANDIDATE_WRITE:{error}")
+                    })?;
+                    let arg_refs = plan.args.iter().map(String::as_str).collect::<Vec<_>>();
+                    command_receipt_with_incremental(
+                        &plan.program,
+                        &arg_refs,
+                        &sandbox,
+                        &runtime_validation_target_dir(config),
+                        MAX_CORE_COHORT_VALIDATION_MS,
+                        &log_path,
+                        true,
+                    )
+                })();
+                let cleanup = remove_repository_repair_sandbox(config, &sandbox);
+                sandbox_cleaned = cleanup.is_ok() && !sandbox.exists();
+                let _ = fs::remove_file(&log_path);
+                match verification {
+                    Ok(mut command) => {
+                        sandbox_verified = command.success && sandbox_cleaned;
+                        command.diagnostic_tail = format!(
+                            "META_COMPILER_SANDBOX_OUTPUT_SHA256:{}",
+                            command.output_sha256
+                        );
+                        sandbox_command = Some(command);
+                        if sandbox_verified {
+                            selected_source_bound_patch_variant_id = Some(variant_id);
+                            selected_meta_compiler_primitive_id =
+                                Some(meta_candidate.primitive_id.clone());
+                            selected_materialized_edit = Some(meta_candidate.edit);
+                            selected_candidate_source = Some(meta_candidate.candidate_source);
+                            failure_code = None;
+                            break;
+                        }
+                        failure_code = Some(if sandbox_cleaned {
+                            "PUBLIC_INFORMATION_INSUFFICIENT:META_CANDIDATE_FAILED_PUBLIC_TESTS"
+                                .to_string()
+                        } else {
+                            "PUBLIC_INFORMATION_INSUFFICIENT:SANDBOX_CLEANUP_FAILED".to_string()
+                        });
+                    }
+                    Err(error) => {
+                        failure_code = Some(format!(
+                            "PUBLIC_INFORMATION_INSUFFICIENT:{}",
+                            sha256(error.as_bytes())
+                        ));
+                    }
                 }
             }
         }
@@ -10774,6 +10887,25 @@ fn try_synthesize_failed_python_cohort(
                     .map(|command| command.output_sha256.clone())
                     .ok_or_else(|| "REPOSITORY_REPAIR_SANDBOX_EVIDENCE_MISSING".to_string())?
             };
+            if let Some(edit) = selected_materialized_edit.as_ref() {
+                let examples = verified_examples_from_edit(
+                    &validation.validation_id,
+                    "python",
+                    "py",
+                    &relative,
+                    &source,
+                    edit,
+                    &evidence_sha256,
+                    &evidence_sha256,
+                )?;
+                for example in examples {
+                    promoted_meta_compiler_primitive_ids
+                        .extend(meta_compiler_registry.learn_verified_example(example)?);
+                }
+                promoted_meta_compiler_primitive_ids.sort();
+                promoted_meta_compiler_primitive_ids.dedup();
+                persist_meta_compiler_registry(&meta_compiler_path, &meta_compiler_registry)?;
+            }
             for synthesis in &successful_syntheses {
                 let operator = typed_mechanism_improvement_operator_from_receipt(
                     synthesis,
@@ -10788,6 +10920,37 @@ fn try_synthesize_failed_python_cohort(
             improvement_operators.dedup_by(|left, right| left.operator_id == right.operator_id);
             promoted_improvement_operator_ids.sort();
             promoted_improvement_operator_ids.dedup();
+        }
+        if !repair_has_learning_authority {
+            if let Some(code) = failure_code.as_deref() {
+                let kind = if code.starts_with("UNSUPPORTED_LANGUAGE_SYNTAX") {
+                    MetaCompilerGapKind::MissingLanguageBackend
+                } else if code.starts_with("CONFLICTING_SOURCE_BOUND_EDITS") {
+                    MetaCompilerGapKind::UnrepresentablePostcondition
+                } else {
+                    MetaCompilerGapKind::MissingCompositeEditPrimitive
+                };
+                let gap = MetaCompilerGapIR::new(
+                    kind,
+                    code,
+                    "python",
+                    "py",
+                    vec![
+                        "abstraction".to_string(),
+                        "compiler_runtime".to_string(),
+                        "pattern_matching".to_string(),
+                    ],
+                    plan.repository_issue_evidence_sha256s.clone(),
+                    prior_counterexample_candidate_sha256s
+                        .iter()
+                        .cloned()
+                        .collect(),
+                    repository_repair_contract.target_symbols.clone(),
+                    vec![validation.validation_id.clone()],
+                )?;
+                meta_compiler_registry.record_gap(gap)?;
+                persist_meta_compiler_registry(&meta_compiler_path, &meta_compiler_registry)?;
+            }
         }
         let repository_pipeline_provenance =
             build_repository_repair_provenance(&RepositoryRepairProvenanceInput {
@@ -10834,6 +10997,9 @@ fn try_synthesize_failed_python_cohort(
                 .collect(),
             selected_source_bound_patch_variant_id,
             selected_source_bound_template_symbols,
+            selected_meta_compiler_primitive_id,
+            promoted_meta_compiler_primitive_ids,
+            meta_compiler_registry_sha256: meta_compiler_registry.registry_sha256.clone(),
             operator_family: "PUBLIC_SYMBOL_EXECUTION_CLOSURE_TO_TYPED_ATOMIC_SOURCE_PATCH"
                 .to_string(),
             edit_atom_kinds: edit_atom_kinds.into_iter().collect(),
@@ -18327,6 +18493,140 @@ mod tests {
             .count(),
             1
         );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn induced_edit_primitive_repairs_a_gap_outside_the_fixed_expression_grammar() {
+        let Ok(python) = resolve_local_program("python") else {
+            return;
+        };
+        if !Command::new(&python)
+            .args(["-c", "import pytest"])
+            .status()
+            .is_ok_and(|status| status.success())
+        {
+            return;
+        }
+        let root = temp_root("meta-compiler-runtime-fallback");
+        let (_, mut config) = test_config(&root);
+        config.repository_mutation.enabled = true;
+        let repository = config.watched_roots[0].clone();
+        fs::create_dir_all(repository.join("tests")).unwrap();
+        fs::create_dir_all(config.state_dir.join("diagnostics")).unwrap();
+        fs::write(
+            repository.join("pyproject.toml"),
+            "[build-system]\nrequires = []\nbuild-backend = \"\"\n\n[tool.pytest.ini_options]\ntestpaths = [\"tests\"]\n",
+        )
+        .unwrap();
+        let predecessor = "def shift(number, bits):\n    return number << bits\n";
+        fs::write(repository.join("bitops.py"), predecessor).unwrap();
+        fs::write(
+            repository.join("tests/test_bitops.py"),
+            "from bitops import shift\n\ndef test_shift():\n    assert shift(16, 2) == 4\n    assert shift(64, 3) == 8\n",
+        )
+        .unwrap();
+
+        let mut registry = MetaCompilerRegistryIR::default();
+        for (context, path, before, after) in [
+            (
+                "verified-repo-a",
+                "src/a.py",
+                "return value << width",
+                "return value >> width",
+            ),
+            (
+                "verified-repo-b",
+                "lib/b.py",
+                "return payload << bits",
+                "return payload >> bits",
+            ),
+        ] {
+            registry
+                .learn_verified_example(
+                    crate::meta_compiler_expansion::VerifiedRepairExampleIR::new(
+                        context,
+                        "python",
+                        "py",
+                        PathBuf::from(path),
+                        before,
+                        after,
+                        vec!["REPLACE".to_string()],
+                        sha256(format!("public:{context}").as_bytes()),
+                        sha256(format!("compile:{context}").as_bytes()),
+                    )
+                    .unwrap(),
+                )
+                .unwrap();
+        }
+        assert_eq!(registry.edit_primitives.len(), 1);
+        persist_meta_compiler_registry(&meta_compiler_registry_path(&config), &registry).unwrap();
+
+        let implementation = LearningObservation {
+            observation_id: "meta-compiler-bitops-implementation".to_string(),
+            work_event_id: None,
+            logical_path: "ROOT_0/bitops.py".to_string(),
+            content_sha256: sha256(predecessor.as_bytes()),
+            predecessor_content_sha256: Some("e".repeat(64)),
+            actor: WorkActor::LocalTool,
+            work_kind: WorkKind::DefectRepair,
+            work_outcome: WorkOutcome::Unknown,
+            features_before: Some(StructuralFeatures::default()),
+            features_after: StructuralFeatures::default(),
+            signals: vec!["DEFECT_REPAIR".to_string()],
+            composition_roles: vec!["IMPLEMENTATION_REPAIR".to_string()],
+            learning_score: 75,
+            learning_value: LearningValue::High,
+            reasons: vec!["public bit-shift behavior contradiction".to_string()],
+            verification_evidence_sha256: Vec::new(),
+            performance_metrics: Vec::new(),
+            public_contract_deltas: Vec::new(),
+            exact_source_fragments_stored: 0,
+            raw_source_bytes_stored: 0,
+            observed_at_ms: 1,
+        };
+        let test_observation = LearningObservation {
+            observation_id: "meta-compiler-bitops-test".to_string(),
+            logical_path: "ROOT_0/tests/test_bitops.py".to_string(),
+            work_kind: WorkKind::RegressionTest,
+            signals: vec!["REGRESSION_EVIDENCE".to_string(), "TEST_ADDED".to_string()],
+            composition_roles: vec!["REGRESSION_TEST".to_string()],
+            ..implementation.clone()
+        };
+        let outcome = validate_blocked_repository_cohort(
+            &config,
+            &repository_repair_diagnostic(),
+            &[implementation, test_observation],
+        )
+        .unwrap();
+        assert!(outcome.executed);
+        assert!(outcome.repository_repair_installed);
+        assert!(fs::read_to_string(repository.join("bitops.py"))
+            .unwrap()
+            .contains("number >> bits"));
+        let repair = fs::read_dir(config.state_dir.join("diagnostics"))
+            .unwrap()
+            .filter_map(Result::ok)
+            .map(|entry| entry.path())
+            .filter(|path| {
+                path.file_name()
+                    .and_then(OsStr::to_str)
+                    .is_some_and(|name| name.starts_with("repository_repair_synthesis_"))
+                    && path.extension().and_then(OsStr::to_str) == Some("json")
+            })
+            .map(|path| read_json::<RepositoryRepairSynthesisReceipt>(&path).unwrap())
+            .find(|receipt| receipt.source_relative_path == Path::new("bitops.py"))
+            .expect("meta compiler repair receipt");
+        assert!(repair.selected_meta_compiler_primitive_id.is_some());
+        assert!(repair
+            .selected_source_bound_patch_variant_id
+            .as_deref()
+            .is_some_and(|id| id.starts_with("META_PRIMITIVE:")));
+        assert!(repair.sandbox_verified);
+        assert!(repair.candidate_installed);
+        assert!(!repair.rolled_back);
+        assert_eq!(repair.raw_source_bytes_stored, 0);
+        assert_eq!(repair.meta_compiler_registry_sha256.len(), 64);
         fs::remove_dir_all(root).unwrap();
     }
 

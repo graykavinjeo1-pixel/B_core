@@ -84,7 +84,7 @@ const MAX_SUBMITTED_SOURCE_PROPOSALS_PER_GENERATOR: usize = MAX_SELECTED_SOURCE_
 // Revision 47 separates exact authority existence from the bounded active
 // operator window and deduplicates repeated authority receipts.
 // Generator identity remains diagnostic evidence only.
-pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 60;
+pub const SOURCE_REPAIR_ENGINE_REVISION: u64 = 61;
 pub const MAX_RETAINED_CONSUMED_RUNTIME_STAGING_GENERATIONS: usize = 2;
 const KNOWN_REMAINDER_PREDICTED_VALUE: u16 = 35;
 const MAX_REPOSITORY_REPAIR_FAMILY_FILES: usize = 16;
