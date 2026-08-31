@@ -1,0 +1,155 @@
+{
+  "schema": "B_CORE_CONDITIONAL_GUARD_REPORT_V1",
+  "stage": "PRAGMATIC_REASONING_R12",
+  "status": "PASS",
+  "date": "2026-08-31",
+  "long_term_goal": "GPT-grade general language understanding without an external LLM reasoning dependency",
+  "gpt_grade_status": "NOT_YET",
+  "implemented": [
+    "typed persistent conditional guards separate from immutable modal parse relations",
+    "explicit unresolved, dialogue-supported, dialogue-contradicted, contested, and ineligible-counterfactual statuses",
+    "active-ledger evidence matching by subject, state axis, state value, temporal anchor, and actual modal world",
+    "English and Korean indicative, hypothetical, unless, and counterfactual guard ingestion",
+    "negated antecedent evaluation for unless and Korean negative conditional forms",
+    "same-source revision-aware reevaluation and cross-source conflict preservation",
+    "possible, probable, predicted, desired, and counterfactual evidence exclusion from actual guards",
+    "strict prohibition on consequent-to-antecedent reverse inference",
+    "deliberation eligibility without automatic GoalIR creation or external execution authority",
+    "bounded local English conditional-it binding to the antecedent subject",
+    "Korean copular conditional -이면 recognition",
+    "English correction-adverb removal from actor identity",
+    "bilingual evidence-bounded guard-status realization",
+    "guard store, guard, evidence, evaluation, truth, authority, and unsupported-claim tamper rejection"
+  ],
+  "architecture": {
+    "implementation_language": "Rust",
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "semantic_payload_mutations": 0,
+    "direct_text_to_solution_shortcuts": 0,
+    "source_mutations_by_runtime": 0,
+    "conditional_guard_store_schema": "B_CORE_CONDITIONAL_GUARD_STORE_IR_1",
+    "conditional_guard_evaluation_schema": "B_CORE_CONDITIONAL_GUARD_EVALUATION_IR_1",
+    "modal_scope_schema": "B_CORE_MODAL_SCOPE_GRAPH_IR_1",
+    "epistemic_ledger_schema": "B_CORE_EPISTEMIC_LEDGER_IR_2",
+    "conversation_response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_4",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_8",
+    "declaration_path": "conditional utterance -> typed modal conditional -> persistent inactive guard -> no goal projection",
+    "evaluation_path": "active actual-world dialogue records -> typed proposition signatures -> antecedent support or contradiction -> bounded guard status",
+    "activation_boundary": "supported dialogue evidence -> consequent available for deliberation only -> no automatic goal, execution, or truth authority",
+    "reverse_inference_boundary": "consequent observation is never used as antecedent evidence"
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_adapter_all_targets_deny_warnings": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": {
+      "status": "PASS",
+      "passed": 685,
+      "failed": 0
+    },
+    "semantic_core_adapters_tests": {
+      "status": "PASS",
+      "passed": 224,
+      "failed": 0
+    },
+    "pragmatic_reasoning_r1_canary": { "passed": 8, "failed": 0 },
+    "pragmatic_context_r2_canary": { "passed": 5, "failed": 0 },
+    "compositional_language_r3_canary": { "passed": 20, "failed": 0 },
+    "discourse_program_r4_canary": { "passed": 18, "failed": 0 },
+    "cross_turn_discourse_r5_canary": { "passed": 20, "failed": 0 },
+    "semantic_role_discourse_r6_canary": { "passed": 24, "failed": 0 },
+    "attribution_discourse_r7_canary": { "passed": 34, "failed": 0 },
+    "epistemic_revision_r8_canary": { "passed": 30, "failed": 0 },
+    "modal_scope_r9_canary": { "passed": 55, "failed": 0 },
+    "discourse_qa_r10_canary": { "passed": 55, "failed": 0 },
+    "temporal_discourse_r11_canary": { "passed": 56, "failed": 0 },
+    "conditional_guard_r12_canary": {
+      "passed": 56,
+      "failed": 0,
+      "english_surface_family": 8,
+      "korean_surface_family": 8,
+      "evidence_evaluation_family": 14,
+      "modal_and_reverse_inference_family": 8,
+      "conflict_and_revision_family": 6,
+      "safety_and_tamper_family": 12
+    },
+    "all_frozen_r1_through_r12_canaries": { "passed": 381, "failed": 0 },
+    "initial_r12_counterexample_run": { "passed": 49, "failed": 7 },
+    "final_r12_counterexample_run": { "passed": 56, "failed": 0 },
+    "git_diff_check": "PASS",
+    "python_dependency_probe_observation": {
+      "status": "EXPECTED_NEGATIVE_PROBE_OUTPUT",
+      "pytest_available": false,
+      "workspace_test_failures_caused": 0,
+      "canonical_language_path_uses_python": false
+    }
+  },
+  "development_counterexamples": [
+    {
+      "observed": "If the backup is available, restore it was rejected because sentence-internal it was treated as an unresolved prior-turn reference.",
+      "repair": "Added a bounded local conditional binding from one consequent it to the typed antecedent subject."
+    },
+    {
+      "observed": "Korean conditional clauses could leave a hypothetical consequent in active conversation goals even though no current goal was inferred.",
+      "repair": "Blocked all conversation-goal projection while a modal conditional relation is present; activation remains a separate deliberation-only status."
+    },
+    {
+      "observed": "Korean copular conditions such as 서비스가 정상이면 were not split into antecedent and consequent.",
+      "repair": "Added bounded -이면 conditional recognition while retaining prohibition-form exclusions."
+    },
+    {
+      "observed": "Actually, Alice says ... produced actor identity actually, alice and therefore failed to supersede Alice's prior record.",
+      "repair": "Removed leading English correction discourse markers before actor extraction, restoring same-source revision semantics."
+    },
+    {
+      "observed": "Possible evidence and observed consequents were tempting but invalid sources of guard support.",
+      "repair": "Restricted matching to active Actual-world antecedent records and never compares the consequent against evidence."
+    }
+  ],
+  "safety_invariants": {
+    "conditional_parse_relation_remains_unsatisfied": true,
+    "guard_support_is_dialogue_evidence_not_world_truth": true,
+    "guard_support_only_enables_deliberation": true,
+    "guard_support_creates_no_automatic_goal": true,
+    "guards_evidence_and_evaluations_have_no_execution_authority": true,
+    "reverse_inference_is_always_forbidden": true,
+    "non_actual_modal_records_cannot_support_actual_guards": true,
+    "counterfactual_guards_cannot_activate_current_consequents": true,
+    "conflicting_sources_have_no_automatic_winner": true,
+    "superseded_and_retracted_records_are_not_guard_evidence": true,
+    "recognized_qa_question_turns_do_not_evaluate_or_mutate_guards": true,
+    "unsupported_explanation_claims_remain_zero": true,
+    "state_hash_ledger_and_guard_validation_remain_active": true
+  },
+  "known_limits": [
+    "Antecedent matching uses a bounded proposition-signature lexicon rather than general textual entailment or theorem proving.",
+    "Conjunction, disjunction, nested conditions, quantified antecedents, numeric comparisons, and rich temporal guards are not generally evaluated.",
+    "Dialogue evidence can support a guard for deliberation but is deliberately not external-world verification.",
+    "The adapter does not yet ask for confirmation, rank sources, or execute a deliberation-eligible consequent.",
+    "Local sentence-internal reference repair currently covers one English it tied to one conditional antecedent; broader intra-sentential coreference remains incomplete.",
+    "Guard identity is based on normalized surface arms, so broad paraphrases of the same rule are not merged.",
+    "Source reliability and evidence strength are not estimated; unresolved cross-source disagreement remains contested.",
+    "No broad open-domain corpus, human calibration study, or frontier-model comparison has been run.",
+    "The system remains below GPT-grade breadth, robustness, knowledge, and calibration."
+  ],
+  "next_frontier": [
+    "long-distance actor, entity, event, and belief-holder coreference across mixed Korean and English turns",
+    "compositional paraphrase and ontology-mediated proposition matching beyond bounded surface signatures",
+    "typed causal, concessive, purpose, and explanatory relations with evidence paths",
+    "conjunctive, disjunctive, quantified, numeric, and temporal guard composition",
+    "multi-hop relational questions with calibrated abstention and explicit proof paths",
+    "larger family-held-out adversarial dialogue suites and human-calibrated evaluation"
+  ],
+  "repository": {
+    "branch": "main",
+    "pre_commit_head": "603eb2a",
+    "ahead_of_origin": 4,
+    "behind_origin": 0,
+    "report_sealed_before_commit": true,
+    "commit_and_push_requested_after_validation": true,
+    "final_commit_recorded_in_task_response": true,
+    "worktree_clean_at_report_seal": false
+  }
+}

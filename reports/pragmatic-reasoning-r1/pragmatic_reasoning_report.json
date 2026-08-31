@@ -1,0 +1,72 @@
+{
+  "schema": "B_CORE_PRAGMATIC_REASONING_REPORT_1",
+  "status": "PASS",
+  "implementation_language": "Rust",
+  "external_llm_calls": 0,
+  "network_calls": 0,
+  "sentence_specific_dispatches": 0,
+  "semantic_payload_mutations": 0,
+  "pipeline": [
+    "surface normalization",
+    "discourse clause segmentation",
+    "clause role classification",
+    "discourse relation graph",
+    "speech-act inference",
+    "implicit goal reconstruction",
+    "cost-benefit continuation gate",
+    "authority-aware GoalIR projection",
+    "existing semantic planner"
+  ],
+  "clause_roles": [
+    "statement",
+    "observation",
+    "cause",
+    "contrast",
+    "condition",
+    "current_action",
+    "problem",
+    "knowledge_gap",
+    "proposal",
+    "cost",
+    "benefit",
+    "evaluation",
+    "decision",
+    "negation",
+    "uncertainty"
+  ],
+  "speech_acts": [
+    "inform",
+    "request_action",
+    "ask",
+    "suggest",
+    "approve",
+    "reject",
+    "conditional_commitment",
+    "conditional_continuation"
+  ],
+  "decision_gate_branches": {
+    "supported": "continue_current_work",
+    "rejected": "report_negative_and_ask_whether_to_stop",
+    "unresolved": "report_uncertainty_and_ask_how_to_proceed"
+  },
+  "user_utterance_result": {
+    "speech_act": "conditional_continuation",
+    "current_task": "통합",
+    "required_benefit": "커버리지를 확장하는 효과가 있다",
+    "planning_intent": "investigate",
+    "proxy_only_is_insufficient": true,
+    "external_execution_authorized_by_inference_alone": false
+  },
+  "canary_cases": 8,
+  "canary_passed": 8,
+  "adapter_tests": 101,
+  "workspace_tests": 562,
+  "workspace_test_failures": 0,
+  "cargo_fmt_check": "PASS",
+  "cargo_clippy_deny_warnings": "PASS",
+  "known_limits": [
+    "This is a bounded deterministic pragmatic reasoner, not a general pretrained language model.",
+    "Unseen metaphor, sarcasm, culturally implicit reference, and unrestricted long-context ellipsis remain incomplete.",
+    "Inferred goals are inspectable proposals and never independently grant broader external mutation authority."
+  ]
+}

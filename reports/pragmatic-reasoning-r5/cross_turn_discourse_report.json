@@ -1,0 +1,126 @@
+{
+  "schema": "B_CORE_CROSS_TURN_DISCOURSE_REPORT_V1",
+  "stage": "PRAGMATIC_REASONING_R5",
+  "status": "PASS",
+  "date": "2026-08-31",
+  "long_term_goal": "GPT-grade general language understanding without an external LLM reasoning dependency",
+  "gpt_grade_status": "NOT_YET",
+  "implemented": [
+    "tamper-evident active goal frames in bounded conversation state",
+    "pronominal, plural, former, and latter reference bindings",
+    "concept-ID-mediated Korean and English cross-language reference realization",
+    "cross-turn parallel action ellipsis with a new grounded subject",
+    "explicit same-goal repetition with inherited-goal provenance",
+    "cross-turn argument correction without semantic payload mutation",
+    "fail-closed ambiguity when a repeat could target multiple prior goals",
+    "recency limits that prevent stale goals from silently regaining execution authority",
+    "punctuation- and quotation-preserving semantic normalization after filler and typo removal",
+    "resolved discourse text as the actual input to compositional and pragmatic reasoning"
+  ],
+  "architecture": {
+    "implementation_language": "Rust",
+    "external_llm_calls": 0,
+    "network_calls": 0,
+    "semantic_payload_mutations": 0,
+    "direct_text_to_solution_shortcuts": 0,
+    "reference_path": "surface alias -> dynamic referent -> canonical concept ID -> current-language alias",
+    "ellipsis_path": "surface fragment -> typed active goal -> explicit discourse binding -> reconstructed semantic request -> compositional parser -> GoalIR",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_2",
+    "frontend_schema": "B_CORE_CONVERSATION_FRONTEND_2"
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": {
+      "status": "PASS",
+      "passed": 605,
+      "failed": 0
+    },
+    "semantic_core_adapters_tests": {
+      "status": "PASS",
+      "passed": 144,
+      "failed": 0
+    },
+    "pragmatic_reasoning_r1_canary": {
+      "passed": 8,
+      "failed": 0
+    },
+    "pragmatic_context_r2_canary": {
+      "passed": 5,
+      "failed": 0
+    },
+    "compositional_language_r3_canary": {
+      "passed": 20,
+      "failed": 0
+    },
+    "discourse_program_r4_canary": {
+      "passed": 18,
+      "failed": 0
+    },
+    "cross_turn_discourse_r5_canary": {
+      "passed": 20,
+      "failed": 0,
+      "korean_family": 10,
+      "english_family": 10,
+      "cross_language": 2
+    },
+    "git_diff_check": "PASS",
+    "non_gating_all_features_observation": {
+      "status": "KNOWN_PRE_EXISTING_CONFIGURATION_BOUNDARY",
+      "cause": "semantic-reasoning includes SEM-26 types through two module identities under the all-features combination; the default workspace and all 605 tests pass",
+      "r5_language_change_causal": false
+    }
+  },
+  "development_counterexamples": [
+    {
+      "observed": "The normalized semantic token stream removed sentence and quotation punctuation, collapsing pragmatic clauses and the R4 goal graph when it became the parser input.",
+      "repair": "Added a separate semantic surface that removes filler and repairs typos while retaining clause and quotation boundaries."
+    },
+    {
+      "observed": "파일을 열어 reached Execute through the legacy keyword path but produced no selected compositional goal because 열어 was misclassified as declarative.",
+      "repair": "Added bounded Korean colloquial imperative-inflection recognition and required a real selected goal before it can enter discourse memory."
+    },
+    {
+      "observed": "An inherited normalized predicate 고쳐 was treated as an uninflected stem and realized as 고쳐해.",
+      "repair": "Preserved already conjugated action surfaces during ellipsis realization."
+    },
+    {
+      "observed": "Without a recency gate, 그대로 해 could revive an arbitrarily old active command.",
+      "repair": "Bound anaphoric goals and referents to explicit turn-distance limits and fail closed outside them."
+    }
+  ],
+  "safety_invariants": {
+    "only_selected_grounded_goals_enter_conversation_memory": true,
+    "multi_goal_repeat_ambiguity_requires_clarification": true,
+    "stale_goal_authority_is_not_reactivated": true,
+    "cross_language_aliases_share_one_referent_concept": true,
+    "conversation_state_is_turn_ordered_and_tamper_evident": true,
+    "reference_resolution_precedes_pragmatic_goal_projection": true,
+    "quoted_and_negated_authority_rules_remain_active": true,
+    "external_execution_is_not_performed_by_the_language_adapter": true
+  },
+  "known_limits": [
+    "Reference compatibility currently uses a compact object ontology rather than broad learned entity typing.",
+    "Only selected active goals are retained; full discourse trees, abandoned branches, and nested belief states are not yet modeled.",
+    "Bridging anaphora, implicit event references, long-distance coreference, and arbitrary noun phrases remain incomplete.",
+    "Ellipsis reconstruction is controlled Korean and English morphology, not a general surface realizer.",
+    "No broad open-domain corpus, human preference evaluation, or frontier-model comparison has been run.",
+    "The system remains far below GPT-grade breadth, calibration, world knowledge, and linguistic robustness."
+  ],
+  "next_frontier": [
+    "typed semantic-role and dependency graphs for arbitrary noun phrases and nested clauses",
+    "event and proposition referents in addition to object referents",
+    "cross-turn discourse revision graphs with supersession, cancellation, and branch history",
+    "logical quantifier, temporal, modal, and belief scope",
+    "transactional durable conversation snapshots with import, rollback, and corruption tests",
+    "large family-held-out adversarial dialogue suite with calibrated abstention"
+  ],
+  "repository": {
+    "branch": "main",
+    "head": "603eb2a",
+    "ahead_of_origin": 4,
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  }
+}

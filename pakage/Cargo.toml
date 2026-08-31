@@ -1,0 +1,17 @@
+[workspace]
+members = [
+    "crates/dockable-semantic-core",
+    "crates/semantic-core-adapters",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+license = "UNLICENSED"
+repository = ""
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[profile.test]
+debug = 0

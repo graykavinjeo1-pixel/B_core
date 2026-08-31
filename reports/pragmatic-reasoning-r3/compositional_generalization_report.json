@@ -1,0 +1,105 @@
+{
+  "schema": "B_CORE_COMPOSITIONAL_GENERALIZATION_REPORT_V1",
+  "stage": "PRAGMATIC_REASONING_R3",
+  "status": "PASS",
+  "date": "2026-08-31",
+  "long_term_goal": "GPT-grade general language understanding without an external LLM reasoning dependency",
+  "gpt_grade_status": "NOT_YET",
+  "implemented": [
+    "predicate-frame extraction for Korean and English",
+    "explicit negation and prohibition scope",
+    "quotation and reported-speech authority separation",
+    "conditional and counterfactual scope",
+    "interrogative propositions lowered to investigation rather than execution",
+    "alternative exclusion and corrected-target selection",
+    "competing interpretation lattice with fail-closed clarification",
+    "definition-grounded injection of previously unknown predicates",
+    "projection of the selected structural interpretation into the existing GoalIR path"
+  ],
+  "architecture": {
+    "implementation_language": "Rust",
+    "external_llm_calls": 0,
+    "network_calls": 0,
+    "semantic_payload_mutations": 0,
+    "direct_text_to_solution_shortcuts": 0,
+    "language_reasoning_path": "surface -> compositional frames/scopes -> interpretation candidates -> pragmatic goal -> GoalIR -> existing reasoner"
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": {
+      "status": "PASS",
+      "passed": 588,
+      "failed": 0
+    },
+    "semantic_core_adapters_tests": {
+      "status": "PASS",
+      "passed": 127,
+      "failed": 0
+    },
+    "pragmatic_reasoning_r1_canary": {
+      "passed": 8,
+      "failed": 0
+    },
+    "pragmatic_context_r2_canary": {
+      "passed": 5,
+      "failed": 0
+    },
+    "compositional_language_r3_canary": {
+      "passed": 20,
+      "failed": 0,
+      "korean": 10,
+      "english": 10
+    },
+    "git_diff_check": "PASS"
+  },
+  "development_counterexamples": [
+    {
+      "observed": "Korean irregular form 고쳐 was initially not bound to the repair predicate.",
+      "repair": "Expanded the predicate morphology family rather than adding a sentence template."
+    },
+    {
+      "observed": "An outer passive predicate was initially absorbed into metalinguistic quotation scope.",
+      "repair": "Separated quoted inner predicates from the passive matrix predicate."
+    },
+    {
+      "observed": "Please incorrectly promoted every later predicate in the same clause to an imperative.",
+      "repair": "Bound directive force to the predicate immediately governed by the directive prefix."
+    },
+    {
+      "observed": "A declarative mention such as deployment after an error was initially promoted as an execution goal.",
+      "repair": "Made bare declarative action mentions non-authoritative unless explicit necessity is present."
+    }
+  ],
+  "safety_invariants": {
+    "quoted_commands_are_non_authoritative": true,
+    "reported_commands_are_non_authoritative": true,
+    "negated_actions_are_non_authoritative": true,
+    "counterfactual_actions_are_non_authoritative": true,
+    "questions_do_not_authorize_their_embedded_action": true,
+    "close_conflicting_readings_require_clarification": true,
+    "new_predicates_reuse_existing_scope_rules": true
+  },
+  "known_limits": [
+    "This is a deterministic structural language layer, not a pretrained general language model.",
+    "Built-in morphology and predicate vocabulary remain compact; injected predicates are process-local in R3.",
+    "Long-distance syntax, quantifier scope, nested coreference, and culturally novel implicature remain limited.",
+    "Equal-strength compound requests currently request clarification instead of producing a multi-goal ordered graph.",
+    "Only controlled Korean and English generalization has been measured.",
+    "No large open-domain or human preference benchmark has been run, so GPT-grade competence is not claimed."
+  ],
+  "next_frontier": [
+    "tamper-evident persistence for learned predicates and grammar knowledge",
+    "dependency and semantic-role graphs for nested clauses and multi-goal ordering",
+    "quantifier, temporal, and cross-turn coreference scope",
+    "large frozen adversarial blind suite with family-held-out paraphrases",
+    "grounded open-domain knowledge acquisition without solution leakage"
+  ],
+  "repository": {
+    "branch": "main",
+    "ahead_of_origin": 4,
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  }
+}

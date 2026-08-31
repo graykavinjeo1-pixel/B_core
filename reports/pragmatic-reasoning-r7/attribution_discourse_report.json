@@ -1,0 +1,130 @@
+{
+  "schema": "B_CORE_ATTRIBUTION_DISCOURSE_REPORT_V1",
+  "stage": "PRAGMATIC_REASONING_R7",
+  "status": "PASS",
+  "date": "2026-08-31",
+  "long_term_goal": "GPT-grade general language understanding without an external LLM reasoning dependency",
+  "gpt_grade_status": "NOT_YET",
+  "implemented": [
+    "typed discourse-local attribution actors and propositions",
+    "separate proposition polarity and source stance",
+    "say, report, claim, believe, think, know, doubt, deny, hear, observe, infer, want, and expect attitudes",
+    "speech, hearsay, observation, inference, and document evidence provenance",
+    "nested attribution with explicit parent proposition IDs",
+    "frame-level authority blocking inside attributed proposition spans",
+    "source-specific cross-turn proposition disambiguation",
+    "quoted metalinguistic reconstruction of attributed proposition references",
+    "English complementizer-that versus demonstrative-that distinction",
+    "contrast-boundary reset that preserves independent outer requests",
+    "rejection of nominal report objects as proposition complements",
+    "bounded tamper-evident attribution metadata in conversation memory"
+  ],
+  "architecture": {
+    "implementation_language": "Rust",
+    "external_llm_calls": 0,
+    "network_calls": 0,
+    "semantic_payload_mutations": 0,
+    "direct_text_to_solution_shortcuts": 0,
+    "source_mutations_by_runtime": 0,
+    "attribution_graph_schema": "B_CORE_ATTRIBUTION_GRAPH_IR_1",
+    "compositional_analysis_schema": "B_CORE_COMPOSITIONAL_ANALYSIS_IR_3",
+    "semantic_role_graph_schema": "B_CORE_SEMANTIC_ROLE_GRAPH_IR_1",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_4",
+    "conversation_frontend_schema": "B_CORE_CONVERSATION_FRONTEND_2",
+    "analysis_path": "surface -> attribution graph -> attributed frame binding -> compositional authority filtering -> pragmatic projection -> GoalIR",
+    "reference_path": "source-aware proposition referent -> bounded disambiguation -> quoted reconstruction -> same authority boundary"
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": {
+      "status": "PASS",
+      "passed": 625,
+      "failed": 0
+    },
+    "semantic_core_adapters_tests": {
+      "status": "PASS",
+      "passed": 164,
+      "failed": 0
+    },
+    "pragmatic_reasoning_r1_canary": { "passed": 8, "failed": 0 },
+    "pragmatic_context_r2_canary": { "passed": 5, "failed": 0 },
+    "compositional_language_r3_canary": { "passed": 20, "failed": 0 },
+    "discourse_program_r4_canary": { "passed": 18, "failed": 0 },
+    "cross_turn_discourse_r5_canary": { "passed": 20, "failed": 0 },
+    "semantic_role_discourse_r6_canary": { "passed": 24, "failed": 0 },
+    "attribution_discourse_r7_canary": {
+      "passed": 34,
+      "failed": 0,
+      "korean_family": 11,
+      "english_family": 11,
+      "cross_turn_family": 4,
+      "safety_and_scope_family": 8
+    },
+    "all_frozen_r1_through_r7_canaries": { "passed": 129, "failed": 0 },
+    "git_diff_check": "PASS",
+    "non_gating_all_features_observation": {
+      "status": "KNOWN_PRE_EXISTING_CONFIGURATION_BOUNDARY",
+      "cause": "semantic-reasoning includes SEM-26 types through two module identities under the all-features combination",
+      "r7_language_change_causal": false
+    }
+  },
+  "development_counterexamples": [
+    {
+      "observed": "Negation inside a Korean proposition was lifted into negative attribution stance.",
+      "repair": "Limited source-stance negation to the attribution predicate and kept proposition polarity separate."
+    },
+    {
+      "observed": "Complementizer that after believes was treated as an unresolved demonstrative reference.",
+      "repair": "Added attribution-predicate-sensitive complementizer classification in both empty and populated conversation state."
+    },
+    {
+      "observed": "An attributed complement consumed a later contrastive user request and blocked it.",
+      "repair": "Added matching contrast boundaries to proposition spans, reported-action scope, and directive recognition."
+    },
+    {
+      "observed": "A noun object of reported was treated as a proposition.",
+      "repair": "Required quoted, clausal, predicate-shaped, or infinitival complement evidence."
+    }
+  ],
+  "safety_invariants": {
+    "attributed_propositions_are_not_dialogue_grounded_truth": true,
+    "attributed_commands_and_desires_have_no_execution_authority": true,
+    "actors_and_proposition_surfaces_are_not_promoted_concepts": true,
+    "proposition_polarity_is_separate_from_source_stance": true,
+    "generic_competing_attributions_require_clarification": true,
+    "source_specific_reference_preserves_attribution_identity": true,
+    "attribution_metadata_is_invalid_on_event_and_result_referents": true,
+    "direct_outer_requests_survive_attribution_scope_reset": true,
+    "conversation_state_is_bounded_and_tamper_evident": true,
+    "external_execution_is_not_performed_by_the_language_adapter": true
+  },
+  "known_limits": [
+    "The analyzer is deterministic and bilingual rather than a learned open-domain language model.",
+    "Actor extraction and complement recognition remain controlled and heuristic.",
+    "Free indirect discourse, unrestricted morphology, arbitrary scope islands, and deep mixed-language nesting remain incomplete.",
+    "Pronoun attribution and long-distance source resolution are not general.",
+    "The graph records beliefs but does not yet maintain temporal belief revision, retraction, or contradiction history.",
+    "Source reliability and evidential strength are represented categorically but not calibrated.",
+    "General entailment and world-knowledge reasoning over attributed propositions are not implemented.",
+    "No broad open-domain corpus, human calibration study, or frontier-model comparison has been run.",
+    "The system remains below GPT-grade breadth, robustness, knowledge, and calibration."
+  ],
+  "next_frontier": [
+    "temporally versioned belief, contradiction, retraction, and supersession state",
+    "nested modal, negation, quantifier, and counterfactual scope",
+    "attribution-aware questions and answers that never convert reported content into fact",
+    "evidential reliability and provenance composition without lexical authority",
+    "pronoun and long-distance actor resolution across turns",
+    "larger family-held-out adversarial dialogue suites with calibrated abstention"
+  ],
+  "repository": {
+    "branch": "main",
+    "head": "603eb2a",
+    "ahead_of_origin": 4,
+    "behind_origin": 0,
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  }
+}

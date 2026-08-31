@@ -1,0 +1,135 @@
+{
+  "schema": "B_CORE_EPISTEMIC_REVISION_REPORT_V1",
+  "stage": "PRAGMATIC_REASONING_R8",
+  "status": "PASS",
+  "date": "2026-08-31",
+  "long_term_goal": "GPT-grade general language understanding without an external LLM reasoning dependency",
+  "gpt_grade_status": "NOT_YET",
+  "implemented": [
+    "bounded temporally versioned epistemic ledger in conversation state",
+    "belief records linked to source proposition referents",
+    "subject, state-axis, state-value, polarity, and temporal proposition signatures",
+    "typed reaffirmation, contradiction, supersession, and retraction revision edges",
+    "marked same-source update versus unmarked same-source conflict distinction",
+    "cross-source contested beliefs without truth selection",
+    "explicit correction including unknown-state fallback to latest same-source claim",
+    "retraction-driven removal from active reference state",
+    "automatic conflict reconciliation after one side becomes inactive",
+    "past, present, future, and unspecified temporal anchors",
+    "source-specific retrieval of older concurrent active claims",
+    "bounded 64-record and 128-revision retention"
+  ],
+  "architecture": {
+    "implementation_language": "Rust",
+    "external_llm_calls": 0,
+    "network_calls": 0,
+    "semantic_payload_mutations": 0,
+    "direct_text_to_solution_shortcuts": 0,
+    "source_mutations_by_runtime": 0,
+    "epistemic_ledger_schema": "B_CORE_EPISTEMIC_LEDGER_IR_1",
+    "attribution_graph_schema": "B_CORE_ATTRIBUTION_GRAPH_IR_1",
+    "compositional_analysis_schema": "B_CORE_COMPOSITIONAL_ANALYSIS_IR_3",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_5",
+    "conversation_frontend_schema": "B_CORE_CONVERSATION_FRONTEND_2",
+    "revision_path": "proposition referent -> local semantic signature -> active-record comparison -> typed revision edge -> source-aware reference state",
+    "authority_path": "belief record -> dialogue-local provenance only -> no truth or execution authority"
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": {
+      "status": "PASS",
+      "passed": 635,
+      "failed": 0
+    },
+    "semantic_core_adapters_tests": {
+      "status": "PASS",
+      "passed": 174,
+      "failed": 0
+    },
+    "pragmatic_reasoning_r1_canary": { "passed": 8, "failed": 0 },
+    "pragmatic_context_r2_canary": { "passed": 5, "failed": 0 },
+    "compositional_language_r3_canary": { "passed": 20, "failed": 0 },
+    "discourse_program_r4_canary": { "passed": 18, "failed": 0 },
+    "cross_turn_discourse_r5_canary": { "passed": 20, "failed": 0 },
+    "semantic_role_discourse_r6_canary": { "passed": 24, "failed": 0 },
+    "attribution_discourse_r7_canary": { "passed": 34, "failed": 0 },
+    "epistemic_revision_r8_canary": {
+      "passed": 30,
+      "failed": 0,
+      "english_family": 14,
+      "korean_family": 13,
+      "safety_and_boundedness_family": 3
+    },
+    "all_frozen_r1_through_r8_canaries": { "passed": 159, "failed": 0 },
+    "git_diff_check": "PASS",
+    "non_gating_all_features_observation": {
+      "status": "KNOWN_PRE_EXISTING_CONFIGURATION_BOUNDARY",
+      "cause": "semantic-reasoning includes SEM-26 types through two module identities under the all-features combination",
+      "r8_language_change_causal": false
+    }
+  },
+  "development_counterexamples": [
+    {
+      "observed": "Correction-predicate complementizer that was treated as a demonstrative reference.",
+      "repair": "Extended grammatical complementizer context to typed correction predicates."
+    },
+    {
+      "observed": "Korean document provenance with 에 따르면 fell through to a request speech act.",
+      "repair": "Prioritized valid goal-free attribution as Inform before legacy request cues."
+    },
+    {
+      "observed": "Each new proposition turn discarded all older proposition referents.",
+      "repair": "Retained concurrent active propositions and delegated deactivation to typed ledger status."
+    },
+    {
+      "observed": "The state token 비활성 could be consumed by the shorter positive token 활성.",
+      "repair": "Selected the longest matching local semantic state marker."
+    },
+    {
+      "observed": "A remaining side stayed contested after the opposing record was retracted.",
+      "repair": "Reconciled contested records and removed stale unresolved-conflict entries after every turn."
+    }
+  ],
+  "safety_invariants": {
+    "belief_records_are_not_dialogue_grounded_truth": true,
+    "belief_records_have_no_execution_authority": true,
+    "reported_commands_remain_non_authoritative": true,
+    "conflicting_sources_are_not_ranked_or_silently_selected": true,
+    "unmarked_same_source_conflict_remains_contested": true,
+    "retracted_and_superseded_records_are_not_reference_active": true,
+    "temporal_distinction_prevents_false_logical_conflict": true,
+    "ledger_and_active_referents_are_bounded": true,
+    "conversation_state_hash_covers_the_epistemic_ledger": true,
+    "external_execution_is_not_performed_by_the_language_adapter": true
+  },
+  "known_limits": [
+    "State opposition is based on a compact local semantic-axis vocabulary rather than open-domain entailment.",
+    "Temporal anchors are coarse past, present, future, or unspecified categories rather than exact intervals.",
+    "Event time, report time, recurring states, and interval overlap are not represented.",
+    "Source reliability and evidential strength are not calibrated or learned.",
+    "Nested modality, uncertainty, counterfactual belief, and generalized quantifier scope remain incomplete.",
+    "Pronoun-based and long-distance actor continuity is not general.",
+    "The ledger has no transactional durable snapshot, import, or rollback protocol yet.",
+    "No broad open-domain corpus, human calibration study, or frontier-model comparison has been run.",
+    "The system remains below GPT-grade breadth, robustness, knowledge, and calibration."
+  ],
+  "next_frontier": [
+    "nested modal, uncertainty, negation, counterfactual, and quantifier scope",
+    "attribution-aware question answering that distinguishes report from fact",
+    "exact temporal relations and event-time versus report-time representation",
+    "evidence aggregation and source reliability without semantic authority promotion",
+    "long-distance actor and belief-holder reference resolution",
+    "transactional ledger snapshots with validation, import, and rollback",
+    "larger family-held-out adversarial dialogue suites with calibrated abstention"
+  ],
+  "repository": {
+    "branch": "main",
+    "head": "603eb2a",
+    "ahead_of_origin": 4,
+    "behind_origin": 0,
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  }
+}

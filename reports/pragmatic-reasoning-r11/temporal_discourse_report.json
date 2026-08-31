@@ -1,0 +1,148 @@
+{
+  "schema": "B_CORE_TEMPORAL_DISCOURSE_REPORT_V1",
+  "stage": "PRAGMATIC_REASONING_R11",
+  "status": "PASS",
+  "date": "2026-08-31",
+  "long_term_goal": "GPT-grade general language understanding without an external LLM reasoning dependency",
+  "gpt_grade_status": "NOT_YET",
+  "implemented": [
+    "typed event records that keep event time separate from dialogue report turn",
+    "typed before, simultaneous, and during relations with explicit active or contested status",
+    "English and Korean temporal relation extraction for before, after, while, during, and sequential deictic forms",
+    "symbolic relative-day and relative-week expressions, ISO and Korean dates, and English or Korean clock times",
+    "bounded cross-turn event reuse for after that, then, and Korean equivalents",
+    "direct and transitive before-path question answering with relation-level proof evidence",
+    "bilingual when, before, after, during, and relation-check questions",
+    "entity-aware event retrieval that prevents predicate-only false matches",
+    "opposite-order conflict preservation without selecting a temporal winner",
+    "event, relation, answer, endpoint, authority, truth, and unsupported-claim tamper rejection",
+    "presupposition-aware fallback to discourse QA when a when-question lacks an actual timed event",
+    "deterministic evidence-grounded Korean and English temporal realization"
+  ],
+  "architecture": {
+    "implementation_language": "Rust",
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "semantic_payload_mutations": 0,
+    "direct_text_to_solution_shortcuts": 0,
+    "source_mutations_by_runtime": 0,
+    "temporal_graph_schema": "B_CORE_TEMPORAL_GRAPH_IR_1",
+    "temporal_query_schema": "B_CORE_TEMPORAL_QUERY_IR_1",
+    "temporal_answer_schema": "B_CORE_TEMPORAL_ANSWER_IR_1",
+    "conversation_response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_3",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_7",
+    "statement_path": "normalized utterance -> bounded bilingual temporal analysis -> typed events and relations -> validated temporal graph",
+    "question_path": "normalized question -> typed temporal query -> entity-aware graph retrieval -> direct or transitive relation proof -> bilingual realization",
+    "authority_path": "dialogue event or relation record -> evidence citation only -> no world-truth or execution authority",
+    "planning_boundary": "recognized temporal question -> no GoalIR planning, no semantic plan hash, no task frame, no new belief"
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_adapter_all_targets_deny_warnings": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": {
+      "status": "PASS",
+      "passed": 675,
+      "failed": 0
+    },
+    "semantic_core_adapters_tests": {
+      "status": "PASS",
+      "passed": 214,
+      "failed": 0
+    },
+    "pragmatic_reasoning_r1_canary": { "passed": 8, "failed": 0 },
+    "pragmatic_context_r2_canary": { "passed": 5, "failed": 0 },
+    "compositional_language_r3_canary": { "passed": 20, "failed": 0 },
+    "discourse_program_r4_canary": { "passed": 18, "failed": 0 },
+    "cross_turn_discourse_r5_canary": { "passed": 20, "failed": 0 },
+    "semantic_role_discourse_r6_canary": { "passed": 24, "failed": 0 },
+    "attribution_discourse_r7_canary": { "passed": 34, "failed": 0 },
+    "epistemic_revision_r8_canary": { "passed": 30, "failed": 0 },
+    "modal_scope_r9_canary": { "passed": 55, "failed": 0 },
+    "discourse_qa_r10_canary": { "passed": 55, "failed": 0 },
+    "temporal_discourse_r11_canary": {
+      "passed": 56,
+      "failed": 0,
+      "english_surface_family": 7,
+      "korean_surface_family": 6,
+      "temporal_expression_family": 17,
+      "temporal_question_family": 15,
+      "cross_turn_and_transitive_family": 2,
+      "conflict_and_tamper_family": 9
+    },
+    "all_frozen_r1_through_r11_canaries": { "passed": 325, "failed": 0 },
+    "initial_r11_counterexample_run": { "passed": 55, "failed": 1 },
+    "final_r11_counterexample_run": { "passed": 56, "failed": 0 },
+    "r10_regression_after_initial_integration": { "passed": 53, "failed": 2 },
+    "r10_regression_after_presupposition_repair": { "passed": 55, "failed": 0 },
+    "git_diff_check": "PASS",
+    "python_dependency_probe_observation": {
+      "status": "EXPECTED_NEGATIVE_PROBE_OUTPUT",
+      "pytest_available": false,
+      "workspace_test_failures_caused": 0,
+      "canonical_language_path_uses_python": false
+    }
+  },
+  "development_counterexamples": [
+    {
+      "observed": "The phrase day after tomorrow was captured by the shorter tomorrow marker and normalized to +1 day.",
+      "repair": "Applied longest temporal-expression precedence so multi-token relative dates normalize before their suffixes."
+    },
+    {
+      "observed": "The initial temporal QA path answered presuppositional when-questions about absent or merely possible events, regressing two R10 abstention cases.",
+      "repair": "Delegated absent, untimed, and exclusively non-actual event-time questions to the presupposition-aware discourse QA path."
+    },
+    {
+      "observed": "A question about migration finished could match backup completed because the event predicates were treated as sufficient retrieval terms.",
+      "repair": "Required entity-bearing terms to match when present, while retaining bounded predicate compatibility for the same entity."
+    },
+    {
+      "observed": "Opposite temporal orders can both appear in dialogue evidence.",
+      "repair": "Marked both relations contested and stored a conflict record instead of choosing one order or constructing an active cycle."
+    }
+  ],
+  "safety_invariants": {
+    "event_time_is_distinct_from_report_turn": true,
+    "events_and_relations_do_not_establish_world_truth": true,
+    "events_relations_and_answers_have_no_execution_authority": true,
+    "every_positive_relation_answer_cites_relation_evidence": true,
+    "transitive_answers_expose_the_complete_bounded_proof_path": true,
+    "opposite_orders_remain_contested": true,
+    "active_before_graph_is_acyclic": true,
+    "unknown_events_and_unrecorded_orders_are_not_invented": true,
+    "presuppositional_when_questions_do_not_promote_possible_events_to_actual": true,
+    "question_turns_do_not_mutate_the_temporal_graph": true,
+    "question_turns_create_no_goal_or_plan": true,
+    "unsupported_explanation_claims_remain_zero": true,
+    "state_hash_and_graph_validation_remain_active": true
+  },
+  "known_limits": [
+    "Temporal recognition uses a bounded deterministic bilingual grammar rather than a general tense, aspect, and event-semantics parser.",
+    "Relative days and weeks remain symbolic offsets; they are not anchored to a calendar, locale, or time zone.",
+    "Duration and interval containment are relational only; quantitative interval arithmetic is not implemented.",
+    "Exact recurring event mentions within the bounded merge window can be conflated when no distinguishing time or event identity is supplied.",
+    "Event identity, nominal-event paraphrase, long-distance coreference, and implicit temporal relation recovery remain limited.",
+    "The graph records what the dialogue says and deliberately does not verify that an event happened in the external world.",
+    "Temporal conflict handling preserves disagreement but does not estimate source reliability or select a most likely timeline.",
+    "No broad open-domain corpus, human calibration study, or frontier-model comparison has been run.",
+    "The system remains below GPT-grade breadth, robustness, knowledge, and calibration."
+  ],
+  "next_frontier": [
+    "verified conditional-guard activation without reverse inference or accidental execution authority",
+    "long-distance actor, entity, event, and belief-holder coreference across mixed Korean and English turns",
+    "compositional paraphrase and ontology-mediated event retrieval instead of bounded surface lexemes",
+    "causal, concessive, and purpose relations with explicit proof paths and source attribution",
+    "quantified and multi-hop relational questions with calibrated abstention",
+    "larger family-held-out adversarial dialogue suites and human-calibrated evaluation"
+  ],
+  "repository": {
+    "branch": "main",
+    "head": "603eb2a",
+    "ahead_of_origin": 4,
+    "behind_origin": 0,
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  }
+}

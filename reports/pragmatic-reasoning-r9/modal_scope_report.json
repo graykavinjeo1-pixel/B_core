@@ -1,0 +1,144 @@
+{
+  "schema": "B_CORE_MODAL_SCOPE_REPORT_V1",
+  "stage": "PRAGMATIC_REASONING_R9",
+  "status": "PASS",
+  "date": "2026-08-31",
+  "long_term_goal": "GPT-grade general language understanding without an external LLM reasoning dependency",
+  "gpt_grade_status": "NOT_YET",
+  "implemented": [
+    "typed modal scope graph over open proposition text",
+    "epistemic possibility, probability, and certainty",
+    "deontic obligation, permission, and prohibition",
+    "desire, intention, ability, and prediction",
+    "nested English prefix and Korean suffix modal scope",
+    "operator negation versus proposition negation",
+    "indicative, hypothetical, counterfactual, and unless conditionals",
+    "conditional guard and reverse-inference safety boundaries",
+    "English and Korean indirect polite-request projection",
+    "modal ambiguity preservation",
+    "possible-world indexing in epistemic proposition signatures",
+    "conversation referent to ledger modal-world integrity validation"
+  ],
+  "architecture": {
+    "implementation_language": "Rust",
+    "external_llm_calls": 0,
+    "network_calls": 0,
+    "semantic_payload_mutations": 0,
+    "direct_text_to_solution_shortcuts": 0,
+    "source_mutations_by_runtime": 0,
+    "modal_scope_graph_schema": "B_CORE_MODAL_SCOPE_GRAPH_IR_1",
+    "compositional_analysis_schema": "B_CORE_COMPOSITIONAL_ANALYSIS_IR_4",
+    "epistemic_ledger_schema": "B_CORE_EPISTEMIC_LEDGER_IR_2",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_6",
+    "attribution_graph_schema": "B_CORE_ATTRIBUTION_GRAPH_IR_1",
+    "pragmatic_interpretation_schema": "B_CORE_PRAGMATIC_INTERPRETATION_IR_1",
+    "reasoning_path": "surface clause -> modal/conditional operators -> scoped proposition -> pragmatic projection -> world-indexed epistemic signature -> bounded conversation state",
+    "authority_path": "direct request evidence -> typed goal flag only -> no adapter-side external execution"
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_adapter_all_targets_deny_warnings": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": {
+      "status": "PASS",
+      "passed": 649,
+      "failed": 0
+    },
+    "semantic_core_adapters_tests": {
+      "status": "PASS",
+      "passed": 188,
+      "failed": 0
+    },
+    "pragmatic_reasoning_r1_canary": { "passed": 8, "failed": 0 },
+    "pragmatic_context_r2_canary": { "passed": 5, "failed": 0 },
+    "compositional_language_r3_canary": { "passed": 20, "failed": 0 },
+    "discourse_program_r4_canary": { "passed": 18, "failed": 0 },
+    "cross_turn_discourse_r5_canary": { "passed": 20, "failed": 0 },
+    "semantic_role_discourse_r6_canary": { "passed": 24, "failed": 0 },
+    "attribution_discourse_r7_canary": { "passed": 34, "failed": 0 },
+    "epistemic_revision_r8_canary": { "passed": 30, "failed": 0 },
+    "modal_scope_r9_canary": {
+      "passed": 55,
+      "failed": 0,
+      "english_surface_family": 18,
+      "korean_surface_family": 18,
+      "pragmatic_projection_family": 13,
+      "safety_and_cross_turn_family": 6
+    },
+    "all_frozen_r1_through_r9_canaries": { "passed": 214, "failed": 0 },
+    "initial_r9_counterexample_run": { "passed": 49, "failed": 3 },
+    "git_diff_check": "PASS",
+    "python_dependency_probe_observation": {
+      "status": "EXPECTED_NEGATIVE_PROBE_OUTPUT",
+      "pytest_available": false,
+      "workspace_test_failures_caused": 0,
+      "canonical_language_path_uses_python": false
+    }
+  },
+  "development_counterexamples": [
+    {
+      "observed": "Korean 하면 안 된다 was parsed as an ordinary conditional.",
+      "repair": "Recognize the deontic prohibition construction before conditional segmentation."
+    },
+    {
+      "observed": "Korean 해 줄 수 있어 projected a polite request without an explicit ability operator.",
+      "repair": "Add the missing compositional ability marker family."
+    },
+    {
+      "observed": "A Korean antecedent before the predicate allowed the consequent imperative to escape as a current goal.",
+      "repair": "Gate candidate projection with utterance-level conditional scope regardless of predicate position."
+    },
+    {
+      "observed": "Passive should be explained triggered the active should ambiguity gate and failed frozen R3.",
+      "repair": "Distinguish passive should scope from active advice/expectation ambiguity."
+    },
+    {
+      "observed": "Operator-negated obligation could retain a positive action-shaped goal.",
+      "repair": "Block positive goal projection for non-obligation, permission, and prohibition."
+    },
+    {
+      "observed": "A rehashed referent could diverge from its ledger modal-world binding.",
+      "repair": "Validate modal world, polarity, source, surface, attitude, and status across both records."
+    }
+  ],
+  "safety_invariants": {
+    "modal_content_is_not_dialogue_truth": true,
+    "modal_operators_have_no_execution_authority": true,
+    "conditional_guards_start_unsatisfied": true,
+    "reverse_conditional_inference_is_forbidden": true,
+    "actual_and_possible_worlds_are_distinct": true,
+    "cross_source_conflict_is_not_silently_ranked": true,
+    "attributed_and_counterfactual_actions_are_non_authoritative": true,
+    "adapter_performs_no_external_execution": true,
+    "state_hash_covers_modal_world_bindings": true,
+    "modal_graph_cycle_and_authority_tampering_fail_validation": true
+  },
+  "known_limits": [
+    "The parser uses a bounded closed-class operator lexicon and structural rules rather than a general syntactic parser.",
+    "Modal accessibility relations, quantified modal logic, and calibrated probabilities are not represented.",
+    "May, should, could, offers, permissions, and indirect requests need richer actor and discourse context.",
+    "Conditional antecedents are represented but are not yet evaluated against verified events to activate a guarded branch.",
+    "Tense, aspect, recurring events, event time versus report time, and modal time interaction remain coarse.",
+    "Factive and implicative verbs, presupposition projection, generalized neg-raising, and de re/de dicto distinctions are incomplete.",
+    "Long-distance actor coreference and multi-sentence modal embedding remain limited.",
+    "No broad open-domain corpus, human calibration study, or frontier-model comparison has been run.",
+    "The system remains below GPT-grade breadth, robustness, knowledge, and calibration."
+  ],
+  "next_frontier": [
+    "modality- and attribution-aware question answering",
+    "factivity, implicativity, and presupposition projection",
+    "exact event-time and report-time relations",
+    "verified conditional-guard activation without reverse inference",
+    "long-distance actor and belief-holder reference resolution",
+    "larger family-held-out adversarial dialogue suites with calibrated abstention"
+  ],
+  "repository": {
+    "branch": "main",
+    "head": "603eb2a",
+    "ahead_of_origin": 4,
+    "behind_origin": 0,
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "package_id": "B_CORE_PORTABLE_PRODUCT_CORE_26FAEA3_ABI1",
+  "source_repository": "https://github.com/graykavinjeo1-pixel/B_core",
+  "source_commit": "26faea38d67e901b0230d2681ee22106113c3cdf",
+  "core_abi_version": 1,
+  "semantic_state_version": "SEMANTIC-STATE-SEM8-1",
+  "capability_contract_version": 1,
+  "prebuilt_canary": {
+    "path": "bin/core-x0-canary.exe",
+    "bytes": 388608,
+    "sha256": "3b8ad1fec246f438ec9350842502b00f6ee73c9c594c969c9913fb952e5a78b9"
+  },
+  "included": [
+    "Cargo.toml",
+    "Cargo.lock",
+    "README.md",
+    "bin/core-x0-canary.exe",
+    "crates/dockable-semantic-core/",
+    "crates/semantic-core-adapters/",
+    "docs/DOCKABLE_CORE_INTEGRATION.md"
+  ],
+  "excluded": [
+    ".git/",
+    "target/",
+    "reports/",
+    "research-and-evaluation-crates/",
+    "blind-data/",
+    "historical-runs/",
+    "sandboxes/",
+    "debug-binaries/",
+    "growth-supervisor-campaign-tooling/",
+    "recursive-source-mutation-machinery/"
+  ],
+  "boundary": "product-core-and-adapters"
+}

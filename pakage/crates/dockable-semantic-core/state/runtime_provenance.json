@@ -1,0 +1,10 @@
+{
+  "policy": "COMPACT_RUNTIME_RECEIPTS_WITH_FULL_RESEARCH_EVIDENCE_RETAINED_OUTSIDE_CORE",
+  "receipts": [
+    {"classification":"RUNTIME_REQUIRED","path":"state/semantic_state.json","purpose":"authoritative deployed concept receipts and executable runtime patterns"},
+    {"classification":"RUNTIME_REQUIRED","path":"state/sparse_index.json","purpose":"direct sparse concept routing"},
+    {"classification":"AUDIT_REQUIRED","sha256":"46d66d74017434f21f8c892365baff230a8d8bec454d6ec323ce25ea30299977","purpose":"sealed C000013 candidate payload receipt"},
+    {"classification":"AUDIT_REQUIRED","sha256":"f2493ee3136493fc0690c174e8fe19bf73d4d63480c9f89e3dd5ddefb2a278d5","purpose":"SEM9-R1 final verification receipt"}
+  ],
+  "research_only_provenance_loaded_at_runtime": false
+}

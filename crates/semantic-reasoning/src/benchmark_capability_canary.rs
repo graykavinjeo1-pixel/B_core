@@ -12,6 +12,13 @@ use crate::cross_language_synthesis::{
     validate_cross_language_candidate_with_toolchain, CrossLanguage, CrossLanguageExampleIR,
     CrossLanguageSynthesisRequestIR,
 };
+use crate::decisive_repair_verification::{
+    assess_decisive_repair_contract, seal_decisive_repair_contract,
+    validate_decisive_repair_receipt, DecisiveRepairAssessmentIR, DecisiveRepairContractDraftIR,
+    RepairObservationValueIR, RepairVerificationClauseIR, RepairVerificationObservationIR,
+    RepairVerificationObservationSetIR, RepairVerificationPredicateIR,
+    DECISIVE_REPAIR_VERIFICATION_SCHEMA,
+};
 use crate::repository_change_experience::{
     analyze_nondeterministic_failure, diagnose_environment_failure, migrate_repository_api,
     validate_api_migration_candidate, ApiMigrationNativeValidationRequestIR, ApiMigrationRequestIR,
@@ -19,12 +26,23 @@ use crate::repository_change_experience::{
     ExecutionPerturbation, NondeterminismCause, NondeterminismDisposition,
     RepeatedRunObservationIR, RepositorySourceFileIR,
 };
+use crate::repository_coding_knowledge::RepositoryLanguage;
 use crate::repository_horizon::{
-    build_repository_causal_graph, trace_repository_causality, RepositoryCausalTraceRequestIR,
-    RepositoryHorizonBuildRequestIR, REPOSITORY_HORIZON_SCHEMA,
+    build_repository_causal_graph, trace_repository_causality, RepositoryCausalGraphIR,
+    RepositoryCausalTraceRequestIR, RepositoryHorizonBuildRequestIR, REPOSITORY_HORIZON_SCHEMA,
+};
+use crate::repository_repair_operation_knowledge::{
+    build_repair_operation_knowledge_catalog, query_repair_operation_knowledge,
+    RepairAuthorityEvidenceIR, RepairOperationDispositionIR, RepairOperationQueryIR,
+    RepairSemanticBindingIR, REPOSITORY_REPAIR_OPERATION_KNOWLEDGE_SCHEMA,
 };
 use crate::repository_requirement_graph::{
     compile_repository_requirement_graph, RequirementGraphDisposition, RequirementSubject,
+};
+use crate::repository_validation_planner::{
+    plan_repository_validation, seal_validation_proof_receipt, validate_repository_validation_plan,
+    RepositoryFileChangeIR, RepositoryValidationRequestIR, RepositoryValidationScopeIR,
+    ValidationIdentityIR, REPOSITORY_VALIDATION_PLANNER_SCHEMA,
 };
 use crate::self_repair_contract::sha256;
 use crate::sem5::model::Value;
@@ -33,7 +51,7 @@ use crate::typescript_compiler_repair::{
     validate_typescript_compiler_repair_candidate,
 };
 
-pub const BENCHMARK_CAPABILITY_CANARY_SCHEMA: &str = "B_BENCHMARK_CAPABILITY_CANARY_3";
+pub const BENCHMARK_CAPABILITY_CANARY_SCHEMA: &str = "B_BENCHMARK_CAPABILITY_CANARY_5";
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct BenchmarkCapabilityCanaryReportIR {
@@ -44,6 +62,40 @@ pub struct BenchmarkCapabilityCanaryReportIR {
     pub long_horizon_causal_depth: usize,
     pub long_horizon_selected_files: usize,
     pub full_catalog_rescans: u64,
+    #[serde(default)]
+    pub validation_impact_changed_files: usize,
+    #[serde(default)]
+    pub validation_impact_affected_files: usize,
+    #[serde(default)]
+    pub validation_proofs_considered: usize,
+    #[serde(default)]
+    pub validation_proofs_reused: usize,
+    #[serde(default)]
+    pub validation_proofs_invalidated: usize,
+    #[serde(default)]
+    pub validation_structural_escalations: usize,
+    #[serde(default)]
+    pub validation_planner_replay_passes: usize,
+    #[serde(default)]
+    pub decisive_verification_assessments: usize,
+    #[serde(default)]
+    pub decisive_supported_assessments: usize,
+    #[serde(default)]
+    pub decisive_refuted_assessments: usize,
+    #[serde(default)]
+    pub decisive_inconclusive_assessments: usize,
+    #[serde(default)]
+    pub decisive_tamper_rejections: usize,
+    #[serde(default)]
+    pub repair_operation_knowledge_rules: usize,
+    #[serde(default)]
+    pub repair_operation_knowledge_languages: usize,
+    #[serde(default)]
+    pub repair_operation_applicable_cases: usize,
+    #[serde(default)]
+    pub repair_operation_abstentions: usize,
+    #[serde(default)]
+    pub repair_operation_embedded_patch_templates: usize,
     pub long_requirement_clauses: usize,
     pub implicit_constraints_preserved: usize,
     pub requirement_conflicts_detected: usize,
@@ -180,6 +232,21 @@ struct SynthesisMetrics {
     nested_sequence_passes: usize,
 }
 
+#[derive(Debug, Default, Clone, PartialEq, Eq)]
+struct LongHorizonMetrics {
+    files: usize,
+    depth: usize,
+    selected: usize,
+    rescans: u64,
+    impact_changed_files: usize,
+    impact_affected_files: usize,
+    proofs_considered: usize,
+    proofs_reused: usize,
+    proofs_invalidated: usize,
+    structural_escalations: usize,
+    planner_replay_passes: usize,
+}
+
 fn compiler_version(tool: &Path) -> Result<String, String> {
     let output = Command::new(tool)
         .arg("--version")
@@ -195,7 +262,67 @@ fn compiler_version(tool: &Path) -> Result<String, String> {
     Ok(version)
 }
 
-fn long_horizon_metrics() -> Result<(usize, usize, usize, u64), String> {
+fn graph_changes(
+    predecessor: &RepositoryCausalGraphIR,
+    candidate: &RepositoryCausalGraphIR,
+) -> Vec<RepositoryFileChangeIR> {
+    let predecessor_files = predecessor
+        .files
+        .iter()
+        .map(|file| {
+            (
+                file.relative_path.to_string_lossy().replace('\\', "/"),
+                file.content_sha256.clone(),
+            )
+        })
+        .collect::<std::collections::BTreeMap<_, _>>();
+    let candidate_files = candidate
+        .files
+        .iter()
+        .map(|file| {
+            (
+                file.relative_path.to_string_lossy().replace('\\', "/"),
+                file.content_sha256.clone(),
+            )
+        })
+        .collect::<std::collections::BTreeMap<_, _>>();
+    predecessor_files
+        .keys()
+        .chain(candidate_files.keys())
+        .cloned()
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .filter_map(|path| {
+            let before = predecessor_files.get(&path).cloned();
+            let after = candidate_files.get(&path).cloned();
+            (before != after).then(|| RepositoryFileChangeIR {
+                relative_path: PathBuf::from(path),
+                predecessor_sha256: before,
+                candidate_sha256: after,
+            })
+        })
+        .collect()
+}
+
+fn canary_validation_identity() -> ValidationIdentityIR {
+    ValidationIdentityIR {
+        validation_contract_sha256: sha256(b"benchmark-capability-canary-validation-v1"),
+        toolchain_sha256: sha256(b"rust-1.96-node-tsc-go"),
+        evaluator_sha256: sha256(b"repository-impact-evaluator-v1"),
+    }
+}
+
+fn horizon_graph(root: &Path) -> Result<RepositoryCausalGraphIR, String> {
+    build_repository_causal_graph(&RepositoryHorizonBuildRequestIR {
+        schema: REPOSITORY_HORIZON_SCHEMA.to_string(),
+        repository_root: fs::canonicalize(root)
+            .map_err(|error| format!("CANARY_HORIZON_CANONICAL:{error}"))?,
+        max_files: 2_048,
+        max_total_bytes: 64 * 1024 * 1024,
+    })
+}
+
+fn long_horizon_metrics() -> Result<LongHorizonMetrics, String> {
     let root = canary_workspace("horizon");
     if root.exists() {
         fs::remove_dir_all(&root).map_err(|error| format!("CANARY_HORIZON_CLEAN:{error}"))?;
@@ -233,13 +360,7 @@ fn long_horizon_metrics() -> Result<(usize, usize, usize, u64), String> {
         )
         .map_err(|error| format!("CANARY_HORIZON_WRITE:{error}"))?;
     }
-    let graph = build_repository_causal_graph(&RepositoryHorizonBuildRequestIR {
-        schema: REPOSITORY_HORIZON_SCHEMA.to_string(),
-        repository_root: fs::canonicalize(&root)
-            .map_err(|error| format!("CANARY_HORIZON_CANONICAL:{error}"))?,
-        max_files: 2_048,
-        max_total_bytes: 64 * 1024 * 1024,
-    })?;
+    let graph = horizon_graph(&root)?;
     let trace = trace_repository_causality(
         &graph,
         &RepositoryCausalTraceRequestIR {
@@ -251,13 +372,80 @@ fn long_horizon_metrics() -> Result<(usize, usize, usize, u64), String> {
             max_frontier: 1_500,
         },
     )?;
+    let identity = canary_validation_identity();
+    let chain_proof = seal_validation_proof_receipt(
+        &graph,
+        "long-chain-proof",
+        vec![PathBuf::from("src/layer_00.rs")],
+        vec![
+            PathBuf::from("src/layer_00.rs"),
+            PathBuf::from("src/layer_160.rs"),
+        ],
+        identity.clone(),
+    )?;
+    let decoy_proof = seal_validation_proof_receipt(
+        &graph,
+        "unrelated-decoy-proof",
+        vec![PathBuf::from("src/decoy_00.rs")],
+        vec![PathBuf::from("src/decoy_00.rs")],
+        identity.clone(),
+    )?;
+    fs::write(
+        root.join("src/layer_160.rs"),
+        "pub fn defective_leaf(value: i64) -> i64 { value + 1 }\n",
+    )
+    .map_err(|error| format!("CANARY_HORIZON_REPAIR_WRITE:{error}"))?;
+    let candidate_graph = horizon_graph(&root)?;
+    let impact_request = RepositoryValidationRequestIR {
+        schema: REPOSITORY_VALIDATION_PLANNER_SCHEMA.to_string(),
+        changes: graph_changes(&graph, &candidate_graph),
+        prior_proofs: vec![chain_proof, decoy_proof],
+        validation_identity: identity.clone(),
+        max_affected_files: candidate_graph.files.len(),
+    };
+    let impact_plan = plan_repository_validation(&graph, &candidate_graph, &impact_request)?;
+    validate_repository_validation_plan(&graph, &candidate_graph, &impact_request, &impact_plan)?;
+
+    fs::write(
+        root.join("src/layer_80.rs"),
+        "pub fn layer_80(value: i64) -> i64 { decoy_00(value) }\n",
+    )
+    .map_err(|error| format!("CANARY_HORIZON_TOPOLOGY_WRITE:{error}"))?;
+    let structural_graph = horizon_graph(&root)?;
+    let structural_request = RepositoryValidationRequestIR {
+        schema: REPOSITORY_VALIDATION_PLANNER_SCHEMA.to_string(),
+        changes: graph_changes(&candidate_graph, &structural_graph),
+        prior_proofs: Vec::new(),
+        validation_identity: identity,
+        max_affected_files: structural_graph.files.len(),
+    };
+    let structural_plan =
+        plan_repository_validation(&candidate_graph, &structural_graph, &structural_request)?;
+    validate_repository_validation_plan(
+        &candidate_graph,
+        &structural_graph,
+        &structural_request,
+        &structural_plan,
+    )?;
     fs::remove_dir_all(root).map_err(|error| format!("CANARY_HORIZON_CLEAN:{error}"))?;
-    Ok((
-        graph.indexed_files,
-        trace.deepest_path,
-        trace.selected_relative_paths.len(),
-        trace.full_catalog_rescans,
-    ))
+    Ok(LongHorizonMetrics {
+        files: graph.indexed_files,
+        depth: trace.deepest_path,
+        selected: trace.selected_relative_paths.len(),
+        rescans: trace
+            .full_catalog_rescans
+            .saturating_add(impact_plan.full_catalog_rescans)
+            .saturating_add(structural_plan.full_catalog_rescans),
+        impact_changed_files: impact_plan.changed_relative_paths.len(),
+        impact_affected_files: impact_plan.affected_relative_paths.len(),
+        proofs_considered: impact_plan.proof_decisions.len(),
+        proofs_reused: impact_plan.reusable_proof_ids.len(),
+        proofs_invalidated: impact_plan.invalidated_proof_ids.len(),
+        structural_escalations: usize::from(
+            structural_plan.scope == RepositoryValidationScopeIR::FullWorkspace,
+        ),
+        planner_replay_passes: 2,
+    })
 }
 
 fn long_requirement_metrics() -> (usize, usize, usize, usize, bool) {
@@ -773,6 +961,141 @@ fn nondeterminism_metrics() -> (usize, usize) {
     (cases.len(), passes)
 }
 
+fn decisive_verification_metrics() -> Result<(usize, usize, usize, usize, usize), String> {
+    let contract = seal_decisive_repair_contract(DecisiveRepairContractDraftIR {
+        hypothesis_id: "controlled-boundary-repair".to_string(),
+        predecessor_tree_sha256: sha256(b"canary-before"),
+        candidate_tree_sha256: sha256(b"canary-after"),
+        support_clause: RepairVerificationClauseIR::All(vec![
+            RepairVerificationPredicateIR::ObservationEquals {
+                key: "focused_regression_passed".to_string(),
+                expected: RepairObservationValueIR::Bool(true),
+            },
+        ]),
+        refutation_clause: RepairVerificationClauseIR::All(vec![
+            RepairVerificationPredicateIR::ObservationEquals {
+                key: "focused_regression_passed".to_string(),
+                expected: RepairObservationValueIR::Bool(false),
+            },
+        ]),
+        discriminating_observation_keys: vec!["focused_regression_passed".to_string()],
+    })?;
+    let observation_set = |value: Option<bool>| RepairVerificationObservationSetIR {
+        schema: DECISIVE_REPAIR_VERIFICATION_SCHEMA.to_string(),
+        execution_succeeded: true,
+        observations: value
+            .map(|value| RepairVerificationObservationIR {
+                key: "focused_regression_passed".to_string(),
+                value: RepairObservationValueIR::Bool(value),
+                evidence_sha256: sha256(if value { b"pass" } else { b"fail" }),
+            })
+            .into_iter()
+            .collect(),
+    };
+    let sets = [
+        observation_set(Some(true)),
+        observation_set(Some(false)),
+        observation_set(None),
+    ];
+    let receipts = sets
+        .iter()
+        .map(|set| {
+            let receipt = assess_decisive_repair_contract(&contract, set)?;
+            validate_decisive_repair_receipt(&contract, set, &receipt)?;
+            Ok(receipt)
+        })
+        .collect::<Result<Vec<_>, String>>()?;
+    let supported = receipts
+        .iter()
+        .filter(|receipt| receipt.assessment == DecisiveRepairAssessmentIR::Supported)
+        .count();
+    let refuted = receipts
+        .iter()
+        .filter(|receipt| receipt.assessment == DecisiveRepairAssessmentIR::Refuted)
+        .count();
+    let inconclusive = receipts
+        .iter()
+        .filter(|receipt| receipt.assessment == DecisiveRepairAssessmentIR::Inconclusive)
+        .count();
+    let mut tampered = receipts[0].clone();
+    tampered.assessment = DecisiveRepairAssessmentIR::Refuted;
+    let tamper_rejections =
+        usize::from(validate_decisive_repair_receipt(&contract, &sets[0], &tampered).is_err());
+    Ok((
+        receipts.len(),
+        supported,
+        refuted,
+        inconclusive,
+        tamper_rejections,
+    ))
+}
+
+fn repair_operation_knowledge_metrics() -> Result<(usize, usize, usize, usize, usize), String> {
+    let catalog = build_repair_operation_knowledge_catalog()?;
+    let binding = RepairSemanticBindingIR::DirectPublicParameterCondition;
+    let rule = catalog
+        .rules
+        .iter()
+        .find(|rule| rule.binding == binding)
+        .ok_or_else(|| "CANARY_REPAIR_OPERATION_RULE_MISSING".to_string())?;
+    let languages = [
+        RepositoryLanguage::Rust,
+        RepositoryLanguage::Python,
+        RepositoryLanguage::TypeScript,
+        RepositoryLanguage::JavaScript,
+        RepositoryLanguage::Go,
+    ];
+    let query = |language| RepairOperationQueryIR {
+        schema: REPOSITORY_REPAIR_OPERATION_KNOWLEDGE_SCHEMA.to_string(),
+        language,
+        requested_binding: binding,
+        observed_evidence: rule.required_evidence.clone(),
+        exact_candidate_references: 1,
+        target_protected: false,
+    };
+    let applicable = languages
+        .iter()
+        .filter(|language| {
+            query_repair_operation_knowledge(&catalog, &query(**language)).is_ok_and(|decision| {
+                decision.disposition == RepairOperationDispositionIR::Applicable
+                    && decision.patch_content.is_none()
+                    && !decision.source_mutation_authorized
+            })
+        })
+        .count();
+    let mut ambiguous = query(RepositoryLanguage::Rust);
+    ambiguous.exact_candidate_references = 2;
+    let mut protected = query(RepositoryLanguage::TypeScript);
+    protected.target_protected = true;
+    let mut missing_source_authority = query(RepositoryLanguage::Go);
+    missing_source_authority
+        .observed_evidence
+        .retain(|evidence| *evidence != RepairAuthorityEvidenceIR::SourceAuthorityPresent);
+    let abstentions = [ambiguous, protected, missing_source_authority]
+        .iter()
+        .filter(|query| {
+            query_repair_operation_knowledge(&catalog, query).is_ok_and(|decision| {
+                decision.disposition == RepairOperationDispositionIR::Abstain
+                    && decision.mutation_family.is_none()
+                    && decision.patch_content.is_none()
+                    && !decision.source_mutation_authorized
+            })
+        })
+        .count();
+    let templates = catalog
+        .rules
+        .iter()
+        .filter(|rule| rule.patch_template.is_some())
+        .count();
+    Ok((
+        catalog.rules.len(),
+        languages.len(),
+        applicable,
+        abstentions,
+        templates,
+    ))
+}
+
 /// Run the integrated controlled canary. This is not an official SWE-bench or
 /// DeepSWE evaluation and does not claim an official score.
 pub fn run_benchmark_capability_canary(
@@ -788,11 +1111,11 @@ pub fn run_benchmark_capability_canary(
             String::new()
         }
     };
-    let (files, depth, selected, rescans) = match long_horizon_metrics() {
+    let horizon = match long_horizon_metrics() {
         Ok(metrics) => metrics,
         Err(error) => {
             failed_boundaries.push(error);
-            (0, 0, 0, 0)
+            LongHorizonMetrics::default()
         }
     };
     let (clauses, implicit, conflicts, ambiguous, requirement_pass) = long_requirement_metrics();
@@ -832,10 +1155,53 @@ pub fn run_benchmark_capability_canary(
         };
     let (environment_families, environment_passes) = environment_metrics();
     let (nondeterminism_families, nondeterminism_passes) = nondeterminism_metrics();
-    let pass = files == 1_200
-        && depth == 160
-        && selected == 161
-        && rescans == 0
+    let (
+        decisive_assessments,
+        decisive_supported,
+        decisive_refuted,
+        decisive_inconclusive,
+        decisive_tamper_rejections,
+    ) = match decisive_verification_metrics() {
+        Ok(metrics) => metrics,
+        Err(error) => {
+            failed_boundaries.push(error);
+            (3, 0, 0, 0, 0)
+        }
+    };
+    let (
+        operation_rules,
+        operation_languages,
+        operation_applicable,
+        operation_abstentions,
+        operation_patch_templates,
+    ) = match repair_operation_knowledge_metrics() {
+        Ok(metrics) => metrics,
+        Err(error) => {
+            failed_boundaries.push(error);
+            (11, 5, 0, 0, usize::MAX)
+        }
+    };
+    let pass = horizon.files == 1_200
+        && horizon.depth == 160
+        && horizon.selected == 161
+        && horizon.rescans == 0
+        && horizon.impact_changed_files == 1
+        && horizon.impact_affected_files == 161
+        && horizon.proofs_considered == 2
+        && horizon.proofs_reused == 1
+        && horizon.proofs_invalidated == 1
+        && horizon.structural_escalations == 1
+        && horizon.planner_replay_passes == 2
+        && decisive_assessments == 3
+        && decisive_supported == 1
+        && decisive_refuted == 1
+        && decisive_inconclusive == 1
+        && decisive_tamper_rejections == 1
+        && operation_rules == 11
+        && operation_languages == 5
+        && operation_applicable == operation_languages
+        && operation_abstentions == 3
+        && operation_patch_templates == 0
         && clauses == 91
         && requirement_pass
         && synthesis.native_passes == synthesis.tasks
@@ -864,10 +1230,27 @@ pub fn run_benchmark_capability_canary(
             "FAIL_CONTROLLED_CANARY"
         }
         .to_string(),
-        long_horizon_repository_files: files,
-        long_horizon_causal_depth: depth,
-        long_horizon_selected_files: selected,
-        full_catalog_rescans: rescans,
+        long_horizon_repository_files: horizon.files,
+        long_horizon_causal_depth: horizon.depth,
+        long_horizon_selected_files: horizon.selected,
+        full_catalog_rescans: horizon.rescans,
+        validation_impact_changed_files: horizon.impact_changed_files,
+        validation_impact_affected_files: horizon.impact_affected_files,
+        validation_proofs_considered: horizon.proofs_considered,
+        validation_proofs_reused: horizon.proofs_reused,
+        validation_proofs_invalidated: horizon.proofs_invalidated,
+        validation_structural_escalations: horizon.structural_escalations,
+        validation_planner_replay_passes: horizon.planner_replay_passes,
+        decisive_verification_assessments: decisive_assessments,
+        decisive_supported_assessments: decisive_supported,
+        decisive_refuted_assessments: decisive_refuted,
+        decisive_inconclusive_assessments: decisive_inconclusive,
+        decisive_tamper_rejections,
+        repair_operation_knowledge_rules: operation_rules,
+        repair_operation_knowledge_languages: operation_languages,
+        repair_operation_applicable_cases: operation_applicable,
+        repair_operation_abstentions: operation_abstentions,
+        repair_operation_embedded_patch_templates: operation_patch_templates,
         long_requirement_clauses: clauses,
         implicit_constraints_preserved: implicit,
         requirement_conflicts_detected: conflicts,
@@ -909,19 +1292,36 @@ pub fn write_benchmark_capability_report(
     repository_root: &Path,
     report: &BenchmarkCapabilityCanaryReportIR,
 ) -> Result<PathBuf, String> {
-    let directory = repository_root.join("reports").join("swe-capability-r2");
+    let directory = repository_root.join("reports").join("swe-capability-r4");
     fs::create_dir_all(&directory).map_err(|error| format!("CANARY_REPORT_CREATE:{error}"))?;
     let json =
         serde_json::to_vec_pretty(report).map_err(|error| format!("CANARY_REPORT_JSON:{error}"))?;
     fs::write(directory.join("capability_report.json"), json)
         .map_err(|error| format!("CANARY_REPORT_WRITE:{error}"))?;
     let markdown = format!(
-        "# Benchmark-shaped capability canary R2\n\n- Status: `{}`\n- Long-horizon trace: {} files indexed, depth {}, {} files selected, {} rescans\n- Long requirements: {} clauses; {} implicit constraints; {} conflicts; {} ambiguous references rejected\n- Source synthesis: {}/{} tasks across {} languages passed natively; {} examples executed\n- TypeScript compiler: `{}`\n- TypeScript compiler boundary: {} source strict typecheck passes; {} type-error execution rejection; {} API-migration strict typecheck pass\n- Advanced TypeScript: {} async/Promise pass; {} nested-sequence composition pass\n- Sequence mechanism transfer: {} languages\n- Compiler-guided TypeScript repair: {}/{} candidates bound and {} verified; {} unsupported-diagnostic abstention\n- API migration: {}/{} language migrations passed natively; {} compatibility shims\n- Environment diagnosis: {}/{} failure families\n- Nondeterminism diagnosis: {}/{} cause families\n- External LLM calls: {}\n- Network reads: {}\n- Official benchmark harness executed: {}\n- Official score claimed: {}\n\nThis controlled canary closes the named engineering gaps at the tested boundary. It is not an official SWE-bench/DeepSWE score.\n",
+        "# Benchmark-shaped capability canary R4\n\n- Status: `{}`\n- Long-horizon trace: {} files indexed, depth {}, {} files selected, {} rescans\n- Validation impact: {} changed file selected {} affected files; {}/{} prior proofs reused and {} invalidated\n- Validation safety: {} structural change escalated to full workspace; {} replay validations passed\n- Precommitted verification: {} assessments ({} supported, {} refuted, {} inconclusive); {} tamper rejection\n- Atomic repair knowledge: {} rules across {} languages; {} applicable cases, {} fail-closed abstentions, {} embedded patch templates\n- Long requirements: {} clauses; {} implicit constraints; {} conflicts; {} ambiguous references rejected\n- Source synthesis: {}/{} tasks across {} languages passed natively; {} examples executed\n- TypeScript compiler: `{}`\n- TypeScript compiler boundary: {} source strict typecheck passes; {} type-error execution rejection; {} API-migration strict typecheck pass\n- Advanced TypeScript: {} async/Promise pass; {} nested-sequence composition pass\n- Sequence mechanism transfer: {} languages\n- Compiler-guided TypeScript repair: {}/{} candidates bound and {} verified; {} unsupported-diagnostic abstention\n- API migration: {}/{} language migrations passed natively; {} compatibility shims\n- Environment diagnosis: {}/{} failure families\n- Nondeterminism diagnosis: {}/{} cause families\n- External LLM calls: {}\n- Network reads: {}\n- Official benchmark harness executed: {}\n- Official score claimed: {}\n\nThis controlled canary closes the named engineering gaps at the tested boundary. It is not an official SWE-bench/DeepSWE score.\n",
         report.disposition,
         report.long_horizon_repository_files,
         report.long_horizon_causal_depth,
         report.long_horizon_selected_files,
         report.full_catalog_rescans,
+        report.validation_impact_changed_files,
+        report.validation_impact_affected_files,
+        report.validation_proofs_reused,
+        report.validation_proofs_considered,
+        report.validation_proofs_invalidated,
+        report.validation_structural_escalations,
+        report.validation_planner_replay_passes,
+        report.decisive_verification_assessments,
+        report.decisive_supported_assessments,
+        report.decisive_refuted_assessments,
+        report.decisive_inconclusive_assessments,
+        report.decisive_tamper_rejections,
+        report.repair_operation_knowledge_rules,
+        report.repair_operation_knowledge_languages,
+        report.repair_operation_applicable_cases,
+        report.repair_operation_abstentions,
+        report.repair_operation_embedded_patch_templates,
         report.long_requirement_clauses,
         report.implicit_constraints_preserved,
         report.requirement_conflicts_detected,
@@ -978,6 +1378,19 @@ mod tests {
         assert_eq!(report.typescript_type_error_rejections, 1);
         assert_eq!(report.sequence_mechanism_transfer_languages, 3);
         assert_eq!(report.typescript_compiler_verified_repairs, 2);
+        assert_eq!(report.validation_impact_changed_files, 1);
+        assert_eq!(report.validation_impact_affected_files, 161);
+        assert_eq!(report.validation_proofs_reused, 1);
+        assert_eq!(report.validation_proofs_invalidated, 1);
+        assert_eq!(report.validation_structural_escalations, 1);
+        assert_eq!(report.decisive_supported_assessments, 1);
+        assert_eq!(report.decisive_refuted_assessments, 1);
+        assert_eq!(report.decisive_inconclusive_assessments, 1);
+        assert_eq!(report.decisive_tamper_rejections, 1);
+        assert_eq!(report.repair_operation_knowledge_rules, 11);
+        assert_eq!(report.repair_operation_applicable_cases, 5);
+        assert_eq!(report.repair_operation_abstentions, 3);
+        assert_eq!(report.repair_operation_embedded_patch_templates, 0);
         assert!(!report.official_benchmark_score_claimed);
         assert_eq!(report.external_llm_calls, 0);
     }

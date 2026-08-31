@@ -13,6 +13,7 @@ pub mod compound_typed_goal;
 #[cfg(feature = "historical-campaigns")]
 pub mod core_x0;
 pub mod cross_language_synthesis;
+pub mod decisive_repair_verification;
 #[cfg(feature = "historical-campaigns")]
 pub mod experiment;
 pub mod fullstack_ops_knowledge;
@@ -29,12 +30,14 @@ pub mod mining;
 pub mod north_star;
 #[cfg(feature = "historical-campaigns")]
 pub mod reporting;
-pub mod repository_experience;
 pub mod repository_change_experience;
 pub mod repository_coding_knowledge;
+pub mod repository_experience;
 pub mod repository_horizon;
 pub mod repository_issue_understanding;
+pub mod repository_repair_operation_knowledge;
 pub mod repository_requirement_graph;
+pub mod repository_validation_planner;
 pub mod same_attempt_revision;
 pub mod self_healing_execution;
 pub mod self_healing_pipeline;

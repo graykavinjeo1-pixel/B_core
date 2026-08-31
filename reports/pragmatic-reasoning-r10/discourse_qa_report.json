@@ -1,0 +1,158 @@
+{
+  "schema": "B_CORE_DISCOURSE_QA_REPORT_V1",
+  "stage": "PRAGMATIC_REASONING_R10",
+  "status": "PASS",
+  "date": "2026-08-31",
+  "long_term_goal": "GPT-grade general language understanding without an external LLM reasoning dependency",
+  "gpt_grade_status": "NOT_YET",
+  "implemented": [
+    "typed discourse query IR for source content, proposition sources, actuality, modality, conflict, and presupposition checks",
+    "typed evidence-bounded answer IR with claim-to-belief-record provenance",
+    "English and Korean source-content and proposition-source questions",
+    "attitude filtering for saying, reporting, believing, thinking, knowing, wanting, and expecting",
+    "factive attribution preservation as PRESENTED_AS_KNOWN without truth promotion",
+    "actuality abstention when dialogue records do not establish world truth",
+    "explicit possibility, prediction, hypothetical, and counterfactual realization",
+    "current versus historical revision-aware retrieval",
+    "cross-source conflict answers without selecting a truth winner",
+    "why, when, how, realize, and discovery presupposition rejection when the premise is unverified",
+    "syntactic handling of English expletive it and complementizer that in bounded question forms",
+    "ASCII actor-name boundary protection against prefix capture",
+    "desire and expectation attitude projection into desired and predicted modal worlds",
+    "question turns excluded from plan, goal, task-frame, and belief creation",
+    "answer, evidence, authority, and unsupported-claim tamper rejection",
+    "deterministic evidence-grounded Korean and English realization"
+  ],
+  "architecture": {
+    "implementation_language": "Rust",
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "semantic_payload_mutations": 0,
+    "direct_text_to_solution_shortcuts": 0,
+    "source_mutations_by_runtime": 0,
+    "discourse_query_schema": "B_CORE_DISCOURSE_QUERY_IR_1",
+    "discourse_answer_schema": "B_CORE_DISCOURSE_ANSWER_IR_1",
+    "conversation_response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_2",
+    "epistemic_ledger_schema": "B_CORE_EPISTEMIC_LEDGER_IR_2",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_6",
+    "question_path": "normalized question -> typed discourse query -> source, attitude, topic, time, and modal filters -> bounded belief evidence -> typed claims -> bilingual realization",
+    "authority_path": "dialogue record -> evidence citation only -> no world-truth or execution authority",
+    "planning_boundary": "recognized discourse question -> no GoalIR planning, no semantic plan hash, no task frame, no new belief"
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_adapter_all_targets_deny_warnings": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": {
+      "status": "PASS",
+      "passed": 664,
+      "failed": 0
+    },
+    "semantic_core_adapters_tests": {
+      "status": "PASS",
+      "passed": 203,
+      "failed": 0
+    },
+    "pragmatic_reasoning_r1_canary": { "passed": 8, "failed": 0 },
+    "pragmatic_context_r2_canary": { "passed": 5, "failed": 0 },
+    "compositional_language_r3_canary": { "passed": 20, "failed": 0 },
+    "discourse_program_r4_canary": { "passed": 18, "failed": 0 },
+    "cross_turn_discourse_r5_canary": { "passed": 20, "failed": 0 },
+    "semantic_role_discourse_r6_canary": { "passed": 24, "failed": 0 },
+    "attribution_discourse_r7_canary": { "passed": 34, "failed": 0 },
+    "epistemic_revision_r8_canary": { "passed": 30, "failed": 0 },
+    "modal_scope_r9_canary": { "passed": 55, "failed": 0 },
+    "discourse_qa_r10_canary": {
+      "passed": 55,
+      "failed": 0,
+      "english_questions": 32,
+      "korean_questions": 16,
+      "source_and_attitude_family": 19,
+      "actuality_and_modality_family": 12,
+      "conflict_and_revision_family": 7,
+      "presupposition_and_abstention_family": 7,
+      "adversarial_and_tamper_family": 10
+    },
+    "all_frozen_r1_through_r10_canaries": { "passed": 269, "failed": 0 },
+    "initial_r10_counterexample_run": { "passed": 42, "failed": 13 },
+    "second_r10_counterexample_run": { "passed": 50, "failed": 5 },
+    "third_r10_counterexample_run": { "passed": 54, "failed": 1 },
+    "final_r10_counterexample_run": { "passed": 55, "failed": 0 },
+    "git_diff_check": "PASS",
+    "python_dependency_probe_observation": {
+      "status": "EXPECTED_NEGATIVE_PROBE_OUTPUT",
+      "pytest_available": false,
+      "workspace_test_failures_caused": 0,
+      "canonical_language_path_uses_python": false
+    }
+  },
+  "development_counterexamples": [
+    {
+      "observed": "Question verbs such as expect, want, Korean 보고했어, and 알고 있어 leaked into topic matching and hid valid records.",
+      "repair": "Separated open proposition terms from bilingual interrogative and attitude-function terms."
+    },
+    {
+      "observed": "English expletive it and complementizer that were treated as unresolved discourse referents in actuality and factive questions.",
+      "repair": "Allowed only those bounded syntactic forms through the query path while retaining ordinary ambiguous-reference rejection."
+    },
+    {
+      "observed": "Expect and want complements lost their predicted and desired worlds when the complement itself lacked a modal token.",
+      "repair": "Projected typed attribution attitude into the complement world only when the proposition parser otherwise returned Actual."
+    },
+    {
+      "observed": "Valid versus invalid, ready versus not ready, and 정상 versus 비정상 records were not recognized as semantic oppositions.",
+      "repair": "Extended local state axes with longest-match integrity, readiness, and abnormal-state markers."
+    },
+    {
+      "observed": "Known source Ann could capture the unknown queried source Annabelle by substring.",
+      "repair": "Required ASCII actor boundaries while preserving Korean particle attachment."
+    },
+    {
+      "observed": "Modal answers exposed correct typed worlds but used generic source-record wording.",
+      "repair": "Added query-kind-specific modal and source-identification realization with explicit non-truth language."
+    }
+  ],
+  "safety_invariants": {
+    "answers_are_bounded_to_dialogue_records": true,
+    "every_positive_answer_claim_cites_belief_evidence": true,
+    "factive_complements_are_not_promoted_to_truth": true,
+    "actuality_without_verified_world_evidence_abstains": true,
+    "modal_classification_is_not_actuality": true,
+    "conflicting_sources_have_no_automatic_truth_winner": true,
+    "unverified_presuppositions_are_not_silently_accepted": true,
+    "unknown_sources_are_not_fabricated": true,
+    "question_turns_create_no_goal_or_belief": true,
+    "answers_have_no_execution_authority": true,
+    "adapter_performs_no_external_execution": true,
+    "state_hash_and_ledger_validation_remain_active": true
+  },
+  "known_limits": [
+    "Question recognition still uses a bounded deterministic bilingual grammar rather than a general syntactic-semantic parser.",
+    "Topic matching is lexical and local; it does not yet perform general paraphrase entailment or ontology-mediated retrieval.",
+    "Presuppositional questions currently abstain when unverified but do not yet answer from independently verified event records.",
+    "Exact event time, report time, intervals, recurring events, and temporal question answering remain coarse.",
+    "Long-distance pronoun, nominal, and implicit actor coreference remains limited.",
+    "Source reliability, evidence strength, and external world verification are deliberately absent from dialogue-only answers.",
+    "Quantified questions, multi-hop relational questions, ellipsis, and broad open-domain wh-forms are incomplete.",
+    "No broad open-domain corpus, human calibration study, or frontier-model comparison has been run.",
+    "The system remains below GPT-grade breadth, robustness, knowledge, and calibration."
+  ],
+  "next_frontier": [
+    "typed event and temporal relation graph with when, before, after, while, duration, and report-time distinctions",
+    "verified conditional-guard activation without reverse inference",
+    "long-distance actor, entity, event, and belief-holder coreference",
+    "compositional paraphrase and ontology-mediated query matching instead of surface-term overlap",
+    "multi-hop relational question answering with explicit proof paths and abstention",
+    "larger family-held-out adversarial dialogue suites and human-calibrated evaluation"
+  ],
+  "repository": {
+    "branch": "main",
+    "head": "603eb2a",
+    "ahead_of_origin": 4,
+    "behind_origin": 0,
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "schema": "B_CORE_DISCOURSE_PROGRAM_REPORT_V1",
+  "stage": "PRAGMATIC_REASONING_R4",
+  "status": "PASS",
+  "date": "2026-08-31",
+  "long_term_goal": "GPT-grade general language understanding without an external LLM reasoning dependency",
+  "gpt_grade_status": "NOT_YET",
+  "implemented": [
+    "canonical tamper-evident snapshots for definition-grounded predicate lexemes",
+    "snapshot schema, entry validation, deterministic ordering, duplicate rejection, and SHA-256 integrity verification",
+    "snapshot export and import through the cognitive language boundary",
+    "ordered compositional goal graphs for Korean and English compound requests",
+    "sequence and coordination edges between independently grounded goals",
+    "explicit condition and prohibition retention in the goal graph",
+    "projection of multi-goal graphs into Plan GoalIR without direct text-to-solution dispatch",
+    "fail-closed clarification for unconnected competing requests",
+    "Korean inflection and Unicode quotation boundary repairs found by backward canaries"
+  ],
+  "architecture": {
+    "implementation_language": "Rust",
+    "external_llm_calls": 0,
+    "network_calls": 0,
+    "semantic_payload_mutations": 0,
+    "direct_text_to_solution_shortcuts": 0,
+    "language_reasoning_path": "surface -> compositional frames/scopes -> interpretation candidates -> ordered goal graph -> GoalIR plan -> existing reasoner",
+    "predicate_learning_path": "definition-grounded lexeme -> validated canonical snapshot -> verified import -> existing compositional scope rules"
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": {
+      "status": "PASS",
+      "passed": 595,
+      "failed": 0
+    },
+    "semantic_core_adapters_tests": {
+      "status": "PASS",
+      "passed": 134,
+      "failed": 0
+    },
+    "pragmatic_reasoning_r1_canary": {
+      "passed": 8,
+      "failed": 0
+    },
+    "pragmatic_context_r2_canary": {
+      "passed": 5,
+      "failed": 0
+    },
+    "compositional_language_r3_canary": {
+      "passed": 20,
+      "failed": 0,
+      "korean": 10,
+      "english": 10
+    },
+    "discourse_program_r4_canary": {
+      "passed": 18,
+      "failed": 0,
+      "language_cases": 16,
+      "snapshot_cases": 2
+    },
+    "git_diff_check": "PASS",
+    "non_gating_all_features_observation": {
+      "command": "cargo clippy --workspace --all-targets --all-features -- -D warnings",
+      "status": "FAIL_PRE_EXISTING_CONFIGURATION_BOUNDARY",
+      "cause": "semantic-reasoning includes SEM-26 types through two module identities under the all-features combination; the default workspace build and all 595 tests pass",
+      "r4_language_change_causal": false
+    }
+  },
+  "development_counterexamples": [
+    {
+      "observed": "A condition on a later Korean goal initially made the preceding completed goal hypothetical.",
+      "repair": "Bound conditional scope after the preceding coordinator boundary instead of applying it sentence-wide."
+    },
+    {
+      "observed": "The noun 보고서 was initially split as the reporting predicate 보고 plus a nominal suffix.",
+      "repair": "Required a recognized Korean verbal inflection boundary for embedded action stems."
+    },
+    {
+      "observed": "The past counterfactual 지웠더라면 was lost by the stricter morphology boundary, while a vacuous unit assertion still passed.",
+      "repair": "Added the counterfactual inflection boundary and required the regression test to prove that a blocked candidate actually exists."
+    },
+    {
+      "observed": "A command inside Korean curly quotation marks was not recognized as a non-authoritative mention.",
+      "repair": "Made Unicode quotation marks valid lexical delimiters and added a dedicated regression test."
+    }
+  ],
+  "safety_invariants": {
+    "snapshot_tampering_is_rejected": true,
+    "duplicate_predicate_identity_is_rejected": true,
+    "quoted_commands_are_non_authoritative": true,
+    "negated_actions_become_prohibitions": true,
+    "conditions_do_not_retroactively_capture_prior_goals": true,
+    "unconnected_conflicting_requests_require_clarification": true,
+    "multi_goal_projection_does_not_authorize_external_execution": true,
+    "learned_predicates_reuse_existing_scope_rules": true
+  },
+  "known_limits": [
+    "This remains a deterministic bilingual structural language cortex, not a pretrained general language model.",
+    "Goal-graph conditions are retained as explicit textual constraints but are not yet lowered into a complete logical proposition graph.",
+    "Long-distance dependency structure, quantifier scope, ellipsis, and nested coreference remain incomplete.",
+    "Learned predicate snapshots have explicit import and export APIs but no automatic durable store lifecycle yet.",
+    "Only controlled Korean and English cases have been measured; there is no large frozen open-domain benchmark.",
+    "The repository all-features Clippy combination has a separate SEM-26 module-identity defect even though the default workspace passes."
+  ],
+  "next_frontier": [
+    "dependency and semantic-role graphs for nested clauses",
+    "logical condition propositions with temporal and quantifier scope",
+    "cross-turn goal-graph revision, reference resolution, and ellipsis recovery",
+    "persistent transactional language-knowledge storage with rollback",
+    "family-held-out adversarial benchmark generation and calibration",
+    "repair of the independent semantic-reasoning all-features module-identity boundary"
+  ],
+  "repository": {
+    "branch": "main",
+    "head": "603eb2a",
+    "ahead_of_origin": 4,
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  }
+}

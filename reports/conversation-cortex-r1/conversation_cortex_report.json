@@ -1,0 +1,60 @@
+{
+  "schema": "B_CORE_CONVERSATION_CORTEX_REPORT_1",
+  "status": "PASS_BOUNDED_CONVERSATIONAL_FRONTEND",
+  "implementation_language": "RUST",
+  "canonical_semantic_payloads_mutated": 0,
+  "language_surface_dependent_semantic_nodes": 0,
+  "conversational_semantic_primitives": 13,
+  "supported_languages": [
+    "KOREAN",
+    "ENGLISH"
+  ],
+  "supported_input_modalities": [
+    "TEXT",
+    "VOICE_TRANSCRIPT_WITH_N_BEST_CONFIDENCE"
+  ],
+  "implemented_boundaries": [
+    "RAW_UTTERANCE_PRESERVATION",
+    "INSPECTABLE_NORMALIZATION_OPERATIONS",
+    "KNOWN_TYPO_REPAIR",
+    "UNIQUE_BOUNDED_FUZZY_CONTROL_VOCABULARY_REPAIR",
+    "HESITATION_AND_HOLD_FLOOR",
+    "BACKCHANNEL_WITHOUT_FAKE_GOAL",
+    "GREETING_GRATITUDE_AND_FAREWELL",
+    "EXPLICIT_SELF_REPAIR",
+    "ONOMATOPOEIA_TO_EVENT_PROPERTY",
+    "VOICE_N_BEST_AMBIGUITY_REJECTION",
+    "TURN_ORDER_ENFORCEMENT",
+    "TAMPER_EVIDENT_CONVERSATION_STATE",
+    "DYNAMIC_REFERENCE_BINDING",
+    "AMBIGUOUS_REFERENCE_REJECTION",
+    "CONVERSATIONAL_RESPONSE_REALIZATION"
+  ],
+  "known_typo_mappings": 14,
+  "bounded_fuzzy_control_forms": 24,
+  "discourse_functions": 14,
+  "onomatopoeia_event_families": 5,
+  "maximum_voice_alternatives": 8,
+  "maximum_active_referents": 8,
+  "conversation_regression_tests": 16,
+  "semantic_core_adapter_tests_passed": 85,
+  "workspace_tests_passed": 546,
+  "workspace_tests_failed": 0,
+  "cargo_fmt_check": "PASS",
+  "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+  "conversation_canary": "PASS",
+  "external_llm_calls": 0,
+  "network_calls": 0,
+  "raw_audio_asr_implemented": false,
+  "text_to_speech_implemented": false,
+  "open_domain_gpt_level_claimed": false,
+  "remaining_boundaries": [
+    "RAW_AUDIO_ASR_ADAPTER",
+    "PERSISTENT_CONVERSATION_SNAPSHOT_API",
+    "BROADER_KOREAN_MORPHOLOGY_AND_SPACING_LATTICE",
+    "BROADER_ENGLISH_COLLOQUIAL_CONTRACTIONS",
+    "GENERAL_ENTITY_AND_EVENT_REFERENCE_GROUNDING",
+    "PROSODY_AND_TURN_TIMING",
+    "LARGER_PARAPHRASE_AND_RESPONSE_REALIZATION_COVERAGE"
+  ]
+}

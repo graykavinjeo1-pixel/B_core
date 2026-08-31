@@ -1,0 +1,32 @@
+{
+  "semantic_state_version": "SEMANTIC-STATE-SEM8-1",
+  "concepts": [
+    {"concept_id":"C000001","generation":1,"semantic_payload_sha256":"320762a4b6c274773353fde90e1a3c9145f4e90b9c2c458d0ab229d1e5762a80","runtime_role":"EXECUTABLE_SEQUENCE_TRANSFORM"},
+    {"concept_id":"C000002","generation":2,"semantic_payload_sha256":"ae3e2b193dfa9abef66b976951f257a66c6c342554f2308d7e13d8a244f54ea4","runtime_role":"COMPOSED_SEQUENCE_TRANSFORM"},
+    {"concept_id":"C000004","generation":2,"semantic_payload_sha256":"37745552682d29f605fa0aef238cd9766c7843bc2c3c0570e23f6131b85edde7","runtime_role":"COMPOSED_STATE_TRANSFORM"},
+    {"concept_id":"C000005","generation":2,"semantic_payload_sha256":"80bac24800502b682b63b1670d33489f07aa94a40c703460196d4749bddc264b","runtime_role":"COMPOSED_RELATION"},
+    {"concept_id":"C000006","generation":2,"semantic_payload_sha256":"ff1388941d703189e6685744aaba03496dfaab599b5e74a7734713b17a0615b7","runtime_role":"MATHEMATICAL_RELATION"},
+    {"concept_id":"C000007","generation":2,"semantic_payload_sha256":"7dc2ffc0de4178bf6f85cea1c31869855e1334d57e4dbeef34084f8aad8261a5","runtime_role":"MATHEMATICAL_RELATION"},
+    {"concept_id":"C000008","generation":3,"semantic_payload_sha256":"4c373088189966ca53f6e1e5301a376dce22a656d4707149f873a4a705dc8944","runtime_role":"GUARDED_TRAVERSAL"},
+    {"concept_id":"C000009","generation":3,"semantic_payload_sha256":"f16d6f9356de42a680906ad0890d5c722dc7985dac43a9122eba4682fc07cb9b","runtime_role":"GUARDED_STATE_TRANSITION"},
+    {"concept_id":"C000010","generation":4,"semantic_payload_sha256":"5a91e09fe6993fd64c9bbe4bd6fd12de25c70b825c19e483286d01b0439ba2ad","runtime_role":"STAGE_COMPOSITION"},
+    {"concept_id":"C000011","generation":5,"semantic_payload_sha256":"84504f86f54b9a109a900082fd3a555936f854db1a95713f4dae67d9fe6e4040","runtime_role":"SCOPED_RELATION"},
+    {"concept_id":"C000012","generation":5,"semantic_payload_sha256":"f20af5f8b570b6163aed44cd489e43dfc1e116ce02303363760cede4a4e3d960","runtime_role":"QUOTIENT_CLASSIFICATION"},
+    {"concept_id":"C000013","generation":6,"semantic_payload_sha256":"46d66d74017434f21f8c892365baff230a8d8bec454d6ec323ce25ea30299977","runtime_role":"CROSS_DOMAIN_MECHANISM_TRANSFER"}
+  ],
+  "runtime_patterns": [
+    {
+      "concept_id": "C000001",
+      "instructions": [
+        {"instruction":"INIT_OUTPUT"},
+        {"instruction":"BRANCH_IF_EMPTY","argument":7},
+        {"instruction":"READ_CURRENT"},
+        {"instruction":"SCALAR_SLOT"},
+        {"instruction":"APPEND_CURRENT"},
+        {"instruction":"ADVANCE"},
+        {"instruction":"BRANCH_IF_REMAINING","argument":2},
+        {"instruction":"RETURN"}
+      ]
+    }
+  ]
+}

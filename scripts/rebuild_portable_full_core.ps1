@@ -73,7 +73,7 @@ try {
     $testsPassed = 0
     $testBinariesRun = 0
     if (-not $SkipTests) {
-        $testOutput = @(& cargo test --quiet --jobs 1 --workspace --lib --features historical-campaigns --target x86_64-pc-windows-msvc --locked --offline 2>&1)
+        $testOutput = @(& cargo test --quiet --jobs 1 --workspace --lib --no-default-features --features historical-campaigns --target x86_64-pc-windows-msvc --locked --offline 2>&1)
         $testExitCode = $LASTEXITCODE
         if ($testExitCode -ne 0) {
             throw "PORTABLE_TEST_FAILED:$testExitCode`n$($testOutput -join "`n")"

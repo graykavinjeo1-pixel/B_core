@@ -533,6 +533,8 @@ fn emit_expression(
             .ok_or_else(|| format!("CROSS_LANGUAGE_UNKNOWN_ROLE:{role}")),
         TypedSyntaxExpressionIR::IntLiteral { value } => Ok(value.to_string()),
         TypedSyntaxExpressionIR::BoolLiteral { value } => Ok(value.to_string()),
+        TypedSyntaxExpressionIR::StringLiteral { value } => serde_json::to_string(value)
+            .map_err(|error| format!("CROSS_LANGUAGE_STRING_LITERAL_SERIALIZE:{error}")),
         TypedSyntaxExpressionIR::Unary { operator, input } => {
             let input = emit_expression(input, language, sources)?;
             Ok(match operator {

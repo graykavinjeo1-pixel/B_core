@@ -1,0 +1,8 @@
+{
+  "core_abi_version": 1,
+  "semantic_state_version": "SEMANTIC-STATE-SEM8-1",
+  "capability_contract_version": 1,
+  "request_ir": "GoalIR",
+  "result_ir": "ResultIR",
+  "capability_interface": "CapabilityContract"
+}

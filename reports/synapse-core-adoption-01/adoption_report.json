@@ -1,0 +1,53 @@
+{
+  "schema": "B_CORE_SYNAPSE_ADOPTION_1",
+  "status": "PASS_BOUNDED_INDEPENDENT_REIMPLEMENTATION",
+  "requested_source_url": "https://github.com/graykavinjeo1-pixel/Synapse_Core",
+  "requested_source_resolution": "NOT_FOUND_404",
+  "compared_source_url": "https://github.com/graykavinjeo/Synapse_Core",
+  "compared_source_commit": "c85290ce6f2142959cd8a8c241a53df7c24d119e",
+  "compared_source_commit_date": "2026-08-03T12:11:13Z",
+  "compared_tracked_files": 37415,
+  "source_license": "PROPRIETARY_ALL_RIGHTS_RESERVED",
+  "source_files_copied": 0,
+  "implementation_strategy": "INDEPENDENT_RUST_REIMPLEMENTATION_FROM_ARCHITECTURAL_MECHANISM",
+  "adopted_capabilities": [
+    "CONTENT_ADDRESSED_VALIDATION_PROOF_RECEIPTS",
+    "REVERSE_DEPENDENCY_CHANGE_IMPACT",
+    "CONSERVATIVE_UNAFFECTED_PROOF_REUSE",
+    "STRUCTURAL_CHANGE_FULL_WORKSPACE_ESCALATION",
+    "MANIFEST_CONFIGURATION_FULL_WORKSPACE_ESCALATION",
+    "TAMPER_EVIDENT_PLAN_REPLAY"
+  ],
+  "already_present_no_duplicate_import": [
+    "SOURCE_GROUNDED_REPAIR_PROPOSALS",
+    "MULTI_FILE_CAUSAL_TRACING",
+    "REPOSITORY_REQUIREMENT_GRAPH",
+    "COMPILER_GUIDED_REPAIR",
+    "PROJECT_CHANGE_AND_ROLLBACK_RECEIPTS"
+  ],
+  "excluded": [
+    "PYTHON_CAMPAIGN_ORCHESTRATION",
+    "RAW_KNOWLEDGE_PACKAGES",
+    "BENCHMARK_ANSWERS_AND_EVALUATION_ARTIFACTS",
+    "RECURSIVE_SOURCE_MUTATION",
+    "EXTERNAL_LLM_OR_TEACHER_PATHS",
+    "DIRECT_PROPRIETARY_SOURCE_COPY"
+  ],
+  "implemented_module": "crates/semantic-reasoning/src/repository_validation_planner.rs",
+  "integrated_canary": "reports/swe-capability-r3/capability_report.json",
+  "canary_metrics": {
+    "repository_files": 1200,
+    "causal_depth": 160,
+    "changed_files": 1,
+    "affected_files": 161,
+    "proofs_considered": 2,
+    "proofs_reused": 1,
+    "proofs_invalidated": 1,
+    "structural_full_workspace_escalations": 1,
+    "plan_replay_passes": 2,
+    "full_catalog_rescans": 0
+  },
+  "external_llm_calls": 0,
+  "network_reads_during_runtime_canary": 0,
+  "official_benchmark_claimed": false
+}

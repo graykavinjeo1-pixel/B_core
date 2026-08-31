@@ -1,0 +1,85 @@
+{
+  "schema": "B_CORE_PRAGMATIC_CONTEXT_REPORT_V1",
+  "stage": "PRAGMATIC_REASONING_R2",
+  "status": "PASS",
+  "date": "2026-08-31",
+  "scope": {
+    "implemented": [
+      "bounded multi-turn pragmatic memory",
+      "ellipsis restoration from a pending continuation gate",
+      "persistent rejection and suspended-gate semantics",
+      "conservative sarcasm detection from semantic incongruity",
+      "bounded metaphor and idiom grounding",
+      "literal-versus-figurative ambiguity clarification"
+    ],
+    "excluded": [
+      "general pretrained language modeling",
+      "unbounded conversational memory",
+      "automatic semantic payload mutation",
+      "external LLM or network inference"
+    ]
+  },
+  "architecture": {
+    "implementation_language": "Rust",
+    "external_llm_calls": 0,
+    "network_calls": 0,
+    "semantic_payload_mutations": 0,
+    "task_frame_limit": 8,
+    "turn_summary_limit": 16,
+    "memory_identity": "SHA-256"
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": {
+      "status": "PASS",
+      "passed": 576,
+      "failed": 0
+    },
+    "semantic_core_adapters_tests": {
+      "status": "PASS",
+      "passed": 115,
+      "failed": 0
+    },
+    "pragmatic_reasoning_canary": {
+      "status": "PASS",
+      "passed": 8,
+      "failed": 0
+    },
+    "pragmatic_context_canary": {
+      "status": "PASS",
+      "passed": 5,
+      "failed": 0,
+      "cases": [
+        "multi-turn ellipsis restores task and required benefit",
+        "negative stance persists and suspends the gate",
+        "sarcastic praise after failure is not approval",
+        "context-free fire reading requests clarification",
+        "software context selects a critical-incident metaphor"
+      ]
+    },
+    "git_diff_check": "PASS"
+  },
+  "safety_invariants": {
+    "rejection_cannot_be_silently_reactivated": true,
+    "ambiguous_nonliteral_language_fails_closed": true,
+    "figurative_language_does_not_authorize_literal_execution": true,
+    "unverified_benefit_claims_do_not_authorize_continuation": true,
+    "raw_language_does_not_mutate_world_model_authority": true
+  },
+  "known_limits": [
+    "The analyzer is deterministic and vocabulary-bounded rather than a general natural-language model.",
+    "Only user turns are committed to pragmatic memory; assistant dialogue acts are not yet ingested as memory events.",
+    "Novel cultural sarcasm and unseen metaphors can remain unresolved.",
+    "Memory is intentionally bounded to eight task frames and sixteen recent turn summaries.",
+    "Ambiguous readings request clarification instead of being probabilistically guessed."
+  ],
+  "repository": {
+    "branch": "main",
+    "ahead_of_origin": 4,
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false,
+    "note": "The worktree contains this stage plus pre-existing and prior-stage changes; no unrelated change was removed."
+  }
+}

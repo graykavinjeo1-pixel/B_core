@@ -412,7 +412,7 @@ fn builtin_entries() -> Vec<LanguageKnowledgeEntryIR> {
     use LanguageCodeIR::{English as En, Korean as Ko};
     use LanguageKnowledgeCategoryIR::{Grammar, Idiom, InternetLanguage, Slang, Word};
     use LanguageRegisterIR::{Formal, Informal, Internet, Neutral};
-    use PlanIntentIR::{Create, Explain, Investigate, Learn, Plan, Repair};
+    use PlanIntentIR::{Communicate, Create, Execute, Explain, Investigate, Learn, Plan, Repair};
     use PragmaticFunctionIR::{
         Acknowledge, Approve, Cause, Caution, Condition, Emphasize, ExactDiagnosis, Hedge, Laugh,
         Proceed, Reject, Request, Sequence,
@@ -485,6 +485,28 @@ fn builtin_entries() -> Vec<LanguageKnowledgeEntryIR> {
             None,
         ),
         entry(
+            "KO.WORD.EXECUTE",
+            Ko,
+            Word,
+            Neutral,
+            &["열어", "읽어", "저장", "실행", "보여", "계속"],
+            "execute_action",
+            &["execute"],
+            Some(Execute),
+            None,
+        ),
+        entry(
+            "KO.WORD.COMMUNICATE",
+            Ko,
+            Word,
+            Neutral,
+            &["말해", "대화", "채팅"],
+            "communicate",
+            &["dialogue"],
+            Some(Communicate),
+            None,
+        ),
+        entry(
             "EN.WORD.PLAN",
             En,
             Word,
@@ -548,6 +570,28 @@ fn builtin_entries() -> Vec<LanguageKnowledgeEntryIR> {
             "explain",
             &["explanation"],
             Some(Explain),
+            None,
+        ),
+        entry(
+            "EN.WORD.EXECUTE",
+            En,
+            Word,
+            Neutral,
+            &["open", "read", "save", "run", "show", "continue"],
+            "execute_action",
+            &["execute"],
+            Some(Execute),
+            None,
+        ),
+        entry(
+            "EN.WORD.COMMUNICATE",
+            En,
+            Word,
+            Neutral,
+            &["talk", "chat", "tell"],
+            "communicate",
+            &["dialogue"],
+            Some(Communicate),
             None,
         ),
         entry(

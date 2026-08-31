@@ -23,6 +23,58 @@ name = "cognitive-api-canary"
 path = "src/cognitive_api_canary.rs"
 
 [[bin]]
+name = "conversation-cortex-canary"
+path = "src/conversation_canary.rs"
+
+[[bin]]
+name = "pragmatic-reasoning-canary"
+path = "src/pragmatic_reasoning_canary.rs"
+
+[[bin]]
+name = "pragmatic-context-canary"
+path = "src/pragmatic_context_canary.rs"
+
+[[bin]]
+name = "compositional-language-canary"
+path = "src/compositional_language_canary.rs"
+
+[[bin]]
+name = "discourse-program-canary"
+path = "src/discourse_program_canary.rs"
+
+[[bin]]
+name = "cross-turn-discourse-canary"
+path = "src/cross_turn_discourse_canary.rs"
+
+[[bin]]
+name = "semantic-role-discourse-canary"
+path = "src/semantic_role_discourse_canary.rs"
+
+[[bin]]
+name = "attribution-discourse-canary"
+path = "src/attribution_discourse_canary.rs"
+
+[[bin]]
+name = "epistemic-revision-canary"
+path = "src/epistemic_revision_canary.rs"
+
+[[bin]]
+name = "modal-scope-canary"
+path = "src/modal_scope_canary.rs"
+
+[[bin]]
+name = "discourse-qa-canary"
+path = "src/discourse_qa_canary.rs"
+
+[[bin]]
+name = "temporal-discourse-canary"
+path = "src/temporal_discourse_canary.rs"
+
+[[bin]]
+name = "conditional-guard-canary"
+path = "src/conditional_guard_canary.rs"
+
+[[bin]]
 name = "b-core-cognitive-api"
 path = "src/cognitive_api_main.rs"
 

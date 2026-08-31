@@ -59,6 +59,11 @@ use crate::meta_compiler_expansion::{
     verified_examples_from_edit, MetaCompilerGapIR, MetaCompilerGapKind, MetaCompilerRegistryIR,
 };
 use crate::north_star::{north_star_integrity_locked, north_star_sha256};
+use crate::repository_coding_knowledge::{
+    classify_public_diagnostic, plan_repository_repair, DiagnosticFamily, EvidenceKind,
+    RepairPlanDisposition, RepositoryLanguage, RepositoryObservationIR, RepositoryTaskIR,
+    REPOSITORY_REPAIR_KNOWLEDGE_SCHEMA,
+};
 use crate::repository_experience::{
     build_repository_repair_provenance, derive_repository_repair_contract, ground_repository_issue,
     repository_issue_intake_receipt_hash, validate_repository_issue_evidence,
@@ -66,11 +71,6 @@ use crate::repository_experience::{
     RepositoryIssueIntakeReceiptIR, RepositoryIssueIntakeRequestIR, RepositoryIssuePathBindingIR,
     RepositoryPipelineProvenanceGraphIR, RepositoryRepairContractIR,
     RepositoryRepairProvenanceInput, REPOSITORY_ISSUE_INTAKE_RECEIPT_SCHEMA,
-};
-use crate::repository_coding_knowledge::{
-    classify_public_diagnostic, plan_repository_repair, DiagnosticFamily, EvidenceKind,
-    RepairPlanDisposition, RepositoryLanguage, RepositoryObservationIR, RepositoryTaskIR,
-    REPOSITORY_REPAIR_KNOWLEDGE_SCHEMA,
 };
 use crate::same_attempt_revision::{
     CandidateAdmission, SameAttemptCounterexample, SameAttemptRevisionTracker,
@@ -11792,6 +11792,11 @@ fn repository_validation_plan(
                 .collect::<Vec<_>>();
             input_observation_ids.sort();
             input_observation_ids.dedup();
+            let issue_event_ids = node_entries
+                .iter()
+                .filter_map(|(observation, _)| observation.work_event_id.clone())
+                .collect::<BTreeSet<_>>();
+            let issue_context = repository_issue_context(config, root_index, &issue_event_ids)?;
             let mut scope_paths = node_entries
                 .iter()
                 .map(|(_, relative)| relative.clone())
@@ -11838,6 +11843,9 @@ fn repository_validation_plan(
                 root_index,
                 root,
                 input_observation_ids,
+                repository_issue_ids: issue_context.issue_ids,
+                repository_issue_evidence_sha256s: issue_context.evidence_sha256s,
+                repository_issue_target_symbols: issue_context.target_symbols,
                 public_contract_target_symbols,
                 scope_paths,
                 test_paths,
@@ -11868,6 +11876,11 @@ fn repository_validation_plan(
                 .collect::<Vec<_>>();
             input_observation_ids.sort();
             input_observation_ids.dedup();
+            let issue_event_ids = go_entries
+                .iter()
+                .filter_map(|(observation, _)| observation.work_event_id.clone())
+                .collect::<BTreeSet<_>>();
+            let issue_context = repository_issue_context(config, root_index, &issue_event_ids)?;
             let mut scope_paths = go_entries
                 .iter()
                 .map(|(_, relative)| relative.clone())
@@ -11912,6 +11925,9 @@ fn repository_validation_plan(
                 root_index,
                 root,
                 input_observation_ids,
+                repository_issue_ids: issue_context.issue_ids,
+                repository_issue_evidence_sha256s: issue_context.evidence_sha256s,
+                repository_issue_target_symbols: issue_context.target_symbols,
                 public_contract_target_symbols,
                 scope_paths,
                 test_paths,

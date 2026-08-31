@@ -1,0 +1,120 @@
+{
+  "schema": "B_CORE_SEMANTIC_ROLE_DISCOURSE_REPORT_V1",
+  "stage": "PRAGMATIC_REASONING_R6",
+  "status": "PASS",
+  "date": "2026-08-31",
+  "long_term_goal": "GPT-grade general language understanding without an external LLM reasoning dependency",
+  "gpt_grade_status": "NOT_YET",
+  "implemented": [
+    "discourse-local event, entity, and implicit-agent nodes",
+    "typed Korean and English semantic-role edges",
+    "explicit universal, distributive, existential, negative, and cardinal quantifier scopes",
+    "coordination, cause, condition, purpose, temporal, contrast, and prior-result event relations",
+    "quote-aware role extraction that prevents inner command arguments from leaking into outer frames",
+    "bounded event, result, and proposition discourse referents",
+    "metalinguistic quoted reconstruction of referenced prior commands",
+    "fail-closed ambiguity for competing same-kind discourse referents",
+    "semantic-role and quantifier projection into existing GoalIR constraints",
+    "unknown noun phrases as local entities without invented concept IDs"
+  ],
+  "architecture": {
+    "implementation_language": "Rust",
+    "external_llm_calls": 0,
+    "network_calls": 0,
+    "semantic_payload_mutations": 0,
+    "direct_text_to_solution_shortcuts": 0,
+    "source_mutations_by_runtime": 0,
+    "semantic_role_graph_schema": "B_CORE_SEMANTIC_ROLE_GRAPH_IR_1",
+    "compositional_analysis_schema": "B_CORE_COMPOSITIONAL_ANALYSIS_IR_2",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_3",
+    "conversation_frontend_schema": "B_CORE_CONVERSATION_FRONTEND_2",
+    "goal_path": "surface -> compositional frames -> semantic-role graph -> pragmatic authority checks -> GoalIR -> existing reasoner",
+    "discourse_path": "typed prior referent -> bounded resolution -> quoted metalinguistic reconstruction -> same analysis path"
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": {
+      "status": "PASS",
+      "passed": 615,
+      "failed": 0
+    },
+    "semantic_core_adapters_tests": {
+      "status": "PASS",
+      "passed": 154,
+      "failed": 0
+    },
+    "pragmatic_reasoning_r1_canary": { "passed": 8, "failed": 0 },
+    "pragmatic_context_r2_canary": { "passed": 5, "failed": 0 },
+    "compositional_language_r3_canary": { "passed": 20, "failed": 0 },
+    "discourse_program_r4_canary": { "passed": 18, "failed": 0 },
+    "cross_turn_discourse_r5_canary": { "passed": 20, "failed": 0 },
+    "semantic_role_discourse_r6_canary": {
+      "passed": 24,
+      "failed": 0,
+      "korean_family": 10,
+      "english_family": 10,
+      "cross_turn_family": 4
+    },
+    "all_frozen_r1_through_r6_canaries": { "passed": 95, "failed": 0 },
+    "git_diff_check": "PASS",
+    "non_gating_all_features_observation": {
+      "status": "KNOWN_PRE_EXISTING_CONFIGURATION_BOUNDARY",
+      "cause": "semantic-reasoning includes SEM-26 types through two module identities under the all-features combination",
+      "r6_language_change_causal": false
+    }
+  },
+  "development_counterexamples": [
+    {
+      "observed": "The English noun report was parsed as an action in nominal contexts.",
+      "repair": "Added bounded nominal-context classification while preserving real clause-initial report commands."
+    },
+    {
+      "observed": "A negated any phrase retained existential quantifier scope.",
+      "repair": "Made explicit negative quantifier constructions produce NONE scope."
+    },
+    {
+      "observed": "Arguments inside a quoted command leaked into the outer passive frame.",
+      "repair": "Made semantic-role argument extraction respect quotation bounds per frame."
+    },
+    {
+      "observed": "The coordinated argument file and folder lost its conjunction during target normalization.",
+      "repair": "Preserved internal coordination while continuing to strip quantifier tokens from normalized targets."
+    }
+  ],
+  "safety_invariants": {
+    "semantic_role_nodes_are_not_promoted_concepts": true,
+    "unknown_entities_receive_no_invented_concept_id": true,
+    "lexical_surfaces_cannot_mutate_semantic_payloads": true,
+    "quoted_inner_commands_do_not_authorize_outer_execution": true,
+    "result_and_proposition_references_carry_no_execution_authority": true,
+    "ambiguous_same_kind_references_require_clarification": true,
+    "conversation_state_is_bounded_and_tamper_evident": true,
+    "external_execution_is_not_performed_by_the_language_adapter": true
+  },
+  "known_limits": [
+    "The parser is deterministic and bilingual rather than a learned open-domain language model.",
+    "Arbitrary morphology, deeply embedded clauses, and unrestricted semantic-role labeling remain incomplete.",
+    "Nested temporal, modal, negation, and quantifier scope is only partially represented.",
+    "Proposition memory does not yet model nested epistemic agents, evidentiality, or belief revision.",
+    "General bridging reference and broad world-knowledge inference are not implemented.",
+    "No broad open-domain corpus, human calibration study, or frontier-model comparison has been run.",
+    "The system remains below GPT-grade linguistic breadth, robustness, world knowledge, and calibration."
+  ],
+  "next_frontier": [
+    "belief, attribution, and evidential provenance graphs",
+    "nested temporal, modal, logical, negation, and quantifier scope",
+    "explicit goal revision, cancellation, supersession, and reorder history",
+    "broader ontology-grounded entity typing without semantic-authority mutation",
+    "transactional conversation snapshot import, validation, rollback, and corruption tests",
+    "larger family-held-out adversarial dialogue suites with calibrated abstention"
+  ],
+  "repository": {
+    "branch": "main",
+    "head": "603eb2a",
+    "ahead_of_origin": 4,
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  }
+}

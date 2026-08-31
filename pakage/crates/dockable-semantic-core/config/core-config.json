@@ -1,0 +1,9 @@
+{
+  "core_abi_version": 1,
+  "semantic_state_version": "SEMANTIC-STATE-SEM8-1",
+  "capability_contract_version": 1,
+  "network_required": false,
+  "language_required": false,
+  "research_artifacts_required": false,
+  "full_catalog_scan_allowed": false
+}
