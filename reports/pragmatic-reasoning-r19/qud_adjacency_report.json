@@ -1,0 +1,129 @@
+{
+  "stage": "R19_QUESTION_UNDER_DISCUSSION_AND_ADJACENCY_PAIRS",
+  "status": "PASS",
+  "scope": "Typed clarification state, short-answer adjacency, cross-language option selection, QUD lifecycle, and authority preservation",
+  "canonical_integrity": {
+    "status": "PASS",
+    "canonical_file_count": 10,
+    "manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "implementation": {
+    "language": "Rust",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_13",
+    "qud_kinds": [
+      "VoiceAlternative",
+      "CompetingGoal",
+      "RepeatedGoal",
+      "PropositionReference",
+      "NonliteralReading"
+    ],
+    "answer_binding": "ClarificationAnswer",
+    "state_hash_binds_pending_question": true,
+    "answer_only_creates_new_execution_authority": false,
+    "invalid_or_reported_choice_fails_closed": true,
+    "hold_floor_preserves_pending_question": true,
+    "explicit_new_request_clears_pending_question": true,
+    "cross_language_selection_preserves_option_identity": true,
+    "source_hashes": {
+      "crates/semantic-core-adapters/Cargo.toml": "c2c474345217ec32e4fe9a35044aa429afd7f1088598a9d2d47c9ae9ed0a3bc4",
+      "crates/semantic-core-adapters/src/cognitive.rs": "19945c4368e3949fe5a96c8753cbd7c0c28e51ccc0cabe17d610102c9431a38b",
+      "crates/semantic-core-adapters/src/compositional_semantics.rs": "582199e90942725995266b472fc607578619e161d1c49ca6e09e10c9916a2874",
+      "crates/semantic-core-adapters/src/conversation.rs": "cd46284f29c6c6251ebec3f05a13cba4c8f718404d7f2934ccf603d58c16bc31",
+      "crates/semantic-core-adapters/src/discourse_qa.rs": "04edb6d6cd2ae7550052c0e2a5f00cf6ef890d510369cd45009d00a90ace3adc",
+      "crates/semantic-core-adapters/src/lib.rs": "6f400b0068741a51c2bf75a46684096bf13c08f84ed11c38d9f9ee411d7f5609",
+      "crates/semantic-core-adapters/src/typed_coreference.rs": "a9021941f569055035292382c6c303acb95133bf8629a2b21a177a5c6e4ef7c3",
+      "crates/semantic-core-adapters/src/qud_adjacency_canary.rs": "22372e833c5e71623e9752f7a350fdf30d5c5acc667b43703807d08af924387e",
+      "crates/semantic-core-adapters/src/qud_adjacency_transfer_canary.rs": "23573467d02018f8d0774c4cc05ebda51c51dbe43dfd205bb2c0aa1b19fb1acb"
+    }
+  },
+  "final_suites": {
+    "R19-RUN-0001": {
+      "kind": "frozen_diagnostic",
+      "first_execution": "0/24",
+      "intermediate_executions": ["13/24", "22/24"],
+      "final_execution": "24/24",
+      "total": 24,
+      "passed": 24,
+      "failed": 0
+    },
+    "R19-RUN-0002": {
+      "kind": "held_out_transfer_and_attack",
+      "first_execution": "13/16",
+      "first_failure_cases": [
+        "QUD_TRANSFER_XLANG_1",
+        "QUD_TRANSFER_XLANG_3",
+        "QUD_TRANSFER_SOCIAL_2"
+      ],
+      "final_execution": "16/16",
+      "suite_hash_unchanged": true,
+      "total": 16,
+      "passed": 16,
+      "failed": 0
+    },
+    "r19_fresh_total": 40,
+    "r19_fresh_passed": 40,
+    "prior_sealed_r1_to_r18": 707,
+    "cumulative_r1_to_r19": 747,
+    "canary_binaries": {
+      "passed": 29,
+      "total": 29
+    }
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "semantic_core_adapters_tests": {
+      "passed": 260,
+      "failed": 0
+    },
+    "workspace_tests": {
+      "passed": 784,
+      "failed": 0
+    },
+    "git_diff_check": "PASS",
+    "build_cache_cleanup": {
+      "files_before_cleanup": 11205,
+      "bytes_before_cleanup": 10302668438,
+      "cargo_clean_reported_removed_files": 11205,
+      "cargo_clean_reported_removed_size": "9.6 GiB",
+      "target_directory_exists_after_cleanup": false
+    }
+  },
+  "reasoning_guards": {
+    "raw_text_is_semantic_authority": false,
+    "answer_only_fragment_authorizes_execution": false,
+    "reported_choice_is_user_choice": false,
+    "uncertain_choice_is_silently_selected": false,
+    "lexical_localization_mutates_semantic_option": false,
+    "unsupported_freeform_claims": 0
+  },
+  "next_integrated_completion_axes": {
+    "status": "OPEN",
+    "axes": [
+      "grammatical composition",
+      "discourse and topic state",
+      "deixis and ellipsis resolution",
+      "speech intent and pragmatic inference",
+      "execution result versus plan distinction",
+      "evidence-grounded realization"
+    ],
+    "policy": "Audit structural blind coverage for every axis, then repair shared IR and routing boundaries rather than adding sentence-specific dispatch"
+  },
+  "dependencies": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_in_canonical_r19_path": false,
+    "recursive_source_mutations": 0
+  },
+  "git": {
+    "branch": "main",
+    "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c4f",
+    "remote": "https://github.com/graykavinjeo1-pixel/B_core.git",
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  },
+  "goal_complete": false,
+  "disposition": "R19_SEALED_LOCALLY_SIX_AXIS_GPT_LEVEL_LANGUAGE_GOAL_REMAINS_OPEN"
+}

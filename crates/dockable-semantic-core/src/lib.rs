@@ -40,8 +40,11 @@ pub use mechanism_memory::{
     MECHANISM_KNOWLEDGE_SCHEMA, MECHANISM_MEMORY_SNAPSHOT_SCHEMA,
 };
 pub use planning::{
-    PlanGoalIR, PlanIR, PlanIntentIR, PlanOperationIR, PlanStepIR, PlanningError, PLAN_GOAL_SCHEMA,
-    PLAN_SCHEMA,
+    semantic_plan_bundle_sha256, semantic_plan_goal_sha256, PlanGoalIR, PlanIR, PlanIntentIR,
+    PlanOperationIR, PlanStepIR, PlanningError, SemanticEventPlanBindingIR, SemanticPlanArgumentIR,
+    SemanticPlanBundleIR, SemanticPlanEventIR, SemanticPlanGoalIR, SemanticPlanProjectionIR,
+    SemanticPlanRelationIR, SemanticPlanRelationKindIR, SemanticPlanRoleIR, PLAN_GOAL_SCHEMA,
+    PLAN_SCHEMA, SEMANTIC_PLAN_BUNDLE_SCHEMA, SEMANTIC_PLAN_GOAL_SCHEMA,
 };
 pub use runtime::{CoreError, DockableCore};
 pub use swarm::{

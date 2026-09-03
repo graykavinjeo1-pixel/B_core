@@ -9,6 +9,8 @@ use crate::experience::{
 
 pub const PLAN_GOAL_SCHEMA: &str = "B_CORE_PLAN_GOAL_IR_1";
 pub const PLAN_SCHEMA: &str = "B_CORE_PLAN_IR_1";
+pub const SEMANTIC_PLAN_GOAL_SCHEMA: &str = "B_CORE_SEMANTIC_PLAN_GOAL_IR_1";
+pub const SEMANTIC_PLAN_BUNDLE_SCHEMA: &str = "B_CORE_SEMANTIC_PLAN_BUNDLE_IR_1";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -33,6 +35,169 @@ pub struct PlanGoalIR {
     pub desired_outcomes: Vec<String>,
     pub context_tags: Vec<String>,
     pub max_steps: usize,
+}
+
+/// Language-independent role attached to a semantic planning argument.
+/// Surface adapters may provide a grounded label for realization, but the
+/// role and concept IDs are the planner-facing identity.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum SemanticPlanRoleIR {
+    Agent,
+    Topic,
+    Theme,
+    CoTheme,
+    Patient,
+    Experiencer,
+    Recipient,
+    Source,
+    Destination,
+    Instrument,
+    Location,
+    Result,
+    ComparisonPeer,
+    PriorResult,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum SemanticPlanProjectionIR {
+    Prohibited,
+    Conditional,
+    Reported,
+    Suppressed,
+    LiveRequest,
+    Advisory,
+    Inquiry,
+    Descriptive,
+    Unresolved,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum SemanticPlanRelationKindIR {
+    Coordination,
+    Sequence,
+    Condition,
+    Cause,
+    Purpose,
+    Contrast,
+    TemporalBefore,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SemanticPlanArgumentIR {
+    pub argument_id: String,
+    pub role: SemanticPlanRoleIR,
+    pub concept_ids: Vec<String>,
+    /// Non-authoritative label retained only as an inspectable target handle
+    /// for legacy PlanIR and human-facing traces.
+    pub grounded_label: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SemanticPlanEventIR {
+    pub event_id: String,
+    pub predicate_concept_id: String,
+    pub intent: PlanIntentIR,
+    pub argument_ids: Vec<String>,
+    pub goal_subject_argument_ids: Vec<String>,
+    pub projection: SemanticPlanProjectionIR,
+    pub user_request_present: bool,
+    pub external_execution_authorized: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SemanticPlanRelationIR {
+    pub relation_id: String,
+    pub source_event_id: String,
+    pub target_event_id: String,
+    pub relation: SemanticPlanRelationKindIR,
+}
+
+/// Lossless planner input. It retains every scoped event, argument and
+/// relation while explicitly naming the live events selected by the Language
+/// Center. Raw language is not accepted at this boundary.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SemanticPlanGoalIR {
+    pub schema: String,
+    pub goal_id: String,
+    pub events: Vec<SemanticPlanEventIR>,
+    pub arguments: Vec<SemanticPlanArgumentIR>,
+    pub relations: Vec<SemanticPlanRelationIR>,
+    pub selected_live_event_ids: Vec<String>,
+    pub context_semantic_ids: Vec<String>,
+    pub source_semantic_sha256: String,
+    pub max_steps_per_event: usize,
+    pub semantic_authority: bool,
+    pub language_can_execute: bool,
+    pub semantic_sha256: String,
+}
+
+impl SemanticPlanGoalIR {
+    pub fn seal(&mut self) {
+        self.semantic_sha256 = semantic_plan_goal_sha256(self);
+    }
+
+    pub fn validate(&self) -> bool {
+        validate_semantic_goal(self).is_ok()
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SemanticEventPlanBindingIR {
+    pub event_id: String,
+    pub plan_sha256: String,
+}
+
+/// One legacy-compatible plan per selected semantic event. The bundle is the
+/// authoritative planning result; `PlanIR` remains a compatibility view for
+/// consumers that have not migrated to multi-event planning yet.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SemanticPlanBundleIR {
+    pub schema: String,
+    pub semantic_goal_sha256: String,
+    pub plans: Vec<PlanIR>,
+    pub event_plan_bindings: Vec<SemanticEventPlanBindingIR>,
+    pub all_selected_events_planned: bool,
+    pub semantic_authority: bool,
+    pub external_action_executed: bool,
+    pub bundle_sha256: String,
+}
+
+impl SemanticPlanBundleIR {
+    pub fn primary_plan(&self) -> Option<&PlanIR> {
+        self.plans.first()
+    }
+
+    pub fn validate_against(&self, goal: &SemanticPlanGoalIR) -> bool {
+        let selected = goal.selected_live_event_ids.iter().collect::<BTreeSet<_>>();
+        let bound = self
+            .event_plan_bindings
+            .iter()
+            .map(|binding| &binding.event_id)
+            .collect::<BTreeSet<_>>();
+        self.schema == SEMANTIC_PLAN_BUNDLE_SCHEMA
+            && goal.validate()
+            && self.semantic_goal_sha256 == goal.semantic_sha256
+            && !self.semantic_authority
+            && !self.external_action_executed
+            && self.all_selected_events_planned
+            && self.plans.len() == goal.selected_live_event_ids.len()
+            && self.event_plan_bindings.len() == self.plans.len()
+            && selected == bound
+            && self
+                .event_plan_bindings
+                .iter()
+                .map(|binding| binding.event_id.as_str())
+                .eq(goal.selected_live_event_ids.iter().map(String::as_str))
+            && self
+                .event_plan_bindings
+                .iter()
+                .zip(&self.plans)
+                .all(|(binding, plan)| binding.plan_sha256 == plan.plan_sha256)
+            && self.bundle_sha256 == semantic_plan_bundle_sha256(self)
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -185,6 +350,250 @@ impl Planner {
             structurally_validated: true,
         })
     }
+
+    pub fn generate_semantic(
+        &self,
+        goal: &SemanticPlanGoalIR,
+        experience_memory: &ExperienceMemory,
+    ) -> Result<SemanticPlanBundleIR, PlanningError> {
+        validate_semantic_goal(goal)?;
+        let mut plans = Vec::with_capacity(goal.selected_live_event_ids.len());
+        let mut event_plan_bindings = Vec::with_capacity(goal.selected_live_event_ids.len());
+        for event_id in &goal.selected_live_event_ids {
+            let event = goal
+                .events
+                .iter()
+                .find(|event| &event.event_id == event_id)
+                .ok_or(PlanningError::InvalidGoal)?;
+            let compatibility_goal = semantic_event_compatibility_goal(goal, event)?;
+            let plan = self.generate(&compatibility_goal, experience_memory)?;
+            event_plan_bindings.push(SemanticEventPlanBindingIR {
+                event_id: event_id.clone(),
+                plan_sha256: plan.plan_sha256.clone(),
+            });
+            plans.push(plan);
+        }
+        let mut bundle = SemanticPlanBundleIR {
+            schema: SEMANTIC_PLAN_BUNDLE_SCHEMA.to_string(),
+            semantic_goal_sha256: goal.semantic_sha256.clone(),
+            plans,
+            event_plan_bindings,
+            all_selected_events_planned: true,
+            semantic_authority: false,
+            external_action_executed: false,
+            bundle_sha256: String::new(),
+        };
+        bundle.bundle_sha256 = semantic_plan_bundle_sha256(&bundle);
+        if !bundle.validate_against(goal) {
+            return Err(PlanningError::InvalidPlanGraph);
+        }
+        Ok(bundle)
+    }
+}
+
+fn validate_semantic_goal(goal: &SemanticPlanGoalIR) -> Result<(), PlanningError> {
+    if goal.schema != SEMANTIC_PLAN_GOAL_SCHEMA {
+        return Err(PlanningError::InvalidSchema);
+    }
+    let event_ids = goal
+        .events
+        .iter()
+        .map(|event| event.event_id.as_str())
+        .collect::<BTreeSet<_>>();
+    let argument_ids = goal
+        .arguments
+        .iter()
+        .map(|argument| argument.argument_id.as_str())
+        .collect::<BTreeSet<_>>();
+    let selected_ids = goal
+        .selected_live_event_ids
+        .iter()
+        .map(String::as_str)
+        .collect::<BTreeSet<_>>();
+    let relation_ids = goal
+        .relations
+        .iter()
+        .map(|relation| relation.relation_id.as_str())
+        .collect::<BTreeSet<_>>();
+    if goal.goal_id.trim().is_empty()
+        || goal.goal_id.len() > 128
+        || goal.events.is_empty()
+        || goal.events.len() > 32
+        || goal.arguments.len() > 128
+        || goal.relations.len() > 64
+        || goal.selected_live_event_ids.is_empty()
+        || selected_ids.len() != goal.selected_live_event_ids.len()
+        || event_ids.len() != goal.events.len()
+        || argument_ids.len() != goal.arguments.len()
+        || relation_ids.len() != goal.relations.len()
+        || goal.context_semantic_ids.len() > 64
+        || goal
+            .context_semantic_ids
+            .iter()
+            .any(|value| value.trim().is_empty() || value.len() > 128)
+        || goal.max_steps_per_event < 5
+        || goal.max_steps_per_event > 32
+        || goal.source_semantic_sha256.len() != 64
+        || goal.semantic_authority
+        || goal.language_can_execute
+        || goal.semantic_sha256.len() != 64
+        || goal.semantic_sha256 != semantic_plan_goal_sha256(goal)
+    {
+        return Err(PlanningError::InvalidGoal);
+    }
+    if goal.arguments.iter().any(|argument| {
+        argument.argument_id.trim().is_empty()
+            || argument.grounded_label.trim().is_empty()
+            || argument.grounded_label.len() > 64 * 1024
+            || argument.concept_ids.is_empty()
+            || argument
+                .concept_ids
+                .iter()
+                .any(|concept| concept.trim().is_empty() || concept.len() > 256)
+    }) || goal.events.iter().any(|event| {
+        event.event_id.trim().is_empty()
+            || event.event_id.len() > 256
+            || event.predicate_concept_id.trim().is_empty()
+            || event.predicate_concept_id.len() > 256
+            || event.argument_ids.iter().collect::<BTreeSet<_>>().len() != event.argument_ids.len()
+            || event
+                .goal_subject_argument_ids
+                .iter()
+                .collect::<BTreeSet<_>>()
+                .len()
+                != event.goal_subject_argument_ids.len()
+            || event
+                .argument_ids
+                .iter()
+                .any(|id| !argument_ids.contains(id.as_str()))
+            || event
+                .goal_subject_argument_ids
+                .iter()
+                .any(|id| !event.argument_ids.contains(id))
+            || event.external_execution_authorized
+    }) || goal.relations.iter().any(|relation| {
+        relation.relation_id.trim().is_empty()
+            || relation.source_event_id == relation.target_event_id
+            || !event_ids.contains(relation.source_event_id.as_str())
+            || !event_ids.contains(relation.target_event_id.as_str())
+    }) {
+        return Err(PlanningError::InvalidGoal);
+    }
+    for selected in &goal.selected_live_event_ids {
+        let event = goal
+            .events
+            .iter()
+            .find(|event| &event.event_id == selected)
+            .ok_or(PlanningError::InvalidGoal)?;
+        if event.projection != SemanticPlanProjectionIR::LiveRequest
+            || !event.user_request_present
+            || event.goal_subject_argument_ids.is_empty()
+        {
+            return Err(PlanningError::InvalidGoal);
+        }
+    }
+    Ok(())
+}
+
+fn semantic_event_compatibility_goal(
+    goal: &SemanticPlanGoalIR,
+    event: &SemanticPlanEventIR,
+) -> Result<PlanGoalIR, PlanningError> {
+    let subjects = event
+        .goal_subject_argument_ids
+        .iter()
+        .filter_map(|id| {
+            goal.arguments
+                .iter()
+                .find(|argument| &argument.argument_id == id)
+        })
+        .collect::<Vec<_>>();
+    if subjects.is_empty() {
+        return Err(PlanningError::InvalidGoal);
+    }
+    let mut constraints = goal
+        .events
+        .iter()
+        .filter(|candidate| candidate.projection != SemanticPlanProjectionIR::LiveRequest)
+        .map(|candidate| {
+            format!(
+                "SEMANTIC_EVENT_SCOPE:{:?}:{}:{}",
+                candidate.projection, candidate.event_id, candidate.predicate_concept_id
+            )
+        })
+        .chain(goal.relations.iter().map(|relation| {
+            format!(
+                "SEMANTIC_EVENT_RELATION:{:?}:{}:{}",
+                relation.relation, relation.source_event_id, relation.target_event_id
+            )
+        }))
+        .take(64)
+        .collect::<Vec<_>>();
+    constraints.sort();
+    constraints.dedup();
+    let mut context_tags = goal
+        .context_semantic_ids
+        .iter()
+        .chain(subjects.iter().flat_map(|argument| &argument.concept_ids))
+        .filter(|value| !value.trim().is_empty() && value.len() <= 128)
+        .cloned()
+        .collect::<Vec<_>>();
+    context_tags.sort();
+    context_tags.dedup();
+    context_tags.truncate(64);
+    Ok(PlanGoalIR {
+        schema: PLAN_GOAL_SCHEMA.to_string(),
+        goal_id: bounded_semantic_event_goal_id(goal, event),
+        intent: event.intent,
+        subject: subjects
+            .iter()
+            .map(|argument| argument.grounded_label.as_str())
+            .collect::<Vec<_>>()
+            .join(" & "),
+        constraints,
+        desired_outcomes: vec![format!(
+            "SEMANTIC_EVENT_OUTCOME:{}:{}",
+            event.event_id, event.predicate_concept_id
+        )],
+        context_tags,
+        max_steps: goal.max_steps_per_event,
+    })
+}
+
+fn bounded_semantic_event_goal_id(
+    goal: &SemanticPlanGoalIR,
+    event: &SemanticPlanEventIR,
+) -> String {
+    let candidate = format!("{}:{}", goal.goal_id, event.event_id);
+    if candidate.len() <= 128 {
+        candidate
+    } else {
+        format!(
+            "SEMANTIC-{}",
+            &format!(
+                "{:x}",
+                Sha256::digest(format!("{}:{}", goal.goal_id, event.event_id).as_bytes())
+            )[..64]
+        )
+    }
+}
+
+pub fn semantic_plan_goal_sha256(goal: &SemanticPlanGoalIR) -> String {
+    let mut canonical = goal.clone();
+    canonical.semantic_sha256.clear();
+    format!(
+        "{:x}",
+        Sha256::digest(serde_json::to_vec(&canonical).unwrap_or_default())
+    )
+}
+
+pub fn semantic_plan_bundle_sha256(bundle: &SemanticPlanBundleIR) -> String {
+    let mut canonical = bundle.clone();
+    canonical.bundle_sha256.clear();
+    format!(
+        "{:x}",
+        Sha256::digest(serde_json::to_vec(&canonical).unwrap_or_default())
+    )
 }
 
 fn validate_goal(goal: &PlanGoalIR) -> Result<(), PlanningError> {
@@ -511,5 +920,123 @@ mod tests {
                 .supporting_experience_ids
                 .contains(&"EXP-FAILED-1".to_string())
         }));
+    }
+
+    fn semantic_goal_fixture() -> SemanticPlanGoalIR {
+        let mut goal = SemanticPlanGoalIR {
+            schema: SEMANTIC_PLAN_GOAL_SCHEMA.to_string(),
+            goal_id: "SEMANTIC-GOAL-1".to_string(),
+            events: vec![
+                SemanticPlanEventIR {
+                    event_id: "EVENT-INSPECT".to_string(),
+                    predicate_concept_id: "C_INSPECT".to_string(),
+                    intent: PlanIntentIR::Investigate,
+                    argument_ids: vec!["ARG-CACHE".to_string()],
+                    goal_subject_argument_ids: vec!["ARG-CACHE".to_string()],
+                    projection: SemanticPlanProjectionIR::LiveRequest,
+                    user_request_present: true,
+                    external_execution_authorized: false,
+                },
+                SemanticPlanEventIR {
+                    event_id: "EVENT-EXPLAIN".to_string(),
+                    predicate_concept_id: "C_EXPLAIN".to_string(),
+                    intent: PlanIntentIR::Explain,
+                    argument_ids: vec!["ARG-QUEUE".to_string()],
+                    goal_subject_argument_ids: vec!["ARG-QUEUE".to_string()],
+                    projection: SemanticPlanProjectionIR::LiveRequest,
+                    user_request_present: true,
+                    external_execution_authorized: false,
+                },
+                SemanticPlanEventIR {
+                    event_id: "EVENT-DELETE".to_string(),
+                    predicate_concept_id: "C_DELETE".to_string(),
+                    intent: PlanIntentIR::Execute,
+                    argument_ids: vec!["ARG-CACHE".to_string()],
+                    goal_subject_argument_ids: vec!["ARG-CACHE".to_string()],
+                    projection: SemanticPlanProjectionIR::Prohibited,
+                    user_request_present: false,
+                    external_execution_authorized: false,
+                },
+            ],
+            arguments: vec![
+                SemanticPlanArgumentIR {
+                    argument_id: "ARG-CACHE".to_string(),
+                    role: SemanticPlanRoleIR::Theme,
+                    concept_ids: vec!["C_OBJECT_CACHE".to_string(), "NAME:aster".to_string()],
+                    grounded_label: "Aster cache".to_string(),
+                },
+                SemanticPlanArgumentIR {
+                    argument_id: "ARG-QUEUE".to_string(),
+                    role: SemanticPlanRoleIR::Theme,
+                    concept_ids: vec!["C_OBJECT_QUEUE".to_string(), "NAME:birch".to_string()],
+                    grounded_label: "Birch queue".to_string(),
+                },
+            ],
+            relations: vec![SemanticPlanRelationIR {
+                relation_id: "REL-1".to_string(),
+                source_event_id: "EVENT-INSPECT".to_string(),
+                target_event_id: "EVENT-EXPLAIN".to_string(),
+                relation: SemanticPlanRelationKindIR::Sequence,
+            }],
+            selected_live_event_ids: vec!["EVENT-INSPECT".to_string(), "EVENT-EXPLAIN".to_string()],
+            context_semantic_ids: vec!["rust".to_string()],
+            source_semantic_sha256: "a".repeat(64),
+            max_steps_per_event: 16,
+            semantic_authority: false,
+            language_can_execute: false,
+            semantic_sha256: String::new(),
+        };
+        goal.seal();
+        goal
+    }
+
+    #[test]
+    fn semantic_planner_preserves_multiple_live_events_and_non_live_scope() {
+        let goal = semantic_goal_fixture();
+        assert!(goal.validate());
+        let bundle = Planner
+            .generate_semantic(&goal, &ExperienceMemory::default())
+            .expect("typed semantic plan");
+        assert!(bundle.validate_against(&goal));
+        assert_eq!(bundle.plans.len(), 2);
+        assert_eq!(bundle.plans[0].intent, PlanIntentIR::Investigate);
+        assert_eq!(bundle.plans[1].intent, PlanIntentIR::Explain);
+        assert!(bundle.plans[0]
+            .steps
+            .iter()
+            .any(|step| step.target == "Aster cache"));
+        assert!(bundle.plans[1]
+            .steps
+            .iter()
+            .any(|step| step.target == "Birch queue"));
+        assert!(bundle
+            .plans
+            .iter()
+            .all(|plan| plan.steps.iter().any(|step| {
+                step.preconditions
+                    .iter()
+                    .any(|value| value.contains("Prohibited:EVENT-DELETE:C_DELETE"))
+            })));
+    }
+
+    #[test]
+    fn semantic_planner_rejects_scope_and_hash_tampering() {
+        let goal = semantic_goal_fixture();
+        let mut prohibited_selected = goal.clone();
+        prohibited_selected.selected_live_event_ids = vec!["EVENT-DELETE".to_string()];
+        prohibited_selected.seal();
+        assert!(!prohibited_selected.validate());
+
+        let mut relabeled = goal.clone();
+        relabeled.arguments[0].grounded_label = "other target".to_string();
+        assert!(!relabeled.validate());
+
+        let mut reordered = Planner
+            .generate_semantic(&goal, &ExperienceMemory::default())
+            .expect("semantic bundle");
+        reordered.plans.swap(0, 1);
+        reordered.event_plan_bindings.swap(0, 1);
+        reordered.bundle_sha256 = semantic_plan_bundle_sha256(&reordered);
+        assert!(!reordered.validate_against(&goal));
     }
 }

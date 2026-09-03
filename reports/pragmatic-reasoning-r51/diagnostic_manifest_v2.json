@@ -1,0 +1,13 @@
+{
+  "schema": "B_CORE_R51_DIAGNOSTIC_MANIFEST_2",
+  "run": "R51-DIAGNOSTIC-RUN-0002",
+  "predecessor_run": "R51-DIAGNOSTIC-RUN-0001",
+  "case_count": 12,
+  "semantic_cases_changed": 0,
+  "evaluator_correction": "A conditional continuation gate must not coexist with an immediately authorized CONTINUE goal.",
+  "discovered_boundary": "R51_02 exposed CONTINUE:넓어질 때 as an authorized active goal despite the non-authoritative continuation gate.",
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

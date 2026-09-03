@@ -1,0 +1,814 @@
+{
+  "schema": "B_CORE_GPT_REFERENCE_SURFACE_RUN_IR_1",
+  "suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+  "input_suite_sha256": "c31162100ef2257a538f409fe4cd41a359b42f1244387b7fc1a3f88914f41960",
+  "generation_run_id": "GPT-5.6-SOL-20260903-RUN-2",
+  "model_id": "gpt-5.6-sol",
+  "generation_date": "2026-09-03",
+  "system_prompt_sha256": "8d54ca342e6365fca07a6f44dc60779936a0b7ff7a40dc2832b6ddeb5fd6d221",
+  "generation_configuration_sha256": "88d9c957c6791bbcf6a314b1a592921a81a15db35d4e95e15d296e4220395007",
+  "b_core_output_consulted": false,
+  "responses": [
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-01-T1",
+      "surface": "확인에 필요한 상태 정보나 로그를 제공해 주시면, Aurora 캐시의 가용성, 오류, 적중률, 지연 시간 순으로 차근히 살펴볼게요.",
+      "surface_sha256": "ee6a5d0b988684d8355ffa609edc7c3cd02c63c91c2c0ff07d33fef7ab6099af"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-01-T2",
+      "surface": "캐시 상태·용량, 적중률과 미스율, 응답 지연, 오류·타임아웃 로그, 최근 트래픽 변화, 원본 저장소와의 연결 상태를 근거로 보겠습니다.",
+      "surface_sha256": "50659d83093b7f05ead2898bc9405fc8b98406bdc172fd325718c08dc34ecd85"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-01-T3",
+      "surface": "네, 아직 끝난 건 아닙니다. 현재는 점검 기준만 정했으며 실제 상태 정보나 로그가 없어 결과를 내리지는 못했습니다.",
+      "surface_sha256": "5ab7741cbc24bc3619d00bf6d99226e11d0671d497d3725e43bcf66023e02b4f"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-01-T4",
+      "surface": "알겠습니다. Aurora 캐시는 변경하지 않고, 제공되는 상태와 로그만 읽어서 관찰하겠습니다.",
+      "surface_sha256": "39c3baf6ce5b7b17c49bbf1a316843dc93c70ff379b5098c3b58fbc444325a51"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-02-T1",
+      "surface": "Cascade 서비스의 상태 정보와 관련 로그를 보내 주시면, 증상과 영향 범위부터 확인하겠습니다.",
+      "surface_sha256": "9dcfede8d182f2696970b31cea88546c0b268f1daefd5550f3cd758e0eb98b94"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-02-T2",
+      "surface": "먼저 현재 상태와 증상을 확인하고, 이어서 오류 로그와 지표, 최근 변경 이력, 의존 서비스 순으로 살펴보겠습니다.",
+      "surface_sha256": "cdc14e4d8a17cd2ceccef2f684d927782db4bf16fa29c1b33dc97e5a39c744ac"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-02-T3",
+      "surface": "아니요. 조사 순서만 정했을 뿐, 실제 데이터가 없어 Cascade 서비스의 결과는 아직 나오지 않았습니다.",
+      "surface_sha256": "c7d5a16664d19dcc1369dd537574162a25478358d7172b5c9c009f946088a2cb"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-02-T4",
+      "surface": "알겠습니다. Cascade 서비스에는 변경을 가하지 않고 확인 범위 안에서만 살펴보겠습니다.",
+      "surface_sha256": "6514726a0b10cb92bebc080cedf848bc3e77c34290506a99a6f24ea0a2848850"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-01-T1",
+      "surface": "Share the Aurora cache status data or logs, and I’ll examine availability, errors, hit rate, and latency in that order.",
+      "surface_sha256": "e535b2619ac0e422e0e3562ea65123e6950496b17f9a2e22de2750c170eaa16c"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-01-T2",
+      "surface": "I’d inspect cache health and capacity, hit and miss rates, latency, error and timeout logs, recent traffic changes, and connectivity to the backing store.",
+      "surface_sha256": "9d41ab98519d7ad7e8b42a78270f662036babe1c3724b2b69ade17b23905805a"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-01-T3",
+      "surface": "Correct—it is not done. I’ve only outlined what to inspect; without actual status data or logs, there is no result yet.",
+      "surface_sha256": "b90cff830edca6b104a32799aff0686bcfa1c18a584dc182d5fa3b17f40d4469"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-01-T4",
+      "surface": "Understood. I’ll keep the Aurora cache read-only and limit the work to observing supplied status data and logs.",
+      "surface_sha256": "593c06392710fe74f4b5d225a0d481ae2f5f79b7c26802440ec1a7794f5a4f50"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-02-T1",
+      "surface": "Provide the Cascade service status and relevant logs, and I’ll start by assessing the symptoms and impact.",
+      "surface_sha256": "00c7ac763b6790170a02c8023496a4266befb40b3fd0b9afb889a8da2c7fafbf"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-02-T2",
+      "surface": "First check current health and symptoms, then error logs and metrics, recent changes, and finally upstream and downstream dependencies.",
+      "surface_sha256": "aa7943955d3faced18675fa3fdae93d380aec3fcc29ddc2d278f48462b5ed425"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-02-T3",
+      "surface": "No. We have an inspection sequence, but no actual Cascade data has been examined, so there is no result yet.",
+      "surface_sha256": "6def8e1dc6367c456e41507e26a5822c6e8ab18e1e5678979acd157a81fe7d41"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-02-T4",
+      "surface": "Understood. I’ll keep the Cascade service unchanged and stay strictly within read-only inspection.",
+      "surface_sha256": "3b1d4e9970cd339a0c546bbde1221b53c79055c465be0d1fa06365ec11b25d86"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-01-T1",
+      "surface": "또 같은 문제라니 답답하시겠네요. 원인을 함께 좁혀볼까요? 증상이나 오류 로그가 있으면 보내 주세요.",
+      "surface_sha256": "bdc75da0869f45404fbff9c194a6f941a1248ea36723524340e35cfc0f3050e4"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-01-T2",
+      "surface": "좋아요. Equinox 서비스의 증상, 오류 로그, 지표, 최근 변경, 의존성 정보를 바탕으로 원인을 좁히겠습니다.",
+      "surface_sha256": "5e010b87da570c286cccf0708762f16c9f5eabdea75535f1a6d36690134708b4"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-01-T3",
+      "surface": "알겠습니다. Equinox 서비스 설정은 변경하지 않고 읽기 전용으로만 조사하겠습니다.",
+      "surface_sha256": "81eae144d4f04617529be8bebc9d90e8a626b16d44930308a8396651b14e5349"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-01-T4",
+      "surface": "현재 실제로 확인된 사실은 없습니다. Equinox 서비스의 로그나 상태 정보가 제공되지 않아 원인을 확정할 수 없습니다.",
+      "surface_sha256": "87b0a2b3f486dd3b4d5707f93b817ff6b2b4642ac394e9b95788455f1bc23b1d"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-02-T1",
+      "surface": "오늘도 그러면 정말 지치죠. Glimmer 서버에서 어떤 증상이 나타나는지 알려 주시면 원인을 좁혀볼게요.",
+      "surface_sha256": "65526604e5661d9a718462b6b883dc1f7e8a91a2e3efc44ab3a785854ee0c6c8"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-02-T2",
+      "surface": "알겠습니다. Glimmer 서버의 상태, 오류 로그, 자원 지표, 최근 변경과 의존성을 확인해 원인을 조사하겠습니다.",
+      "surface_sha256": "234acab677db1814922c12b13e9a426bbe88cfaf989b344aaf6f74b8d07593ab"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-02-T3",
+      "surface": "네. Glimmer 서버에는 아무 변경도 하지 않고 읽기 전용 조사만 하겠습니다.",
+      "surface_sha256": "4ffcf231a980b8a94bfefac15e081d93c3198eef0c0fbc09c43e814d20e3da96"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-02-T4",
+      "surface": "현재 확인된 사실은 Glimmer 서버에 문제가 있다는 사용자 보고뿐입니다. 실제 로그나 지표가 없어 원인은 아직 확립되지 않았습니다.",
+      "surface_sha256": "9711bf71d34243fac34cf5ae3836401f2be4a510304fe6be6c0ddcca30f702fe"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-01-T1",
+      "surface": "That sounds frustrating, especially if it is recurring. Want me to help narrow down the cause from the symptoms and logs?",
+      "surface_sha256": "b9f346000023ca70e7f4d36804bc049acfa5f2e4a30025fa6ffd60ba2173dfb0"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-01-T2",
+      "surface": "Understood. I’ll narrow it down using the Equinox service symptoms, error logs, metrics, recent changes, and dependency health.",
+      "surface_sha256": "09c800390116392f331a8637a27a648dc689ea2b4fb06f30b1854b3a7d982b7e"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-01-T3",
+      "surface": "Understood. I’ll make no changes to Equinox settings and keep the investigation read-only.",
+      "surface_sha256": "278dd21d4832f2025a24b72456aea049b5f09c57c6a13426cb0dff7e2bd6ffcb"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-01-T4",
+      "surface": "There are no established findings yet. No Equinox logs or status data have been provided, so the cause cannot be determined.",
+      "surface_sha256": "826525ad2e757a28053d693fbe556a6441e03035a9be6886950ee607db880f6e"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-02-T1",
+      "surface": "That is exhausting when it keeps happening. Share what the Glimmer server is doing, and I’ll help narrow it down.",
+      "surface_sha256": "1484594f9459d0d60bf9a8c7a4eddfe99cb3097f609f947d12b8f190230ddf0c"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-02-T2",
+      "surface": "Understood. I’ll investigate the Glimmer server’s health, error logs, resource metrics, recent changes, and dependencies.",
+      "surface_sha256": "1423d6d7f7981fcb483916e297aff1b93ef596c8d32727582d2249d5278658d2"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-02-T3",
+      "surface": "Understood. Every Glimmer server change is out of scope; the investigation will remain read-only.",
+      "surface_sha256": "d0d02fcabd5b35dbc5a033f3f6a4695ac05fc620a4c97d5972d56fab92ec3ba7"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-02-T4",
+      "surface": "The only established fact is your report that the Glimmer server is misbehaving. Without logs or metrics, no cause or system state has been verified.",
+      "surface_sha256": "00029609ddfd1a6a0d7d51c2f7dd08ffc7a31e3ed887339371a9c0d601854f10"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-01-T1",
+      "surface": "실제 수리를 하려면 두 대상의 접근 정보와 증상, 로그가 필요합니다. 먼저 Ion 서버와 Jolt 워커를 각각 진단한 뒤 변경안을 제시하겠습니다.",
+      "surface_sha256": "71bdc5a0d051d0c83860f7aa660853ee7804676ccc39294681786b9a89a7d7be"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-01-T2",
+      "surface": "알겠습니다. 수리는 모두 취소하고 Ion 서버의 원인 설명에만 집중하겠습니다. 다만 원인을 판단하려면 증상이나 로그가 필요합니다.",
+      "surface_sha256": "ecba3479bf08402bec8d5a13e15841a348233cb93002d3079cc9342b96bb596c"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-01-T3",
+      "surface": "정정 내용을 반영했습니다. Ion 서버가 아니라 Jolt 워커의 원인만 설명하겠습니다. 관련 증상이나 로그를 보내 주세요.",
+      "surface_sha256": "1ac38a8d66048a42137555108473212c89055d0faf3c432f80798af51d1dbf5d"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-01-T4",
+      "surface": "맞습니다. 이 대화에서는 Ion 서버와 Jolt 워커 어느 쪽에도 실제 수리를 수행하지 않았습니다.",
+      "surface_sha256": "f52883dbfa94d15041a3816bc8fe4e822e30e42572814ecd5e900c1d47f6e042"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-02-T1",
+      "surface": "계획은 원본 보존, 손상 범위 확인, 복구 소스 검증, Keystone 파일 복원, Lagoon 코드 복원, 각각의 무결성 검사와 롤백 준비 순으로 잡겠습니다.",
+      "surface_sha256": "e7edc2468229834612ae221c2893528ed84e79c36c3f4fc96824287c37f826ee"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-02-T2",
+      "surface": "알겠습니다. 복구는 하지 않고 Keystone 파일의 역할과 현재 문제만 설명하겠습니다. 파일 내용이나 오류 정보를 보내 주세요.",
+      "surface_sha256": "86d76def4a493bb057cb9f63d4551879386992266c02a91bf15dca08a88ae8d1"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-02-T3",
+      "surface": "대상을 Lagoon 코드로 변경하겠습니다. 복구 없이 코드의 역할과 문제를 설명하려면 관련 코드나 오류 내용을 보내 주세요.",
+      "surface_sha256": "399353bc25178ffefed3722737f3bbb44280c37db5574f0fe260fbd34deec053"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-02-T4",
+      "surface": "맞습니다. 지금까지는 계획과 설명 범위만 다뤘고, Lagoon 코드의 수리를 완료했다는 기록은 없습니다.",
+      "surface_sha256": "23ee066a90c5e7b155fd3f2e32c358d9a78b41fc47c2ed32e6e20b6987f87051"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-01-T1",
+      "surface": "To repair them, I’d need access plus symptoms and logs for both targets. I would diagnose the Ion server and Jolt worker separately before proposing changes.",
+      "surface_sha256": "ad90d9833d0c83c5a9e805bab34118b8f7560c552589a380cf018c118e5a7e5b"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-01-T2",
+      "surface": "Understood. All repairs are canceled, and I’ll focus only on explaining the Ion server’s cause. I’ll need its symptoms or logs to determine that cause.",
+      "surface_sha256": "0e3053b450368c481a971c5abdad034798ce402ae9471be73fa87fd6ef4c3174"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-01-T3",
+      "surface": "Correction noted. The target is the Jolt worker, not the Ion server, and I’ll only explain its cause. Please provide the relevant symptoms or logs.",
+      "surface_sha256": "6194338db9379a143df00547f8db9f1a5363f89b1dd91b0849aa68f1deae3d37"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-01-T4",
+      "surface": "Correct. No repair was performed on either the Ion server or the Jolt worker in this conversation.",
+      "surface_sha256": "b999464882f2c982b9402c1be01a54d980d2b1790381e7c5f4751f759c83cfec"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-02-T1",
+      "surface": "The plan would preserve the originals, assess damage, validate recovery sources, restore the Keystone file and Lagoon code separately, verify integrity, and retain a rollback path.",
+      "surface_sha256": "49d17a3c2463840de5690e1b0e808595bad7be0812a2c5d9b678e6560715309d"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-02-T2",
+      "surface": "Understood. I won’t repair anything; I’ll only explain the Keystone file’s role and issue. Please provide the file contents or error details.",
+      "surface_sha256": "c5e05d9a8fda0cd69e268536f63109600d6bcad3ad2b03e7524b574438009b84"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-02-T3",
+      "surface": "Understood—the target is now the Lagoon code. Share the relevant code or error details, and I’ll explain it without making repairs.",
+      "surface_sha256": "6f73df29f1ecf521d741e490d89e916f5193cf58afa005e3a33069093675604a"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-02-T4",
+      "surface": "Right. We only discussed planning and explanation, so there is no record of a completed Lagoon code repair.",
+      "surface_sha256": "9a09c58f007aa1df8771169df239a1b98bf761aa70585d0adae49beff7ad6b4f"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-01-T1",
+      "surface": "알겠습니다. Meridian 파일을 먼저 확인하고, 그 결과를 바탕으로 Nova 코드를 살펴보겠습니다. 확인할 자료를 보내 주세요.",
+      "surface_sha256": "fa697b11a8231a9a44f0720de2cdcbc1a221dad06d09aa031a92caade40461e8"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-01-T2",
+      "surface": "Nova 코드는 Meridian 파일의 데이터나 설정을 소비하거나 관련 동작을 구현할 수 있어, 문제가 코드 경로에서 발생하는지 구분하려고 확인합니다.",
+      "surface_sha256": "0844e3ba5eda56836a29d6a2d5257c68da3e02f92c5a0325d2bb88b0edeea9f1"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-01-T3",
+      "surface": "Meridian 파일도 같은 이유로 중요합니다. 파일 자체의 손상이나 잘못된 값이 Nova 코드의 동작에 영향을 주는지 구분하기 위해 확인합니다.",
+      "surface_sha256": "33f6d896bf1bdb2cfe4bcd61768a5d6073fbb09ba45faa797f988ca5d700746a"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-01-T4",
+      "surface": "알겠습니다. Meridian 파일과 Nova 코드 모두 수정하지 않고 읽기 전용으로만 확인하겠습니다.",
+      "surface_sha256": "6059315c6a321d975550dcece81d5396d843a8c80f10d0c675b521fcfa785360"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-02-T1",
+      "surface": "알겠습니다. Orbit 캐시를 먼저 검토한 뒤 Prism 큐로 넘어가겠습니다. 상태 정보나 로그를 보내 주세요.",
+      "surface_sha256": "323e00adc513b5046e62349c4745697b53966448a83d33883dd35e30d852b36b"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-02-T2",
+      "surface": "Prism 큐는 캐시 갱신이나 후속 처리를 지연시킬 수 있으므로, 적체·재시도·실패 메시지가 문제에 관여하는지 확인하려는 것입니다.",
+      "surface_sha256": "ae97c821793f09f28ecf2635d6a12df99586e6c6759bcbdcc30cb6a014fcbd51"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-02-T3",
+      "surface": "Orbit 캐시는 오래되거나 누락된 데이터, 낮은 적중률, 지연이 전체 증상에 관여하는지 확인하기 위해 점검합니다.",
+      "surface_sha256": "eba0833342174a2fa683b90db886b9b31454cb5b30fc6797055883aaaf3c725d"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-02-T4",
+      "surface": "알겠습니다. Orbit 캐시와 Prism 큐 모두 건드리지 않고 읽기 전용으로만 검토하겠습니다.",
+      "surface_sha256": "307d69ffb8cbd448e64ca2a984ec003f1b3231e8ebc054c52f60eb7143dc014c"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-01-T1",
+      "surface": "Understood. I’ll inspect the Meridian file first and then the Nova code, using the first inspection to inform the second. Please provide the relevant materials.",
+      "surface_sha256": "8b54dfa9501cc5f5179efcedf83893c8e1f720b897607898d50522bfb3a83547"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-01-T2",
+      "surface": "The Nova code matters because it may consume the Meridian file’s data or implement related behavior, helping distinguish a code-path defect from a file-level problem.",
+      "surface_sha256": "be5e7659dc08492a1d8b47702b091e0fe801aa8c34fb2987cf54441fc2c5e7fc"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-01-T3",
+      "surface": "The Meridian file matters for the same diagnostic reason: checking it helps determine whether corruption or incorrect values are driving the Nova code’s behavior.",
+      "surface_sha256": "8220ad0d61bfb1f5be2e3b5b1e6a6c5b031cd3cb98825ae954b8a4536289ed2c"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-01-T4",
+      "surface": "Understood. I’ll keep both the Meridian file and the Nova code unchanged and inspect them read-only.",
+      "surface_sha256": "47ae8f0713750065697f0510a09f89da03c46cb796f1e0538b6bedfb6895f0cd"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-02-T1",
+      "surface": "Understood. I’ll review the Orbit cache first, then the Prism queue. Please provide their status data or logs.",
+      "surface_sha256": "8e9eb23c467fd68e7798240ecd3a5244122a6ab5783fd7099e49b7d85cd0aeb1"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-02-T2",
+      "surface": "The Prism queue may delay cache updates or downstream processing, so I’d check whether backlog, retries, or failed messages contribute to the issue.",
+      "surface_sha256": "ee90cf9831e94c0bb229584f5484e6cbbc9568aa0c36cf638c50332c86faa93e"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-02-T3",
+      "surface": "The Orbit cache matters because stale or missing entries, a low hit rate, or latency could be contributing to the same symptoms.",
+      "surface_sha256": "4b90728470f37e46ed4a5cdd0b012d2c8f035cfd2625e3374f469ed2e7549517"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-02-T4",
+      "surface": "Understood. Both the Orbit cache and Prism queue will remain read-only and unchanged.",
+      "surface_sha256": "d2d631e323f7f6fff3abc32029ea5947c6ec2bc1dbcc14be4633979d1987a2fd"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-01-T1",
+      "surface": "Quill 캐시의 상태 지표와 오류 로그를 보내 주시면 가용성, 적중률, 지연, 용량부터 조사하겠습니다.",
+      "surface_sha256": "cd79e674073064f1e710de559d6b2d074ae150af23875f1b405aa16303a7169f"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-01-T2",
+      "surface": "Quill 캐시는 잠시 보류하겠습니다. Ripple 큐는 일반적으로 생산자, 큐 또는 토픽, 메시지 저장 영역, 소비자, 재시도 및 실패 메시지 처리 계층으로 구성됩니다. 실제 구조 자료가 있으면 구체적으로 설명할게요.",
+      "surface_sha256": "84508a48e414e48c4de986fb46499a72016db29989b60c0e723b1ca3f13a7782"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-01-T3",
+      "surface": "좋아요. Quill 캐시 조사로 돌아가겠습니다. 아직 실제 상태 자료를 받지 못했으니 지표나 로그를 보내 주세요.",
+      "surface_sha256": "2dde319892c287c6031a48984a8dfcb232af57e835f549e03f8386616d044d65"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-01-T4",
+      "surface": "아니요. 주제로 돌아오기는 했지만 실제 Quill 캐시 데이터가 없어 조사는 완료되지 않았습니다.",
+      "surface_sha256": "005c0400ce95f7ac9ddce2edcb3ccee76f5c789436b1e1a7ee533ec21937bdaf"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-02-T1",
+      "surface": "Solace 서비스의 증상, 상태 지표, 오류 로그를 보내 주시면 영향 범위부터 살펴보겠습니다.",
+      "surface_sha256": "1038053637c6a49ea31d6d7ad21d87d9185413b6d29f682c04b88263779c2df3"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-02-T2",
+      "surface": "Solace 서비스는 잠시 보류하겠습니다. Tundra 로그의 실제 스키마가 없으므로 일반적으로는 타임스탬프, 심각도, 서비스·인스턴스 식별자, 요청 ID, 이벤트 메시지, 오류 세부 정보로 구성된다고 설명할 수 있습니다.",
+      "surface_sha256": "7e40e201096aa9e1503b2d6ec1ba97c6c9e4daef5c45ad8986fcd665f70e2b8f"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-02-T3",
+      "surface": "좋습니다. Solace 서비스 문제로 돌아가겠습니다. 검토할 상태 정보나 로그를 보내 주세요.",
+      "surface_sha256": "00e092c4d67833ae4ea9bc6b1aac5b45da18ae7d3a4eefb9a1c988d288370306"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-02-T4",
+      "surface": "현재 대화에는 Solace 서비스의 검증된 결과가 없습니다. 실제 상태 정보나 로그가 제공되지 않아 결과 여부를 확인할 수 없습니다.",
+      "surface_sha256": "b931db16a083039b2307ca601fa74c8ead425f5aaeb7f10662dc9f4f612845fd"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-01-T1",
+      "surface": "Share the Quill cache metrics and error logs, and I’ll investigate availability, hit rate, latency, and capacity.",
+      "surface_sha256": "54a68ed0434776617d13c4972b17261fa0cec6640f6af95c70ecfe99e1e5a07e"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-01-T2",
+      "surface": "I’ll pause Quill. A queue like Ripple typically consists of producers, queues or topics, message storage, consumers, and retry or dead-letter handling. Share its actual configuration for a specific explanation.",
+      "surface_sha256": "d72f67adbc489a8dfc15932eb9c0fdce2f889b95bd811c112aaaf243f083c5ba"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-01-T3",
+      "surface": "Okay, returning to the Quill cache investigation. I still need its actual metrics or logs to proceed.",
+      "surface_sha256": "f28a2360faa497b15ffd44b76a2bbce54a15d4916a15f9f82043c8525e42114e"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-01-T4",
+      "surface": "No. The topic was resumed, but no Quill cache data was provided, so the investigation is not complete.",
+      "surface_sha256": "95df07157cd64741838257164bd950353bd4d473e372018b2c55a762b7e6db4c"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-02-T1",
+      "surface": "Share the Solace service symptoms, health metrics, and error logs, and I’ll begin with the impact and scope.",
+      "surface_sha256": "59fb1408a63c8604e46f2fd12d8f40b05347a9f99f4170f7d0faec4b4ec13566"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-02-T2",
+      "surface": "I’ll pause Solace. Without Tundra’s actual schema, a typical log organization would include timestamp, severity, service and instance identifiers, request ID, event message, and error details.",
+      "surface_sha256": "52c22430c2961f7677922d7e55a0e50f6353466fb612af534ac4fea70b42d3f4"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-02-T3",
+      "surface": "Okay, returning to the Solace service issue. Please provide its current status information or logs for review.",
+      "surface_sha256": "fc2da57b4c32a3f2e952001d0a55479fe7c954d89e4f55cab87ca30eb2669bea"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-02-T4",
+      "surface": "There is no verified Solace result in the conversation. Without actual status data or logs, I cannot confirm that one already exists.",
+      "surface_sha256": "8fdd70f0299e6221276d12c49e69dbc6b5eaba902d39f3ebeed1168b6b7e4470"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-01-T1",
+      "surface": "현재는 상충하는 두 사람의 보고만 있습니다. 실행 시각과 환경이 같은지 확인하고, 상태 지표나 로그 같은 독립적인 근거로 판별해야 합니다.",
+      "surface_sha256": "7eef6abe2fbe5efe2f23c29e0f64e1371b2b34458aa59b16b49c77f9d4c92dee"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-01-T2",
+      "surface": "확실한 것은 서윤이 성공을, 도윤이 실패를 보고했다는 점뿐입니다. Uplink 서비스의 실제 결과 자체는 아직 검증되지 않았습니다.",
+      "surface_sha256": "6f9bf6091a13c59a8631993057b1a8cb127da6ecbb67768b7fd0ab7b829b1d18"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-01-T3",
+      "surface": "Vesper 로그에 실패 보고 1건이 있다는 사용자 제공 정보로 구분해 두겠습니다. 실제 로그에 기록을 남기지는 않았습니다.",
+      "surface_sha256": "3b31f62aa8622dd63f90e062dcf8a808e53424c953e3f087b27d47df3265b9df"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-01-T4",
+      "surface": "현재 근거만으로는 확정할 수 없습니다. Uplink 서비스에는 성공과 실패라는 상충된 보고가 있고, 이를 판별할 독립적인 검증 자료가 없습니다.",
+      "surface_sha256": "c55d46a9ba24f039c32a35233886b6b4712066a4aa243e3796b7b5bb87579300"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-02-T1",
+      "surface": "두 팀의 보고가 충돌하므로 현재 상태는 미확정입니다. 같은 시점과 범위를 기준으로 상태 지표와 로그를 대조해야 합니다.",
+      "surface_sha256": "ff25d2f73edfbffe6ad0bf6a4471310b2f7b4a67c52bff52fb54a8e25eace32d"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-02-T2",
+      "surface": "검증된 것은 A팀이 정상화를, B팀이 장애 지속을 보고했다는 사실뿐입니다. Warden 서버의 실제 상태는 독립적인 근거가 없어 검증되지 않았습니다.",
+      "surface_sha256": "1e91e5682b00179a78ac53e91eb8d3aa51b19b482fa8749a54424030cbccf593"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-02-T3",
+      "surface": "알겠습니다. Xylem 워커 성공은 검증된 결과가 아니라 사용자 보고로만 구분하겠습니다.",
+      "surface_sha256": "9786575a90d559ef935b4acc56cc340c4e65326e9f55da15acdf78db3a476a56"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-02-T4",
+      "surface": "아니요. Warden 서버에 대해 상충하는 보고만 있고 독립적인 검증 결과가 없으므로 하나로 확정할 수 없습니다.",
+      "surface_sha256": "d05c4ac03341f211814425b7ce1bc657da74cbe37d7642362e4babfe4647971c"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-01-T1",
+      "surface": "Those are conflicting reports. We would need to confirm they refer to the same run and environment, then compare independent evidence such as service metrics and logs.",
+      "surface_sha256": "3f424f8380738ef8187501ee23f443df08712b97af0593a1ef6a73bc76af8fa7"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-01-T2",
+      "surface": "The only certainty is that Ari reported success and Blake reported failure. The Uplink service outcome itself is not verified.",
+      "surface_sha256": "3e7bf402a4f55de94e855276448265b93c5ec99c429c3c1d412f6ce2df6f5005"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-01-T3",
+      "surface": "I’ll treat “one Vesper failure report” as user-provided information, not as a verified log entry. I have not written to the actual log.",
+      "surface_sha256": "48cdbb5e5db7ea0dd5752fadb0f331d8125cc842b3084b2cb5f74bd3fb0111c2"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-01-T4",
+      "surface": "It cannot be determined from the available information. The reports conflict, and there is no independent evidence establishing either outcome.",
+      "surface_sha256": "f7a258e78b5b287ffa7f695e52c5a2d435eecf749bad1e819fb667d6e9e07db5"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-02-T1",
+      "surface": "The reports conflict, so the current state is unresolved. Metrics and logs from the same time window and scope are needed to distinguish the outcomes.",
+      "surface_sha256": "177d068103daf77aa5085701bc5e287a8a96d021c566200d4938ea0308563efb"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-02-T2",
+      "surface": "Verified: Team Red reported healthy and Team Blue reported an ongoing incident. Not verified: the Warden server’s actual state, because no independent evidence has been provided.",
+      "surface_sha256": "4b19f04f4e68ff48a4db57ac248a6abf18a623d819fb86750cb85d85dbf94910"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-02-T3",
+      "surface": "Understood. I’ll treat the Xylem worker success claim solely as a user report, not a verified outcome.",
+      "surface_sha256": "2531680ee3df99134375a079ea9fa263e13c8baf7636f28680638686b900b437"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-02-T4",
+      "surface": "No. The Warden reports conflict, and there is no independent verification supporting a conclusive outcome.",
+      "surface_sha256": "67f41ae85bc5624dda04b4e7ecd7183403749be6a0ad2868e18bcd2a46ba9fca"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-01-T1",
+      "surface": "절차는 현재 상태 기록, 백업·롤백 준비, 원인 진단, 변경안 검토, 승인 후 수리, 상태·기능 검증, 모니터링 순으로 구성하겠습니다. 이는 계획이며 아직 실행은 아닙니다.",
+      "surface_sha256": "7c475d31ea56cc956270cf57188526a48ae1699624a51e740c8fb432a8e05ae3"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-01-T2",
+      "surface": "아니요. 수리 절차만 준비했으며 Yield 서버에 실제 조치를 실행하지 않았습니다.",
+      "surface_sha256": "1aceeda085e2f6b48d2a060ec970618e86e6969b610cb3ee6e25a1af9f6d6bd1"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-01-T3",
+      "surface": "알겠습니다. Yield 서버 수리를 완료했다는 사용자 보고로 받아들이겠습니다. 다만 성공 여부는 상태 점검과 기능 테스트로 별도 검증해야 합니다.",
+      "surface_sha256": "41d5991b09ced81b6454d3d5e1085e2227432939056d6e3d4b150ad0a06b9b26"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-01-T4",
+      "surface": "아니요. 수리를 끝냈다는 말씀만으로 결과까지 검증된 것은 아닙니다. 상태 지표, 오류 로그, 기능 테스트 같은 독립적인 확인이 필요합니다.",
+      "surface_sha256": "081b9a14c5ce3e39bb80fa35b88a59d17fcf3ad21d84dca5edfdec06c848e319"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-02-T1",
+      "surface": "계획은 원본 보존, 손상 범위 확인, 신뢰 가능한 복구본 선정, 별도 위치에서 복원, 무결성 비교, 승인 후 교체, 롤백 준비 순으로 잡겠습니다. 아직 실제 변경은 하지 않습니다.",
+      "surface_sha256": "157c27465a35b2c5204bd0dc57fc1d37b7073b05a66818eb78b98a2ef0b6cd8b"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-02-T2",
+      "surface": "맞습니다. 복구 계획만 작성했으며 Apricot 파일에는 실제 조치를 적용하지 않았습니다.",
+      "surface_sha256": "01359e3875fda34f4f1ff572fa5b12ee456163137c7a0f44f7f52d387ec1c319"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-02-T3",
+      "surface": "알겠습니다. Apricot 파일에 조치를 적용했다는 사용자 보고로 기록하겠습니다. 결과는 파일 무결성이나 기대 동작을 별도로 확인해야 합니다.",
+      "surface_sha256": "5a154e854cd7e4ab08ce630422ceffca1fbf792e28e2b32c3b4148ae1760626a"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-02-T4",
+      "surface": "아니요. 사용자 진술은 조치가 있었다는 보고이지만 검증 완료를 의미하지는 않습니다. 해시 비교, 내용 검사 또는 관련 테스트가 필요합니다.",
+      "surface_sha256": "5ad5dd0a03d9c0ad604557cb5ef395a2bad09e9cc3c1c8de163f750984509478"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-01-T1",
+      "surface": "The procedure would capture the current state, prepare backup and rollback, diagnose the cause, review the change, repair after approval, validate health and function, and monitor afterward. This is a plan only.",
+      "surface_sha256": "bf6b762d992353ed124067782df3933ad43ba3b1bde80af6512db449cff7bece"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-01-T2",
+      "surface": "No. I only prepared the repair procedure; no repair was executed on the Yield server.",
+      "surface_sha256": "ea98747adc77bb4665dab19880b33e64c8878a1abc30d3220899a35f7a8fe02c"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-01-T3",
+      "surface": "Understood. I’ll treat the completed Yield repair as your report. Its success still needs separate verification through health checks and functional tests.",
+      "surface_sha256": "dfabd0a2b38c175b246bf5556f04b0b4546a77bf82ae2134a996a3fef71b7faa"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-01-T4",
+      "surface": "No. Your report establishes that you performed the repair, but it does not independently verify the outcome. Metrics, logs, or functional checks are still needed.",
+      "surface_sha256": "ed44fa74051126a634b7a3ffa6ea6356d7dc6bc17cb8a840ebbaddce8d5ff91c"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-02-T1",
+      "surface": "The plan would preserve the original, assess damage, select a trusted recovery source, restore separately, compare integrity, replace only after approval, and retain rollback. No real change is part of drafting the plan.",
+      "surface_sha256": "4c1aff19fbc57ab7ff63ce65d7a6a64858b01307ab6d44d7c1dab678781b0e6e"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-02-T2",
+      "surface": "Correct. I only drafted a recovery plan and did not apply any change to the Apricot file.",
+      "surface_sha256": "b98ab78a14b3d78b2e8f4a9e3e63b236aff2732ab7988d8ad2a11ba45b4f27d1"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-02-T3",
+      "surface": "Understood. I’ll treat the Apricot change as your report. The result still requires an integrity check or a test of the expected behavior.",
+      "surface_sha256": "2ca4be2c250b5493b8c12ee6efb0018720ab939b925868620e43d87b14ccb84f"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-02-T4",
+      "surface": "No. Your statement supports that a change was applied, but it does not independently verify the result. A hash comparison, content check, or relevant test is needed.",
+      "surface_sha256": "10f039dce18f0b0e22bcd2936700187ce2e56f686ede764792939bb125007e15"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-01-T1",
+      "surface": "같은 파일 문제를 계속 겪으면 정말 지칠 만해요. 지금은 해결책보다 그냥 이야기하고 싶은 거라면 편하게 말씀해도 됩니다.",
+      "surface_sha256": "163524cd72cc27a5bc6366d4790e42902dfb69b35fb35f0e0eab5d7690d3d0b0"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-01-T2",
+      "surface": "별말씀을요. 반복되는 Comet 파일 문제로 힘든 마음, 충분히 이해해요.",
+      "surface_sha256": "ac8e957a48a3e0c4309c1cc62fd6dae7903b1b2c2a1b1023edd661c4e4325056"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-01-T3",
+      "surface": "그럴게요. Comet 파일은 변경하지 않고 현재 상태만 확인하겠습니다. 확인할 파일이나 상태 정보를 보내 주세요.",
+      "surface_sha256": "40a3d405367f75c6e25a1d389663ab6483e0909d07b26a17352f9c5eccc92aab"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-01-T4",
+      "surface": "알겠습니다. 추정이나 중간 단계는 알림으로 취급하지 않고, Comet 파일의 변화가 근거로 검증된 경우에만 말씀드리겠습니다.",
+      "surface_sha256": "133993338f8dae58b103ab7f0a47dd49de25e4f3ac1bd349850fc242b8cbbe95"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-02-T1",
+      "surface": "또 같은 캐시 문제라니 답답할 만해요. 당장 뭘 하지 않아도 괜찮으니, 상황부터 천천히 정리해 봐요.",
+      "surface_sha256": "2d0d422e4344da52d2d9dffe769c5f4041181820b44396e378033817c0ffe219"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-02-T2",
+      "surface": "그렇게 말해 줘서 고마워요. Eon 캐시 문제로 쌓인 답답함을 가볍게 여기지 않을게요.",
+      "surface_sha256": "3665926b8c6e4d2e21ba8ab04c0d87857297ab332b69e1afddcda466f44cb5a1"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-02-T3",
+      "surface": "알겠습니다. 범위를 넓히거나 변경하지 않고 Eon 캐시의 현재 상태만 보겠습니다. 상태 정보나 로그를 보내 주세요.",
+      "surface_sha256": "896adf3973b9814c152a51ebe7e433bea865410521d56f194ad1c45f100fafb7"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-02-T4",
+      "surface": "알겠습니다. Eon 캐시에 관한 근거가 충분해 결과가 확실해지기 전에는 알림이 필요 없는 것으로 이해했습니다.",
+      "surface_sha256": "674823619cf7e744cde8a2ebd9a00927439244bd147eb6efd9fab3a26b2e40a4"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-01-T1",
+      "surface": "Dealing with the same file problem repeatedly can be exhausting. If you just need to vent before tackling it, I’m here.",
+      "surface_sha256": "66c35a8a12bb6e0b65c131b4163baf5ffb37fd7d8f9e21b0adfd57191267f85e"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-01-T2",
+      "surface": "Of course. It makes sense that the recurring Comet file issue has worn you down.",
+      "surface_sha256": "bcd00714d0ef24526d13d2174169715c6b034138f16a5f718c18a6dab988e94b"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-01-T3",
+      "surface": "Yes. I’ll keep it quiet and read-only, checking only the current Comet file state. Please provide the file or its status information.",
+      "surface_sha256": "0cfa135ada846ebdc082e5154d4d2882c85385a8a880c678e69daa70e63b49a2"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-01-T4",
+      "surface": "Understood. I’ll treat speculation and intermediate observations as insufficient and report only a Comet file change supported by verification.",
+      "surface_sha256": "75b2b77fdc6a23b1c1d2f712dafc1317d66de8ca821e52135dcae5b5c8321761"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-02-T1",
+      "surface": "Another round of the same cache trouble would be deeply frustrating. We can take it slowly and start with just the situation.",
+      "surface_sha256": "ec2059690db2070505ef4ee324767aaa5ebad67c7abae5028f793c0545a993ee"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-02-T2",
+      "surface": "I’m glad that helps. I won’t minimize how draining the recurring Eon cache issue has been.",
+      "surface_sha256": "5701d1b893af5c6ed0070ff5d94ed97b1c41895670eb6237f901e1ca918ff2d2"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-02-T3",
+      "surface": "Understood. I’ll keep the scope narrow and inspect only the current Eon cache status without making changes. Please provide its status data or logs.",
+      "surface_sha256": "5a1b44f3a5a743a6d1df1ff32fd5fc534ede44c4148519b0bcc3c745600f5b25"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-02-T4",
+      "surface": "Understood. No Eon cache notification should be given until the evidence supports a firm result.",
+      "surface_sha256": "3c7b8ded6bae02bf046b0cfb231801a283d1e084c0b3079217b9bfad0c8349a9"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-01-T1",
+      "surface": "알겠습니다. Glacier 캐시와 Hallow 큐를 서로 분리해 상태, 오류, 지연과 적체 여부를 확인하겠습니다. 관련 자료를 보내 주세요.",
+      "surface_sha256": "ac1ae9b598bb0b8d4baf9cce0c88696db7099bf7749c291e925c18f1122543a2"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-01-T2",
+      "surface": "‘그거’가 Glacier 캐시인지 Hallow 큐인지 불분명합니다. 어느 쪽을 수리 대상으로 삼을까요?",
+      "surface_sha256": "aaa1346fa0579db89266dc35b0fcf9786226c14d7c76f9d8dcbd4c20622cee70"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-01-T3",
+      "surface": "확인했습니다. 수리 대상은 Hallow 큐입니다. 다만 실제 수리는 수행하지 않았으며, 변경 전 상태와 승인 범위를 먼저 확인해야 합니다.",
+      "surface_sha256": "a7d3cb4adb93eb7bbf794329e85ec8802a20fec8701f673e03fb5dd35e15fcb4"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-01-T4",
+      "surface": "알겠습니다. Glacier 캐시는 수정 대상에서 제외하고 그대로 두겠습니다.",
+      "surface_sha256": "c9ed9f52f6d8c76597e7127c3cadaabbc94cf22ed9ccabb1741cc47295e022da"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-02-T1",
+      "surface": "알겠습니다. Inlet 서비스와 Jubilee 로그를 각각 검토하겠습니다. 상태 정보와 로그 자료를 보내 주세요.",
+      "surface_sha256": "05f774be39caa8cbeb06823ebc041b2dae03ed0cfffb889be41508b843e8a2f5"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-02-T2",
+      "surface": "‘저것’이 Inlet 서비스인지 Jubilee 로그인지 모호합니다. 어느 쪽을 수리 대상으로 지정할까요?",
+      "surface_sha256": "eb7a04df4456eb1d5531b716d985d42a8ddffc356fbc1f2cdfa7c026bf2c9907"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-02-T3",
+      "surface": "확인했습니다. 수리 대상은 Jubilee 로그입니다. 아직 실제 변경은 수행하지 않았습니다.",
+      "surface_sha256": "f62a213a82175511b4e1ea2949564a8e81e85c0fd31edd63c95cd05a4409a44f"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-02-T4",
+      "surface": "알겠습니다. Inlet 서비스는 모든 수정 범위에서 제외하겠습니다.",
+      "surface_sha256": "c1e863d0fff908f5d6f643332aac45049ef02e3713cace128e306d33e6c59f4c"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-01-T1",
+      "surface": "Understood. I’ll assess the Glacier cache and Hallow queue independently for health, errors, latency, and backlog. Please provide the relevant data.",
+      "surface_sha256": "b752b8995aeede64ebb1cddeeb8527b016b717e8ea3c93b52488fed93be1806b"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-01-T2",
+      "surface": "“That one” is ambiguous between the Glacier cache and the Hallow queue. Which one should be the repair target?",
+      "surface_sha256": "6188d671a4e77f894916eb5a8eb222cefbcb83c343bec01436efb876e07b6381"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-01-T3",
+      "surface": "Understood—the Hallow queue is the repair target. No repair has been performed; its current state and the authorized change scope should be established first.",
+      "surface_sha256": "2b089d6e3c5578482eed6a72e59830037daebd475f72b2dcd643e5c9479efdd6"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-01-T4",
+      "surface": "Understood. The Glacier cache is excluded from modification and will remain untouched.",
+      "surface_sha256": "25f1d930bd5d18f5f7cd923896a1bdadd222b16d1bc3b3d295e86d6b7fcf6217"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-02-T1",
+      "surface": "Understood. I’ll review the Inlet service and Jubilee log separately. Please provide their status information and log data.",
+      "surface_sha256": "c2f58923f967dc20259f88a094eb30bce4d9a042581cdab60ada92bd9b3818de"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-02-T2",
+      "surface": "“It” could refer to either the Inlet service or the Jubilee log. Which one should be the repair target?",
+      "surface_sha256": "2aa1b5a3cb5de124fabb92178b59475ee3aba78b1a2dcf81ef78937f024d2871"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-02-T3",
+      "surface": "Understood—the Jubilee log is the repair target. No actual change has been made.",
+      "surface_sha256": "4f1ff7dcee4ef6bd691388427a98065bf9c950466c570c5bcfd3fe4de787f9cc"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-02-T4",
+      "surface": "Understood. The Inlet service is excluded from all modifications.",
+      "surface_sha256": "12fd816473ebb7c02c1c45b79f48de294cfa61f9bf44bbe6e968e5498ca263e8"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-01-T1",
+      "surface": "네, Knoll 서비스 상태를 확인해 볼게요. 관련 상태 정보나 로그를 보내 주세요.",
+      "surface_sha256": "054e796821f1927ccdb1fdc13da07077b47f0ed328bc3ab9124838e1488f00d9"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-01-T2",
+      "surface": "알겠습니다. Knoll 서비스 확인은 중단하고 대상을 Lyric 로그로 바꾸겠습니다. 로그 내용을 보내 주세요.",
+      "surface_sha256": "1364ce0efed70111a093985c312c35ed0a5d621ff1f43b4c2719419ace0004ee"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-01-T3",
+      "surface": "아니요. 대상만 Lyric 로그로 바꿨고 실제 로그를 받지 못해서 확인은 아직 끝나지 않았습니다.",
+      "surface_sha256": "8106855d37c92278ce25263d46e0b74eeca08cc167dd512705360249fbff0844"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-01-T4",
+      "surface": "천만에요. Lyric 로그 확인은 완료된 게 아니라 자료가 없어 미진행 상태라는 점만 기억해 주세요.",
+      "surface_sha256": "11c0fd22861db74b0b866e5cc41fd3da67d0b9e82c2f2dee6382f5ff7b4c5fcd"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-02-T1",
+      "surface": "네, Meadow 서버를 확인해 볼게요. 상태 정보나 오류 로그를 보내 주세요.",
+      "surface_sha256": "36f05a9f6c1c0c4a36a061f05bc8a23a1fecc38b604eda017920245bed34dad9"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-02-T2",
+      "surface": "알겠습니다. Meadow 서버는 제외하고 확인 대상을 Nucleus 워커로 바꾸겠습니다.",
+      "surface_sha256": "7113a0fe517b72e75de08f4e117e870541aa28c2dd8f3f66fd3ab451996f4814"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-02-T3",
+      "surface": "완료된 건 아니고 대상만 정한 상태입니다. Nucleus 워커의 실제 상태 정보나 로그가 없어 점검도 아직 진행하지 못했습니다.",
+      "surface_sha256": "9565837ff9367609c817cbf4ceed9ba710d96493fdd98632254ee5095e718487"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-02-T4",
+      "surface": "알겠습니다. Nucleus 워커 이야기는 여기서 마칠게요.",
+      "surface_sha256": "7904e066ed9c66a4abb6dca6a2467593f777548677bd76d5c18588393c9d282f"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-01-T1",
+      "surface": "Sure. Send me the Knoll service status information or logs, and I’ll check it.",
+      "surface_sha256": "4694ae5bd412e677629c2aedf8af2796ea5bde980a3869cf6c3f3a3b5fadd2c5"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-01-T2",
+      "surface": "Understood. I’ll drop the Knoll service and switch the target to the Lyric log. Please provide the log contents.",
+      "surface_sha256": "6b17451afad1797d72bdf4675cd442f010184b3a8bcf80a74b4194e28210189e"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-01-T3",
+      "surface": "No. I only switched the target to the Lyric log; without the actual log, the check has not been completed.",
+      "surface_sha256": "a1e5e187e9abe2f029438dab5eb871a3353ae1a4ce8b066e584c9a425fe6002c"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-01-T4",
+      "surface": "You’re welcome. Just to be clear, the Lyric log check remains incomplete because no log data was provided.",
+      "surface_sha256": "2d6677845df9f0884fbafb4ddae94d47689d8d934ffb63f685564786ba368a54"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-02-T1",
+      "surface": "Sure. Send the Meadow server’s status information or error logs, and I’ll check it.",
+      "surface_sha256": "10b9ac9ab0e004877e5db509e5574546b93b912b44cf43a7b4d1503ca9421a8c"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-02-T2",
+      "surface": "Understood. I’ll exclude the Meadow server and switch the target to the Nucleus worker.",
+      "surface_sha256": "e27273b40fe15f2ce1ed1481825721b531f5b7e7ab6591885f124915e2847ba5"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-02-T3",
+      "surface": "It is not done; only the target was selected. No Nucleus worker data or logs were provided, so the check has not actually started.",
+      "surface_sha256": "0bb2b0bacba0a9e394beb7ca0e3f1c132127657751bc22ac4fdbcdc3a8f77b7a"
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-02-T4",
+      "surface": "Got it. We’ll leave the Nucleus worker topic there.",
+      "surface_sha256": "490405ed761a55feb3d046f6365d7da69f168146b7ee6fe363411f4024b4d4c9"
+    }
+  ],
+  "run_payload_sha256": "db780325362ac56d62f15a20b6e6c23caa50829a1e4fcfa85a61ab4644885633"
+}

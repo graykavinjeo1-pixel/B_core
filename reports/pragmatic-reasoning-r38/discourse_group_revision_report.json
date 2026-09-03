@@ -1,0 +1,153 @@
+{
+  "stage": "R38_DISCOURSE_GROUP_REVISION_AND_COMPOSITE_IDENTITY",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "diagnostic": {
+    "suite": "R38-RUN-0001",
+    "sha256": "3c7ca0bdde2eded710b417c67a42cc7900ce392e6f094144a714856505ff092d",
+    "frozen_before_product_changes": true,
+    "baseline_passed": 0,
+    "baseline_total": 28,
+    "repair_progression": [
+      "0/28 authoritative baseline",
+      "22/28 after explicit add/remove revision and composite-group identity",
+      "28/28 after separating imperative merge markers from adjectival follow-up references"
+    ],
+    "final_passed": 28,
+    "final_total": 28,
+    "categories": {
+      "action_member_addition": "4/4",
+      "action_member_removal": "4/4",
+      "speaker_member_addition": "4/4",
+      "speaker_member_removal": "4/4",
+      "action_group_merge": "4/4",
+      "speaker_group_merge": "4/4",
+      "invalid_or_ambiguous_revision_fails_closed": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R38-TRANSFER-0001",
+    "sha256": "06644bca6d0d3f8566a8a9a812fbd14b60640b76bfe0b433b18a1bd679504e32",
+    "held_out_until_after_diagnostic_pass": true,
+    "first_exposure_passed": 16,
+    "first_exposure_total": 20,
+    "first_exposure_failures": [
+      "R38X_DELAY_EN_1",
+      "R38X_QUOTE_EN_2",
+      "R38X_QUOTE_KO_2",
+      "R38X_REV_EN_1"
+    ],
+    "failure_classes": [
+      "English idiomatic How is ... doing? was not classified as an action-state query after correct plural reference resolution",
+      "quoted metalinguistic explanation requests left group membership unchanged but incorrectly created a world-action ledger goal"
+    ],
+    "product_repairs_after_first_exposure": [
+      "classify bounded how-is/how-are doing/going questions as action-state queries",
+      "keep quoted grammar, syntax, wording, phrase, sentence, and expression analysis outside the world-action ledger"
+    ],
+    "final_passed": 20,
+    "final_total": 20,
+    "oracle_changed_after_first_exposure": false,
+    "product_repair_driven_by_held_out": true,
+    "categories": {
+      "heldout_stable_identity_reversible_revision": "4/4",
+      "heldout_overlapping_composite_deduplication": "4/4",
+      "heldout_cross_language_revision": "4/4",
+      "heldout_long_horizon_revision": "4/4",
+      "heldout_quoted_revision_non_authority": "4/4"
+    }
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "cumulative_r1_r37_passed": 1531,
+  "cumulative_r1_r37_total": 1531,
+  "cumulative_r1_r38_passed": 1579,
+  "cumulative_r1_r38_total": 1579,
+  "verification": {
+    "metadata_discovered_canary_binaries_passed": 67,
+    "metadata_discovered_canary_binaries_total": 67,
+    "metadata_discovered_canary_cases_passed": 1586,
+    "metadata_discovered_canary_cases_total": 1586,
+    "row_based_blind_and_regression_cases": 1579,
+    "special_harness_cases": 7,
+    "adapter_unit_tests_passed": 329,
+    "adapter_unit_tests_total": 329,
+    "workspace_library_tests_passed": 852,
+    "workspace_library_tests_total": 852,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_BOUNDED_HISTORICAL_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "unit_invariants_added": 5,
+    "build_cache_cleanup": {
+      "target": "I:\\B_Core\\target",
+      "bytes_before": 20458169238,
+      "files_removed": 13180,
+      "cargo_clean_reported_size": "19.1 GiB",
+      "target_exists_after": false
+    }
+  },
+  "safety": {
+    "unsupported_realization_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed_by_language_path": 0,
+    "language_reports_promoted_to_verified_execution": 0,
+    "questions_promoted_to_language_reports": 0,
+    "semantic_authority_from_discourse_group_updates": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "DiscourseGroupIR now carries a stable group identity, monotonic revision, component parent IDs, and a membership hash bound to type, members, topics, revision, parents, and introduction turn.",
+    "AddMember and RemoveMember revise one existing group in place; validation recomputes the exact before-to-after set relation and rejects rehashed substitutions.",
+    "MergeGroups creates a new composite identity from two same-kind existing parents, deduplicates overlapping members, and rejects a cached union that differs from the live parents.",
+    "DiscourseGroupUpdateIR is a separate non-authoritative, non-executing record; group edits do not become semantic concepts, action plans, or execution results.",
+    "Composite groups are valid only while both immediate parent identities exist, and merge is rejected rather than evicting a required parent at the bounded group limit.",
+    "Quoted group-edit language has no update authority, and a metalinguistic request about a quoted sentence is not inserted into the world-action ledger.",
+    "English idiomatic group-state questions preserve the already resolved plural action IDs instead of falling back to an empty target set."
+  ],
+  "six_axis_assessment": {
+    "grammatical_composition": "CONTROLLED_KOREAN_AND_ENGLISH_GROUP_REVISION_FORMS_COMPILE_TO_TYPED_ADD_REMOVE_AND_MERGE_OPERATIONS_WITH_QUOTE_SCOPE",
+    "discourse_and_topic_state": "PERSISTENT_GROUP_IDENTITY_SURVIVES_MEMBERSHIP_REVISION_AND_COMPOSITE_GROUPS_RECORD_LIVE_PARENT_IDENTITIES",
+    "deixis_and_ellipsis_resolution": "CURRENT_EARLIER_AND_COMPOSITE_GROUP_REFERENCES_RESOLVE_TO_REVISED_MEMBERS_ACROSS_BOUNDED_NEUTRAL_INTERRUPTION",
+    "speech_intent_and_pragmatics": "IMPERATIVE_GROUP_EDITS_ARE_DISTINGUISHED_FROM_ADJECTIVAL_REFERENCES_QUOTED_EXAMPLES_AND_METALINGUISTIC_ANALYSIS",
+    "result_plan_distinction": "GROUP_STATE_MUTATION_IS_A_NON_EXECUTING_DISCOURSE_UPDATE_AND_NEVER_A_WORLD_ACTION_RESULT_OR_NEW_ACTION_LEDGER_GOAL",
+    "evidence_grounded_realization": "REVISION_OUTPUT_IS_BOUND_TO_THE_UPDATE_HASH_AND_SOURCE_GROUP_IDS_WITH_ZERO_UNSUPPORTED_CLAIMS"
+  },
+  "language_level_assessment": {
+    "classification": "VERIFIED_STRUCTURED_SEMANTIC_DIALOGUE_ENGINE_NOT_GPT_EQUIVALENT",
+    "llm_impossibility_claim": "REFUTED_FOR_BOUNDED_NATURAL_DIALOGUE_AND_STRUCTURAL_GENERALIZATION",
+    "gpt_equivalence_claim": "NOT_ESTABLISHED",
+    "strongest_axes": [
+      "typed plan, report, observation, and verified-result separation",
+      "tamper-evident discourse state and evidence-grounded realization"
+    ],
+    "largest_remaining_gap": "open-domain pragmatic and world-knowledge generalization together with varied natural realization"
+  },
+  "residual_limits": [
+    "This remains bounded deterministic language engineering and does not establish GPT-level open-domain language competence.",
+    "Group revision uses controlled Korean and English surfaces, a maximum of eight live groups, existing ledger or attributed-source members, and a sixteen-turn reference horizon.",
+    "Composite identity records immediate parents; arbitrary nested composite algebra, parent archival, and durable restoration after eviction are not implemented.",
+    "Metalinguistic requests are authority-safe but their natural explanatory answer quality remains limited by the current realization and knowledge layers.",
+    "Open vocabulary, unrestricted syntax, broad cultural implicature, and freely varied humanlike expression remain unverified."
+  ],
+  "next_program_order": [
+    "topic suspension restoration and revision across persistent and composite groups",
+    "broader typed deixis and ellipsis over revised composite discourse objects",
+    "compositional speech-intent and pragmatic inference with ambiguity preservation",
+    "request report observation and verified-result provenance across complex clauses",
+    "more natural evidence-grounded realization with claim-level support checks"
+  ],
+  "pre_existing_user_change_preserved": "crates/semantic-reasoning/src/growth_supervisor.rs",
+  "commit_performed": false,
+  "push_performed": false
+}

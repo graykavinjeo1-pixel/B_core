@@ -1,0 +1,122 @@
+{
+  "schema": "B_CORE_PRAGMATIC_REASONING_R14_REPORT_1",
+  "stage": "PRAGMATIC_REASONING_R14",
+  "status": "PASS",
+  "scope": "BOUNDED_ONTOLOGY_MEDIATED_ENTITY_AND_EVENT_COREFERENCE",
+  "branch": "main",
+  "base_commit": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "commit_created": false,
+  "push_performed": false,
+  "canonical_integrity": {
+    "status": "PASS",
+    "file_count": 10,
+    "manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "implementation": {
+    "language": "Rust",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_10",
+    "entity_concepts": 11,
+    "event_action_concepts": 6,
+    "maximum_reference_turn_distance": 16,
+    "semantic_authority_on_mentions": false,
+    "promoted_semantic_payload_mutations": 0,
+    "lexical_token_dependent_promoted_concepts": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "recursive_source_mutations": 0,
+    "promoted_semantic_catalog_scans": 0
+  },
+  "capabilities": {
+    "same_concept_cross_language_alias_binding": true,
+    "one_parent_entity_hierarchy_binding": true,
+    "event_action_family_binding": true,
+    "event_role_constrained_selection": true,
+    "long_distance_binding": true,
+    "cross_language_binding": true,
+    "generic_distractor_filtering": true,
+    "multiword_mention_supplement": true,
+    "English_complementizer_guard": true,
+    "Korean_event_nominal_scope_guard": true,
+    "quoted_reference_non_binding": true,
+    "ambiguous_unbound_mismatched_out_of_window_fail_closed": true,
+    "Korean_case_particle_rerealization": true,
+    "semantic_catalog_mutation": false
+  },
+  "runs": {
+    "R14_RUN_0001_pre_repair": {
+      "cases": 44,
+      "passed": 5,
+      "failed": 39,
+      "preserved_at": "failed_runs/R14-RUN-0001/baseline.json"
+    },
+    "R14_RUN_0001_initial_pipeline": {
+      "cases": 44,
+      "passed": 30,
+      "failed": 14,
+      "preserved_at": "failed_runs/R14-RUN-0001/after_initial_pipeline.json"
+    },
+    "R14_RUN_0001_after_root_repair": {
+      "cases": 44,
+      "passed": 44,
+      "failed": 0
+    },
+    "R14_RUN_0002_fresh_transfer_initial": {
+      "cases": 26,
+      "passed": 25,
+      "failed": 1,
+      "preserved_at": "failed_runs/R14-RUN-0002/blind_result.json"
+    },
+    "R14_RUN_0002_after_root_repair": {
+      "cases": 26,
+      "passed": 26,
+      "failed": 0
+    },
+    "sealed_R14_total": {
+      "cases": 70,
+      "passed": 70,
+      "failed": 0
+    }
+  },
+  "coverage": {
+    "successful_entity_bindings": 30,
+    "successful_event_bindings": 24,
+    "fail_closed_guard_cases": 16,
+    "cross_language_cases": 10,
+    "maximum_successful_tested_intervening_turns": 9,
+    "out_of_window_boundary_tested_at": 17,
+    "unsupported_explanation_facts": 0,
+    "routing_false_negatives_in_sealed_suite": 0
+  },
+  "regression": {
+    "R1_to_R13_canaries_passed": 456,
+    "R14_canaries_passed": 70,
+    "all_R1_to_R14_canaries_passed": 526,
+    "all_R1_to_R14_canaries_failed": 0,
+    "canary_binaries_passed": 19,
+    "canary_binaries_failed": 0,
+    "workspace_tests_passed": 760,
+    "workspace_tests_failed": 0,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": "PASS",
+    "build_cache_removed_after_validation": true
+  },
+  "validation_infrastructure_repair": {
+    "trigger": "a content-addressed intrinsic-curiosity seed produced one valid failure tombstone before two successful probe receipts",
+    "observed_failure": "the test counted all directory entries and compared 3 with an expected 2 successful receipts",
+    "repair": "count successful receipt files separately from failure_ diagnostic tombstones",
+    "isolated_repetitions_after_repair": 5,
+    "isolated_repetitions_passed": 5,
+    "preserved_at": "failed_runs/VALIDATION-RUN-0001/intrinsic_probe_receipt_count.json"
+  },
+  "known_limits": [
+    "The executable ontology is a small adapter-local software/document vocabulary, not an open-world ontology.",
+    "Entity hierarchy matching is limited to one declared parent edge.",
+    "Individuated mention detection is bounded and is not a general named-entity recognizer.",
+    "Arbitrary discourse relations, bridging inference, causal implicature, and broad commonsense reference remain incomplete.",
+    "Passing these controlled suites does not establish GPT-level general language understanding."
+  ],
+  "next_high_value_increment": "typed causal and concessive discourse relations with fresh bilingual long-context transfer and contradiction controls",
+  "sem10_started": false
+}

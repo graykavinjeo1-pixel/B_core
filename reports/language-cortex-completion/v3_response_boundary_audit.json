@@ -1,0 +1,57 @@
+{
+  "schema": "b_core.v3_response_boundary_audit.v1",
+  "purpose": "Classify the frozen V3 residual without changing its score or reusing it as a repair test.",
+  "source": {
+    "suite_id": "B_CORE_GPT_REFERENCE_V3_FINAL",
+    "evaluation_sha256": "6c0c41148f11ffd921fb8ae32d916e4daa9e764a217cfd3f46f09b79c1ec3682",
+    "response_count": 160,
+    "semantic_label_conflicts_excluded_from_defect_classification": 4,
+    "score_recomputed": false,
+    "candidate_rerun": false
+  },
+  "frozen_official_result": {
+    "semantic_pragmatic_mean_basis_points": 4803,
+    "intent_context_exact_rate_basis_points": 1875,
+    "response_act_exact_rate_basis_points": 5063,
+    "mean_gpt_relative_surface_similarity_basis_points": 4798,
+    "p10_gpt_relative_surface_similarity_basis_points": 1389,
+    "silent_ambiguity_guesses": 25,
+    "decision": "FAIL_GPT_REFERENCE_SIMILARITY_GATES"
+  },
+  "residual_classification": {
+    "critical_response_boundary_mismatches": 59,
+    "pure_response_boundary_mismatches": 56,
+    "ambiguity_plus_response_boundary_mismatches": 3,
+    "dominant_goal_confusions": {
+      "PLAN_ACTIONS_TO_ACK": 27,
+      "ANSWER_VERIFIED_RESULT_TO_ACK": 14,
+      "PLAN_ACTIONS_TO_ASK_CLARIFICATION": 9,
+      "ANSWER_VERIFIED_RESULT_TO_PLAN_ACTIONS": 7
+    },
+    "dominant_response_act_confusions": {
+      "PLAN_PREVIEW_TO_INFORM_ACKNOWLEDGEMENT": 19,
+      "RESULT_ABSENCE_TO_PLAN_RESULT_STATUS": 6,
+      "RESULT_ABSENCE_TO_PLAN_PREVIEW": 5,
+      "RESULT_ABSENCE_TO_INFORM_ACKNOWLEDGEMENT": 5,
+      "PLAN_PREVIEW_TO_CLARIFICATION_REQUEST": 5
+    },
+    "category_mean_basis_points_after_label_conflict_exclusion": {
+      "INDIRECT_INTENT_N12": 3383,
+      "CONFLICT_UNCERTAINTY_N16": 3510,
+      "EXPLICIT_REQUEST_N16": 3966,
+      "PLAN_RESULT_N16": 4511,
+      "AMBIGUITY_N16": 4542,
+      "DEIXIS_N16": 4960,
+      "TOPIC_N16": 5220,
+      "CORRECTION_N16": 5340,
+      "NOISE_N16": 5459,
+      "AFFECT_N12": 6943
+    }
+  },
+  "engineering_conclusion": {
+    "primary_bottleneck": "TYPED_RESPONSE_BOUNDARY_AND_OPERATION_INHERITANCE",
+    "surface_realization_only": false,
+    "sentence_memorization_authorized": false,
+    "fresh_structural_development_suite_required": true
+  }
+}

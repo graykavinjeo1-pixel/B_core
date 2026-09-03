@@ -1,0 +1,33 @@
+{
+  "schema": "B_CORE_CLARIFICATION_COMPOSITION_BLIND_REPORT_1",
+  "suite": "CLARIFICATION-COMPOSITION-BLIND-CANARY-R24-RUN-0001",
+  "frozen_before_first_execution": true,
+  "fresh_cases": 14,
+  "passed": 14,
+  "failed": 0,
+  "generation_kinds": 10,
+  "generative_path_rate_millis": 1000,
+  "categories": {
+    "nonliteral_ambiguity": "3/3",
+    "voice_alternative": "3/3",
+    "competing_request": "2/2",
+    "ordered_pair_ambiguity": "2/2",
+    "multi_goal_ellipsis": "2/2",
+    "missing_previous_topic": "2/2"
+  },
+  "structural_repairs": [
+    "TYPED_CLARIFICATION_KIND_TO_SHARED_MEANING_GRAPH",
+    "OPEN_VOCABULARY_MINIMAL_PAIRS_NOT_REWRITTEN_TO_CONTROL_WORDS",
+    "UNRESOLVED_REFERENCE_OUTRANKS_NATIVE_GOAL_PROJECTION",
+    "LOCAL_ORDERED_ANTECEDENT_SCOPE_IGNORES_UNRELATED_DISTRACTORS",
+    "INTERNAL_AMBIGUITY_MARKERS_NEVER_SURFACE_TO_USER"
+  ],
+  "unsupported_explanation_facts": 0,
+  "internal_marker_leaks": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0,
+  "language_semantic_authority": false,
+  "language_execution_authority": false
+}

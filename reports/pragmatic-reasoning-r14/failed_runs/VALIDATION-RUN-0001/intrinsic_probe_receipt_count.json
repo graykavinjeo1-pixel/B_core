@@ -1,0 +1,18 @@
+{
+  "schema": "B_CORE_VALIDATION_FAILURE_1",
+  "run_id": "VALIDATION-RUN-0001",
+  "test": "growth_supervisor::tests::intrinsic_curiosity_rotates_hypotheses_without_external_work",
+  "observed_success_receipts": 2,
+  "observed_failure_tombstones": 1,
+  "incorrect_observed_directory_entry_count": 3,
+  "expected_success_receipt_count": 2,
+  "root_cause": "the assertion counted failure_ diagnostic tombstones as successful plateau probe receipts",
+  "repair": "filter failure_ entries when asserting the successful receipt count",
+  "isolated_repetitions_after_repair": 5,
+  "isolated_repetitions_passed": 5,
+  "workspace_tests_after_repair": {
+    "passed": 760,
+    "failed": 0
+  },
+  "disposition": "PRESERVED_AND_ROOT_REPAIRED"
+}

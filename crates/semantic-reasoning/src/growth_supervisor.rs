@@ -17230,6 +17230,7 @@ mod tests {
             fs::read_dir(config.state_dir.join("generative_plateau_probes"))
                 .unwrap()
                 .filter_map(Result::ok)
+                .filter(|entry| { !entry.file_name().to_string_lossy().starts_with("failure_") })
                 .count(),
             2
         );

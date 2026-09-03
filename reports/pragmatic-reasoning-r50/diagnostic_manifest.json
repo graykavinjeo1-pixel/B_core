@@ -1,0 +1,32 @@
+{
+  "schema": "B_CORE_R50_DIAGNOSTIC_MANIFEST_1",
+  "stage": "R50_FINAL_LANGUAGE_CORTEX_INTEGRATION",
+  "frozen_before_implementation": true,
+  "suite": "R50_LANGUAGE_CORTEX_INTEGRATION_DIAGNOSTIC",
+  "case_count": 12,
+  "case_ids": [
+    "R50_01",
+    "R50_02",
+    "R50_03",
+    "R50_04",
+    "R50_05",
+    "R50_06",
+    "R50_07",
+    "R50_08",
+    "R50_09",
+    "R50_10",
+    "R50_11",
+    "R50_12"
+  ],
+  "expected_preimplementation_result": {
+    "passed": 0,
+    "failed": 12,
+    "reason": "Conversation responses do not yet carry the R50 full-response integration receipt."
+  },
+  "target_response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_12",
+  "target_integration_schema": "B_CORE_LANGUAGE_CORTEX_RESPONSE_INTEGRATION_IR_1",
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

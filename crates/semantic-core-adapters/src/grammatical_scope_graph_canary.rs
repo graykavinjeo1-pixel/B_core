@@ -1,0 +1,226 @@
+//! Frozen R56 diagnostic for recursive grammatical composition and scope.
+//!
+//! The suite is frozen before the product exposes a grammatical-scope graph.
+//! It requires structural quantifier, negation, restriction, Boolean, and
+//! focus operators rather than sentence-level dispatch.
+
+mod grammatical_scope_graph_canary_support;
+
+use grammatical_scope_graph_canary_support::{emit, Case, KindCount};
+
+const NONE: &[KindCount] = &[];
+
+fn cases() -> Vec<Case> {
+    vec![
+        case(
+            "R56_01",
+            "english_restriction_conjunction_with_negation",
+            "Repair every cache that is stale and not locked.",
+            Some("ALL"),
+            &[
+                ("QUANTIFIER", 1),
+                ("RESTRICTION", 2),
+                ("CONJUNCTION", 1),
+                ("NEGATION", 1),
+            ],
+            0,
+            1,
+            1,
+            0,
+            1,
+            None,
+        ),
+        case(
+            "R56_02",
+            "english_restriction_disjunction",
+            "Inspect each file that contains errors or lacks metadata.",
+            Some("EACH"),
+            &[("QUANTIFIER", 1), ("RESTRICTION", 2), ("DISJUNCTION", 1)],
+            0,
+            1,
+            1,
+            0,
+            1,
+            None,
+        ),
+        case(
+            "R56_03",
+            "korean_restriction_conjunction_with_negation",
+            "오래됐고 잠기지 않은 모든 캐시를 수리해",
+            Some("ALL"),
+            &[
+                ("QUANTIFIER", 1),
+                ("RESTRICTION", 2),
+                ("CONJUNCTION", 1),
+                ("NEGATION", 1),
+            ],
+            0,
+            1,
+            1,
+            0,
+            1,
+            None,
+        ),
+        case(
+            "R56_04",
+            "korean_restriction_disjunction",
+            "오류가 있거나 메타데이터가 없는 각 파일을 검사해",
+            Some("EACH"),
+            &[("QUANTIFIER", 1), ("RESTRICTION", 2), ("DISJUNCTION", 1)],
+            0,
+            1,
+            1,
+            0,
+            1,
+            None,
+        ),
+        case(
+            "R56_05",
+            "english_negation_quantifier_ambiguity",
+            "Do not delete every old backup.",
+            Some("ALL"),
+            &[("QUANTIFIER", 1), ("NEGATION", 1), ("RESTRICTION", 1)],
+            1,
+            1,
+            0,
+            1,
+            0,
+            None,
+        ),
+        case(
+            "R56_06",
+            "korean_negation_quantifier_ambiguity",
+            "모든 오래된 백업을 삭제하지 마",
+            Some("ALL"),
+            &[("QUANTIFIER", 1), ("NEGATION", 1), ("RESTRICTION", 1)],
+            1,
+            1,
+            0,
+            1,
+            0,
+            None,
+        ),
+        case(
+            "R56_07",
+            "english_none_scope",
+            "Delete no backup that contains errors.",
+            Some("NONE"),
+            &[("QUANTIFIER", 1), ("NEGATION", 1), ("RESTRICTION", 1)],
+            0,
+            1,
+            0,
+            1,
+            0,
+            None,
+        ),
+        case(
+            "R56_08",
+            "korean_none_scope",
+            "오류가 있는 백업은 하나도 삭제하지 마",
+            Some("NONE"),
+            &[("QUANTIFIER", 1), ("NEGATION", 1), ("RESTRICTION", 1)],
+            0,
+            1,
+            0,
+            1,
+            0,
+            None,
+        ),
+        case(
+            "R56_09",
+            "english_focus_only_restriction",
+            "Repair only files that failed validation.",
+            None,
+            &[("FOCUS_ONLY", 1), ("RESTRICTION", 1)],
+            0,
+            1,
+            1,
+            0,
+            1,
+            None,
+        ),
+        case(
+            "R56_10",
+            "korean_focus_only_restriction",
+            "검증에 실패한 파일만 수리해",
+            None,
+            &[("FOCUS_ONLY", 1), ("RESTRICTION", 1)],
+            0,
+            1,
+            1,
+            0,
+            1,
+            None,
+        ),
+        case(
+            "R56_11",
+            "english_shared_argument_keeps_recursive_scope",
+            "Inspect and repair every cache that is stale but not locked.",
+            Some("ALL"),
+            &[
+                ("QUANTIFIER", 1),
+                ("RESTRICTION", 2),
+                ("CONJUNCTION", 1),
+                ("NEGATION", 1),
+            ],
+            0,
+            2,
+            2,
+            0,
+            2,
+            Some(true),
+        ),
+        case(
+            "R56_12",
+            "korean_shared_argument_keeps_recursive_scope",
+            "오래됐지만 잠기지 않은 모든 캐시를 검사하고 수리해",
+            Some("ALL"),
+            &[
+                ("QUANTIFIER", 1),
+                ("RESTRICTION", 2),
+                ("CONJUNCTION", 1),
+                ("NEGATION", 1),
+            ],
+            0,
+            2,
+            2,
+            0,
+            2,
+            Some(true),
+        ),
+    ]
+}
+
+#[allow(clippy::too_many_arguments)]
+const fn case(
+    id: &'static str,
+    category: &'static str,
+    text: &'static str,
+    expected_quantifier: Option<&'static str>,
+    expected_kind_minima: &'static [KindCount],
+    minimum_ambiguities: usize,
+    expected_frames: usize,
+    expected_selected: usize,
+    expected_blocked: usize,
+    expected_authorized: usize,
+    expect_shared_primary_argument: Option<bool>,
+) -> Case {
+    Case {
+        id,
+        category,
+        text,
+        expected_quantifier,
+        expected_kind_minima,
+        minimum_ambiguities,
+        expected_frames,
+        expected_selected,
+        expected_blocked,
+        expected_authorized,
+        expect_shared_primary_argument,
+    }
+}
+
+fn main() {
+    let _ = NONE;
+    emit("R56_GRAMMATICAL_SCOPE_GRAPH_DIAGNOSTIC", cases());
+}

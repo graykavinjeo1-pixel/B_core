@@ -1,0 +1,22 @@
+{
+  "run": "R18-RUN-0002",
+  "kind": "HELD_OUT_FIRST_SEMANTIC_EXECUTION",
+  "passed": 15,
+  "failed": 1,
+  "total": 16,
+  "failed_cases": [
+    "TRANSFER_RESULT_2"
+  ],
+  "shared_observation": {
+    "typed_result_reference_resolved": true,
+    "social_turns_preserved_referent": true,
+    "execution_receipt_present": false,
+    "correct_absence_surface_selected": false
+  },
+  "root_cause": "The generic presupposition-question path ran before the exact bound ResultReference evidence-state path",
+  "repair": "Prioritized a typed ResultReference evidence-state response ahead of temporal, dialogue, discourse, and generic presupposition question answering",
+  "held_out_predicate_weakened": false,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0
+}

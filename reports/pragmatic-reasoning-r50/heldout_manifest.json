@@ -1,0 +1,22 @@
+{
+  "schema": "B_CORE_R50_HELDOUT_MANIFEST_1",
+  "suite": "R50_LANGUAGE_CORTEX_INTEGRATION_HELDOUT",
+  "frozen_after_diagnostic_pass": true,
+  "frozen_before_first_execution": true,
+  "case_count": 8,
+  "case_ids": [
+    "R50H_01",
+    "R50H_02",
+    "R50H_03",
+    "R50H_04",
+    "R50H_05",
+    "R50H_06",
+    "R50H_07",
+    "R50H_08"
+  ],
+  "overlap_with_diagnostic_case_ids": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

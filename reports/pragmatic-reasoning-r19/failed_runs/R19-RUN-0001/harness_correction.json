@@ -1,0 +1,17 @@
+{
+  "run": "R19-RUN-0001",
+  "kind": "DIAGNOSTIC_HARNESS_CORRECTION",
+  "original_frozen_source_sha256": "cce7d5dd5b85da293d74758344e4b91795f43b0093dc8c56df36de3aa341a132",
+  "post_semantic_correction_source_sha256": "3ea03c0eb61683b4b640260e8dbd602a2045aea7ac2242f6ef61b00e7ccd8506",
+  "final_source_sha256": "22372e833c5e71623e9752f7a350fdf30d5c5acc667b43703807d08af924387e",
+  "semantic_correction": {
+    "problem": "The voice helper incorrectly required PlanIntentIR::Execute for repair and inspect/check alternatives",
+    "correction": "Per-case intent expectations now require Execute for delete/open, Investigate for inspect/check, and Repair for repair",
+    "predicate_weakened": false
+  },
+  "nonsemantic_correction": {
+    "problem": "Clippy deny-warnings rejected two eight-argument diagnostic helper functions",
+    "correction": "Added function-local clippy::too_many_arguments allowances without changing cases or predicates",
+    "predicate_weakened": false
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "B_CORE_R51_HELDOUT_MANIFEST_1",
+  "suite": "R51_DEFEASIBLE_DISCOURSE_DECISION_HELDOUT",
+  "frozen_after_diagnostic_pass": true,
+  "frozen_before_first_execution": true,
+  "case_count": 8,
+  "case_ids": [
+    "R51H_01",
+    "R51H_02",
+    "R51H_03",
+    "R51H_04",
+    "R51H_05",
+    "R51H_06",
+    "R51H_07",
+    "R51H_08"
+  ],
+  "overlap_with_diagnostic_case_ids": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

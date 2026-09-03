@@ -1,0 +1,8 @@
+{
+  "run": "R20-RUN-0002",
+  "reason": "Two correct English responses began with capitalized 'No execution result', while the assertion searched for lowercase text without normalizing.",
+  "before_sha256": "9c48b97b16ebe1cb6a84f5c24c4421efac717fa0b4e1f4291660d7b89525ac3d",
+  "after_sha256": "df7b9be37c91a6333cb6b8ae0dd63f61fcd322de287af5ddc09ec5b965519be2",
+  "input_or_product_semantics_changed": false,
+  "final_result": "16/16"
+}

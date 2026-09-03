@@ -1,0 +1,139 @@
+{
+  "stage": "R35_OVERLAPPING_DISCOURSE_SET",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "diagnostic": {
+    "suite": "R35-RUN-0001",
+    "sha256": "83633714f17f980f6e3ee3eecf62ab9c0519793ed08890d5d27e72290b2824ff",
+    "frozen_before_product_changes": true,
+    "baseline_passed": 0,
+    "baseline_total": 28,
+    "repair_progression": [
+      "0/28 authoritative baseline",
+      "21/28 after typed group identity, overlapping membership, ordinal selection, topic-linked restoration, and topic-scoped correction",
+      "28/28 after historical typed-action hints and same-source/same-subject correction scoping"
+    ],
+    "final_passed": 28,
+    "final_total": 28,
+    "categories": {
+      "cross_language_group_identity": "4/4",
+      "multiple_group_ambiguity_fails_closed": "4/4",
+      "ordinal_action_group_selection": "4/4",
+      "ordinal_overlapping_speaker_group": "4/4",
+      "overlap_correction_scoped_by_topic": "4/4",
+      "topic_keyed_action_group_selection": "4/4",
+      "topic_linked_speaker_group_restoration": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R35-TRANSFER-0001",
+    "sha256": "9f644b10f8823b66c30e99d37f39999db3b3b8d34a7826403dd6f4675431b2f2",
+    "held_out_until_after_diagnostic_pass": true,
+    "first_exposure_passed": 18,
+    "first_exposure_total": 20,
+    "final_passed": 20,
+    "final_total": 20,
+    "oracle_changed_after_first_exposure": false,
+    "product_repair_driven_by_held_out": true,
+    "first_exposure_failures": [
+      {
+        "case": "R35X_TOPIC_ACTION_KO_1",
+        "class": "KOREAN_CONCISE_NAMED_TOPIC_RETURN_NOT_RECOGNIZED",
+        "general_repair": "Korean topic transition grammar now accepts named-topic forms ending in 으로 돌아가 or 로 돌아가."
+      },
+      {
+        "case": "R35X_CORRECT_EN_1",
+        "class": "TYPED_DISCOURSE_SELECTOR_CORRUPTED_BY_FUZZY_NORMALIZATION",
+        "general_repair": "Typed discourse selectors such as older, oldest, newer, and newest are protected from fuzzy object-noun rewriting."
+      }
+    ],
+    "categories": {
+      "heldout_action_ordinal": "4/4",
+      "heldout_multigroup_ambiguity": "4/4",
+      "heldout_speaker_ordinal": "4/4",
+      "heldout_topic_action": "4/4",
+      "heldout_topic_scoped_correction": "4/4"
+    }
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "cumulative_r1_r34_passed": 1387,
+  "cumulative_r1_r34_total": 1387,
+  "cumulative_r1_r35_passed": 1435,
+  "cumulative_r1_r35_total": 1435,
+  "verification": {
+    "metadata_discovered_canary_binaries_passed": 61,
+    "metadata_discovered_canary_binaries_total": 61,
+    "metadata_discovered_canary_cases_passed": 1442,
+    "metadata_discovered_canary_cases_total": 1442,
+    "adapter_unit_tests_passed": 314,
+    "adapter_unit_tests_total": 314,
+    "workspace_library_tests_passed": 837,
+    "workspace_library_tests_total": 837,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_HISTORICAL_FROZEN_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "build_cache_cleanup": {
+      "target": "I:\\B_Core\\target",
+      "bytes_before": 19983552497,
+      "measured_gib_before": 18.61,
+      "cargo_clean_files_removed": null,
+      "cargo_clean_file_count_note": "The first cargo-clean output was lost during session compaction; no count was inferred.",
+      "target_exists_after": false
+    }
+  },
+  "safety": {
+    "unsupported_realization_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed_by_language_path": 0,
+    "language_reports_promoted_to_verified_execution": 0,
+    "attributed_propositions_promoted_to_world_truth": 0,
+    "semantic_authority_from_discourse_group": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "Conversation state schema 19 stores bounded, hash-bound action and attributed-proposition groups with canonical topic keys outside semantic concept payloads.",
+    "One referent may belong to multiple groups; ordinal, recency, active-topic, and explicit surface-topic selectors resolve typed candidates and ambiguity fails closed.",
+    "Historical action groups read the action-state ledger, while the active-goal set keeps current-goal semantics; read-only historical queries do not revive execution authority.",
+    "Proposition groups retain source identity and select the newest compatible source-and-topic proposition so unrelated later claims cannot absorb a scoped correction.",
+    "Korean and English topic aliases canonicalize to shared topic keys without granting lexical strings semantic authority.",
+    "Completion reports remain unverified language reports and every group-state result retains member-level evidence provenance."
+  ],
+  "six_axis_assessment": {
+    "grammatical_composition": "BOUNDED_TYPED_GROUP_SELECTORS_COMPOSE_WITH_ORDINAL_RECENCY_TOPIC_AND_STATE_PREDICATES; BROADER_CLAUSE_COMPOSITION_REMAINS_OPEN",
+    "discourse_and_topic_state": "MULTIPLE_OVERLAPPING_GROUPS_PERSIST_AND_CAN_BE_RESTORED_BY_CANONICAL_TOPIC_WITHIN_BOUNDED_HISTORY",
+    "deixis_and_ellipsis_resolution": "ORDINAL_RECENCY_AND_TOPIC_LINKED_GROUP_REFERENCES_BIND_TYPED_MEMBERS_OR_FAIL_CLOSED",
+    "speech_intent_and_pragmatics": "QUERY_CORRECTION_COMPARISON_AND_COMPLETION_REPORT_PATHS_REMAIN_DISTINCT; OPEN_DOMAIN_IMPLICATURE_REMAINS_OPEN",
+    "result_plan_distinction": "ACTIVE_GOALS_HISTORICAL_PLANS_REPORTED_COMPLETION_AND_VERIFIED_EXECUTION_REMAIN_SEPARATE",
+    "evidence_grounded_realization": "GROUP_OUTPUT_RETAINS_SELECTED_REFERENT_PROVENANCE_WITH_ZERO_UNSUPPORTED_FACTS; NATURALNESS_REMAINS_LIMITED"
+  },
+  "residual_limits": [
+    "This is bounded deterministic language engineering and does not establish GPT-level open-domain language competence.",
+    "Group memory is bounded to eight groups and sixteen turns and uses a compact inspectable Korean and English topic vocabulary.",
+    "Arbitrary nested or composite discourse sets and explicit membership revision are not yet modeled.",
+    "Unrestricted associative bridging, broad ellipsis reconstruction, and open-domain pragmatic inference remain unsolved.",
+    "Natural realization remains formulaic even though its claims are provenance-checked."
+  ],
+  "next_program_order": [
+    "broader grammatical composition across clause graphs and typed operators",
+    "nested and composite discourse sets with explicit membership revision and stronger topic suspension/restoration",
+    "broader typed deixis and ellipsis resolution over discourse state",
+    "compositional speech-intent and pragmatic inference with ambiguity preservation",
+    "execution-result-plan provenance across requests, reports, observations, and verified effects",
+    "more natural evidence-grounded realization with claim-level support checks"
+  ],
+  "pre_existing_user_change_preserved": "crates/semantic-reasoning/src/growth_supervisor.rs",
+  "commit_performed": false,
+  "push_performed": false
+}

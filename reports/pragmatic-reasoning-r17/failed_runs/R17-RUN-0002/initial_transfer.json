@@ -1,0 +1,24 @@
+{
+  "run": "R17-RUN-0002",
+  "kind": "HELD_OUT_FIRST_SEMANTIC_EXECUTION",
+  "passed": 12,
+  "failed": 4,
+  "total": 16,
+  "failed_cases": [
+    "TRANSFER_FOCUS_1",
+    "TRANSFER_FOCUS_2",
+    "TRANSFER_FOCUS_3",
+    "TRANSFER_FOCUS_4"
+  ],
+  "shared_observation": {
+    "typed_reference_resolved": true,
+    "user_grounded_acronym_preserved": true,
+    "social_turns_preserved_referent": true,
+    "active_goal_ids_preserved": false
+  },
+  "root_cause": "A bound result explanation was grounded as a new active goal and replaced the underlying task focus",
+  "repair": "Result, event, and proposition reference turns may receive a grounded response but do not install a replacement active goal",
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0
+}

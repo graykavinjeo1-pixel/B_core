@@ -1,0 +1,98 @@
+{
+  "stage": "R22_STRUCTURAL_REALIZATION_AND_INDEXED_DISCOURSE",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c4f",
+  "diagnostic": {
+    "suite": "R22-RUN-0001",
+    "sha256": "26f45f5a2ae4442837fd9169acc8b28870cdc8f8ef4608a289434333723ffed1",
+    "initial_passed": 0,
+    "initial_total": 24,
+    "final_passed": 24,
+    "final_total": 24,
+    "initial_failures": {
+      "typed_multi_goal_realization": 4,
+      "prohibition_aware_realization": 4,
+      "indexed_topic_history": 4,
+      "local_ordinal_binding": 4,
+      "nested_composition_realization": 4,
+      "composed_plan_result_fidelity": 4
+    }
+  },
+  "held_out": {
+    "suite": "R22-RUN-0002",
+    "original_frozen_sha256": "b67b35f48ba8249eaeb44376dfdc715b1762524487c2df3c2dab66a666ff597e",
+    "first_raw_harness_execution_passed": 14,
+    "first_raw_harness_execution_total": 16,
+    "semantic_behavior_correct_on_first_execution": 16,
+    "semantic_behavior_total": 16,
+    "oracle_defect": {
+      "affected_cases": [
+        "R22_TRANSFER_HISTORY_3",
+        "R22_TRANSFER_HISTORY_4"
+      ],
+      "classification": "FUTURE_OUTPUT_LANGUAGE_SURFACE_DEPENDENCY",
+      "evidence": "Both action turns resolved the selected concept correctly and excluded distractors, but the pre-action topic-state assertion compared one lexical surface against the future action language.",
+      "repair": "The topic-state assertion now checks the shared concept_id_hint. The following action still checks the language-specific resolved surface.",
+      "product_code_changed_for_oracle_defect": false
+    },
+    "repaired_oracle_sha256": "d1bcb8a390a92e6023084dd769312a84c40192db9a4c1a1a4ee4011436f06e15",
+    "post_oracle_repair_passed": 16,
+    "post_oracle_repair_total": 16
+  },
+  "fresh_blind_tasks_passed_with_valid_oracle": 40,
+  "fresh_blind_tasks_total": 40,
+  "cumulative_r1_r22_passed": 867,
+  "cumulative_r1_r22_total": 867,
+  "verification": {
+    "canary_binaries_passed": 35,
+    "canary_binaries_total": 35,
+    "adapter_unit_tests_passed": 273,
+    "adapter_unit_tests_total": 273,
+    "workspace_tests_passed": 797,
+    "workspace_tests_total": 797,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS"
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "unsupported_explanation_facts": 0,
+    "semantic_authority_from_language": false,
+    "external_execution_authorized_by_reference_binding": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "typed natural realization of coordinated and sequential multi-goal graphs",
+    "prohibition-aware realization from blocked typed candidates",
+    "explicit plan-versus-completed-result wording",
+    "bounded two- and three-step topic-history navigation",
+    "same-turn Korean and English ordinal antecedent binding",
+    "out-of-range ordinal references fail closed with natural clarification",
+    "cross-language topic selection by shared concept identity",
+    "no internal GoalIR labels exposed in user-facing realization"
+  ],
+  "scope_assessment": {
+    "grammatical_composition": "ADVANCED_FOR_BOUNDED_COORDINATION_AND_SEQUENCE",
+    "discourse_and_topic_state": "ADVANCED_WITH_INDEXED_HISTORY",
+    "deixis_and_ellipsis_resolution": "ADVANCED_WITH_LOCAL_ORDINAL_BINDING",
+    "speech_intent_and_pragmatics": "INHERITED_AND_REGRESSION_VERIFIED",
+    "result_plan_distinction": "ADVANCED_IN_MULTI_GOAL_REALIZATION",
+    "evidence_grounded_realization": "ADVANCED_FROM_TYPED_GRAPH_BUT_STILL_BOUNDED"
+  },
+  "next_residual": [
+    "relative-clause attachment",
+    "quantifier scope across nested discourse",
+    "anaphoric event chains beyond bounded topic history",
+    "open-ended lexical coverage and generative fluency"
+  ],
+  "commit_performed": false,
+  "push_performed": false
+}

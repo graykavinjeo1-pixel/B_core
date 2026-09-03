@@ -1,0 +1,113 @@
+{
+  "schema": "B_CORE_PRAGMATIC_REASONING_R13_REPORT_1",
+  "stage": "PRAGMATIC_REASONING_R13",
+  "status": "PASS",
+  "title": "Typed Long-Distance Coreference",
+  "branch": "main",
+  "base_commit": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "commit_created": false,
+  "push_performed": false,
+  "canonical_integrity": {
+    "status": "PASS",
+    "file_count": 10,
+    "manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "implementation": {
+    "language": "Rust",
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "runtime_source_mutations": 0,
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_9",
+    "typed_entity_capacity": 32,
+    "typed_reference_turn_distance": 16,
+    "discourse_referent_capacity": 48,
+    "semantic_authority_on_entity_mentions": false,
+    "hashed_state": true,
+    "tamper_evident": true
+  },
+  "capabilities": {
+    "typed_person_reference": true,
+    "typed_system_descriptor_reference": true,
+    "belief_holder_possessive_reference": true,
+    "descriptive_event_reference": true,
+    "korean_english_cross_language_binding": true,
+    "quoted_pronoun_non_binding": true,
+    "unbound_reference_fail_closed": true,
+    "multiple_compatible_candidates_fail_closed": true,
+    "out_of_window_reference_fail_closed": true,
+    "gender_inference_from_names": false,
+    "semantic_catalog_mutation": false
+  },
+  "runs": {
+    "R13_RUN_0001_pre_repair": {
+      "cases": 30,
+      "passed": 0,
+      "failed": 30,
+      "preserved_at": "failed_runs/R13-RUN-0001/baseline.json"
+    },
+    "R13_RUN_0001_after_repair": {
+      "cases": 30,
+      "passed": 30,
+      "failed": 0
+    },
+    "R13_RUN_0002_fresh_blind_initial": {
+      "cases": 29,
+      "passed": 26,
+      "failed": 3,
+      "preserved_at": "failed_runs/R13-RUN-0002/blind_result.json",
+      "root_cause": "스케줄러 was incorrectly typed as a person from its grammatical role"
+    },
+    "R13_RUN_0002_after_root_repair": {
+      "cases": 29,
+      "passed": 29,
+      "failed": 0
+    },
+    "R13_RUN_0003_fresh_blind": {
+      "cases": 16,
+      "passed": 16,
+      "failed": 0
+    },
+    "sealed_r13_total": {
+      "cases": 75,
+      "passed": 75,
+      "failed": 0
+    }
+  },
+  "coverage": {
+    "successful_typed_person_cases": 22,
+    "successful_belief_holder_cases": 22,
+    "typed_system_descriptor_cases": 6,
+    "descriptive_event_cases": 6,
+    "cross_language_cases": 10,
+    "ambiguity_unbound_window_quote_guards": 19,
+    "maximum_successful_tested_turn_distance": 12,
+    "out_of_window_boundary_tested_at": 17,
+    "unsupported_explanation_facts": 0,
+    "full_catalog_scans": 0,
+    "routing_false_negatives_in_sealed_suite": 0
+  },
+  "regression": {
+    "r1_to_r12_canaries_passed": 381,
+    "r1_to_r12_canaries_failed": 0,
+    "r13_canaries_passed": 75,
+    "r13_canaries_failed": 0,
+    "all_r1_to_r13_canaries_passed": 456,
+    "all_r1_to_r13_canaries_failed": 0,
+    "workspace_tests_passed": 752,
+    "workspace_tests_failed": 0,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": "PASS",
+    "build_cache_removed_after_validation": true
+  },
+  "known_limits": [
+    "The controlled pronoun inventory is not general natural-language understanding.",
+    "Names do not imply gender; a gendered pronoun binds only when exactly one person-compatible antecedent exists.",
+    "Plural group coreference and arbitrary nominal aliases are not implemented.",
+    "Event descriptions use bounded lexical descriptor evidence rather than ontology-mediated paraphrase.",
+    "The successful blind suite does not establish GPT-level language ability."
+  ],
+  "next_high_value_increment": "Ontology-mediated entity/event paraphrase matching followed by causal and concessive discourse relations.",
+  "sem10_started": false
+}

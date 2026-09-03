@@ -1,0 +1,29 @@
+{
+  "schema": "B_CORE_R53_DIAGNOSTIC_BASELINE_1",
+  "suite": "R53_PREDICATE_ARGUMENT_COMPOSITION_DIAGNOSTIC",
+  "frozen_before_product_implementation": true,
+  "total": 13,
+  "passed": 5,
+  "failed": 8,
+  "passing_case_ids": ["R53_07", "R53_08", "R53_10", "R53_11", "R53_13"],
+  "failure_clusters": {
+    "english_nominal_coordination_collapsed_to_one_surface": [
+      "R53_01",
+      "R53_02",
+      "R53_04",
+      "R53_05",
+      "R53_06",
+      "R53_12"
+    ],
+    "coordinated_argument_set_not_shared_across_predicates": ["R53_03", "R53_09"]
+  },
+  "diagnostic_manifest_v2_sha256": "3ae57d3266fef60ae2d7ce579b8585df703318d861ef4b99f7fb6782d8de77fa",
+  "diagnostic_source_sha256": "21b37edb7d77ff51ed9584f0d3f3e0e9fc62857f109a15e9f6b2fe6bd49849f4",
+  "diagnostic_support_sha256": "647aa37d3fa90264be00c9f8afde596efe069dc72b3a9cca89dac348b3aeb1c9",
+  "graph_contracts_valid": 13,
+  "authority_violations": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

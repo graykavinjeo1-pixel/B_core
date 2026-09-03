@@ -1,0 +1,2409 @@
+{
+  "schema": "B_CORE_GPT_REFERENCE_INPUT_SUITE_IR_1",
+  "suite_id": "B_CORE_GPT_REFERENCE_V2_FINAL",
+  "split": "FINAL",
+  "frozen": true,
+  "turns": [
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-01",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "진단 순서에서 Axiom 캐시를 맨 앞에 둬.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-01",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Axiom 캐시를 판단할 때 볼 신호를 먼저 정리해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-01",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "아직 Axiom 캐시에서 나온 결과는 없다는 뜻이지?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-01",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Axiom 캐시는 읽기 전용으로만 살펴봐.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-02",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "첫 확인 대상은 Cipher 서비스로 잡아 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-02",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "시작 전에 Cipher 서비스 근거 목록부터 말해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-02",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그건 Cipher 서비스 점검 방침일 뿐 결과 보고는 아니지?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-02",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Cipher 서비스에는 쓰지 말고 관찰만 해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-01",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Make the Axiom cache the first thing you assess.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-01",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Before that, outline the signals that matter for the Axiom cache.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-01",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "We are discussing an approach, not a Axiom cache finding yet, correct?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-01",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Use read-only inspection for the Axiom cache; no writes.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-02",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Put the Cipher service at the front of the diagnostic queue.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-02",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "List the evidence you would seek from the Cipher service before starting.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-02",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Nothing has actually been established about the Cipher service yet, right?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-02",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Observe the Cipher service without changing its state.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-01",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "요 며칠 Echo 서비스 때문에 계속 막히는데.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-01",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "왜 그러는지 좁히는 걸 도와줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-01",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "바꾸는 건 아직 허용한 적 없어.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-01",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "증거가 없다면 Echo 서비스에서 확인된 건 없다고 해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-02",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "또 Grove 서버 문제라니 기운 빠진다.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-02",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "응, 원인 후보를 조사하는 쪽으로 가자.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-02",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "단 실제 설정 변경은 빼 둬.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-02",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Grove 서버에 관해 사실로 굳어진 것만 구분해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-01",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "I keep losing time to the Echo service this week.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-01",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Help me narrow down what is behind it.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-01",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "I have not authorized any changes, though.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-01",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "If there is no evidence, say that the Echo service has no established finding.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-02",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Another day, another problem with the Grove server.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-02",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Yes—focus on separating the possible causes.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-02",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Keep actual configuration changes outside the boundary.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-02",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Distinguish facts about the Grove server from guesses.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-01",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Indigo 서버와 Jasper 워커 복구안을 같이 준비해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-01",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "방금 요청은 철회할게. Indigo 서버 원인만 풀어서 말해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-01",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "아니, 설명 대상은 Jasper 워커 쪽이야.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-01",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "결국 두 대상 모두 실제 복구된 건 아니지? Jasper 워커도 포함해서.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-02",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Kinetic 파일하고 Lotus 코드를 고칠 계획을 세워 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-02",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "수리는 보류하고 앞의 Kinetic 파일 문제부터 설명해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-02",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "정정한다. 앞의 것 말고 뒤의 Lotus 코드를 뜻했어.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-02",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Lotus 코드에 완료 증거는 아직 하나도 없는 거지?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-01",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Set up recovery steps for the Indigo server and the Jasper worker.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-01",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Withdraw that request; explain only what may be wrong with the Indigo server.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-01",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Actually, make the explanation about the Jasper worker instead.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-01",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Neither target was really recovered, including the Jasper worker, correct?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-02",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Plan fixes for both the Kinetic file and the Lotus code.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-02",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Shelve the fixes and walk through the first Kinetic file issue.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-02",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Correction—the later Lotus code, not the first item.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-02",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "There is still no completion evidence for the Lotus code, is there?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-01",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Mosaic 파일를 본 다음 Nimbus 코드를 검토하는 순서로 해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-01",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Mosaic 파일 뒤에 오는 항목을 왜 보는지도 말해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-01",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그 설명을 앞선 항목에도 붙여 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-01",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Mosaic 파일와 Nimbus 코드 어느 쪽도 쓰기 작업은 금지야.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-02",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "검토 순서를 Opal 캐시 먼저, Pollen 큐 나중으로 잡아.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-02",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "나중 항목의 점검 목적은 뭐야?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-02",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "앞 항목에도 같은 이유 설명을 해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-02",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "방금 묶은 둘, Opal 캐시와 Pollen 큐는 읽기 전용이야.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-01",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Review the Mosaic file before the Nimbus code.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-01",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Explain why the item after the Mosaic file, namely the Nimbus code, is being reviewed.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-01",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Give the preceding item that rationale as well.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-01",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Neither the Mosaic file nor the Nimbus code is writable.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-02",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Use this order: the Opal cache first and the Pollen queue afterward.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-02",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "What is the purpose of checking the later item?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-02",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Apply that explanation to the earlier one too.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-02",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Treat both—the Opal cache and the Pollen queue—as read-only.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-01",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Quartz 캐시 이상 징후부터 파악해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-01",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그 실마리는 잠시 접고 Rook 큐 구성 이야기를 하자.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-01",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "처음 접어 둔 문제로 다시 돌아가.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-01",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "되돌아온 Quartz 캐시 주제에 검증 근거가 생겼어?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-02",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "우선 Saffron 서비스 현황을 조사해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-02",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그 대화는 보류하고 Timber 로그 구조를 설명해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-02",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "이제 맨 처음 보류한 대화를 재개하자.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-02",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "재개된 Saffron 서비스 조사에 실제 결과가 있나?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-01",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Assess the anomaly around the Quartz cache.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-01",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Put that thread on the shelf and walk me through the Rook queue layout.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-01",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Pick back up the issue we parked first.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-01",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Did the resumed Quartz cache thread produce verified evidence?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-02",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Begin with the current Saffron service situation.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-02",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Set it aside; I want the architecture of the Timber log now.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-02",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Return to the conversation that was set aside at the beginning.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-02",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Is there an actual result for that original Saffron service topic?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-01",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "민재는 Umber 서비스가 정상이라 하고 수빈은 계속 고장이라 해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-01",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "두 말 가운데 지금 증거로 남은 건 뭐야?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-01",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "별도로 Vale 로그 성공 이야기는 제보로만 저장해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-01",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그래서 Umber 서비스 상태를 하나로 확정할 수 있나?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-02",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "운영팀은 Willow 서버가 끝났대. 감사팀은 미완료라고 했고.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-02",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Willow 서버에 대한 보고와 검증 사실을 나눠 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-02",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Xenon 워커 실패 주장도 사용자 발화로 기록해 둬.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-02",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "현재 근거만으로 Willow 서버 결론이 하나로 정해져?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-01",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Mina calls the Umber service healthy, but Rowan says it is still broken.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-01",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Which parts of those accounts are actually supported?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-01",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Store the Vale log success story as a report, not a fact.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-01",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Can the Umber service state be settled conclusively now?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-02",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Operations reports the Willow server complete; Audit reports it incomplete.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-02",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Split the Willow server testimony from independently established evidence.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-02",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Log the Xenon worker failure claim as user-provided information only.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-02",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Does the present evidence force one Willow server conclusion?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-01",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Yarrow 서버를 복원하는 방법을 단계로 설계해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-01",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "방금 설계만 한 거지 실제로 바꾼 건 아니지?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-01",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "실행은 내가 내 환경에서 Yarrow 서버에 했어.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-01",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그 말만으로 독립 검증까지 됐다고 볼 수 있어?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-02",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Acorn 파일 조치 절차를 미리 짜 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-02",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "아직 Acorn 파일에는 아무 작업도 실행 안 했지?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-02",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "방금 내가 직접 처리했다고 보고할게.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-02",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그 사용자 보고가 Acorn 파일 결과 증명은 아니지?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-01",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Map out how the Yarrow server could be recovered.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-01",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "That was only a plan; nothing was changed just now, correct?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-01",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "I ran the action against the Yarrow server from my own terminal.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-01",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Does my statement make the result independently verified?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-02",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Design an intervention procedure for the Acorn file.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-02",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "No operation has actually touched the Acorn file yet, right?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-02",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "I am reporting that I carried it out myself.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-02",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "That report alone does not prove the Acorn file outcome, does it?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-01",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "오늘은 또 Cinder 파일 문제를 볼 힘도 없다.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-01",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그냥 푸념 들어줘서 고마워.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-01",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "괜찮아지면 Cinder 파일 상태만 조용히 살펴봐 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-01",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "근거가 달라지기 전에는 굳이 알리지 마.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-02",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Elara 캐시가 또 이러니 정말 지겹다.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-02",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그래도 내 말 받아줘서 고마워.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-02",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "일을 키우지 말고 Elara 캐시 현황만 봐 줄래?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-02",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "확실한 변화가 없으면 조용히 있어도 돼.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-01",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "I cannot face another Cinder file incident today.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-01",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Thanks for letting me vent about it.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-01",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "When ready, just assess the Cinder file quietly.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-01",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Do not ping me unless the evidence changes.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-02",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Seeing the Elara cache fail again is draining.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-02",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "I appreciate you hearing me out.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-02",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Keep it small and look only at the Elara cache state.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-02",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Stay quiet until there is a genuinely supported change.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-01",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Garnet 캐시와 Haven 큐를 나란히 비교해 봐.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-01",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "방금 말한 쪽 하나를 고쳐.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-01",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "내가 가리킨 건 뒤의 Haven 큐였어.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-01",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "앞의 Garnet 캐시는 조치 대상에서 제외해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-02",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Islet 서비스하고 Juniper 로그 상태를 따로 정리해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-02",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그중 이걸 수리 대상으로 삼자.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-02",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "여기서 이건 Juniper 로그를 말한 거야.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-02",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "나머지 Islet 서비스에는 절대 손대지 마.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-01",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Compare the Garnet cache with the Haven queue side by side.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-01",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Patch the one we just mentioned.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-01",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "I meant the later item, the Haven queue.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-01",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Keep the earlier Garnet cache outside the action scope.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-02",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Summarize the Islet service and the Juniper log separately.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-02",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Use this one as the repair target.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-02",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "This one means the Juniper log, to be explicit.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-02",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Do not touch the remaining Islet service.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-01",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "VOICE_TRANSCRIPT",
+      "raw_text": "음... Kestrel 서비스 상태 확잏 좀 해줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-01",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "어 잠깐, Kestrel 서비스 말고 Lumen 로그 쪽이야.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-01",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그럼 Lumen 로그 건 finsh 된 건 아니지?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-01",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "ㅇㅋ, Lumen 로그 얘기 들어줘서 ㄱㅅ",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-02",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "VOICE_TRANSCRIPT",
+      "raw_text": "저기... Morrow 서버 check 먼저 부탁해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-02",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "아니 wait, target을 Nectar 워커로 돌려.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-02",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Nectar 워커는 result 나온 거야, plan뿐이야?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-02",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "오키 thx, Nectar 워커 토픽은 닫자.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-01",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "VOICE_TRANSCRIPT",
+      "raw_text": "Um... will ya insepct the Kestrel service for me?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-01",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Uh, scratch the Kestrel service; move over to the Lumen log 쪽.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-01",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Was that Lumen log check finshd, or nah?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-01",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "alright, thx—done talking about the Lumen log",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-02",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "VOICE_TRANSCRIPT",
+      "raw_text": "Er... please revieew the Morrow server real quick.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-02",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Wait—drop that and make the Nectar worker our target.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-02",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Is the Nectar worker actually done, or only queued up?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-02",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "cool, ty; let's leave the Nectar worker there",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V2_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    }
+  ],
+  "suite_payload_sha256": "ff80de6025b7ef07627642367d098da835f920b75ba34915979be609e0189b5d"
+}

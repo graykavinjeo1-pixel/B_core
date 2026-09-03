@@ -1,0 +1,190 @@
+{
+  "stage": "R43_SIX_AXIS_INTEGRATION_AND_PACKAGE_GATE",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "commit_created": false,
+  "push_performed": false,
+  "diagnostic": {
+    "suite": "R43_SIX_AXIS_INTEGRATION_DIAGNOSTIC",
+    "preimplementation_sha256": "9C3F6BA748F28DB7571EEFEE475720AA1E4861A04A812BE295EB8F0A5A456E8A",
+    "preimplementation_baseline_passed": 0,
+    "preimplementation_baseline_total": 28,
+    "first_product_execution_passed": 24,
+    "first_product_execution_total": 28,
+    "oracle_corrections_after_first_execution": 4,
+    "oracle_correction_reason": "Indirect console/receipt language was correctly rejected as untrusted evidence, so the oracle was tightened to require fail-closed rejection rather than a retained language-report record.",
+    "final_sealed_sha256": "34F8881CD0B4678DC05C2D1402DA565DC4A6F353DA9CED51D72C3BFBCD1B570C",
+    "final_passed": 28,
+    "final_total": 28,
+    "product_repairs_after_oracle_correction": 0,
+    "categories": [
+      "composition_intent",
+      "topic_deixis",
+      "local_antecedent",
+      "ambiguity_fail_closed",
+      "report_not_result",
+      "language_evidence_spoof",
+      "long_horizon_evidence"
+    ]
+  },
+  "held_out_transfer": {
+    "suite": "R43_SIX_AXIS_INTEGRATION_TRANSFER",
+    "preimplementation_sha256": "3D244DB4C995B5B169EDCFFA8D862CEA2B5004FECE26B80252719785EFB4794B",
+    "preimplementation_baseline_passed": 0,
+    "preimplementation_baseline_total": 20,
+    "held_out_until_after_diagnostic_pass": true,
+    "first_exposure_passed": 12,
+    "first_exposure_total": 20,
+    "oracle_corrections_after_first_exposure": 8,
+    "oracle_correction_reasons": [
+      "Cross-language topic references were changed from surface-form equality to shared semantic-alias equality.",
+      "Scoped composition was checked against the authoritative PlanIR intent instead of a non-authoritative selected-node surface.",
+      "Quoted-command explanation cases now require the authorized outer EXPLAIN plan while keeping the quoted inner action non-authoritative."
+    ],
+    "final_sealed_sha256": "195F67D5EDAB04A794DF7F911E72D831692E343EE3D1CEFED9A7DFC959FBB512",
+    "final_passed": 20,
+    "final_total": 20,
+    "product_repairs_after_transfer_exposure": 0,
+    "categories": [
+      "bilingual_topic_reference",
+      "ordered_scope_composition",
+      "long_social_interruption",
+      "bilingual_report_revision",
+      "quoted_or_ambiguous_authority"
+    ]
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "inherited_accounting": {
+    "r1_r42_row_cases_passed": 1771,
+    "r1_r42_row_cases_total": 1771,
+    "r1_r43_row_cases_passed": 1819,
+    "r1_r43_row_cases_total": 1819,
+    "direct_response_special_cases_passed": 7,
+    "direct_response_special_cases_total": 7,
+    "aggregate_adapter_cases_passed": 1826,
+    "aggregate_adapter_cases_total": 1826
+  },
+  "implementation": {
+    "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_11",
+    "integration_schema": "B_CORE_SIX_AXIS_INTEGRATION_IR_1",
+    "package_boundary_schema": "B_CORE_LANGUAGE_CORTEX_PACKAGE_BOUNDARY_IR_1",
+    "axes": [
+      "GRAMMATICAL_COMPOSITION",
+      "DISCOURSE_TOPIC_STATE",
+      "DEIXIS_ELLIPSIS",
+      "PRAGMATIC_INTENT",
+      "PLAN_RESULT_BOUNDARY",
+      "EVIDENCE_GROUNDED_REALIZATION"
+    ],
+    "cross_axis_invariants": [
+      "TURN_STATE_ALIGNED",
+      "AMBIGUITY_FAILS_CLOSED",
+      "GOAL_PLAN_PROVENANCE_COMPLETE",
+      "LANGUAGE_REPORT_CANNOT_VERIFY_RESULT",
+      "REALIZATION_CLAIMS_HAVE_TYPED_SOURCES",
+      "OUTPUT_MATCHES_GROUNDED_REALIZATION",
+      "LANGUAGE_SEMANTIC_AUTHORITY_ABSENT",
+      "PACKAGE_DEPENDENCY_POINTS_TOWARD_CORE"
+    ],
+    "component_hashes_recomputed_from_live_ir": true,
+    "integration_hash_sealed": true,
+    "cargo_manifest_hashes_bound": true,
+    "semantic_authority": false,
+    "language_can_execute": false,
+    "external_action_executed": false
+  },
+  "portable_package": {
+    "path": "pakage",
+    "package_id": "B_CORE_PORTABLE_PRODUCT_CORE_R43_WORKTREE_ABI1",
+    "source_base_commit": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+    "source_worktree_status": "UNCOMMITTED_R13_R43_LANGUAGE_CORTEX_INTEGRATION",
+    "dependency_direction": "LANGUAGE_ADAPTER_TO_SEMANTIC_CORE_ONLY",
+    "adapter_product_files_synced": 42,
+    "adapter_product_hash_mismatches": 0,
+    "core_files_synced": 20,
+    "core_hash_mismatches": 0,
+    "research_canaries_included": 0,
+    "minimal_runtime_canaries_passed": 4,
+    "minimal_runtime_canaries_total": 4,
+    "workspace_unit_tests_passed": 386,
+    "workspace_unit_tests_total": 386,
+    "cargo_test_workspace": "PASS",
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_BOUNDED_HISTORICAL_HARNESS_EXCEPTIONS",
+    "network_or_llm_cargo_dependency_hits": 0,
+    "adapter_owns_semantic_state": false,
+    "semantic_reasoning_workspace_member": false,
+    "recursive_workspace_member": false,
+    "default_runtime": "RUST_ONLY",
+    "python_paddle_ocr": "OPTIONAL_DISABLED_BY_DEFAULT"
+  },
+  "verification": {
+    "metadata_discovered_workspace_canary_binaries_passed": 81,
+    "metadata_discovered_workspace_canary_binaries_total": 81,
+    "adapter_canary_binaries_passed": 77,
+    "adapter_canary_binaries_total": 77,
+    "adapter_unit_tests_passed": 359,
+    "adapter_unit_tests_total": 359,
+    "workspace_library_tests_passed": 882,
+    "workspace_library_tests_total": 882,
+    "workspace_binary_tests_passed": 1,
+    "workspace_binary_tests_total": 1,
+    "cargo_test_workspace": "PASS",
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_BOUNDED_HISTORICAL_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "temporary_debug_marker_hits": 0,
+    "unit_invariants_added": 6,
+    "build_cache_cleanup": {
+      "root_target": {
+        "path": "I:\\B_Core\\target",
+        "files_before": 17610,
+        "bytes_before": 30655455523,
+        "cargo_clean_reported_size": "28.6 GiB",
+        "target_exists_after": false
+      },
+      "package_target": {
+        "path": "I:\\B_Core\\pakage\\target",
+        "files_before": 5467,
+        "bytes_before": 3665581249,
+        "cargo_clean_reported_size": "3.4 GiB",
+        "target_exists_after": false
+      }
+    }
+  },
+  "safety": {
+    "unsupported_realization_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_cortex_path": 0,
+    "recursive_source_mutations": 0,
+    "semantic_authority": false,
+    "external_action_execution_authority": false,
+    "implementation_language": "RUST"
+  },
+  "limitations": [
+    "R43 validates a bounded deterministic Korean/English Language Cortex; it does not establish unrestricted open-domain GPT-level equivalence.",
+    "Internal SHA-256 seals detect mutation but are not an external executor signature or trust root.",
+    "The portable package is synchronized from an explicitly uncommitted R13-R43 worktree and is not represented as a sealed commit.",
+    "The optional Python PaddleOCR compatibility feature exists but is disabled by default and is absent from the Language Cortex path."
+  ],
+  "preexisting_user_change_preserved": {
+    "path": "crates/semantic-reasoning/src/growth_supervisor.rs",
+    "exact_change": ".filter(|entry| { !entry.file_name().to_string_lossy().starts_with(\"failure_\") })"
+  },
+  "completion": {
+    "planned_major_stages_remaining": 0,
+    "six_axis_engineering_program_complete": true,
+    "portable_package_gate_complete": true,
+    "gpt_level_open_domain_equivalence_proven": false,
+    "final_integration_stage": true
+  }
+}

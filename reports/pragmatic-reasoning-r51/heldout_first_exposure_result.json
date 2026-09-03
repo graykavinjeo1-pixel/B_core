@@ -1,0 +1,29 @@
+{
+  "schema": "B_CORE_R51_DEFEASIBLE_DISCOURSE_DECISION_CANARY_1",
+  "suite": "R51_DEFEASIBLE_DISCOURSE_DECISION_HELDOUT",
+  "exposure": 1,
+  "total": 8,
+  "passed": 3,
+  "failed": 5,
+  "response_contracts_valid": 8,
+  "authority_violations": 0,
+  "unsupported_explanation_facts": 0,
+  "failed_case_ids": [
+    "R51H_02",
+    "R51H_03",
+    "R51H_04",
+    "R51H_05",
+    "R51H_07"
+  ],
+  "failure_boundaries": [
+    "Korean 줄 때 was not classified as a direct benefit cue.",
+    "A negative stopping branch could displace the remembered current task.",
+    "A Korean continuation failed to form a gate and leaked an immediate CONTINUE goal.",
+    "The English assessment nominal did not ground to INVESTIGATE.",
+    "The Korean 평가하다 connective form did not ground to INVESTIGATE."
+  ],
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "B_CORE_R51_DIAGNOSTIC_BASELINE_1",
+  "suite": "R51_DEFEASIBLE_DISCOURSE_DECISION_DIAGNOSTIC",
+  "frozen_before_implementation": true,
+  "total": 12,
+  "passed": 1,
+  "failed": 11,
+  "failure_clusters": {
+    "conditional_continuation_binding": ["R51_01", "R51_02"],
+    "cross_turn_current_task_recovery": ["R51_03", "R51_04"],
+    "attributed_command_override": ["R51_05", "R51_06"],
+    "implicit_problem_repair": ["R51_07", "R51_08"],
+    "capability_question_correction": ["R51_09", "R51_10"],
+    "quoted_instruction_explanation": ["R51_11"]
+  },
+  "diagnostic_manifest_sha256": "8b46dcc53bd6f8601cadfef45aba0ed88c070b5df2701c0a5430cc6180cd6c3f",
+  "diagnostic_source_sha256": "5fcce593b630b87a7c516e73e17d71a902f3d410f33dda58859a1056563324bd",
+  "support_source_sha256": "b237b53468e4c5618d6435899d20248e4a1caaec05f1b4030fb779481ffa50f4",
+  "response_contract_valid_cases": 12,
+  "authority_violations": 0,
+  "unsupported_explanation_facts": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

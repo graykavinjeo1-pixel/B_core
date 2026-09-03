@@ -1,0 +1,160 @@
+{
+  "stage": "R63_ADVERSARIAL_API_REGRESSION_PACKAGE_API_SEAL",
+  "status": "PASS",
+  "disposition": "ADVERSARIAL_LANGUAGE_API_REGRESSED_PACKAGED_AND_SEALED",
+  "sealed": true,
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "commit_created": false,
+  "push_performed": false,
+  "canonical_integrity": {
+    "status": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "predecessor_integrity": {
+    "status": "PASS",
+    "predecessor_stage": "R62_FULL_AXIS_INTEGRATION",
+    "predecessor_report_json_sha256": "846b99ff54eab1fc04ef5bab86e325e6a7497afc2ad032289fac272973d4bcb9",
+    "predecessor_report_markdown_sha256": "363318875b898b800f23fb82548ccf754acea76c208ddb36f448953371131eaf"
+  },
+  "frozen_evaluators": {
+    "diagnostic_sha256": "bed2e07f39b9dd952b9f3bf40aee6f34ec57c9e3d1adaa23be9afc798ee4ca92",
+    "held_out_transfer_sha256": "ac1b58db33c19c3da8593388c93a75300539c22d517469aa8d6cb3c789b05865",
+    "public_api_seal_sha256": "b9e2d73720ee7c19dc3cae602968177339c958b1d856371c3d255b5379d809ee",
+    "r62_support_sha256": "deaa67306149bc1b984ba8fe860d7b6c814af37896ef0b618d79ef7ee26e6e51",
+    "unchanged_after_product_and_test_changes": true
+  },
+  "diagnostic": {
+    "fresh_cases": 18,
+    "first_frozen_run_passed": 9,
+    "first_frozen_run_failed": 9,
+    "final_passed": 18,
+    "final_failed": 0,
+    "final_rate_millis": 1000
+  },
+  "held_out_transfer": {
+    "fresh_cases": 12,
+    "first_exposure_passed": 4,
+    "first_exposure_failed": 8,
+    "first_exposure_rate_millis": 333,
+    "repair_progression_passed": [4, 9, 10, 11, 12],
+    "final_passed_after_structural_repair": 12,
+    "final_failed_after_structural_repair": 0,
+    "final_rate_millis": 1000,
+    "evaluator_modified_after_exposure": false
+  },
+  "public_api_seal": {
+    "passed": 7,
+    "failed": 0,
+    "schema_identity": "PASS",
+    "serde_round_trip": "PASS",
+    "live_validation": "PASS",
+    "tamper_rejection": "PASS",
+    "portable_package_boundary": "PASS",
+    "rust_only_default_runtime": "PASS",
+    "forbidden_dependency_counters_zero": "PASS"
+  },
+  "implementation": {
+    "conversation_response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_17",
+    "conversation_frontend_schema": "B_CORE_CONVERSATION_FRONTEND_3",
+    "response_integration_schema": "B_CORE_LANGUAGE_CORTEX_RESPONSE_INTEGRATION_IR_4",
+    "six_axis_integration_schema": "B_CORE_SIX_AXIS_INTEGRATION_IR_2",
+    "package_boundary_schema": "B_CORE_LANGUAGE_CORTEX_PACKAGE_BOUNDARY_IR_1",
+    "mixed_immediate_and_deferred_commitments_separated": true,
+    "deferred_candidates_removed_from_current_goal_ir": true,
+    "deferred_commitment_retained_non_authoritatively": true,
+    "quoted_command_inert_live_clause_preserved": true,
+    "korean_hold_floor_paraphrases_preserve_task": true,
+    "singular_result_ambiguity_fails_closed": true,
+    "plural_result_group_reference_preserved": true,
+    "independently_introduced_plural_people_fail_closed": true,
+    "clarification_precedes_stale_lifecycle_realization": true,
+    "late_prohibition_scope_bounded": true,
+    "plan_wording_distinguishes_execution": true
+  },
+  "historical_regression": {
+    "structural_realization_diagnostic": "PASS",
+    "structural_realization_transfer": "PASS",
+    "evidence_grounded_realization_diagnostic": "PASS",
+    "evidence_grounded_realization_transfer": "PASS",
+    "full_axis_integration_diagnostic": "PASS",
+    "full_axis_integration_transfer": "10/10",
+    "r63_diagnostic": "18/18",
+    "r63_transfer": "12/12",
+    "public_api_seal": "7/7",
+    "plural_result_compatibility_repair": "PERSISTENT_ACTION_GROUP_BINDING_RESTORED"
+  },
+  "verification": {
+    "fresh_r63_tasks_passed": 30,
+    "fresh_r63_tasks_total": 30,
+    "adapter_library_tests_passed": 465,
+    "adapter_library_tests_total": 465,
+    "workspace_substantive_tests_passed": 989,
+    "workspace_substantive_tests_total": 989,
+    "portable_package_tests_passed": 492,
+    "portable_package_tests_total": 492,
+    "portable_runtime_canaries_passed": 4,
+    "portable_runtime_canaries_total": 4,
+    "cargo_check_workspace": "PASS",
+    "cargo_test_workspace": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS_WITH_FROZEN_DEAD_CODE_AND_ESTABLISHED_COMPLEXITY_ALLOWANCES",
+    "cargo_fmt_product_sources": "PASS",
+    "cargo_fmt_package_all_targets": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "portable_package": {
+    "path": "pakage",
+    "package_id": "B_CORE_PORTABLE_PRODUCT_CORE_R63_WORKTREE_ABI1",
+    "source_base_commit": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+    "source_worktree_status": "UNCOMMITTED_R13_R63_ADVERSARIAL_API_REGRESSION",
+    "adapter_product_files_synced": 50,
+    "core_product_files_verified": 14,
+    "total_rust_product_source_files_verified": 64,
+    "product_source_hash_mismatches": 0,
+    "r63_research_canaries_included": 0,
+    "runtime_boundary_canaries": 4,
+    "package_manifest_sha256": "fbbcf53019d1e86dd11d25008bc01654cc0e57e602038f78a2cb01f981b80fa3",
+    "package_readme_sha256": "137256cea24b2ac280b80eaaaff2d7fb0bde3f54b6a300ef7972b2cdd91dd135",
+    "default_runtime": "RUST_ONLY",
+    "python_paddle_ocr": "OPTIONAL_DISABLED_BY_DEFAULT"
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_r63_language_path": 0,
+    "recursive_source_mutations": 0,
+    "full_catalog_scans": 0,
+    "routing_false_negatives": 0,
+    "authority_violations": 0,
+    "unsupported_explanation_facts": 0,
+    "preexisting_growth_supervisor_user_change_preserved": true,
+    "protected_line": ".filter(|entry| { !entry.file_name().to_string_lossy().starts_with(\"failure_\") })"
+  },
+  "build_cache_cleanup": {
+    "cleanup_method": "cargo clean in each verified workspace",
+    "root_target_files_removed": 19730,
+    "root_target_bytes_removed": 13778152778,
+    "package_target_files_removed": 5434,
+    "package_target_bytes_removed": 3783363735,
+    "root_target_absent_after_cleanup": true,
+    "package_target_absent_after_cleanup": true,
+    "status": "COMPLETE"
+  },
+  "known_bounded_residuals": {
+    "unrestricted_gpt_level_equivalence_claimed": false,
+    "broad_open_domain_dialogue_claimed": false,
+    "deterministic_structural_language_boundary": "PASS",
+    "generative_neural_language_model_included": false
+  },
+  "completion_boundary": {
+    "r63_complete": true,
+    "package_api_sealed": true,
+    "defined_language_engineering_macro_stages_remaining": 0,
+    "broad_gpt_level_objective_complete": false,
+    "unrestricted_gpt_level_equivalence_claimed": false,
+    "next_stage_started": false
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "stage": "R59_UTTERANCE_INTENT_AND_PRAGMATIC_INFERENCE",
+  "status": "PASS",
+  "disposition": "BOUNDED_UTTERANCE_INTENT_GRAPH_REPAIRED_REINTEGRATED_AND_SEALED",
+  "sealed": true,
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "commit_created": false,
+  "push_performed": false,
+  "canonical_integrity": {
+    "status": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "predecessor_integrity": {
+    "status": "PASS",
+    "predecessor_stage": "R58_REFERENCE_RESOLUTION_COMPOSITION",
+    "predecessor_report_json_sha256": "94ce83529df2cda93682c583f98f727c9eb6ce64183fd231b4cd9ee570525b32",
+    "predecessor_report_markdown_sha256": "2cb80f71a32e4b0e14f62effd450cc6232be3c7bf08f74cd071dc2d418a6a7f0"
+  },
+  "frozen_evaluators": {
+    "support_sha256": "5617ccf4eb53a471ae528ff5409f118c7cc0d9aeaa06084b9505aeeb7c34e13c",
+    "diagnostic_sha256": "748653bf10666e41a64d00840aa0b085d39d7111aae17197e7c90b6c15bfdf89",
+    "held_out_transfer_sha256": "68864e9000e4151f44c51bdff5d87299c46c98e071044ad7323d78e729006657",
+    "unchanged_after_product_and_test_changes": true
+  },
+  "diagnostic": {
+    "suite": "R59_UTTERANCE_INTENT_PRAGMATIC_INFERENCE_DIAGNOSTIC",
+    "initial_baseline_passed": 0,
+    "initial_baseline_total": 16,
+    "baseline_failures": [
+      "no typed utterance-intent graph existed",
+      "problem disclosures remained literal observations instead of bounded response requests",
+      "evidence, recommendation, explanation, and summary requests lacked a shared typed interface",
+      "response-goal correction could be displaced by stale action candidates",
+      "conditional decision requests were not separated from immediate action authority",
+      "prior-context references could project a goal without a valid antecedent"
+    ],
+    "final_passed": 16,
+    "final_total": 16,
+    "graph_contracts_valid": 16,
+    "authority_violations": 0
+  },
+  "held_out_transfer": {
+    "suite": "R59_UTTERANCE_INTENT_PRAGMATIC_INFERENCE_HELDOUT",
+    "held_out_until_diagnostic_passed": true,
+    "first_exposure_passed": 8,
+    "first_exposure_total": 10,
+    "first_exposure_failures": [
+      "R59_H07_RESPONSE_GOAL_CORRECTION_PRIORITY",
+      "R59_H08_RESPONSE_GOAL_CORRECTION_PRIORITY"
+    ],
+    "first_exposure_observation_provenance": "Preserved terminal observation; the original output handle was unavailable after terminal compaction, while the frozen source hashes remained unchanged.",
+    "final_passed": 10,
+    "final_total": 10,
+    "graph_contracts_valid": 10,
+    "authority_violations": 0
+  },
+  "implementation": {
+    "utterance_intent_graph_schema": "B_CORE_UTTERANCE_INTENT_GRAPH_IR_1",
+    "new_product_module": "crates/semantic-core-adapters/src/utterance_intent.rs",
+    "new_product_module_sha256": "52618889285cdf2f99b1269e95f7523883566d2b4e435ffe9aee25aa47a0402f",
+    "pragmatic_intent_source_sha256": "1ec42b09e05dfe7684065bc946eb72d2611a656914b44cacb39fbfedd0c9a95d",
+    "pragmatics_source_sha256": "090e7348ea81b434883c816b155acf609d75a3aba04dd33e1cff2ab369d5532e",
+    "cognitive_source_sha256": "6f0689c08ae18ca62c2dcba163a91abb6baeb90ae5ca441a9c38710bc42b375a",
+    "conversation_source_sha256": "ee5f976a3788c0f948d4b22fdfdc0ed9dae3b32e0fbbf5586789b4ebc32f00b2",
+    "topic_context_source_sha256": "e75d154db567554ca24d3329956c8bbc959be996c4c6311dd5fe0584a5615111",
+    "modality_source_sha256": "171a8479b19ff3ef9554631744da9a020e5ae65cef7e4b8b022e07bc4e445157",
+    "public_exports_source_sha256": "e777537b9cb53bb4b659de559e9fb6558cdbc2e55a7c00c22d945e29fa52c33e",
+    "conversation_response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_14",
+    "conversation_frontend_schema": "B_CORE_CONVERSATION_FRONTEND_3",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_27",
+    "pragmatic_memory_schema": "B_CORE_PRAGMATIC_MEMORY_STATE_IR_2",
+    "max_utterance_signals": 32,
+    "max_utterance_candidates": 8,
+    "response_goal_types": [
+      "DIAGNOSIS_OR_NEXT_STEP",
+      "EVIDENCE",
+      "RECOMMENDATION",
+      "EXPLANATION",
+      "SUMMARY",
+      "CONDITIONAL_DECISION"
+    ],
+    "contextless_prior_reference": "PRESERVED_UNRESOLVED_FAIL_CLOSED",
+    "explicit_compositional_request_priority": true,
+    "response_goal_correction_priority": true,
+    "active_action_failure_report_boundary_preserved": true,
+    "retired_referents_pruned_from_suspended_topic_contexts": true,
+    "korean_prohibition_not_conditional": true,
+    "korean_desiderative_request_not_conditional": true,
+    "source_and_context_hash_validation": true,
+    "semantic_authority": false,
+    "external_execution_authorized": false,
+    "core_abi_changed": false
+  },
+  "selected_historical_regression": {
+    "suites_passed": 20,
+    "suites_total": 20,
+    "families": [
+      "R28_PRAGMATIC_INTENT",
+      "R30_ACTION_STATE_BOUNDARY",
+      "R40_COMPOSITIONAL_PRAGMATIC_INTENT",
+      "SPEECH_ACT_REALIZATION",
+      "EVIDENCE_GROUNDED_REALIZATION",
+      "TOPIC_CONTEXT_CONSOLIDATION",
+      "REFERENCE_RESOLUTION_COMPOSITION",
+      "SIX_AXIS_INTEGRATION",
+      "ILLOCUTIONARY_COMMITMENT"
+    ],
+    "r30_action_state_diagnostic": "32/32",
+    "r50_legacy_fixture_status": "SCHEMA_ONLY_COMPATIBILITY_FIXTURE",
+    "r50_legacy_fixture_detail": "The frozen R50 fixture expects response schema 13 while the valid live response is additive schema 14; behavioral invariants remain valid and the frozen fixture was not rewritten."
+  },
+  "verification": {
+    "fresh_r59_tasks_passed": 26,
+    "fresh_r59_tasks_total": 26,
+    "adapter_library_tests_passed": 454,
+    "adapter_library_tests_total": 454,
+    "workspace_substantive_tests_passed": 978,
+    "workspace_substantive_tests_total": 978,
+    "portable_package_tests_passed": 481,
+    "portable_package_tests_total": 481,
+    "portable_runtime_canaries_passed": 4,
+    "portable_runtime_canaries_total": 4,
+    "cargo_test_workspace": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS_WITH_ESTABLISHED_TOO_MANY_ARGUMENTS_AND_MANUAL_IS_MULTIPLE_OF_ALLOWANCES",
+    "cargo_fmt_product_sources": "PASS",
+    "cargo_fmt_package_all_targets": "PASS",
+    "cargo_fmt_root_all_targets": "FROZEN_R57_TRANSFER_SOURCE_EXCEPTION",
+    "cargo_fmt_root_exception": "Only topic_context_consolidation_transfer_canary.rs would be reformatted; it remains byte-identical to its sealed first-exposure source.",
+    "git_diff_check": "PASS"
+  },
+  "portable_package": {
+    "path": "pakage",
+    "package_id": "B_CORE_PORTABLE_PRODUCT_CORE_R59_WORKTREE_ABI1",
+    "source_base_commit": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+    "source_worktree_status": "UNCOMMITTED_R13_R59_UTTERANCE_INTENT_PRAGMATIC_INFERENCE",
+    "adapter_product_files_synced": 48,
+    "total_rust_product_source_files_verified": 62,
+    "product_source_hash_mismatches": 0,
+    "r59_research_canaries_included": 0,
+    "runtime_boundary_canaries": 4,
+    "package_manifest_sha256": "a79b27c7a57fa508c4a11cfd1dc49b4f62c907fbbcc7ea98b6f352255f7df580",
+    "package_readme_sha256": "34b881b896745f71b34ccbb6f89bbd86ca7e699021ea2d7720827d08d1c052dd",
+    "default_runtime": "RUST_ONLY",
+    "python_paddle_ocr": "OPTIONAL_DISABLED_BY_DEFAULT"
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_r59_language_path": 0,
+    "recursive_source_mutations": 0,
+    "full_catalog_scans": 0,
+    "routing_false_negatives": 0,
+    "authority_violations": 0,
+    "unsupported_explanation_facts": 0,
+    "preexisting_growth_supervisor_user_change_preserved": true,
+    "protected_line": ".filter(|entry| { !entry.file_name().to_string_lossy().starts_with(\"failure_\") })"
+  },
+  "known_bounded_residuals": [
+    "R59 establishes bounded deterministic Korean/English communicative-intent inference, not unrestricted open-domain language understanding.",
+    "The response-goal graph selects among a controlled set of response obligations; broader pragmatic induction remains an explicit later extension.",
+    "Plan/result lifecycle separation, realization quality, and full cross-axis interference remain R60, R61, and R62 responsibilities."
+  ],
+  "build_cache_cleanup": {
+    "cleanup_method": "cargo clean in each verified workspace",
+    "root_target_files_removed": 14272,
+    "root_target_bytes_reported": "13.0GiB",
+    "package_target_files_removed": 5434,
+    "package_target_bytes_reported": "3.5GiB",
+    "root_target_absent_after_cleanup": true,
+    "package_target_absent_after_cleanup": true,
+    "status": "COMPLETE"
+  },
+  "completion_boundary": {
+    "r59_complete": true,
+    "r59_reintegrated_with_existing_response_boundary": true,
+    "remaining_success_assumed_macro_stages": 4,
+    "next_macro_stage": "R60_EXECUTION_RESULT_VERSUS_PLAN_STATE_SEPARATION",
+    "final_integration_macro_stage": "R62_FULL_AXIS_INTEGRATION",
+    "final_sealing_macro_stage": "R63_ADVERSARIAL_REGRESSION_PACKAGE_API_SEAL",
+    "broad_gpt_level_objective_complete": false,
+    "unrestricted_gpt_level_equivalence_claimed": false,
+    "next_stage_started": false
+  }
+}

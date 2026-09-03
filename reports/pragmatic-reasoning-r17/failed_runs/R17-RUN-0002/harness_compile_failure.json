@@ -1,0 +1,14 @@
+{
+  "run": "R17-RUN-0002",
+  "kind": "HELD_OUT_HARNESS_COMPILE_FAILURE_BEFORE_CASE_EXECUTION",
+  "semantic_cases_executed": 0,
+  "cause": "The final one_turn call omitted the required category argument",
+  "repair": "Added only the missing mixed_social_and_content category string; no held-out predicate or semantic input changed",
+  "rust_errors": [
+    "E0061",
+    "E0282"
+  ],
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0
+}

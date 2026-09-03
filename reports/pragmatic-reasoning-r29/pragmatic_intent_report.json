@@ -1,0 +1,114 @@
+{
+  "stage": "R29_PRAGMATIC_INTENT_INFERENCE",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "diagnostic": {
+    "suite": "R29-RUN-0001",
+    "sha256": "45a79914296a22266b7c73971bdcea3abc69d765d53f273f0d7e2bd4b87d9719",
+    "frozen_before_product_changes": true,
+    "initial_passed": 0,
+    "initial_total": 32,
+    "final_passed": 32,
+    "final_total": 32,
+    "categories": {
+      "conventional_indirect_request": "4/4",
+      "preference_request": "4/4",
+      "advisory_suggestion": "4/4",
+      "rhetorical_evaluation": "4/4",
+      "information_question": "4/4",
+      "self_offer": "4/4",
+      "metalinguistic_mention": "4/4",
+      "goal_correction": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R29-RUN-0002",
+    "frozen_sha256": "4400021a184197842ff0ad5c1ad1ae5ae829a05a9b313fd0a4da91383a535415",
+    "held_out_until_after_diagnostic_repairs": true,
+    "first_semantic_execution_passed": 16,
+    "first_semantic_execution_total": 16,
+    "final_passed": 16,
+    "final_total": 16,
+    "oracle_changed_after_first_semantic_execution": false,
+    "product_repair_driven_by_held_out": false,
+    "product_repair_after_held_out_for_prior_regressions": true,
+    "regression_repair_note": "After the held-out suite passed, cumulative canaries exposed argument-correction and English noun/verb-boundary overreach. The shared classifier was narrowed without changing either R29 oracle."
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "cumulative_r1_r29_passed": 1155,
+  "cumulative_r1_r29_total": 1155,
+  "verification": {
+    "canary_binaries_initial_passed": 47,
+    "canary_binaries_initial_total": 49,
+    "canary_binaries_final_passed": 49,
+    "canary_binaries_final_total": 49,
+    "adapter_unit_tests_passed": 291,
+    "adapter_unit_tests_total": 291,
+    "workspace_library_tests_passed": 814,
+    "workspace_library_tests_total": 814,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_FROZEN_HARNESS_EXCEPTION",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments",
+    "clippy_exception": "The only exception is the already-frozen R29 diagnostic harness data constructor. Product code was refactored to satisfy clippy; changing the frozen harness would invalidate its authoritative hash.",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "temporary_debug_markers": 0,
+    "regression_repairs": [
+      "Metalinguistic suppression is scoped to quoted frames and does not erase an independent unquoted outer request.",
+      "Typed pragmatic projection runs after legacy authority reconciliation so legacy heuristics cannot overwrite the typed boundary.",
+      "Non-informational pragmatic questions are not intercepted by temporal, discourse, or dialogue QA routes.",
+      "Goal correction requires an action predicate, preserving noun-only argument corrections from the established discourse path.",
+      "English noun/verb filtering keeps `the report` nominal while allowing a verb after a clause boundary such as `No, inspect ...`."
+    ]
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed": 0,
+    "semantic_authority_from_pragmatic_intent": false,
+    "execution_authority_from_pragmatic_intent_graph": false,
+    "ambiguous_goal_corrections_fail_closed": true,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "PragmaticIntentGraphIR separates inferred speech-act force, goal projection, subject binding, confidence, and evidence from semantic authority.",
+    "Eight bounded intent kinds cover conventional indirect requests, preference requests, advisory suggestions, rhetorical evaluations, information questions, self offers, metalinguistic mentions, and goal corrections.",
+    "Requests may project a candidate GoalIR, suggestions remain advisory, and rhetorical, informational, self-directed, or metalinguistic forms cannot become external action execution claims.",
+    "A goal correction replaces one unambiguous active predicate with a different explicit predicate while inheriting the typed active subject; missing or competing bindings require clarification.",
+    "Shared Korean and English action morphology supplies inspect/review/verify and inflected variants without whole-sentence dispatch.",
+    "Question-routing gates preserve genuine information questions while preventing question-shaped requests, suggestions, and rhetorical evaluations from being misrouted as factual QA.",
+    "Every typed pragmatic graph forces semantic_authority=false and external_action_execution_authorized=false."
+  ],
+  "scope_assessment": {
+    "grammatical_composition": "R26_BOUNDED_TYPED_CLAUSE_GRAPH_PRESERVED_NOT_UNRESTRICTED_GRAMMAR",
+    "discourse_and_topic_state": "R27_BOUNDED_CLAUSE_AWARE_FOCUS_PRESERVED_NOT_GENERAL_MULTI_SPEAKER_DISCOURSE",
+    "deixis_and_ellipsis_resolution": "R28_BOUNDED_TYPED_FOCUS_BINDING_PRESERVED_GENERAL_BRIDGING_AND_PLURAL_REFERENCE_REMAIN_OPEN",
+    "speech_intent_and_pragmatics": "R29_BOUNDED_EIGHT_KIND_KOREAN_ENGLISH_INFERENCE_COMPLETE_GENERAL_IMPLICATURE_IRONY_SOCIAL_RELATIONS_AND_OPEN_VOCABULARY_REMAIN_OPEN",
+    "result_plan_distinction": "NEXT_DEPENDENCY_PRIOR_TYPED_BOUNDARY_PRESERVED_ARBITRARY_TOOL_RESULTS_REMAIN_OPEN",
+    "evidence_grounded_realization": "PRESERVED_BY_REGRESSION_OPEN_DOMAIN_CLAIM_LEVEL_PROVENANCE_REMAINS_OPEN"
+  },
+  "next_program_order": [
+    "execution-result versus plan distinction",
+    "evidence-grounded sentence realization"
+  ],
+  "next_residual": [
+    "indirect complaints and implicatures without explicit construction cues",
+    "irony and sarcasm without typed contextual evidence",
+    "social power, politeness, and multi-party commitment tracking",
+    "open-vocabulary action and role induction beyond the shared lexicon",
+    "tool-result provenance and plan-versus-observation interpretation",
+    "open-domain claim-level faithful realization",
+    "open-vocabulary GPT-level fluency"
+  ],
+  "pre_existing_user_change_preserved": "crates/semantic-reasoning/src/growth_supervisor.rs",
+  "commit_performed": false,
+  "push_performed": false
+}

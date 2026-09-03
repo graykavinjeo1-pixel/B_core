@@ -1,0 +1,74 @@
+{
+  "schema": "b_core.post_v3_productive_boundary.v1",
+  "purpose": "Measure structural repair of productive requests, constraints, ellipsis, correction, result queries, and affect/request contrast on fresh non-V3 surfaces.",
+  "official_score_boundary": {
+    "frozen_v3_evaluation_sha256": "6c0c41148f11ffd921fb8ae32d916e4daa9e764a217cfd3f46f09b79c1ec3682",
+    "frozen_v3_rerun": false,
+    "frozen_v3_result_mutated": false,
+    "new_final_gpt_similarity_claimed": false,
+    "latest_official_semantic_pragmatic_mean_basis_points": 4803
+  },
+  "fresh_development_suite": {
+    "binary": "response-boundary-productive-canary",
+    "frozen_v3_prompts_reused": false,
+    "case_count": 36,
+    "family_count": 6,
+    "cases_per_family": 6,
+    "baseline_passed": 6,
+    "baseline_failed": 30,
+    "baseline_rate_basis_points": 1666,
+    "final_passed": 36,
+    "final_failed": 0,
+    "final_rate_basis_points": 10000,
+    "families": {
+      "PRODUCTIVE_REQUEST": "6/6",
+      "CONSTRAINT_INHERITANCE": "6/6",
+      "OPERATION_ELLIPSIS": "6/6",
+      "RETARGET_CORRECTION": "6/6",
+      "VERIFIED_RESULT_QUERY": "6/6",
+      "AFFECT_REQUEST_CONTRAST": "6/6"
+    }
+  },
+  "structural_repairs": [
+    "A unique compositional frame may fill one lexically unbound theme without replacing the operation or erasing other ambiguity.",
+    "Operation inheritance is typed separately from historical result queryability through operation_replayable.",
+    "Withdrawn operations cannot be reactivated by ellipsis.",
+    "Retarget, constraint continuation, and operation ellipsis outrank overlapping carrier verbs without granting execution authority.",
+    "Native and legacy projections cannot overwrite a one-goal intent/subject disagreement silently.",
+    "Result-content questions are separated from verification-status and plan-only boundaries."
+  ],
+  "preserved_regressions": {
+    "gpt_gap_structural_transfer_passed": 24,
+    "gpt_gap_structural_transfer_total": 24,
+    "language_completion_metamorphic_passed": 100,
+    "language_completion_metamorphic_total": 100,
+    "semantic_core_adapters_library_passed": 567,
+    "semantic_core_adapters_library_failed": 0
+  },
+  "safety": {
+    "unsupported_explanation_facts": 0,
+    "semantic_authority_violations": 0,
+    "execution_authority_violations": 0,
+    "false_execution_or_result_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "recursive_source_mutations": 0
+  },
+  "validation": {
+    "cargo_fmt_all_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": "PASS",
+    "package_product_rust_files": 53,
+    "root_package_hash_mismatches": 0,
+    "package_cargo_fmt_all_check": "PASS",
+    "package_semantic_core_adapters_library_passed": 567,
+    "package_semantic_core_adapters_library_failed": 0,
+    "package_cargo_test": "PASS"
+  },
+  "decision": {
+    "typed_response_boundary_development_gate_closed": true,
+    "language_cortex_campaign_complete": false,
+    "reason": "The repaired boundary is fully passing on fresh development and fixed transfer suites, but completion still requires a newly sealed independent GPT-reference final evaluation."
+  }
+}

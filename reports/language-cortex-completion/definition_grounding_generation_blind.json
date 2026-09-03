@@ -1,0 +1,39 @@
+{
+  "schema": "B_CORE_DEFINITION_GROUNDING_GENERATION_BLIND_REPORT_1",
+  "suite": "DEFINITION-GROUNDING-GENERATION-BLIND-R28-RUN-0001",
+  "frozen_before_first_execution": true,
+  "fresh_cases": 14,
+  "passed": 14,
+  "failed": 0,
+  "cross_language_semantic_pairs": 7,
+  "cross_language_semantic_pairs_passed": 7,
+  "generative_path_rate_millis": 1000,
+  "categories": {
+    "new_alias_binding": 2,
+    "existing_alias_confirmation": 2,
+    "conflicting_redefinition": 2,
+    "questioned_definition": 2,
+    "multiple_meanings": 2,
+    "unknown_definition_target": 2,
+    "invalid_alias_surface": 2
+  },
+  "consuming_dispositions_covered": 6,
+  "canonical_operator_ids_retained_in_typed_ir": true,
+  "canonical_operator_ids_emitted_to_user": false,
+  "language_specific_action_labels_selected": true,
+  "semantic_payload_mutations": 0,
+  "unsupported_explanation_facts": 0,
+  "internal_operator_surface_leaks": 0,
+  "semantic_authority": false,
+  "execution_authority": false,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0,
+  "legacy_transfer_observation": {
+    "passed": 18,
+    "total": 20,
+    "stale_cases": ["R44_TSCOPE_01", "R44_TSCOPE_02"],
+    "reason": "The frozen legacy expectations require NO_PLAN, while the current typed planner correctly retains the requested EXPLAIN action and excludes the prohibited REPAIR action."
+  }
+}

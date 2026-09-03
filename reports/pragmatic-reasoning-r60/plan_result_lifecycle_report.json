@@ -1,0 +1,200 @@
+{
+  "stage": "R60_PLAN_EXECUTION_REPORT_RESULT_LIFECYCLE_SEPARATION",
+  "status": "PASS",
+  "disposition": "TYPED_PLAN_REPORT_EXECUTION_RESULT_BOUNDARY_REPAIRED_REINTEGRATED_AND_SEALED",
+  "sealed": true,
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "commit_created": false,
+  "push_performed": false,
+  "canonical_integrity": {
+    "status": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "predecessor_integrity": {
+    "status": "PASS",
+    "predecessor_stage": "R59_UTTERANCE_INTENT_AND_PRAGMATIC_INFERENCE",
+    "predecessor_report_json_sha256": "2ec02b6dfaaa4845812fcc8ca575440a4abb959a64286bc55c36e36c7b08ee84",
+    "predecessor_report_markdown_sha256": "a782d12a744fe9ce9d4c1636e365285562c7e3942ef430e57cd4f113bf3e593a"
+  },
+  "frozen_evaluators": {
+    "support_sha256": "0d49860aa95318d6f7985de943cde9e6e750f2bb38109628b1a11fc5ad5a4b36",
+    "diagnostic_sha256": "f8bc165e1b42e6330f44753950e766abd4718c563f5fc8318d0051bd8a3a2110",
+    "held_out_transfer_sha256": "aef82b34f05214bed94ef8172080027bef18612c7f67e758c544780cb3684513",
+    "unchanged_after_product_and_test_changes": true
+  },
+  "diagnostic": {
+    "suite": "R60_PLAN_RESULT_LIFECYCLE_DIAGNOSTIC",
+    "initial_preboundary_crash": "PUNCTUATION_ONLY_ENGLISH_WITHDRAWAL_FRAGMENT_REACHED_EPISTEMIC_FINGERPRINT",
+    "initial_preboundary_crash_repaired_generically": true,
+    "initial_baseline_passed": 0,
+    "initial_baseline_total": 16,
+    "baseline_failures": [
+      "no typed plan/result lifecycle boundary existed",
+      "plan, language report, verified execution, and terminal result were not exposed as independent response axes",
+      "lifecycle query focus was not bound to the action ledger",
+      "lifecycle state had no independent tamper-evident response component"
+    ],
+    "final_passed": 16,
+    "final_total": 16,
+    "boundary_contracts_valid": 16,
+    "authority_violations": 0
+  },
+  "held_out_transfer": {
+    "suite": "R60_PLAN_RESULT_LIFECYCLE_HELDOUT",
+    "held_out_until_diagnostic_passed": true,
+    "first_exposure_passed": 4,
+    "first_exposure_total": 10,
+    "first_exposure_failures": [
+      "R60_H01_KOREAN_IDIOMATIC_PLAN_ACTUAL_CONTRAST",
+      "R60_H02_ENGLISH_IDIOMATIC_PLAN_ACTUAL_CONTRAST",
+      "R60_H04_ENGLISH_CLAIM_RECEIPT_CONTRAST",
+      "R60_H06_ENGLISH_VERIFIED_TERMINAL_TRANSFER",
+      "R60_H09_KOREAN_RESPONSE_AXIS_CORRECTION",
+      "R60_H10_ENGLISH_RESPONSE_AXIS_CORRECTION"
+    ],
+    "final_passed": 10,
+    "final_total": 10,
+    "boundary_contracts_valid": 10,
+    "authority_violations": 0
+  },
+  "implementation": {
+    "plan_result_boundary_schema": "B_CORE_PLAN_RESULT_BOUNDARY_IR_1",
+    "action_lifecycle_snapshot_schema": "B_CORE_ACTION_LIFECYCLE_SNAPSHOT_IR_1",
+    "new_product_module": "crates/semantic-core-adapters/src/plan_result_boundary.rs",
+    "new_product_module_sha256": "4325fe3207326bab60d483d9ab00880683d4e1b047bd6f253c2592abab397b3e",
+    "cognitive_source_sha256": "828cd89fe7b21d3381943d0757c243218d4b0a97c544ed2369d1a1c79e9c6538",
+    "conversation_source_sha256": "8fc066ea63abcda74775dba33487c7b98b47a03511e7b9ff4141eeb82b06dfa5",
+    "language_cortex_integration_source_sha256": "fd44379da015fe05d1b6da70652d1cc4dff29bedee3bc4f935fd3f0ddc32bbcd",
+    "six_axis_integration_source_sha256": "dd8e1540abe52e0409eae31741246b6ab7aeb44be2adefe57cacec11735fa4d8",
+    "conversation_response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_15",
+    "language_cortex_response_integration_schema": "B_CORE_LANGUAGE_CORTEX_RESPONSE_INTEGRATION_IR_2",
+    "conversation_frontend_schema": "B_CORE_CONVERSATION_FRONTEND_3",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_27",
+    "pragmatic_memory_schema": "B_CORE_PRAGMATIC_MEMORY_STATE_IR_2",
+    "independent_axes": [
+      "PLAN_STATUS",
+      "LANGUAGE_REPORTED_STATUS",
+      "HOST_VERIFIED_EXECUTION_STATUS",
+      "TERMINAL_RESULT_AVAILABILITY"
+    ],
+    "query_focus_types": [
+      "PLAN_STATE",
+      "REPORTED_STATE",
+      "VERIFIED_EXECUTION",
+      "VERIFIED_RESULT",
+      "PLAN_VERSUS_RESULT",
+      "REPORTED_VERSUS_RESULT",
+      "EXECUTION_VERSUS_PLAN"
+    ],
+    "language_report_can_advance_verified_execution": false,
+    "lifecycle_query_can_create_or_replace_plan": false,
+    "response_axis_correction_preserves_existing_action": true,
+    "explicit_explanation_goal_uses_goal_ir": true,
+    "specific_result_reference_response_precedence": true,
+    "semantic_authority": false,
+    "external_execution_authorized": false,
+    "core_abi_changed": false
+  },
+  "repairs_after_first_exposure": [
+    "idiomatic plan-versus-actual wording now selects PLAN_VERSUS_RESULT unless the plan is explicitly excluded",
+    "plan plus verified-fact wording now selects PLAN_VERSUS_RESULT",
+    "an English result question ending in too no longer becomes parallel action ellipsis",
+    "lifecycle queries and answer-axis corrections are consumed before goal commitment",
+    "status queries cannot supersede the existing action with a COMMUNICATE or EXECUTE plan",
+    "sentence-initial Actually with instead or rather than remains a goal correction rather than an execution observation",
+    "explicit explanation corrections are not swallowed by lifecycle lookup",
+    "language outcome reports and bound result references retain their more specific response paths",
+    "punctuation-only fragments cannot become epistemic propositions"
+  ],
+  "selected_historical_regression": {
+    "behavioral_suites_passed": 12,
+    "behavioral_suites_total": 12,
+    "r30_action_state_boundary": "48/48",
+    "r41_compositional_pragmatic_intent": "48/48",
+    "r43_six_axis_integration": "48/48",
+    "r59_utterance_intent_pragmatic_inference": "26/26",
+    "illocutionary_commitment": "40/40",
+    "evidence_grounded_realization": "48/48",
+    "r50_legacy_fixture_status": "SCHEMA_ONLY_COMPATIBILITY_FIXTURE",
+    "r50_legacy_fixture_score": "0/20",
+    "r50_live_behavioral_invariants": "20/20",
+    "r50_legacy_fixture_detail": "The frozen R50 fixture requires response schema 12 and integration IR_1, while the valid live response is additive schema 15 with integration IR_2. State alignment, embedded hashes, completeness, authority boundaries, and unsupported-claim counts remain valid in all 20 cases; the fixture was not rewritten."
+  },
+  "verification": {
+    "fresh_r60_tasks_passed": 26,
+    "fresh_r60_tasks_total": 26,
+    "adapter_library_tests_passed": 461,
+    "adapter_library_tests_total": 461,
+    "workspace_substantive_tests_passed": 985,
+    "workspace_substantive_tests_total": 985,
+    "portable_package_tests_passed": 488,
+    "portable_package_tests_total": 488,
+    "portable_runtime_canaries_passed": 4,
+    "portable_runtime_canaries_total": 4,
+    "cargo_test_workspace": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS_WITH_ESTABLISHED_TOO_MANY_ARGUMENTS_AND_MANUAL_IS_MULTIPLE_OF_ALLOWANCES",
+    "cargo_fmt_product_sources": "PASS",
+    "cargo_fmt_package_all_targets": "PASS",
+    "cargo_fmt_root_all_targets": "FROZEN_R57_TRANSFER_SOURCE_EXCEPTION",
+    "cargo_fmt_root_exception": "Only topic_context_consolidation_transfer_canary.rs would be reformatted; it remains byte-identical to its sealed first-exposure source.",
+    "git_diff_check": "PASS"
+  },
+  "portable_package": {
+    "path": "pakage",
+    "package_id": "B_CORE_PORTABLE_PRODUCT_CORE_R60_WORKTREE_ABI1",
+    "source_base_commit": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+    "source_worktree_status": "UNCOMMITTED_R13_R60_PLAN_RESULT_LIFECYCLE_SEPARATION",
+    "adapter_product_files_synced": 49,
+    "core_product_files_verified": 14,
+    "total_rust_product_source_files_verified": 63,
+    "product_source_hash_mismatches": 0,
+    "r60_research_canaries_included": 0,
+    "runtime_boundary_canaries": 4,
+    "package_manifest_sha256": "7524f11306b762a7f0018cebc780872fe8b0cbd3211ad0f432af214c78c7897c",
+    "package_readme_sha256": "d8076562a9c1056e03e7c6e3b54bce4ba98ecb05c883103996864b56a65a2293",
+    "default_runtime": "RUST_ONLY",
+    "python_paddle_ocr": "OPTIONAL_DISABLED_BY_DEFAULT"
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_r60_language_path": 0,
+    "recursive_source_mutations": 0,
+    "full_catalog_scans": 0,
+    "routing_false_negatives": 0,
+    "authority_violations": 0,
+    "unsupported_explanation_facts": 0,
+    "preexisting_growth_supervisor_user_change_preserved": true,
+    "protected_line": ".filter(|entry| { !entry.file_name().to_string_lossy().starts_with(\"failure_\") })"
+  },
+  "known_bounded_residuals": [
+    "R60 classifies a bounded Korean/English lifecycle vocabulary; it is not unrestricted open-domain temporal or causal language understanding.",
+    "The lifecycle realization is intentionally factual and compact. Broader evidence-grounded natural phrasing is the R61 responsibility.",
+    "Cross-axis interference beyond the selected historical suites remains an explicit R62 integration responsibility."
+  ],
+  "build_cache_cleanup": {
+    "cleanup_method": "cargo clean in each verified workspace",
+    "root_target_files_removed": 13158,
+    "root_target_bytes_reported": "11.4GiB",
+    "package_target_files_removed": 5434,
+    "package_target_bytes_reported": "3.5GiB",
+    "root_target_absent_after_cleanup": true,
+    "package_target_absent_after_cleanup": true,
+    "status": "COMPLETE"
+  },
+  "completion_boundary": {
+    "r60_complete": true,
+    "r60_reintegrated_with_existing_response_boundary": true,
+    "remaining_success_assumed_macro_stages": 3,
+    "next_macro_stage": "R61_EVIDENCE_GROUNDED_NATURAL_REALIZATION",
+    "final_integration_macro_stage": "R62_FULL_AXIS_INTEGRATION",
+    "final_sealing_macro_stage": "R63_ADVERSARIAL_REGRESSION_PACKAGE_API_SEAL",
+    "broad_gpt_level_objective_complete": false,
+    "unrestricted_gpt_level_equivalence_claimed": false,
+    "next_stage_started": false
+  }
+}

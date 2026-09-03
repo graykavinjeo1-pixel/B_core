@@ -1,0 +1,131 @@
+{
+  "stage": "R41_COMPOSITIONAL_PRAGMATIC_INTENT_GRAPH",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "commit_created": false,
+  "push_performed": false,
+  "diagnostic": {
+    "suite": "R41-RUN-0001",
+    "initial_frozen_sha256": "eff1b915cd3d58e0993a4133861908007e139317abf6e274df460413b47cb465",
+    "final_sha256": "8687a8f64e89ca6c60e0af0f0b491f7b53b17bd0ac967a6f7cb7ba649ee3e783",
+    "baseline_passed": 0,
+    "baseline_total": 28,
+    "repair_progression": [
+      "0/28 authoritative baseline before product changes",
+      "21/28 after the first typed clause-force graph and scoped selection",
+      "25/28 after alternative inheritance, local prohibition scope, and capability closure",
+      "27/28 after conditional-oracle safety correction",
+      "28/28 after suppressed-clause deictic isolation"
+    ],
+    "final_passed": 28,
+    "final_total": 28,
+    "categories": {
+      "reported_vs_request": "4/4",
+      "prohibition_alternative": "4/4",
+      "evaluation_then_request": "4/4",
+      "reason_condition_scope": "4/4",
+      "capability_not_request": "4/4",
+      "ambiguous_alternative": "4/4",
+      "multi_turn_correction": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R41-RUN-0002",
+    "initial_frozen_sha256": "e5f4e9387da9eadf4861479548f2aaa7ca46ecd77e9f7c5e8dc54121e6e47acd",
+    "final_sha256": "2f5d7cefd5985e0cf8c4121ce7195613834bf919aecc9d2bef6b5beae3d0a7d4",
+    "held_out_until_after_diagnostic_pass": true,
+    "first_exposure_passed": 7,
+    "first_exposure_total": 20,
+    "repair_progression": [
+      "7/20 first exposure",
+      "17/20 after deontic-vs-conditional, directive inheritance, alternative, correction, quote, and override repairs",
+      "19/20 after conditional fallback, quoted-label, and implicit prohibition-scope repairs",
+      "20/20 after clause-scoped conditional commitment fallback",
+      "19/20 during full-regression intervention narrowing",
+      "20/20 after asserted causal-consequence directive selection was bounded to the selected clause"
+    ],
+    "final_passed": 20,
+    "final_total": 20
+  },
+  "oracle_correction": {
+    "required": true,
+    "reason": "The first frozen condition cases incorrectly required an immediately authorized active goal. A conditional directive must remain a deferred commitment until its antecedent is verified.",
+    "change": "The oracle now accepts only a matching deferred action with external_execution_authorized_after_verification=true for CONDITIONS cases.",
+    "safety_weakened": false,
+    "product_behavior_changed_to_satisfy_invalid_immediate_authority": false
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "cumulative_r1_r40_passed": 1675,
+  "cumulative_r1_r40_total": 1675,
+  "cumulative_r1_r41_row_cases_passed": 1723,
+  "cumulative_r1_r41_row_cases_total": 1723,
+  "verification": {
+    "metadata_discovered_adapter_canary_binaries_passed": 73,
+    "metadata_discovered_adapter_canary_binaries_total": 73,
+    "row_based_blind_and_regression_cases_passed": 1723,
+    "row_based_blind_and_regression_cases_total": 1723,
+    "direct_response_special_cases_passed": 7,
+    "direct_response_special_cases_total": 7,
+    "adapter_canary_cases_including_direct_response_passed": 1730,
+    "adapter_canary_cases_including_direct_response_total": 1730,
+    "adapter_unit_tests_passed": 346,
+    "adapter_unit_tests_total": 346,
+    "workspace_library_tests_passed": 869,
+    "workspace_library_tests_total": 869,
+    "cargo_test_workspace": "PASS",
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_BOUNDED_HISTORICAL_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "unit_invariants_added": 7,
+    "build_cache_cleanup": {
+      "target": "I:\\B_Core\\target",
+      "files_before": 20020,
+      "bytes_before": 23913002930,
+      "cargo_clean_reported_size": "22.3 GiB",
+      "target_exists_after": false
+    }
+  },
+  "boundary": {
+    "legacy_pragmatic_schema_preserved": "B_CORE_PRAGMATIC_INTENT_GRAPH_IR_1",
+    "nested_composition_schema": "B_CORE_COMPOSITIONAL_PRAGMATIC_GRAPH_IR_1",
+    "semantic_authority": false,
+    "external_action_execution_authorized": false,
+    "graph_hash_sealed": true,
+    "ordinary_single_utterance_path_preserved": true,
+    "override_triggers": [
+      "typed action alternative ambiguity",
+      "correction or prohibition relation",
+      "reported action contrasted with a selected user request",
+      "capability-only question",
+      "selected conditional request missing a lower modal conditional",
+      "selected consequence directive after an evaluative or causal clause"
+    ]
+  },
+  "safety": {
+    "unsupported_realization_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_cortex_path": 0,
+    "recursive_source_mutations": 0,
+    "semantic_authority": false,
+    "external_action_execution_authority": false,
+    "implementation_language": "RUST"
+  },
+  "preexisting_user_change_preserved": {
+    "path": "crates/semantic-reasoning/src/growth_supervisor.rs",
+    "exact_change": ".filter(|entry| { !entry.file_name().to_string_lossy().starts_with(\"failure_\") })"
+  },
+  "next": {
+    "remaining_major_stages_if_successful": 2,
+    "next_stage": "R42_REQUEST_PLAN_OBSERVATION_RESULT_PROVENANCE",
+    "final_integration_stage": "R43_SIX_AXIS_INTEGRATION_AND_PACKAGE_GATE"
+  }
+}

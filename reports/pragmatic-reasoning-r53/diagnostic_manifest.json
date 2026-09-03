@@ -1,0 +1,61 @@
+{
+  "schema": "B_CORE_R53_DIAGNOSTIC_MANIFEST_1",
+  "stage": "R53_STRUCTURAL_PREDICATE_ARGUMENT_COMPOSITION_GENERALIZATION",
+  "suite": "R53_PREDICATE_ARGUMENT_COMPOSITION_DIAGNOSTIC",
+  "frozen_before_first_execution": true,
+  "frozen_before_product_implementation": true,
+  "case_count": 13,
+  "case_ids": [
+    "R53_01",
+    "R53_02",
+    "R53_03",
+    "R53_04",
+    "R53_05",
+    "R53_06",
+    "R53_07",
+    "R53_08",
+    "R53_09",
+    "R53_10",
+    "R53_11",
+    "R53_12",
+    "R53_13"
+  ],
+  "coverage": [
+    "English active two- and three-member argument coordination",
+    "English predicate-by-argument coordination cross product",
+    "English per-member quantifier scope",
+    "English passive coordinated patients",
+    "English coordinated comparison peers",
+    "Korean particle-marked two- and three-member argument coordination",
+    "Korean predicate-by-argument coordination cross product",
+    "Korean per-member quantifier scope",
+    "explicitly different predicate arguments remain distinct",
+    "quoted coordination remains structurally visible but non-authoritative",
+    "lexical compound boundary is not silently split"
+  ],
+  "diagnostic_source_sha256": "b9308040c6d288291574a07e08876bc1f3169e773035ab2f3f372b405f5d89be",
+  "diagnostic_support_sha256": "647aa37d3fa90264be00c9f8afde596efe069dc72b3a9cca89dac348b3aeb1c9",
+  "adapter_cargo_toml_sha256": "a3c982e9a4fc80e4e1ac5fa41b4fbf82c3981c560f996c7855ef2d476e3fde61",
+  "preimplementation_product_sha256": {
+    "semantic_roles.rs": "98cad8945a23ce2fd3c0c8179631324a6f55d75eec1e493886250903515d9d2b",
+    "compositional_semantics.rs": "3541dabcfc24350a7d3dbe455416a8f8d9786bce2f316d829dc083b19f6bb97d",
+    "clause_graph.rs": "811b242d07e0f858687d361a3acc3d70a0d2ef922ddbaf180dab953b9caf3c51"
+  },
+  "acceptance": {
+    "all_cases_pass": true,
+    "semantic_role_graph_valid": true,
+    "clause_graph_valid": true,
+    "coordinated_members_are_distinct_typed_nodes": true,
+    "shared_argument_set_is_reused_across_coordinated_predicates": true,
+    "explicit_distinct_arguments_are_not_overwritten": true,
+    "per_member_quantifiers_are_preserved": true,
+    "quoted_execution_authority": false,
+    "shared_binding_semantic_authority": false,
+    "shared_binding_execution_authority": false,
+    "whole_sentence_dispatches": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "recursive_source_mutations": 0
+  }
+}

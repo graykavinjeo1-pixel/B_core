@@ -1,0 +1,25 @@
+{
+  "run_id": "R16-RUN-0002",
+  "status": "FAIL",
+  "suite": "dialogue-path-transfer-canary",
+  "held_out_first_execution": true,
+  "total": 20,
+  "passed": 19,
+  "failed": 1,
+  "failed_case": {
+    "id": "CONCESSION_EN",
+    "category": "concession_not_causal",
+    "observed_disposition": "NO_MATCHING_DIALOGUE_RELATION",
+    "expected_disposition": "ANSWERED_FROM_DIALOGUE_RELATION"
+  },
+  "root_cause": "English query terms were stemmed while building the query and stemmed a second time during graph matching. Readiness therefore became readines and then readine on the query side while the graph side became readines once.",
+  "repair": "Treat query topic terms as already canonical and stem only the graph-side candidate once. Korean and English now follow the same one-normalization comparison contract.",
+  "final_suite": {
+    "total": 20,
+    "passed": 20,
+    "failed": 0
+  },
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0
+}

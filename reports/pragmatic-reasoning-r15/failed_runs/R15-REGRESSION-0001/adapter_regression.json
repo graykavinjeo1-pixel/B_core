@@ -1,0 +1,19 @@
+{
+  "run_id": "R15-REGRESSION-0001",
+  "status": "FAIL",
+  "suite": "cargo test -p semantic-core-adapters",
+  "total": 239,
+  "passed": 237,
+  "failed": 2,
+  "failed_tests": [
+    "cognitive::tests::indirect_cost_benefit_utterance_becomes_a_verified_continuation_gate",
+    "cognitive::tests::presuppositional_why_question_abstains_and_does_not_add_a_belief"
+  ],
+  "root_cause": "The first R15 QA integration attempted to answer relation questions even when no dialogue-relation graph existed, preempting the established pragmatic and presupposition paths.",
+  "repair": "Activate relation QA only when the conversation already contains a typed relation edge, and accept a question mark only at utterance end rather than anywhere inside a paragraph.",
+  "final_adapter_tests": {
+    "total": 239,
+    "passed": 239,
+    "failed": 0
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "stage": "R62_FULL_AXIS_INTEGRATION",
+  "status": "PASS",
+  "disposition": "SIX_LANGUAGE_AXES_INTEGRATED_REGRESSED_PACKAGED_AND_SEALED",
+  "sealed": true,
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "commit_created": false,
+  "push_performed": false,
+  "canonical_integrity": {
+    "status": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "predecessor_integrity": {
+    "status": "PASS",
+    "predecessor_stage": "R61_EVIDENCE_GROUNDED_NATURAL_REALIZATION",
+    "predecessor_report_json_sha256": "63003033ecd340f02766840ef1369643788544f59783154893fb97e75903e67d",
+    "predecessor_report_markdown_sha256": "30d36dc9e2cdef85012a4b083db4b7c928f1798f5d30a50d1b11fe374a9572a2"
+  },
+  "frozen_evaluators": {
+    "support_sha256": "deaa67306149bc1b984ba8fe860d7b6c814af37896ef0b618d79ef7ee26e6e51",
+    "diagnostic_sha256": "6bc680eeb86b1185f4ab982c11ef83f16a92467c6d85f7ce2602b3411ab1f99d",
+    "held_out_transfer_sha256": "fc64636de4ff741f4d8680f734e49a0b2ad773147bce1e51a61fc8b47a835270",
+    "unchanged_after_product_and_test_changes": true
+  },
+  "diagnostic": {
+    "fresh_cases": 16,
+    "first_frozen_run_passed": 0,
+    "repair_progression": [0, 7, 9, 13, 16],
+    "final_passed": 16,
+    "final_failed": 0,
+    "final_rate_millis": 1000
+  },
+  "held_out_transfer": {
+    "fresh_cases": 10,
+    "first_exposure_passed": 3,
+    "first_exposure_failed": 7,
+    "first_exposure_rate_millis": 300,
+    "final_passed_after_structural_repair": 10,
+    "final_failed_after_structural_repair": 0,
+    "final_rate_millis": 1000,
+    "evaluator_modified_after_exposure": false
+  },
+  "implementation": {
+    "conversation_response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_17",
+    "response_integration_schema": "B_CORE_LANGUAGE_CORTEX_RESPONSE_INTEGRATION_IR_4",
+    "six_axis_integration_schema": "B_CORE_SIX_AXIS_INTEGRATION_IR_2",
+    "integrated_axes": 6,
+    "typed_cross_axis_links": 8,
+    "live_cross_axis_invariants": 10,
+    "hold_floor_task_continuity": true,
+    "topic_scoped_result_fail_closed": true,
+    "result_slot_cannot_establish_execution": true,
+    "quoted_and_rejected_language_non_authoritative": true,
+    "multilingual_labeled_object_preservation": true,
+    "composed_prohibition_scope_preserved": true
+  },
+  "selected_historical_regression": {
+    "r22_structural_realization_diagnostic": "24/24",
+    "r22_structural_realization_transfer": "16/16",
+    "r31_evidence_grounded_realization_diagnostic": "32/32",
+    "r31_evidence_grounded_realization_transfer": "16/16",
+    "historical_regression_repair": "USER_REPORTED_FAILURE_REMAINS_ACTION_STATE_REPORT_NOT_RESULT_QUERY"
+  },
+  "verification": {
+    "fresh_r62_tasks_passed": 26,
+    "fresh_r62_tasks_total": 26,
+    "adapter_library_tests_passed": 465,
+    "adapter_library_tests_total": 465,
+    "workspace_substantive_tests_passed": 989,
+    "workspace_substantive_tests_total": 989,
+    "portable_package_tests_passed": 492,
+    "portable_package_tests_total": 492,
+    "portable_runtime_canaries_passed": 4,
+    "portable_runtime_canaries_total": 4,
+    "cargo_check_workspace": "PASS",
+    "cargo_test_workspace": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS_WITH_ESTABLISHED_TOO_MANY_ARGUMENTS_AND_MANUAL_IS_MULTIPLE_OF_ALLOWANCES",
+    "cargo_fmt_product_sources": "PASS",
+    "cargo_fmt_package_all_targets": "PASS",
+    "cargo_fmt_root_all_targets": "FROZEN_EVALUATOR_SOURCE_EXCEPTIONS_ONLY",
+    "cargo_fmt_root_exceptions": [
+      "full_axis_integration_canary.rs",
+      "full_axis_integration_canary_support.rs",
+      "full_axis_integration_transfer_canary.rs",
+      "natural_realization_canary.rs",
+      "natural_realization_transfer_canary.rs",
+      "topic_context_consolidation_transfer_canary.rs"
+    ],
+    "git_diff_check": "PASS"
+  },
+  "portable_package": {
+    "path": "pakage",
+    "package_id": "B_CORE_PORTABLE_PRODUCT_CORE_R62_WORKTREE_ABI1",
+    "source_base_commit": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+    "source_worktree_status": "UNCOMMITTED_R13_R62_FULL_AXIS_INTEGRATION",
+    "adapter_product_files_synced": 50,
+    "core_product_files_verified": 14,
+    "total_rust_product_source_files_verified": 64,
+    "product_source_hash_mismatches": 0,
+    "r62_research_canaries_included": 0,
+    "runtime_boundary_canaries": 4,
+    "package_manifest_sha256": "8583c2c7b31728fd0228c980625437151d8d4b086ea827d1d5cf85e17ccdae3e",
+    "package_readme_sha256": "8cc9df88f6f3345d7cf99e9061c6fea760b711f8a0b3bda39f0273e76cfb8fd5",
+    "default_runtime": "RUST_ONLY",
+    "python_paddle_ocr": "OPTIONAL_DISABLED_BY_DEFAULT"
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_r62_language_path": 0,
+    "recursive_source_mutations": 0,
+    "full_catalog_scans": 0,
+    "routing_false_negatives": 0,
+    "authority_violations": 0,
+    "unsupported_explanation_facts": 0,
+    "preexisting_growth_supervisor_user_change_preserved": true,
+    "protected_line": ".filter(|entry| { !entry.file_name().to_string_lossy().starts_with(\"failure_\") })"
+  },
+  "build_cache_cleanup": {
+    "cleanup_method": "cargo clean in each verified workspace",
+    "root_target_files_removed": 14811,
+    "root_target_bytes_removed": 9917939451,
+    "package_target_files_removed": 5701,
+    "package_target_bytes_removed": 4176936974,
+    "root_target_absent_after_cleanup": true,
+    "package_target_absent_after_cleanup": true,
+    "status": "COMPLETE"
+  },
+  "known_bounded_residuals": {
+    "unrestricted_gpt_level_equivalence_claimed": false,
+    "broad_open_domain_dialogue_claimed": false,
+    "controlled_structural_language_boundary": "PASS",
+    "remaining_macro_stage": "R63_ADVERSARIAL_REGRESSION_PACKAGE_API_SEAL"
+  },
+  "completion_boundary": {
+    "r62_complete": true,
+    "all_six_language_axes_integrated": true,
+    "remaining_success_assumed_macro_stages": 1,
+    "next_macro_stage": "R63_ADVERSARIAL_REGRESSION_PACKAGE_API_SEAL",
+    "final_sealing_macro_stage": "R63_ADVERSARIAL_REGRESSION_PACKAGE_API_SEAL",
+    "broad_gpt_level_objective_complete": false,
+    "unrestricted_gpt_level_equivalence_claimed": false,
+    "next_stage_started": false
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "stage": "R54_TOPIC_SCOPED_PRAGMATIC_STATE_GENERALIZATION",
+  "status": "PASS",
+  "disposition": "TOPIC_SCOPED_TASK_AND_PENDING_GATE_STATE_REPAIRED_REGRESSED_AND_REINTEGRATED",
+  "sealed": true,
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "commit_created": false,
+  "push_performed": false,
+  "canonical_integrity": {
+    "status": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "north_star_alignment": {
+    "life_cycle_step": "update world state from observed multi-turn topic transitions and fail closed on unresolved state",
+    "product_outcome": "restored topics recover only their own task and pending continuation gate",
+    "claim_only_work": false,
+    "user_agency_preserved": true,
+    "rollback_impact": "remove the R54 topic fields and topic-scoped selection while retaining the prior global pragmatic-memory wrappers"
+  },
+  "diagnostic": {
+    "suite": "R54_TOPIC_SCOPED_PRAGMATIC_STATE_DIAGNOSTIC",
+    "frozen_before_product_implementation": true,
+    "baseline_passed": 0,
+    "baseline_total": 10,
+    "baseline_contracts_valid": 10,
+    "baseline_authority_violations": 0,
+    "score_progression": ["0/10", "10/10"],
+    "final_passed": 10,
+    "final_total": 10,
+    "response_contracts_valid": 10,
+    "authority_violations": 0,
+    "unsupported_explanation_facts": 0,
+    "diagnostic_source_sha256": "a4d1f92bbca78d19699e769b23a5f055ac6e5ddf8c151c0ee6855566f68d607d",
+    "support_frozen_preformat_sha256": "f6a33a8b854cee4f1e277b82a9833f3d5d6eefb10d85526970171b856625fb44",
+    "support_final_rustfmt_sha256": "8212f8429b61f7fac237c1276530a34274434bccca3df151d6fd36faa17f6fba",
+    "semantic_cases_changed_after_freeze": 0,
+    "expectations_changed_after_freeze": 0,
+    "post_freeze_byte_change": "RUSTFMT_ONLY"
+  },
+  "held_out_transfer": {
+    "suite": "R54_TOPIC_SCOPED_PRAGMATIC_STATE_HELDOUT",
+    "frozen_after_diagnostic_repair": true,
+    "frozen_before_first_execution": true,
+    "source_frozen_preformat_sha256": "ce2b9d2ec75c44fa6973d254c0e75e358ca86b6f1dc352dbf2551fb28ecafcd8",
+    "source_final_rustfmt_sha256": "bd692f20a100aa1f33e1169b4787865f7af880e802bfb48e9bf7fbd7272de366",
+    "first_exposure_passed": 8,
+    "first_exposure_total": 8,
+    "final_passed": 8,
+    "final_total": 8,
+    "response_contracts_valid": 8,
+    "authority_violations": 0,
+    "unsupported_explanation_facts": 0,
+    "case_mutations_after_exposure": 0,
+    "expectation_mutations_after_exposure": 0,
+    "post_exposure_byte_change": "RUSTFMT_ONLY",
+    "coverage": [
+      "novel English and Korean topic surfaces",
+      "indexed return across two intervening topics",
+      "two independently suspended pending continuation gates",
+      "cross-language task and gate restoration",
+      "exact identity for similar topic surfaces",
+      "unseen topic fail-closed without global task leakage"
+    ]
+  },
+  "implementation": {
+    "repaired_boundaries": [
+      "topic-scoped task-frame storage and lookup",
+      "topic-scoped pending-continuation-gate storage and lookup",
+      "named, indexed, long-horizon, and cross-language topic return",
+      "explicit unseen-topic clarification instead of global-recency fallback",
+      "continuation-task anaphora kept outside generic entity resolution",
+      "UTF-8 source-frame offset validation before string slicing"
+    ],
+    "pragmatic_memory_state_schema": "B_CORE_PRAGMATIC_MEMORY_STATE_IR_2",
+    "conversation_turn_response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_12",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_25",
+    "core_abi_version": 1,
+    "public_response_schema_changed": false,
+    "conversation_state_schema_changed": false,
+    "core_abi_changed": false,
+    "nested_adapter_state_schema_changed": true,
+    "state_migration_notice": "Consumers that inspect or persist nested PragmaticMemoryStateIR must accept IR_2 additive topic fields; no persistence migration loader is claimed.",
+    "whole_sentence_dispatch_added": false,
+    "language_semantic_authority": false,
+    "language_execution_authority": false,
+    "external_action_execution_authority": false,
+    "semantic_payload_mutated": false,
+    "new_semantic_concept_generation": 0,
+    "product_source_sha256": {
+      "cognitive.rs": "b4be7b8fd09a251aae0ea2c1a04d30592291d1fdfc57dc76990f46f02438f963",
+      "pragmatic_memory.rs": "38cae7c1d3dca23b33cf224f652b4952ab3955767f8ba2a5507781403661c666",
+      "pragmatic_intent.rs": "bd61b49bfb1f5bb458e97885b838614e2981d2311b691e00e1c2fef68a14135b"
+    }
+  },
+  "verification": {
+    "fresh_r54_tasks_passed": 18,
+    "fresh_r54_tasks_total": 18,
+    "selected_historical_language_canary_tasks_passed": 215,
+    "selected_historical_language_canary_tasks_total": 215,
+    "adapter_library_tests_passed": 431,
+    "adapter_library_tests_total": 431,
+    "workspace_substantive_tests_passed": 954,
+    "workspace_substantive_tests_total": 954,
+    "portable_package_tests_passed": 458,
+    "portable_package_tests_total": 458,
+    "portable_runtime_canaries_passed": 4,
+    "portable_runtime_canaries_total": 4,
+    "cargo_test_workspace": "PASS",
+    "cargo_fmt_check_root_and_package": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_clippy_package_all_targets_deny_warnings": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "portable_package": {
+    "path": "pakage",
+    "package_id": "B_CORE_PORTABLE_PRODUCT_CORE_R54_WORKTREE_ABI1",
+    "source_base_commit": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+    "source_worktree_status": "UNCOMMITTED_R13_R54_TOPIC_SCOPED_PRAGMATIC_STATE_GENERALIZATION",
+    "adapter_product_files_synced": 44,
+    "adapter_product_hash_mismatches": 0,
+    "r54_research_canaries_included": 0,
+    "runtime_boundary_canary_source_files": 3,
+    "package_manifest_sha256": "70a57fb3ddde81c3e5dca83f9c6d71e8bbdf5f3c9e35ea642586882268e9b54a",
+    "default_runtime": "RUST_ONLY",
+    "python_paddle_ocr": "OPTIONAL_DISABLED_BY_DEFAULT"
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_r54_language_path": 0,
+    "recursive_source_mutations": 0,
+    "full_catalog_scans": 0,
+    "routing_false_negatives": 0,
+    "immediate_continue_authority_violations": 0,
+    "preexisting_growth_supervisor_user_change_preserved": true
+  },
+  "utf8_regression": {
+    "discovered_by": [
+      "R21_LONG_HORIZON_DISCOURSE",
+      "R40_TOPIC_ANCHORED_DEIXIS"
+    ],
+    "failure": "A mismatched byte offset could slice a Korean UTF-8 string at a non-character boundary.",
+    "repair": "Frame slicing now requires String::is_char_boundary and otherwise fails closed.",
+    "new_unit_test": "mismatched_utf8_frame_offset_fails_closed_instead_of_slicing_mid_character",
+    "historical_regressions_restored": true
+  },
+  "known_bounded_residuals": [
+    "Topic-scoped ResultIR and QUD restoration are not completed by R54.",
+    "Open-ended reference and ellipsis resolution beyond the typed continuation task remains bounded.",
+    "Topic identity depends on the existing deterministic discourse router and does not establish unrestricted open-domain topic understanding.",
+    "The package declares the nested IR_2 schema change but does not provide a persisted-state migration loader.",
+    "The evidence establishes bounded deterministic Korean/English transfer, not unrestricted GPT-level equivalence."
+  ],
+  "build_cache_cleanup": {
+    "root_target_files_removed": 14175,
+    "root_target_bytes_removed": 10735795627,
+    "package_target_files_removed": 6048,
+    "package_target_bytes_removed": 4354804603,
+    "root_target_absent_after_cleanup": true,
+    "package_target_absent_after_cleanup": true
+  },
+  "completion_boundary": {
+    "r54_complete": true,
+    "r54_reintegrated_with_existing_response_boundary": true,
+    "remaining_success_assumed_macro_stages": 7,
+    "next_macro_stage": "R55_REFERENCE_ELLIPSIS_AND_TOPIC_SCOPED_RESULT_QUD",
+    "separate_r54_integration_stage_required": false,
+    "broad_gpt_level_objective_complete": false,
+    "unrestricted_gpt_level_equivalence_claimed": false,
+    "next_stage_started": false
+  }
+}

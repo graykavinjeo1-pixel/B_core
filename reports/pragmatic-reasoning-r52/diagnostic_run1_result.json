@@ -1,0 +1,20 @@
+{
+  "schema": "B_CORE_R52_DIAGNOSTIC_RUN_RESULT_1",
+  "run": "R52-DIAGNOSTIC-RUN-0001",
+  "status": "INVALIDATED_BY_EVALUATOR_FIXTURE_ERROR",
+  "surface_total": 12,
+  "surface_passed": 1,
+  "fixture_error_case": "R52_09",
+  "fixture_error": "A true cross-turn result-absence response was incorrectly required to erase the prior active plan from conversation state.",
+  "semantic_cases_changed": 0,
+  "product_repairs_started": false,
+  "diagnostic_manifest_sha256": "de055634ef99a83a1fd79935990d3d9b984f03ca2c983ca906208013f19c31dc",
+  "diagnostic_source_sha256": "238a3f3ce57235625c1d6019fb5822fa083b8abd2dd2723f1e344d03af720dfb",
+  "diagnostic_support_sha256": "b0bc33e4d1fe8400a1d95ffebf7e8977c7212947962da57c434eee235b9a12dd",
+  "authority_violations": 0,
+  "unsupported_explanation_facts": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

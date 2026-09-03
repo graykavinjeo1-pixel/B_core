@@ -1,0 +1,23 @@
+{
+  "schema": "B_CORE_R52_DIAGNOSTIC_MANIFEST_1",
+  "stage": "R52_REFERENCE_SAFE_RESULT_ANAPHORA_GENERALIZATION",
+  "suite": "R52_REFERENCE_SAFE_RESULT_ANAPHORA_DIAGNOSTIC",
+  "frozen_before_product_implementation": true,
+  "case_count": 12,
+  "case_ids": [
+    "R52_01", "R52_02", "R52_03", "R52_04",
+    "R52_05", "R52_06", "R52_07", "R52_08",
+    "R52_09", "R52_10", "R52_11", "R52_12"
+  ],
+  "acceptance_invariants": [
+    "A continuation pronoun cannot bind to a negative stop branch or contaminate the required benefit.",
+    "A same-turn result anaphor binds to the preceding result-producing event without consulting flat cross-turn recency.",
+    "A true cross-turn result query remains distinct and cannot fabricate an execution result.",
+    "A result expression inside a quotation creates neither a reference obligation nor execution authority.",
+    "All responses validate against the live response contract with zero authority violations and unsupported facts."
+  ],
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

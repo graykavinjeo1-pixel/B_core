@@ -19,7 +19,9 @@ use crate::{
         MechanismKnowledgeInjectionReceiptIR, MechanismMemory, MechanismMemoryError,
         MechanismMemorySnapshotIR, MechanismQueryIR, RecalledMechanismIR,
     },
-    planning::{PlanGoalIR, PlanIR, Planner, PlanningError},
+    planning::{
+        PlanGoalIR, PlanIR, Planner, PlanningError, SemanticPlanBundleIR, SemanticPlanGoalIR,
+    },
     reasoning::{AdaptiveReasoner, ResourceBudget},
     state::{SemanticState, SparseIndex},
     swarm::{SwarmCore, SwarmDeliberationIR, SwarmDeliberationRequestIR, SwarmError},
@@ -176,6 +178,18 @@ impl DockableCore {
 
     pub fn generate_plan(&self, goal: &PlanGoalIR) -> Result<PlanIR, PlanningError> {
         self.planner.generate(goal, &self.experience_memory)
+    }
+
+    /// Plans directly from the language-independent semantic event graph.
+    /// The legacy scalar PlanGoalIR path remains available for ABI consumers,
+    /// but language adapters should use this boundary so event scope, roles,
+    /// relations, and multiple live goals cannot be flattened before planning.
+    pub fn generate_semantic_plan(
+        &self,
+        goal: &SemanticPlanGoalIR,
+    ) -> Result<SemanticPlanBundleIR, PlanningError> {
+        self.planner
+            .generate_semantic(goal, &self.experience_memory)
     }
 
     /// Runs a bounded internal panel. Worker roles are selected from typed

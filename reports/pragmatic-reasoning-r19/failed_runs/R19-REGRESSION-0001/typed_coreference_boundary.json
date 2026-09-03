@@ -1,0 +1,10 @@
+{
+  "run": "R19-REGRESSION-0001",
+  "kind": "FULL_CANARY_REGRESSION_FAILURE",
+  "failed_binary": "typed-coreference-canary",
+  "failure": "A strict Unicode token boundary correctly blocked the embedded person marker 그가 in 로그가, but also rejected valid Korean particle continuations such as 그녀의 주장을 and 그의 믿음을",
+  "repair": "Retained the strict left boundary and allowed only a bounded set of Korean postposition characters at the right boundary of a Korean marker",
+  "new_unit_test": "korean_particle_suffix_is_allowed_but_embedded_pronoun_is_not",
+  "final_binary_status": "PASS",
+  "all_canary_binaries_after_repair": "29/29"
+}

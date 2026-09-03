@@ -1,0 +1,132 @@
+{
+  "stage": "R17_GROUNDED_CONVERSATIONAL_REALIZATION_AND_FOCUS_FIDELITY",
+  "status": "PASS",
+  "scope": "Validated PlanIR realization, provenance-bound acronym casing, social-turn focus continuity, and direct bounded affect realization",
+  "canonical_integrity": {
+    "status": "PASS",
+    "canonical_file_count": 10,
+    "manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "implementation": {
+    "language": "Rust",
+    "conversation_response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_4",
+    "plan_preview_maximum_operations": 3,
+    "plan_preview_derived_from_structurally_validated_plan": true,
+    "plan_preview_claims_execution_completed": false,
+    "acronym_policy": {
+      "fixed_allowlist": false,
+      "requires_user_surface_provenance": true,
+      "minimum_uppercase_letters": 2,
+      "maximum_ascii_alphanumeric_length": 16,
+      "lowercase_letters_allowed": false
+    },
+    "focus_policy": {
+      "pure_social_turn_clears_active_goal": false,
+      "bound_result_event_or_proposition_replaces_active_goal": false,
+      "typed_reference_required": true
+    },
+    "affect_policy": {
+      "direct_realization": true,
+      "quoted_affect_is_user_affect": false,
+      "affect_alone_authorizes_mutation": false
+    },
+    "source_hashes": {
+      "crates/semantic-core-adapters/src/cognitive.rs": "88f33607c918d769e30d496bb4b86a53080367501c8a07dbea9ba2b7b159b85c",
+      "crates/semantic-core-adapters/src/conversation.rs": "19c7ede6c42bdd47be9dabddd0e6bb5d6184e6578b51f7f15bde576b4c72248e",
+      "crates/semantic-core-adapters/src/discourse_qa.rs": "4c0a03311c9c74fe3ce21ff9c0773bf506816426aa8a8da2be934cffd1dba3c3",
+      "crates/semantic-core-adapters/src/compositional_semantics.rs": "e904653ce0e603f27417fba75e9bdf88511f72b0a630e71342fdda5440ab1239",
+      "crates/semantic-core-adapters/src/conversation_realization_canary.rs": "620e65748ab408d7fe18e579acd54e7521520ca1636896b123a7249aab92432b",
+      "crates/semantic-core-adapters/src/conversation_realization_transfer_canary.rs": "4515c01b97e3486aca2dda55327208ff19c38c33616e4db7a1948f17ecd48a52",
+      "crates/semantic-core-adapters/Cargo.toml": "743a2102295702bc30a210d73e79e1b454039f6e152164e4fecccc6a03d846bd"
+    }
+  },
+  "final_suites": {
+    "R17-RUN-0001": {
+      "kind": "frozen_diagnostic",
+      "first_execution_reported": "1/24",
+      "first_execution_effective": "0/24",
+      "false_positive_reason": "The original affect assertion accepted the echoed token 답답 even though the output was still generic",
+      "final_execution": "24/24",
+      "total": 24,
+      "passed": 24,
+      "failed": 0
+    },
+    "R17-RUN-0002": {
+      "kind": "held_out_transfer_and_attack",
+      "pre_execution_harness_compile_failure": true,
+      "first_semantic_execution": "12/16",
+      "first_semantic_failure_class": "Bound reference succeeded but the explanation request replaced the underlying active goal IDs",
+      "final_execution": "16/16",
+      "total": 16,
+      "passed": 16,
+      "failed": 0
+    },
+    "r17_fresh_total": 40,
+    "r17_fresh_passed": 40,
+    "prior_sealed_r1_to_r16": 627,
+    "cumulative_r1_to_r17": 667,
+    "canary_binaries": {
+      "passed": 25,
+      "total": 25
+    }
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "semantic_core_adapters_tests": {
+      "passed": 249,
+      "failed": 0
+    },
+    "workspace_tests": {
+      "passed": 773,
+      "failed": 0
+    },
+    "git_diff_check": "PASS",
+    "build_cache_cleanup": {
+      "removed_files": 9442,
+      "removed_bytes_reported": "8.6 GiB",
+      "target_directory_exists_after_cleanup": false
+    }
+  },
+  "reasoning_guards": {
+    "raw_text_is_semantic_authority": false,
+    "lexical_case_mutates_semantic_payload": false,
+    "unmentioned_acronym_can_be_invented": false,
+    "gratitude_creates_a_topic_boundary": false,
+    "bound_explanation_replaces_underlying_goal": false,
+    "quoted_affect_is_attributed_to_user": false,
+    "affect_creates_external_action_authority": false,
+    "unsupported_freeform_claims": 0
+  },
+  "architectural_assessment": {
+    "current_defects_prove_3b_to_9b_model_required": false,
+    "observed_primary_bottleneck": "Information-discarding final realization and active-focus replacement",
+    "nodes_alone_are_sufficient_for_natural_conversation": false,
+    "required_non_neural_mechanisms": [
+      "compositional grammar",
+      "typed discourse reference",
+      "focus management",
+      "grounded realization"
+    ],
+    "gpt_class_open_domain_fluency_proven": false,
+    "future_learned_decoder_status": "UNJUSTIFIED_BY_CURRENT_EVIDENCE",
+    "future_decoder_boundary": "IR_CONDITIONED_NON_AUTHORITATIVE_REALIZER_ONLY"
+  },
+  "dependencies": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_in_canonical_r17_path": false,
+    "recursive_source_mutations": 0
+  },
+  "git": {
+    "branch": "main",
+    "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c4f",
+    "remote": "https://github.com/graykavinjeo1-pixel/B_core.git",
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  },
+  "goal_complete": false,
+  "disposition": "R17_SEALED_LOCALLY_BROADER_GPT_LEVEL_LANGUAGE_GOAL_REMAINS_OPEN"
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "B_CORE_R52_DIAGNOSTIC_BASELINE_1",
+  "suite": "R52_REFERENCE_SAFE_RESULT_ANAPHORA_DIAGNOSTIC",
+  "frozen_before_product_implementation": true,
+  "total": 12,
+  "passed": 2,
+  "failed": 10,
+  "passing_case_ids": ["R52_04", "R52_09"],
+  "failure_clusters": {
+    "continuation_reference_contamination": ["R52_01", "R52_02", "R52_03"],
+    "same_turn_result_anaphora": ["R52_05", "R52_06", "R52_07", "R52_08"],
+    "korean_cross_turn_result_symmetry": ["R52_10"],
+    "quoted_result_scope_and_outer_request": ["R52_11", "R52_12"]
+  },
+  "diagnostic_manifest_v2_sha256": "ca0d8a7a14d795f87d25e6f946bf59422a36353505cf85b46abb075545d9ff10",
+  "diagnostic_source_sha256": "238a3f3ce57235625c1d6019fb5822fa083b8abd2dd2723f1e344d03af720dfb",
+  "diagnostic_support_sha256": "a8be89114e8e1f2ec3f05c7462787a5f91d65db08043b343edec364dc232ff23",
+  "response_contracts_valid": 12,
+  "authority_violations": 0,
+  "unsupported_explanation_facts": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

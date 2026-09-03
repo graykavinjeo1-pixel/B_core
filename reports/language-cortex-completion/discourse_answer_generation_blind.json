@@ -1,0 +1,30 @@
+{
+  "schema": "B_CORE_DISCOURSE_ANSWER_GENERATION_BLIND_REPORT_1",
+  "suite": "DISCOURSE-ANSWER-GENERATION-BLIND-R25-RUN-0001",
+  "frozen_before_first_execution": true,
+  "fresh_cases": 16,
+  "passed": 16,
+  "failed": 0,
+  "cross_language_semantic_pairs": 8,
+  "cross_language_semantic_pairs_passed": 8,
+  "generative_path_rate_millis": 1000,
+  "categories": [
+    "SOURCE_ATTRIBUTION",
+    "PROPOSITION_SOURCE",
+    "MODAL_STATUS",
+    "SOURCE_CONFLICT",
+    "SOURCE_NO_CONFLICT",
+    "PRESUPPOSITION_ABSTENTION",
+    "NO_MATCHING_SOURCE"
+  ],
+  "evidence_nodes_are_typed": true,
+  "runtime_propositions_are_ephemeral": true,
+  "same_meaning_graph_across_output_languages": true,
+  "unsupported_explanation_facts": 0,
+  "language_semantic_authority": false,
+  "language_execution_authority": false,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

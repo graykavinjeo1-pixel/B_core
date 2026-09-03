@@ -1,0 +1,15 @@
+{
+  "schema": "B_CORE_R51_DIAGNOSTIC_RUN_RESULT_1",
+  "run": "R51-DIAGNOSTIC-RUN-0001",
+  "status": "INVALIDATED_BY_INCOMPLETE_EVALUATOR",
+  "surface_total": 12,
+  "surface_passed": 12,
+  "newly_discovered_failures": 1,
+  "failed_case": "R51_02",
+  "failure": "The response carried a correct continuation gate but also projected CONTINUE:넓어질 때 as an immediately authorized active goal.",
+  "disposition": "PRESERVED; EVALUATOR VERSIONED; PRODUCT AUTHORITY LEAK REPAIRED",
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

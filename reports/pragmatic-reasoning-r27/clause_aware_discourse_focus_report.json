@@ -1,0 +1,106 @@
+{
+  "stage": "R27_CLAUSE_AWARE_DISCOURSE_FOCUS",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "diagnostic": {
+    "suite": "R27-RUN-0001",
+    "sha256": "996e5b953fc8690687e3b203671f7acd20ff5633cb67a4f1b72dfad0be7c2113",
+    "frozen_before_product_changes": true,
+    "initial_passed": 0,
+    "initial_total": 24,
+    "final_passed": 24,
+    "final_total": 24,
+    "categories": {
+      "coordinated_goal_centering": "4/4",
+      "sequence_target_centering": "4/4",
+      "subordinate_nucleus_centering": "4/4",
+      "contrastive_centering": "4/4",
+      "social_turn_focus_retention": "4/4",
+      "surface_order_focus_invariance": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R27-RUN-0002",
+    "frozen_sha256": "3324132284dc0981b6b1b843eb355697139e185cc6f923a675000b3bfb99fa41",
+    "held_out_until_after_diagnostic_repairs": true,
+    "first_semantic_execution_passed": 16,
+    "first_semantic_execution_total": 16,
+    "first_failures": [],
+    "final_passed": 16,
+    "final_total": 16,
+    "oracle_changed_after_first_semantic_execution": false,
+    "product_repair_after_held_out": false
+  },
+  "fresh_blind_tasks_passed": 40,
+  "fresh_blind_tasks_total": 40,
+  "cumulative_r1_r27_passed": 1067,
+  "cumulative_r1_r27_total": 1067,
+  "verification": {
+    "canary_binaries_passed": 45,
+    "canary_binaries_total": 45,
+    "adapter_unit_tests_passed": 283,
+    "adapter_unit_tests_total": 283,
+    "workspace_tests_passed": 807,
+    "workspace_tests_total": 807,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "regression_repair": {
+      "initial_full_canary_passed": 39,
+      "initial_full_canary_total": 45,
+      "final_full_canary_passed": 45,
+      "final_full_canary_total": 45,
+      "repair_scope": "Clause-aware focus overrides flat recency only when the legacy state cannot supply one unique referent or the focus state is structurally multi-centered. Explicit topic returns and simple single-referent pronouns retain their sealed response and binding contracts."
+    }
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed": 0,
+    "semantic_authority_from_discourse_focus": false,
+    "execution_authority_from_discourse_focus": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "DiscourseFocusStateIR stores a bounded hash-bound set of PRIMARY, SECONDARY, and BACKGROUND centers plus typed focus transitions.",
+    "Focus candidates retain their source frame, ClauseGraph clause, clause function, governing relation, salience, and non-authoritative evidence.",
+    "Coordinate, sequence, contrast, and subordinate-nucleus structures select their discourse center from typed clause structure rather than flat mention recency.",
+    "A contrast edge can select its viable target clause as the conversational pivot without treating two structurally related directives as an unresolved intent competition.",
+    "Backchannels and gratitude preserve an existing multi-clause focus; the Korean acknowledgement form `알겠어` is normalized as a dialogue act rather than a new world-model subject.",
+    "Generic `it` and `그것` use clause-aware focus only as a bounded fallback when legacy recency has no unique referent; expletive and multiple-pronoun cases remain outside that shortcut.",
+    "Every focus node and transition forces semantic_authority=false and external_execution_authorized=false."
+  ],
+  "scope_assessment": {
+    "grammatical_composition": "R26_BOUNDED_TYPED_CLAUSE_GRAPH_PRESERVED_NOT_GENERAL_GRAMMAR",
+    "discourse_and_topic_state": "R27_CLAUSE_AWARE_BOUNDED_FOCUS_COMPLETE_FOR_TESTED_KOREAN_AND_ENGLISH_STRUCTURES_NOT_GENERAL_DISCOURSE",
+    "deixis_and_ellipsis_resolution": "NEXT_DEPENDENCY_BOUNDED_PRIOR_SUPPORT_PRESERVED_GENERAL_AMBIGUITY_REMAINS_OPEN",
+    "speech_intent_and_pragmatics": "PRESERVED_BY_REGRESSION_BROAD_INDIRECT_INTENT_REMAINS_OPEN",
+    "result_plan_distinction": "PRESERVED_TYPED_BOUNDARY_NOT_SOLVED_FOR_ALL_TOOL_INTERACTIONS",
+    "evidence_grounded_realization": "PRESERVED_BY_REGRESSION_OPEN_DOMAIN_CLAIM_LEVEL_REALIZATION_REMAINS_OPEN"
+  },
+  "next_program_order": [
+    "deixis and ellipsis resolution against typed discourse focus",
+    "speech intent and pragmatic inference",
+    "execution-result versus plan distinction",
+    "evidence-grounded sentence realization"
+  ],
+  "next_residual": [
+    "multi-speaker and long-horizon competing centers",
+    "general bridging reference and implicit argument recovery",
+    "calibrated ambiguity preservation for more than one compatible focus",
+    "broad indirect speech-act inference without authority leakage",
+    "tool-result provenance and plan-versus-observation interpretation",
+    "open-domain claim-level faithful realization",
+    "open-vocabulary GPT-level fluency"
+  ],
+  "commit_performed": false,
+  "push_performed": false
+}

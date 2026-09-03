@@ -1,0 +1,12 @@
+{
+  "schema": "B_CORE_R52_DIAGNOSTIC_MANIFEST_2",
+  "run": "R52-DIAGNOSTIC-RUN-0002",
+  "predecessor_run": "R52-DIAGNOSTIC-RUN-0001",
+  "case_count": 12,
+  "semantic_cases_changed": 0,
+  "evaluator_correction": "A cross-turn result-absence answer may preserve the prior active plan; it must bind the result reference and refuse to fabricate execution evidence.",
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

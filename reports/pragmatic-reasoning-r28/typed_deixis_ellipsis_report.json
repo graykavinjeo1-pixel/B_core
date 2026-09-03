@@ -1,0 +1,115 @@
+{
+  "stage": "R28_TYPED_DEIXIS_ELLIPSIS",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "diagnostic": {
+    "suite": "R28-RUN-0001",
+    "sha256": "2078f4410f30345f7a7dbe5c1edd28b4ad6a2b9b1377573b941024c4c27eed13",
+    "frozen_before_product_changes": true,
+    "compile_only_harness_correction_before_semantic_execution": true,
+    "semantic_expectations_changed_during_correction": false,
+    "initial_passed": 0,
+    "initial_total": 24,
+    "final_passed": 24,
+    "final_total": 24,
+    "categories": {
+      "possessive_focus": "4/4",
+      "demonstrative_nominal": "4/4",
+      "zero_argument": "4/4",
+      "conditional_zero_argument": "4/4",
+      "open_vocabulary_predicate_ellipsis": "4/4",
+      "ellipsis_ambiguity_and_no_antecedent": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R28-RUN-0002",
+    "frozen_sha256": "3fb8ec8163ad40efdd28d1e4382925af1f46f0463a8d60be7374cb3c864b6927",
+    "held_out_until_after_diagnostic_repairs": true,
+    "first_semantic_execution_passed": 15,
+    "first_semantic_execution_total": 16,
+    "first_failures": [
+      {
+        "id": "R28_TRANSFER_1",
+        "cause": "The general action lexicon did not yet classify the held-out verb `verify`; the possessive deictic binding itself was correct."
+      }
+    ],
+    "final_passed": 16,
+    "final_total": 16,
+    "oracle_changed_after_first_semantic_execution": false,
+    "product_repair_after_held_out": true,
+    "product_repair": "Added verify/validate to the shared inspect/investigate action family; no sentence-specific dispatch was added."
+  },
+  "fresh_blind_tasks_passed": 40,
+  "fresh_blind_tasks_total": 40,
+  "cumulative_r1_r28_passed": 1107,
+  "cumulative_r1_r28_total": 1107,
+  "verification": {
+    "canary_binaries_passed": 47,
+    "canary_binaries_total": 47,
+    "adapter_unit_tests_passed": 286,
+    "adapter_unit_tests_total": 286,
+    "workspace_library_tests_passed": 809,
+    "workspace_library_tests_total": 809,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "temporary_debug_markers": 0,
+    "regression_repairs": [
+      "Explicit Korean object pronouns no longer trigger a second omitted-argument insertion.",
+      "Korean action-like nouns are not treated as omitted-argument commands unless the predicate is final and directive-shaped.",
+      "English action-like nouns away from directive predicate position are not treated as zero-argument commands.",
+      "Korean `반면` and other `면` homographs are excluded from conditional-suffix detection.",
+      "Korean demonstrative replacement regenerates object and subject particles from the resolved antecedent."
+    ]
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed": 0,
+    "semantic_authority_from_deixis_or_ellipsis": false,
+    "execution_authority_from_deixis_or_ellipsis": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "TypedDeixisEllipsisResolutionIR represents possessive focus references, demonstrative focus references, and zero-argument ellipsis separately from semantic authority.",
+    "Possessive forms such as `its` and `그것의` bind to the current typed discourse focus and preserve the requested property relation.",
+    "Generic demonstratives bind only to one fresh typed focus; Korean object and subject particles are regenerated from the antecedent surface.",
+    "Direct and conditional omitted arguments can be recovered from one fresh typed focus while ambiguous or absent antecedents fail closed.",
+    "Open-vocabulary predicate ellipsis reuses the prior action over a new explicit subject without requiring a concept ID for every noun.",
+    "Conditional omitted arguments become pending DeferredActionCommitmentIR values rather than executed results.",
+    "Every resolution forces semantic_authority=false and external_execution_authorized=false."
+  ],
+  "scope_assessment": {
+    "grammatical_composition": "R26_BOUNDED_TYPED_CLAUSE_GRAPH_PRESERVED_NOT_GENERAL_GRAMMAR_ADVERB_ATTACHMENT_REMAINS_OPEN",
+    "discourse_and_topic_state": "R27_BOUNDED_CLAUSE_AWARE_FOCUS_PRESERVED_NOT_GENERAL_MULTI_SPEAKER_DISCOURSE",
+    "deixis_and_ellipsis_resolution": "R28_BOUNDED_TESTED_KOREAN_ENGLISH_FOCUS_BINDING_COMPLETE_GENERAL_BRIDGING_PLURAL_AND_IMPLICIT_ROLE_RESOLUTION_REMAIN_OPEN",
+    "speech_intent_and_pragmatics": "NEXT_DEPENDENCY_PRIOR_GATES_PRESERVED_BROAD_INDIRECT_INTENT_REMAINS_OPEN",
+    "result_plan_distinction": "PRESERVED_TYPED_BOUNDARY_NOT_SOLVED_FOR_ALL_TOOL_INTERACTIONS",
+    "evidence_grounded_realization": "PRESERVED_BY_REGRESSION_OPEN_DOMAIN_CLAIM_LEVEL_REALIZATION_REMAINS_OPEN"
+  },
+  "next_program_order": [
+    "speech intent and pragmatic inference",
+    "execution-result versus plan distinction",
+    "evidence-grounded sentence realization"
+  ],
+  "next_residual": [
+    "general bridging reference, plural reference, and implicit semantic-role recovery",
+    "adverb attachment and cleaner subject surfaces after zero-argument recovery",
+    "multi-speaker and unrestricted long-horizon antecedent competition",
+    "broad indirect speech-act and implicature inference without authority leakage",
+    "tool-result provenance and plan-versus-observation interpretation",
+    "open-domain claim-level faithful realization",
+    "open-vocabulary GPT-level fluency"
+  ],
+  "pre_existing_user_change_preserved": "crates/semantic-reasoning/src/growth_supervisor.rs",
+  "commit_performed": false,
+  "push_performed": false
+}

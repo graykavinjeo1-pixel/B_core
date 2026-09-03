@@ -1,0 +1,18 @@
+{
+  "run": "R19-RUN-0001",
+  "kind": "FROZEN_DIAGNOSTIC_FIRST_EXECUTION",
+  "passed": 0,
+  "failed": 24,
+  "total": 24,
+  "observed_failure_classes": {
+    "voice_alternative_answers": "6/6 short answers were interpreted as fresh Inform turns instead of selecting the pending transcript alternative",
+    "competing_goal_answers": "6/6 short answers failed to select one same-turn goal candidate",
+    "multi_goal_repeat_answers": "6/6 short answers failed to select one prior goal from an ambiguous repeat",
+    "proposition_reference_answers": "6/6 short answers failed to select one proposition after a clarification question"
+  },
+  "root_boundary": "Conversation state had no explicit Question Under Discussion representation, so an answer-only fragment had no typed adjacency relation to the prior clarification turn",
+  "repair": "Added hash-bound QUD and option IR, deterministic answer selection, clarification-answer discourse bindings, answer-only authority guards, and lifecycle rules for hold, replacement, invalid, and resolved turns",
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0
+}

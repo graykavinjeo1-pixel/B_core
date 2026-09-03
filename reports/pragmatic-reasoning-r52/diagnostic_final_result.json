@@ -1,0 +1,38 @@
+{
+  "schema": "B_CORE_R52_DIAGNOSTIC_FINAL_RESULT_1",
+  "suite": "R52_REFERENCE_SAFE_RESULT_ANAPHORA_DIAGNOSTIC",
+  "status": "PASS",
+  "semantic_cases_changed_after_v2_freeze": 0,
+  "expectations_changed_after_v2_freeze": 0,
+  "v2_manifest_sha256": "ca0d8a7a14d795f87d25e6f946bf59422a36353505cf85b46abb075545d9ff10",
+  "diagnostic_source_sha256": "238a3f3ce57235625c1d6019fb5822fa083b8abd2dd2723f1e344d03af720dfb",
+  "support_source_sha256": "a8be89114e8e1f2ec3f05c7462787a5f91d65db08043b343edec364dc232ff23",
+  "score_progression": [
+    "2/12",
+    "8/12",
+    "12/12"
+  ],
+  "passed": 12,
+  "total": 12,
+  "response_contracts_valid": 12,
+  "authority_violations": 0,
+  "unsupported_explanation_facts": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0,
+  "product_source_sha256": {
+    "cognitive.rs": "5c8718c7c38155bc1f3f61810264eb113e3c8ea0e5c37045f83978e4f1407b20",
+    "conversation.rs": "abb26ec21a808848ee7fad6c0b9054d6120c01930aa76326fd8b7b4a2d5acfcd",
+    "compositional_semantics.rs": "3541dabcfc24350a7d3dbe455416a8f8d9786bce2f316d829dc083b19f6bb97d",
+    "pragmatics.rs": "14ecc410f03b39a5b3a397c365513062884da8df8bda9c480e7903e592d02313",
+    "pragmatic_intent.rs": "8f6e42c89308b55be2b6d1ff67e0cfb0de73f9c662d020ef6c9ce281f63ddec7"
+  },
+  "verified_boundaries": [
+    "continuation anaphors do not bind to conditional or stop-branch distractors",
+    "same-turn result references bind to their local producing event",
+    "cross-turn result questions remain evidence-absence queries",
+    "quoted result phrases create neither reference obligations nor execution authority",
+    "continuation-gate realization outranks generic condition and question-answer realization"
+  ]
+}

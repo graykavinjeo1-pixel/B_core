@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["responses"],
+  "properties": {
+    "responses": {
+      "type": "array",
+      "minItems": 160,
+      "maxItems": 160,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["response_id", "surface"],
+        "properties": {
+          "response_id": {"type": "string", "minLength": 1},
+          "surface": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

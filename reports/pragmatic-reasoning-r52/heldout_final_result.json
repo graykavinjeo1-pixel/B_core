@@ -1,0 +1,26 @@
+{
+  "schema": "B_CORE_R52_HELDOUT_FINAL_RESULT_1",
+  "suite": "R52_REFERENCE_SAFE_RESULT_ANAPHORA_HELDOUT",
+  "status": "PASS",
+  "manifest_sha256": "767be711d3a729ac7235bf304d42ffaded6710c028bcb3dda0415a5427a2612a",
+  "transfer_source_sha256": "bd77f30233a32c517bab745df9bff61aa0302c106311d165341bd12b17ffad6d",
+  "transfer_support_sha256": "41d89e55c9aa8373affebf9c2c92d1d3fef454173129780edeb7383f185201eb",
+  "passed": 8,
+  "total": 8,
+  "response_contracts_valid": 8,
+  "authority_violations": 0,
+  "unsupported_explanation_facts": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0,
+  "case_mutations_after_exposure": 0,
+  "expectation_mutations_after_exposure": 0,
+  "product_source_sha256": {
+    "cognitive.rs": "5d9aae62bd9a5c5dbc00f2ef94dabfe6d9fc0a00854b5fcbbdc0114ae13315e7",
+    "conversation.rs": "a24425aae1fdc0249f006753d3d256c87d3e3147e9a94794122f6a82b0f1c628",
+    "compositional_semantics.rs": "3541dabcfc24350a7d3dbe455416a8f8d9786bce2f316d829dc083b19f6bb97d",
+    "pragmatics.rs": "b4949dd51555f8cdce4f1861ccddcd2c618a145fc76d44f6ae056ea44136b104",
+    "pragmatic_intent.rs": "b06ee28c4822864e58ff12cb195f6292fd4b31f24848fa7d5dbbcd6e95c96a14"
+  }
+}

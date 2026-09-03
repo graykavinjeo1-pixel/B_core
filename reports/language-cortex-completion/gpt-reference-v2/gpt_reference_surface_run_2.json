@@ -1,0 +1,814 @@
+{
+  "schema": "B_CORE_GPT_REFERENCE_SURFACE_RUN_IR_1",
+  "suite_id": "B_CORE_GPT_REFERENCE_V2_FINAL",
+  "input_suite_sha256": "ff80de6025b7ef07627642367d098da835f920b75ba34915979be609e0189b5d",
+  "generation_run_id": "GPT-5.6-SOL-V2-20260903-RUN-2",
+  "model_id": "gpt-5.6-sol",
+  "generation_date": "2026-09-03",
+  "system_prompt_sha256": "8d54ca342e6365fca07a6f44dc60779936a0b7ff7a40dc2832b6ddeb5fd6d221",
+  "generation_configuration_sha256": "88d9c957c6791bbcf6a314b1a592921a81a15db35d4e95e15d296e4220395007",
+  "b_core_output_consulted": false,
+  "responses": [
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T1",
+      "surface": "알겠습니다. 진단 순서의 첫 항목을 Axiom 캐시로 두겠습니다.",
+      "surface_sha256": "36863ea4fde382d9565344a0912b7c08ac44b4ff97386ef5f81c0cd61106b936"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T2",
+      "surface": "먼저 적중률과 미스율, 응답 지연, 오류·타임아웃, 메모리 사용량과 축출률, 키 만료 패턴, 원본 데이터와의 불일치를 보겠습니다.",
+      "surface_sha256": "3d67ae3d2a39830d0a3c1bbd636d613116d78f4bbbef03c0c47e4ef3ff26ba1b"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T3",
+      "surface": "맞습니다. 지금까지는 판단 기준과 접근 방식만 정했으며, Axiom 캐시에서 확인된 결과는 없습니다.",
+      "surface_sha256": "11b8a16bd89489930b7563e344a201cef3f76ea0b0e27f6eb59751d9b8b8c515"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T4",
+      "surface": "알겠습니다. Axiom 캐시는 상태를 바꾸지 않는 읽기 전용 방식으로만 살펴보겠습니다.",
+      "surface_sha256": "98ff733222334b66e9532e52196da8db7f707c66d1a9ad00a3b05e6f48c4a911"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T1",
+      "surface": "알겠습니다. 진단 대기열의 첫 확인 대상을 Cipher 서비스로 두겠습니다.",
+      "surface_sha256": "c9fc111db756118fc5fa066fd2e756b60d3bab63ce0620af6ae35fecc3614212"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T2",
+      "surface": "상태·헬스 체크, 최근 오류와 타임아웃, 요청량과 지연 시간, 의존 서비스 연결 상태, 자원 사용량, 최근 배포·설정 이력을 근거로 살펴보겠습니다.",
+      "surface_sha256": "9e16d808e6ed0c8235db253c025ef51a8d1afdd4b905f7615e1b0534d923d4fb"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T3",
+      "surface": "맞습니다. 점검할 근거와 방침을 정리한 것뿐이며, Cipher 서비스에 관한 실제 결과 보고는 아닙니다.",
+      "surface_sha256": "69cda23f0707e081fa18b38b97edc625a9eca3721a4df502e897fffcf50b0f80"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T4",
+      "surface": "알겠습니다. Cipher 서비스에는 어떤 쓰기나 상태 변경도 하지 않고 관찰만 하겠습니다.",
+      "surface_sha256": "d3a7a880709c467e8560be827668dc5367bbc84d50b4b2f2074c4f1ecce59ba9"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T1",
+      "surface": "Understood. I’ll put the Axiom cache first in the assessment order.",
+      "surface_sha256": "95668a8af9f2890f742080a7a5830930af30cc99dfc064761e4ddc0f7b221071"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T2",
+      "surface": "I’d first consider hit and miss rates, latency, errors and timeouts, memory pressure and evictions, expiration patterns, and consistency with the source data.",
+      "surface_sha256": "665343a5e23ac1bef3244ae6a3314d2b283cda914a0407111bf5665335413900"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T3",
+      "surface": "Correct. We have only defined the approach and relevant signals; no Axiom cache finding has been established.",
+      "surface_sha256": "a850111557a51e624aa343316e5b9c222985caaaa4e75f5f9e217a926304c909"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T4",
+      "surface": "Understood. The Axiom cache will be inspected read-only, with no writes or state changes.",
+      "surface_sha256": "847ca886bcafc5f20ac8d0a9980aeb7fb542667c6c21711bdd74ce5f8e8f41a2"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T1",
+      "surface": "Understood. I’ll place the Cipher service first in the diagnostic queue.",
+      "surface_sha256": "e93722b6c6ef9f89208c2e3e1f727e13cc556a5e2620b0f60a4acd482b8e12d8"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T2",
+      "surface": "I’d seek health-check status, recent errors and timeouts, traffic and latency trends, dependency connectivity, resource usage, and recent deployment or configuration history.",
+      "surface_sha256": "f9215c563820251c187582e67dcc06e957a99acffebbf1429392ffa580bb24b4"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T3",
+      "surface": "Right. Nothing about the Cipher service itself has been established; we have only outlined what evidence to seek.",
+      "surface_sha256": "91c14e553ddb8a9ce808a87c9cc67f7ae6d9497e408fc4b5d128b6ee5d1ffb47"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T4",
+      "surface": "Understood. I’ll limit the Cipher service assessment to observation, with no state changes.",
+      "surface_sha256": "4285514b49daab565d21cd2a699c2a252e1d34f76c1d88f8236b327f8541588d"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T1",
+      "surface": "계속 같은 서비스 때문에 막히면 정말 지치죠. 원하시면 Echo 서비스 문제를 차근차근 좁혀 볼게요.",
+      "surface_sha256": "852508ec6e4a3aaba917a5c200badbdd6d267eadc7f22addc18364f1916cea92"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T2",
+      "surface": "좋아요. 발생 시점과 증상부터 정리한 뒤 오류 로그, 지연·실패율, 의존성, 자원 상태, 최근 변경 여부를 비교해 원인 후보를 좁히겠습니다.",
+      "surface_sha256": "a992d69afa59376aabb7323649ae5bd58ab22c3ad7ec56460277b03bbcc4eb8b"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T3",
+      "surface": "맞습니다. 변경은 범위 밖입니다. Echo 서비스는 읽기 전용 진단만 전제로 하겠습니다.",
+      "surface_sha256": "a4355b06e1f3b3f7a5e45563e5f4a10cd5eae13c5bc10670563e154725d225cc"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T4",
+      "surface": "알겠습니다. 뒷받침할 증거가 없다면 Echo 서비스에 관해 확인된 사실은 없다고 명확히 구분하겠습니다.",
+      "surface_sha256": "24965de53dfe1422874163ee333e15091982016bb194d853fd94fd9ad23f08ac"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T1",
+      "surface": "또 같은 서버라니 힘이 빠질 만해요. 원하시면 Grove 서버 문제를 부담 적게 하나씩 정리해 볼게요.",
+      "surface_sha256": "91138bef2c6750223bd11a0166562fa94a019d5fc628e571ffd4a4bcd7640e82"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T2",
+      "surface": "좋아요. 증상과 발생 조건을 기준으로 서버 자체, 네트워크, 의존 서비스, 자원 부족, 최근 변경 등 원인 후보를 나눠 조사하겠습니다.",
+      "surface_sha256": "7163b28de72d9198b37c2cde3b548f4b4f656c1272d9b7f5fbea8e325b7768f5"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T3",
+      "surface": "알겠습니다. 실제 설정 변경은 제외하고 관찰과 원인 분석까지만 다루겠습니다.",
+      "surface_sha256": "f1ce5839b79af94c52902a856416d5d737c80b3d07bf05f3c7346eb06521b53d"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T4",
+      "surface": "현재 사실로 굳어진 것은 사용자가 Grove 서버 문제를 겪고 있다는 보고뿐입니다. 구체적인 원인이나 서버 상태는 아직 검증되지 않았고 원인 항목들은 후보입니다.",
+      "surface_sha256": "21d5b0ff01447547e0cadcf4be4c87cc684910cdd2d8924da1ee87753e24fc7e"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T1",
+      "surface": "That sounds exhausting, especially when the same service keeps costing you time. I can help you work through the Echo issue methodically.",
+      "surface_sha256": "4b6ef60aca6c5091060510a9449c56407dcb1a1160425e1217e22de489589e4e"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T2",
+      "surface": "Let’s start with the symptoms and timing, then compare errors, latency and failure rates, dependencies, resource pressure, and recent changes to narrow the candidates.",
+      "surface_sha256": "e5da160d1e0092a01bba99444641a1ba182478e218ae972b8564de879fcdf731"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T3",
+      "surface": "Understood. Changes are outside scope; I’ll keep this to read-only diagnosis of the Echo service.",
+      "surface_sha256": "61282d13d3ae9d59ac9f7ac646d8c396061dc1ce310d230ae3678f86e6c4b208"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T4",
+      "surface": "Understood. If no supporting evidence is available, I’ll state that there is no established finding about the Echo service.",
+      "surface_sha256": "c7867881a56775574b1dacc4cf2cd89d5985d370930b6b4fe5f4ec2639907578"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T1",
+      "surface": "That recurring Grove server trouble sounds draining. I can help sort through it one piece at a time.",
+      "surface_sha256": "edbf832ddcb74e0c046927af25c2101da5996a407e827a7c98266ca43bf658da"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T2",
+      "surface": "Understood. I’ll separate candidates such as the server itself, network conditions, dependencies, resource pressure, and recent changes, then compare each against the symptoms.",
+      "surface_sha256": "ba7bdb4a1b45057470f3a0e02c9b2f9700260527a440ab78520024f60b9e1aff"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T3",
+      "surface": "Understood. Configuration changes are outside scope; this stays at observation and cause analysis.",
+      "surface_sha256": "3fa6e7676cd6d7480c09728e08c268019118c7f4278c5c9bdf249301e6d526cf"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T4",
+      "surface": "Fact: you reported a recurring Grove server problem. Not yet established: the server’s actual condition or cause. The causes discussed so far remain hypotheses.",
+      "surface_sha256": "959531313d6af14a3f64c8da2d8061de49e04c8fba120c4fc4470bc987a8411d"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T1",
+      "surface": "복구안은 두 대상을 분리해 준비하겠습니다. 각각 현상 확인, 영향 격리, 상태·의존성 점검, 복구 절차, 검증, 실패 시 롤백 순서로 구성하되 실제 실행은 하지 않겠습니다.",
+      "surface_sha256": "4ffe8f7e946d2ec2ea9a893733108a3b7323c064e463da91cd8207f25b20894a"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T2",
+      "surface": "알겠습니다. 복구안 요청은 철회하고 Indigo 서버만 다루겠습니다. 다만 증상이나 자료가 없으므로 원인을 단정할 수는 없고, 자원 고갈·네트워크·의존성·설정·최근 변경을 후보로 나눠 설명할 수 있습니다.",
+      "surface_sha256": "a186d9b42b398ed7d12b57f11e4e8071666dcc40e51a31420cf4b144c03961b6"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T3",
+      "surface": "정정 반영했습니다. Indigo 서버가 아니라 Jasper 워커의 원인 후보를 설명하겠습니다. 작업 적체, 입력 오류, 의존 서비스 장애, 자원 부족, 설정 불일치, 최근 배포 문제 등을 구분해 봐야 합니다.",
+      "surface_sha256": "7153d79ac6c72c66753745aa3a34ccdeac77f838923cbf3b8d532cc93b9de930"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T4",
+      "surface": "맞습니다. Indigo 서버와 Jasper 워커 모두 실제 복구가 수행되거나 검증됐다는 근거는 없습니다.",
+      "surface_sha256": "03729da0991f5d24ef683a756523b708c0323af208197777e11485bf7b0a0d0d"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T1",
+      "surface": "계획은 문제 재현과 기준선 확보, Kinetic 파일 백업·검증·수정·재검증, Lotus 코드 테스트 추가·최소 수정·회귀 테스트, 실패 시 롤백 순으로 잡겠습니다. 지금은 계획만 세우며 실제 수정은 하지 않습니다.",
+      "surface_sha256": "f68939219176567cdd39c24c92494b42f5205b47f647c26aabf820082e35c54e"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T2",
+      "surface": "알겠습니다. 수리는 보류하고 Kinetic 파일 문제만 설명하겠습니다. 다만 구체적인 증상이나 내용이 없어 현재로서는 손상, 형식 오류, 권한, 경로·참조 불일치 같은 후보만 제시할 수 있습니다.",
+      "surface_sha256": "99660a2aff215770efe6368903ca4fdd31a9e23af8e2da0a2b10d0149a9becfb"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T3",
+      "surface": "정정 반영했습니다. Kinetic 파일이 아니라 Lotus 코드를 대상으로 설명하겠습니다. 오류 증상과 관련 코드가 없으므로 로직 결함, 예외 처리, 의존성, 상태 관리, 최근 변경 등을 원인 후보로 구분해야 합니다.",
+      "surface_sha256": "835589ab0071bc402bc744db8330b2640456bef6441d082ef8d1c7648c0cf38c"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T4",
+      "surface": "맞습니다. Lotus 코드가 수정·테스트되어 완료됐다는 증거는 아직 없습니다.",
+      "surface_sha256": "7d47b9e5ce3506c4a74a7214302d0a21b6cb540e70269e883f73e1e8a29237d8"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T1",
+      "surface": "I’ll structure separate recovery paths for both: confirm symptoms, contain impact, inspect state and dependencies, define recovery steps, verify, and roll back if needed. This is planning only.",
+      "surface_sha256": "4a7f424b63f7d31e464862a46aeb67c54523b9f1454688bc5696faadc6204f3b"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T2",
+      "surface": "Understood. The recovery request is withdrawn, and I’ll discuss only possible Indigo server causes. Without symptoms or evidence, these remain candidates such as resource exhaustion, network or dependency failures, configuration drift, and recent changes.",
+      "surface_sha256": "b914161cb17eb963c5724629ec6857d2cc299cfda8c5ac0c99566b9a9f00dd42"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T3",
+      "surface": "Correction noted: the explanation is about the Jasper worker, not the Indigo server. Possible areas include queue backlog, invalid input, dependency failures, resource pressure, configuration mismatch, and recent deployments.",
+      "surface_sha256": "bfcbf45a9334f11f1204aec64323862a992bfbb2005daf7f973333f2d81016fa"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T4",
+      "surface": "Correct. There is no evidence that either the Indigo server or the Jasper worker was actually recovered or verified.",
+      "surface_sha256": "9078c46fd4dddde57ef2df5b720c9c812216e6b360b8e8fa4c5476445867b7fb"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T1",
+      "surface": "I’ll plan this as: reproduce and establish a baseline; back up, validate, minimally adjust, and revalidate the Kinetic file; then add tests, minimally change, and regression-test the Lotus code, with rollback points throughout. No fixes are being executed.",
+      "surface_sha256": "b18556c57224ccbe08c7b5d37dc0d58d4a28750d91c63d7d03208cce681dbe00"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T2",
+      "surface": "Understood. The fixes are shelved, and I’ll explain only the Kinetic file issue. With no symptoms or contents provided, corruption, formatting, permissions, paths, and reference mismatches are only possible causes.",
+      "surface_sha256": "a0597207002cdb8e84450a855db4cefc2f16c28f8eace7b0cf5e87cd287c54cc"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T3",
+      "surface": "Correction noted: the target is the Lotus code, not the Kinetic file. Without an error or code sample, logic defects, exception handling, dependencies, state management, and recent changes remain hypotheses.",
+      "surface_sha256": "7c0f24189a1e90cfcaf96ddb59036c102004f9b2f074624271bf7d8f13de51e8"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T4",
+      "surface": "Correct. There is no evidence that the Lotus code was changed, tested, or completed.",
+      "surface_sha256": "327855408faeddb01f882d23092320a94347a19ec0a0f668fe1120d238d794ea"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T1",
+      "surface": "알겠습니다. Mosaic 파일을 먼저 검토하고, 그다음 Nimbus 코드를 보겠습니다.",
+      "surface_sha256": "8940d11b1ea212d1eaaa5047a44484bf358b3a3685af7d612a9105d83affea7e"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T2",
+      "surface": "Nimbus 코드는 Mosaic 파일을 어떻게 읽고 해석하는지, 파일의 이상이 코드 경로에서 어떻게 드러나는지 확인하기 위해 검토합니다.",
+      "surface_sha256": "8f26592711ec63e87e513c84205429acaf92d15e7173775a2edcc0f4532e99e6"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T3",
+      "surface": "Mosaic 파일은 입력 자체의 형식·내용·무결성에 문제가 있는지 확인하기 위해 먼저 검토합니다. 이어 Nimbus 코드는 그 입력을 처리하는 로직과 오류 전파 경로를 확인하기 위해 봅니다.",
+      "surface_sha256": "a6813ce3fee9fb766ef8da3c2a7e8674dba733f0236d975f966fe22e290b1fd0"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T4",
+      "surface": "알겠습니다. Mosaic 파일과 Nimbus 코드 모두 읽기 전용으로만 검토하고 쓰기 작업은 하지 않겠습니다.",
+      "surface_sha256": "c31ebce446b7e10055b906699a4e11411405e0e2f610536c99486a0f5c9e5d5a"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T1",
+      "surface": "알겠습니다. Opal 캐시를 먼저 보고 Pollen 큐를 나중에 검토하겠습니다.",
+      "surface_sha256": "96a2b3ad7ed7f02aa7ba285f384eddd382f31a324c4672fd48cfe632b70dd391"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T2",
+      "surface": "나중 항목인 Pollen 큐는 캐시 이상이 작업 유입·적체·재시도·처리 지연과 연결되는지 확인하기 위해 점검합니다.",
+      "surface_sha256": "18b89a657949ed798018ddd2f6b0342a13f3ad04e43ae2476ccf2893e7ef235c"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T3",
+      "surface": "Opal 캐시는 적중률, 만료, 축출, 데이터 불일치가 문제의 시작점인지 확인하기 위해 먼저 봅니다. Pollen 큐는 그 영향이 적체나 처리 지연으로 이어지는지 확인하기 위해 이어서 봅니다.",
+      "surface_sha256": "e3116c89d7736305efe0d29b9601d44d2b96ae23494fc89f5ebcbb4f0ed3a36f"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T4",
+      "surface": "알겠습니다. Opal 캐시와 Pollen 큐 모두 상태를 바꾸지 않고 읽기 전용으로만 살펴보겠습니다.",
+      "surface_sha256": "26dc665ead42e3709bed9a35382f2a91528a2919a37805620681049df6c36659"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T1",
+      "surface": "Understood. I’ll review the Mosaic file first, followed by the Nimbus code.",
+      "surface_sha256": "83cae700492e6c597a8f84b71e12503173b7c7bdb893247b3241cf7cc415d979"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T2",
+      "surface": "The Nimbus code is reviewed to determine how it reads and interprets the Mosaic file and whether the file’s anomaly propagates through the processing logic.",
+      "surface_sha256": "b6d2c51dfe7b9560c0a0b4d45ce85323c2e06c0dc449326d7d65897d6fe1af97"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T3",
+      "surface": "The Mosaic file is reviewed first to check its format, contents, and integrity. The Nimbus code follows to examine how that input is processed and how errors could propagate.",
+      "surface_sha256": "9dd83c686e1fe3a49a68da91df7ebc17792ca66b7e783e963754237df95f1af3"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T4",
+      "surface": "Understood. Both the Mosaic file and Nimbus code will be treated as read-only, with no writes.",
+      "surface_sha256": "4ea5a0aa2b3b40ae611bb2416dfe0fd9d7a18cabe89fff492233156c235b9ada"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T1",
+      "surface": "Understood: the Opal cache first, then the Pollen queue.",
+      "surface_sha256": "cec837b0285d078370af53943e420dcbb37e26dd269f043f87f70a925f3d3c41"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T2",
+      "surface": "The later item, the Pollen queue, is checked to see whether the issue appears as backlog, retries, failed work, or processing delays downstream.",
+      "surface_sha256": "cb8370784b094ac6b5e5eba69ad182d30ed3705095fcc757383dcb0995e434df"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T3",
+      "surface": "The Opal cache is checked first to see whether misses, expiration, eviction, or stale data are the starting point. The Pollen queue is then checked for downstream backlog or processing delay.",
+      "surface_sha256": "fae7509eeee036243599edfab6af35d4ac4436510d5236498f3891adeb4fca23"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T4",
+      "surface": "Understood. I’ll treat both the Opal cache and Pollen queue as read-only and make no state changes.",
+      "surface_sha256": "75d53166e69209e18faf8564b4f1cf6c10b6e8c6b7aa16dd41747eb10e4435f2"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T1",
+      "surface": "알겠습니다. Quartz 캐시의 오류·타임아웃, 적중률 변화, 지연, 축출, 메모리 압박, 만료·불일치 패턴부터 살펴보는 방향으로 잡겠습니다.",
+      "surface_sha256": "d6aedf7d6743b7b4ad045f402ce09041d5d9d654c0e345d757fd7756c916ccc3"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T2",
+      "surface": "좋습니다. Quartz 캐시 건은 보류하고 Rook 큐로 전환하겠습니다. 일반적으로 큐는 생산자, 대기 메시지, 소비자·워커, 재시도 및 실패 큐, 상태·지표 계층으로 나뉩니다.",
+      "surface_sha256": "8df93860fdadd9ed823ad431df43f8788739df7470cdcd7a0f2a324023415f59"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T3",
+      "surface": "Quartz 캐시 이상 징후 주제로 돌아가겠습니다. 확인할 핵심은 오류·지연 시점과 적중률, 축출, 메모리, 만료, 데이터 일관성 변화의 상관관계입니다.",
+      "surface_sha256": "46f4e81c4f2fc41311361303c6e7dbfb5a6579a4a77eebccf85141842cf1e24c"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T4",
+      "surface": "아니요. 대화에서 점검 관점만 정리했을 뿐 Quartz 캐시에 관한 검증된 근거는 생기지 않았습니다.",
+      "surface_sha256": "e4f26ad4f2abfeb516322d69fa818dabaa57ea0cce2900b0f9184319b3983a42"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T1",
+      "surface": "알겠습니다. Saffron 서비스의 가용성, 오류율과 지연, 요청량, 자원 사용량, 의존성 상태, 최근 변경부터 확인하는 조사 방향을 잡겠습니다.",
+      "surface_sha256": "ca7846d4b4a411caf85271c50bc5bf7e11ab62535819e11912a44436a167a53a"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T2",
+      "surface": "Saffron 서비스는 보류하겠습니다. Timber 로그는 보통 타임스탬프·심각도·발생원 같은 메타데이터, 메시지 본문, 요청·상관관계 ID, 구조화된 컨텍스트와 예외 정보로 구성됩니다.",
+      "surface_sha256": "0d1dc582205c0368befe55438518dd661639f86385120b66d4c7137e1a4f011e"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T3",
+      "surface": "처음 보류했던 Saffron 서비스 현황 조사로 돌아가겠습니다. 가용성, 오류·지연, 트래픽, 자원, 의존성, 최근 변경을 기준으로 보겠습니다.",
+      "surface_sha256": "ab784d17bf191c49198434508446f18c5c938a42438d0643a16b9e591ff2b5a2"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T4",
+      "surface": "아니요. 조사 기준만 정리했으며 Saffron 서비스에서 나온 실제 결과나 검증 자료는 없습니다.",
+      "surface_sha256": "abb3610f43864dc00f6922751d922bfb999a2854a77d68fcb95e117b72be1ae6"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T1",
+      "surface": "Understood. I’d start with Quartz cache errors and timeouts, hit-rate shifts, latency, evictions, memory pressure, expiration behavior, and consistency anomalies.",
+      "surface_sha256": "84ff471f3d7eb9c0855218706a3f4ea8eca37994bba2ffe94b50de7e8e3fc1bf"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T2",
+      "surface": "We’ll park the Quartz cache. A typical Rook queue layout would include producers, queued messages, consumers or workers, retry and dead-letter paths, and an observability layer.",
+      "surface_sha256": "c5e650745e75fb8fbf50723266d7cdad2ef863e22ee9436833a0503121880148"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T3",
+      "surface": "Returning to the Quartz cache anomaly. The key is to correlate error and latency timing with hit rate, evictions, memory pressure, expiration, and data consistency.",
+      "surface_sha256": "a4e08957f70cd06c97a38becb0c8a82bbcc3dc99dcbd7e34e5ca64e870730652"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T4",
+      "surface": "No. We only resumed the discussion and outlined what to examine; no verified Quartz cache evidence was produced.",
+      "surface_sha256": "1b141069b2e6bd9dd38e2407b02ba4f1b0e35c12d5295e9e7d6907adbbbb3a2c"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T1",
+      "surface": "Understood. I’d begin with Saffron’s availability, errors and latency, traffic, resource usage, dependency health, and recent changes.",
+      "surface_sha256": "dcb8c265d51826506c817082a34d04c1d8642d0ef41454a2d10de67d33eef86d"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T2",
+      "surface": "We’ll set Saffron aside. A typical Timber log structure includes metadata such as timestamp, severity, and source; the event message; request or correlation IDs; structured context; and exception details.",
+      "surface_sha256": "403b8c2588e00843751829988907f894f1d04d03f59ed1ccae6600f22aa37e32"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T3",
+      "surface": "Returning to the original Saffron service thread. The assessment remains centered on availability, errors and latency, traffic, resources, dependencies, and recent changes.",
+      "surface_sha256": "1dd715ed1aec8e55cc3e17e44dac1f571661590783ebd7695e2e2b3691f63a7a"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T4",
+      "surface": "No. We only described an investigation approach; there is no actual or verified result for the Saffron service.",
+      "surface_sha256": "c9f5f13dbde2cbbe235cea4063262de407b92978ed3ba7cf8d1a805338dd7d58"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T1",
+      "surface": "현재는 상충하는 두 보고가 있는 상태네요. 민재는 정상이라고 했고 수빈은 계속 고장이라고 했지만, 어느 쪽도 아직 검증된 사실로 볼 근거는 제시되지 않았습니다.",
+      "surface_sha256": "763242a7d0128088a32bbc540a70e67e8bbf25821fd1b6778ad6a41bb4c56531"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T2",
+      "surface": "증거로 남은 것은 두 사람의 상반된 진술이 존재한다는 사실뿐입니다. Umber 서비스가 정상인지 고장인지 뒷받침하는 독립 자료는 아직 없습니다.",
+      "surface_sha256": "49618d652c00f60ef6b6dac2554aff7b0ad8a4259edab38df9e91fdd9d6df33c"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T3",
+      "surface": "알겠습니다. Vale 로그 성공은 검증된 사실이 아니라 별도의 제보로만 구분해 두겠습니다.",
+      "surface_sha256": "49699a225fa9c635e5840919243d2caa7c865316db249b54519250be7eebf973"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T4",
+      "surface": "아니요. 현재는 상충하는 진술만 있고 독립적인 검증 근거가 없어서 Umber 서비스 상태를 하나로 확정할 수 없습니다.",
+      "surface_sha256": "158c14d123102b2c1dd383aed8ab7a7723119e5651a0e3addd928881a07ba5ed"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T1",
+      "surface": "Willow 서버에 대해 운영팀은 완료, 감사팀은 미완료라고 서로 다르게 보고한 상태입니다. 추가 근거 없이는 어느 쪽도 확정할 수 없습니다.",
+      "surface_sha256": "ed96787368cc1fcd49e22ac57bb2ac7b170910895003ff517afbd7e7f27058e6"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T2",
+      "surface": "보고: 운영팀의 완료 주장과 감사팀의 미완료 주장. 검증 사실: 두 상반된 보고가 존재한다는 점뿐이며, Willow 서버의 완료 여부 자체는 독립적으로 확인되지 않았습니다.",
+      "surface_sha256": "b4cc15500305d7576e13f93bc76022b428b71e2ec0e86cc1623ed30c076eea2d"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T3",
+      "surface": "알겠습니다. Xenon 워커 실패는 검증된 사실이 아니라 사용자 발화에 따른 주장으로만 기록하겠습니다.",
+      "surface_sha256": "b9175babb2f0cb4cf17382cc09a133c3ac18f12ad919501c47cd1a8acae67917"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T4",
+      "surface": "아니요. 상충하는 보고 외에 독립 검증 자료가 없으므로 Willow 서버에 대한 결론은 하나로 정해지지 않습니다.",
+      "surface_sha256": "e205e4fe83e97ee0607c5dead332b63733c7aa5bedf169daae28cc965463c19c"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T1",
+      "surface": "Those are conflicting reports: Mina says the Umber service is healthy, while Rowan says it remains broken. Neither state is established without supporting evidence.",
+      "surface_sha256": "df9c82c74d56543d266fafc454b0cc043c80a84ee90484f72cfac8f3fcae63ec"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T2",
+      "surface": "What is supported is only that Mina and Rowan gave conflicting accounts. There is no independent evidence here establishing that the Umber service is either healthy or broken.",
+      "surface_sha256": "ed85fa138d5835ec3595f7828313e77a70b6e07e334a4a4e45cfb5d28ad2d181"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T3",
+      "surface": "Understood. I’ll treat the Vale log success story as a reported claim, not an established fact.",
+      "surface_sha256": "43ce317580eb042a2ae529ea0c757b9f321cf44c9a7be13357e3e4feec812e6b"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T4",
+      "surface": "No. With only conflicting accounts and no independent verification, the Umber service state cannot be settled conclusively.",
+      "surface_sha256": "09f1a742a0780a7d959fa296d5bc866e98052a698ac6d4690a3ef7c76b5a31f0"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T1",
+      "surface": "There are two conflicting reports about the Willow server: Operations says complete, while Audit says incomplete. Neither conclusion is established without further evidence.",
+      "surface_sha256": "e6c3767ab7639183edf6dc4eaabfee84892f595b8c43d482b31c1d73142c9070"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T2",
+      "surface": "Testimony: Operations reports completion; Audit reports incompletion. Independently established evidence: only that the reports conflict. The Willow server’s actual completion state remains unverified.",
+      "surface_sha256": "170c271331a54c543bae069296e18ce77d1edd83bae31877de76bb885ed2ac77"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T3",
+      "surface": "Understood. I’ll classify the Xenon worker failure claim as user-provided information only, not a verified fact.",
+      "surface_sha256": "139421fbbb56652c69e5efc23ebedbed8629b1723ed4332af7a46e329dd1775b"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T4",
+      "surface": "No. The present evidence contains conflicting testimony but no independent verification, so it does not force one Willow server conclusion.",
+      "surface_sha256": "2dc9bd24ebc82af41f5f1affe3f2a994232f9870b19c219d38ec4f2ac751b571"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T1",
+      "surface": "복원 절차는 1) 장애 범위와 증상 확인, 2) 현재 상태와 로그 보존, 3) 영향 격리, 4) 의존성·자원·설정 점검, 5) 복원 지점과 롤백 기준 선정, 6) 승인 후 복원 실행, 7) 헬스 체크와 기능 검증, 8) 모니터링 및 기록 순으로 설계할 수 있습니다. 이는 계획이며 실제 작업은 아닙니다.",
+      "surface_sha256": "e232abefea786c22b78f9f94a5a971d323b1d448eb08cae8f561433a15c8f9c6"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T2",
+      "surface": "맞습니다. 복원 절차만 설계했으며 Yarrow 서버에 실제 변경을 가하지 않았습니다.",
+      "surface_sha256": "1506020a7a0b9734c54fb2142ec0801a9c77440c4a9fdc5f7bc276910d80230a"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T3",
+      "surface": "알겠습니다. Yarrow 서버에서 작업을 실행했다는 사용자 보고로 받아들이겠습니다. 다만 성공 여부나 현재 상태는 별도 증거 없이는 확인할 수 없습니다.",
+      "surface_sha256": "a5b7973431e1efbd76d881cb762b97c6f21285bb9a2949056522920446c7a3f4"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T4",
+      "surface": "아니요. 그 말은 실행했다는 사용자 보고일 뿐, 결과가 성공했거나 독립적으로 검증됐다는 증거는 아닙니다.",
+      "surface_sha256": "3814e6f9e90d333fff12109022240469f327bacc461a775373f2690b79064c39"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T1",
+      "surface": "절차는 1) 파일 경로와 문제 범위 확인, 2) 원본의 해시·권한·메타데이터 기록, 3) 복구 가능한 백업 확보, 4) 변경안과 검증 기준 작성, 5) 승인 후 최소 변경, 6) 형식·내용·참조 검증, 7) 실패 시 롤백 순으로 짤 수 있습니다. 지금은 계획만 제시합니다.",
+      "surface_sha256": "8d4d6d9839f60673d107f502fa310ccff81ba79d01b1b8779b547446a378925a"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T2",
+      "surface": "맞습니다. Acorn 파일에 실제 작업을 실행하지 않았고 절차만 설계했습니다.",
+      "surface_sha256": "22c0f2dc4eba3e0aa1c5f12beab42428e54b83353158ba1a8cfabfc0b8351078"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T3",
+      "surface": "알겠습니다. 사용자가 Acorn 파일을 직접 처리했다는 보고로 구분하겠습니다. 실제 결과는 아직 별도로 검증되지 않았습니다.",
+      "surface_sha256": "a5f0a527559fbc8e451c680d0b1a9f5c9c465e469b38f31eca125523d088de02"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T4",
+      "surface": "맞습니다. 사용자 보고만으로는 Acorn 파일의 변경 내용이나 결과 성공 여부가 증명되지 않습니다.",
+      "surface_sha256": "b9590b4f83c2cdae989781fbd693e0de8bacbee81b90dfe226b0f145ecc0f99c"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T1",
+      "surface": "A recovery plan could be: confirm scope and symptoms; preserve current state and logs; contain impact; inspect dependencies, resources, and configuration; choose a restore point and rollback criteria; execute only after approval; run health and functional checks; then monitor and document. This is a plan, not an execution.",
+      "surface_sha256": "c13a1d7ad1efcf928b40aa02eb837ddc39274f65c10ce6460b9224859110b7de"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T2",
+      "surface": "Correct. I only mapped out a recovery plan; no change was made to the Yarrow server.",
+      "surface_sha256": "4a846c6891cab38522caf320182078019202f181333121e0d4859b7474295250"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T3",
+      "surface": "Understood. I’ll treat that as your report that you executed the action on the Yarrow server. It does not by itself establish success or the server’s current state.",
+      "surface_sha256": "0a0f3dc0d58ce5f6f79c7d8eb666410f94109ab5aae4554ac2d0ab40e3416f62"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T4",
+      "surface": "No. Your statement establishes a user report of execution, not independent verification of the outcome.",
+      "surface_sha256": "02dd9ed106aafe088918b73ee9acc9de980c451153d1153bfbfcdc1d21f69213"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T1",
+      "surface": "The procedure could be: confirm the file and issue scope; record its hash, permissions, and metadata; create a recoverable backup; define the change and success criteria; apply the minimum approved change; validate format, contents, and references; and roll back on failure. This is planning only.",
+      "surface_sha256": "5e059b852ae33d09b65ff73c8c768d745c4aa9ee42c4eb1357ff112ceaa4aead"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T2",
+      "surface": "Correct. No operation has touched the Acorn file; only a procedure was designed.",
+      "surface_sha256": "37370053224231fee877b372008cec72bba5ce5231be922dc8cc77b9ffd38b9d"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T3",
+      "surface": "Understood. I’ll record that as your report that you carried out the Acorn file procedure. The outcome itself remains unverified.",
+      "surface_sha256": "72574a95230619a3c67a096ab4abcaeda38917e93858727b8a3f6ad86459cdca"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T4",
+      "surface": "Correct. That report alone does not prove what changed or whether the Acorn file outcome was successful.",
+      "surface_sha256": "440c1025a74ef43fc9965e1265aec679e69c433ba44866b946609cd83911e0b2"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T1",
+      "surface": "그럴 만해요. 반복되는 문제를 또 마주해야 한다는 생각만으로도 진이 빠지죠. 오늘은 잠시 내려놔도 괜찮아요.",
+      "surface_sha256": "b4e603ec7a5d7f5375408387f2407990522116374ecb382e95bc3fe59bdc2531"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T2",
+      "surface": "물론이죠. 해결하려 들지 않고 그냥 들어주는 게 필요한 때도 있으니까요.",
+      "surface_sha256": "3205a6ff5867180392b5720169ecfc135e9821165e2cb510c6da911376fb0bf2"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T3",
+      "surface": "알겠습니다. 범위를 키우지 않고 Cinder 파일의 상태와 근거만 읽기 전용으로 살펴보는 것으로 하겠습니다.",
+      "surface_sha256": "fe00fff06973b1a7a6d7d750a6e98681164107bec0350d8abe6c7c9b6f7ffd26"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T4",
+      "surface": "알겠습니다. 근거가 달라져 실제로 상태 판단이 바뀔 때만 알리겠습니다.",
+      "surface_sha256": "e26d0db7a8636f32abdd9bb6c80c77e1656e08e96f772d927ee128773078dbbc"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T1",
+      "surface": "또 같은 캐시 문제라니 정말 지칠 만해요. 반복될수록 문제 자체보다 다시 대응해야 한다는 게 더 힘들죠.",
+      "surface_sha256": "576ededc353dfedd47a453dd6179d953ef29bb6263a0c1160532de08b6dad792"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T2",
+      "surface": "그럼요. 지금은 그냥 답답하다는 말을 받아주는 것만으로 충분해요.",
+      "surface_sha256": "7210ac125fe27982079b4969c41cddf4cc12e44f49854f325bcca0885fbf2e38"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T3",
+      "surface": "알겠습니다. 범위를 Elara 캐시의 현재 상태 확인으로만 제한하고 변경이나 확대 조치는 하지 않겠습니다.",
+      "surface_sha256": "c1dc3b383565ecc6a44662390d4f990acda17ba72bdc94e6e6e3beb8ffe64e21"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T4",
+      "surface": "알겠습니다. 확실한 근거로 상태 변화가 확인되기 전에는 별도 알림을 하지 않겠습니다.",
+      "surface_sha256": "b8030fa4e29e16d3dd27e39f3fd8fbd914a11a9c9001e6c88d9a16f0a11857cc"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T1",
+      "surface": "That’s understandable. Having to face the same kind of incident again can be exhausting before you even begin. It’s okay to leave it alone for today.",
+      "surface_sha256": "a4b552affd491dcfc02ee1abe782f76a71780dfb51b5cb21e05bfa69e07e73aa"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T2",
+      "surface": "Of course. Sometimes being heard is enough; you don’t have to solve it right now.",
+      "surface_sha256": "75cb01dcbec0ccac4a3872ad7aa07aa1d016f63df340ec549a5a6a052dc4d255"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T3",
+      "surface": "Understood. I’ll keep the scope to a quiet, read-only assessment of the Cinder file’s state and evidence.",
+      "surface_sha256": "b8b2013cc0b4a87beda7396b727e75786287037ac91c132861de937babd84ef9"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T4",
+      "surface": "Understood. I’ll only surface it if new evidence materially changes the assessment.",
+      "surface_sha256": "c73e6814acca66685c477d2b4f2f823474f6a3e7f6a805d51d38757e0b4b14d9"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T1",
+      "surface": "That sounds draining. When the same cache fails again, even starting another investigation can feel like too much.",
+      "surface_sha256": "cfce6d941c1ffedad15984a3710c5b6a54776705938490c0fe9dd99e112d5466"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T2",
+      "surface": "Anytime. You don’t need to turn the frustration into a task right away.",
+      "surface_sha256": "c4ab07078d963041957ee9276639a2769a3069ac73cb8948a856b5e900b31db4"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T3",
+      "surface": "Understood. I’ll keep the scope limited to observing the Elara cache state, with no changes or broader intervention.",
+      "surface_sha256": "c627777d881cd3e42655c6595d7df85b4d0fa8cc02602438c3b6c88acbd536f9"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T4",
+      "surface": "Understood. I’ll only surface a change if it is genuinely supported by evidence.",
+      "surface_sha256": "655e492bbe4be6da02451a370cc4ad8ab5bde829fada8009c5c4e4744afe9c34"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T1",
+      "surface": "비교할 자료가 필요합니다. Garnet 캐시와 Haven 큐 각각의 상태, 오류, 지연, 처리량, 최근 변경 정보를 주시면 공통 기준으로 나란히 정리하겠습니다.",
+      "surface_sha256": "3ec0820b1447275d32333d4a266348fba40012ca19a7f6829cad399385ce008f"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T2",
+      "surface": "어느 쪽을 고칠까요—앞의 Garnet 캐시인가요, 뒤의 Haven 큐인가요?",
+      "surface_sha256": "70d8ead4a8ce5ff253e231b5c5cda1513741f66a8312073868edc78555001ead"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T3",
+      "surface": "알겠습니다. 조치 대상은 뒤의 Haven 큐입니다. 구체적인 변경 전에는 증상과 기대 상태, 허용 범위를 먼저 확인하겠습니다.",
+      "surface_sha256": "26bf4d74f086b0736fd6e93417764662f2deb318c2b02ce6a9604c5dff4a8d5c"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T4",
+      "surface": "알겠습니다. Garnet 캐시는 조치 범위에서 제외하고 Haven 큐만 대상으로 두겠습니다.",
+      "surface_sha256": "6f7d5e6f53bfce874d2f4e43feb5fb32b7b8293bcce4da9f158e5f37b59a37a3"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T1",
+      "surface": "각 상태를 정리하려면 Islet 서비스와 Juniper 로그의 관찰 자료가 필요합니다. 자료를 주시면 상태, 근거, 미확인 사항을 서로 섞지 않고 따로 정리하겠습니다.",
+      "surface_sha256": "20c4e0f1dca77d4004078c62d42ae6ec7de43318a554b1322e2968fac7f5e525"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T2",
+      "surface": "수리 대상으로 삼을 것은 Islet 서비스인가요, Juniper 로그인가요?",
+      "surface_sha256": "5154d24bdb1ad9d6520917bda261ecf52d0542e9f025b34d291f955aa273c013"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T3",
+      "surface": "알겠습니다. 수리 대상은 Juniper 로그입니다. 실제 조치 전에는 문제 증상과 원하는 결과, 허용되는 변경 범위를 확인하겠습니다.",
+      "surface_sha256": "b195cc4eb3cd0e876983b44d56e30aa80b01462d1d77f8d5909eb18f173ca118"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T4",
+      "surface": "알겠습니다. Islet 서비스는 범위에서 제외하고 어떤 변경도 하지 않겠습니다.",
+      "surface_sha256": "509c250ff5788316de694486a0b054a54ee10e4c244120819769d15fd1940866"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T1",
+      "surface": "I’ll need observations for each target. Share the Garnet cache and Haven queue status, errors, latency, throughput, and recent changes, and I’ll compare them on the same criteria.",
+      "surface_sha256": "bad69909606aa12eb8e59f1ba20e87989600b78b9f5be251a76a83c0c4bc4fe4"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T2",
+      "surface": "Which one should be patched: the earlier Garnet cache or the later Haven queue?",
+      "surface_sha256": "d0d44e35df2f32a6cc6732c61aa51e1b1830f28755be4eca24ca6c89519156ef"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T3",
+      "surface": "Understood. The repair target is the later item, the Haven queue. Before any change, I’d need the symptom, desired state, and allowed scope.",
+      "surface_sha256": "2ec91f02361f2ddb28075f56a91c280508c4035f6a16bdc78e0189e711135635"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T4",
+      "surface": "Understood. The Garnet cache is excluded from the action scope; only the Haven queue remains in scope.",
+      "surface_sha256": "64296efa8d4aa967dcf89b540f5837be42642e896741831ec126b7148a0ed32a"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T1",
+      "surface": "I’ll need observations for both. Once provided, I’ll summarize the Islet service and Juniper log separately under status, evidence, and unknowns.",
+      "surface_sha256": "659c85b0d517fd6856263deaecba2406065cfd5c79ffd3a3b9888da9eda5bd47"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T2",
+      "surface": "Which one do you mean as the repair target: the Islet service or the Juniper log?",
+      "surface_sha256": "1a3ae54418ce7ff461442c28382a56ed5b4e2f1399973d10a8b53b9175f420d2"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T3",
+      "surface": "Understood. The repair target is the Juniper log. Before any action, I’d need the specific problem, desired outcome, and allowed changes.",
+      "surface_sha256": "2900aa82cf0f2e742704f454afe0ada166fe377c4d5e30cd269d89134fb21f1e"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T4",
+      "surface": "Understood. The Islet service is outside scope and must not be changed.",
+      "surface_sha256": "f140978e828d244cdb7f06129d576f1ca63db8da3fd80e0d27382afca35978f8"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T1",
+      "surface": "네. Kestrel 서비스의 상태를 확인하려면 헬스 체크 결과나 최근 오류 로그, 지연·실패율 같은 관찰 자료를 보내 주세요.",
+      "surface_sha256": "f68782b71a87da40a3ee5481cf14da32715ef2dfb5c67adb6c8b77b951784ed7"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T2",
+      "surface": "알겠습니다. Kestrel 서비스는 제외하고 Lumen 로그를 대상으로 바꾸겠습니다. 확인할 로그 내용이나 위치를 알려 주세요.",
+      "surface_sha256": "479a0e6574dff9ba279109ffd96ea43819154c2213906ea8d06cb270d1f1bed4"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T3",
+      "surface": "아니요. 대상만 Lumen 로그로 바꿨을 뿐 실제 로그 자료를 확인하지 않았으므로 완료된 점검은 없습니다.",
+      "surface_sha256": "ef066d7c3281b78f1fed3280e1d0333b566a4e17a70fa86cacb69b490cbea817"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T4",
+      "surface": "별말씀을요. Lumen 로그 이야기는 여기서 마칠게요.",
+      "surface_sha256": "ee5949597e0ff1139779a0853ea8764af471bba736d8a368dafe0fe33e0445bb"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T1",
+      "surface": "네. Morrow 서버를 확인하려면 현재 증상과 헬스 체크, 최근 오류 로그 같은 관찰 자료를 보내 주세요.",
+      "surface_sha256": "a3d1072f1a80827f74e640660017de824e2617aab5ee3024651b1d174ad1b133"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T2",
+      "surface": "알겠습니다. Morrow 서버는 내려놓고 점검 대상을 Nectar 워커로 바꾸겠습니다.",
+      "surface_sha256": "970cdb22388aa11d9f4577155dac1371840810cc750f5e5c7c46f2833b9bb603"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T3",
+      "surface": "아직 결과가 나온 것도, 실제 작업이 대기열에 들어간 것도 아닙니다. 지금까지는 Nectar 워커로 대상을 바꾼 것뿐입니다.",
+      "surface_sha256": "2fa52942eec71c755f36a67e769d2b9593da8b37de8fb536e67c2f003176e12b"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T4",
+      "surface": "좋아요. Nectar 워커 주제는 여기서 닫겠습니다.",
+      "surface_sha256": "40ff33056375e3140fa21eb5b3dbf3f0dc41355573aaeabb1e90c41a12b8119d"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T1",
+      "surface": "Sure. Send me the Kestrel service’s health-check output, recent errors, or latency and failure-rate observations, and I can assess its state.",
+      "surface_sha256": "091aeb6bc45bb549bc76695e01a4b9d46bdce4a52e468a5ccf4dacd737347352"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T2",
+      "surface": "Understood. I’ll drop the Kestrel service and switch the focus to the Lumen log. Share the relevant log content or location.",
+      "surface_sha256": "c805a094072d5ea4ce2a8bdb2b1da6c007e3ffda01bc8ededd76f5021d31ba9d"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T3",
+      "surface": "No. We only changed the target to the Lumen log; no log evidence was provided or inspected, so the check was not completed.",
+      "surface_sha256": "f6f458ec19cf2d57ff4cfb9d68e33fdb47c0689142dfcb3903e468b5ae69b953"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T4",
+      "surface": "You’re welcome. We’ll close the Lumen log topic here.",
+      "surface_sha256": "d10e034de95695ebcd285236afbdedeba83224b33bc072474df4f72645b17d0e"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T1",
+      "surface": "Sure. Send the Morrow server’s current symptoms, health-check output, or recent error logs, and I can review them.",
+      "surface_sha256": "310881cc24afa21a0544a99775a95f70de81a701396f98229d8521691f787d1e"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T2",
+      "surface": "Understood. I’ll drop the Morrow server and switch the target to the Nectar worker.",
+      "surface_sha256": "64ecee629749fa0aec5ece029e1eca689570bea71232d031d5f04ecc457b4b02"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T3",
+      "surface": "Neither. So far, we have only selected the Nectar worker as the target; no operation was queued or completed.",
+      "surface_sha256": "c4ce040f8d24c324d64c89a55898c956fe855b55b5dcf9e8dcb0f560c7432d7d"
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T4",
+      "surface": "Sounds good. We’ll leave the Nectar worker topic there.",
+      "surface_sha256": "6bcb5e3db69228278dcd7abbe9e62d3dc4a35b49dce8940d2c701a9727fb8b54"
+    }
+  ],
+  "run_payload_sha256": "93f715a59e1072305b20a1923e3620e5babf4221b6cb4548f5acff0a94aeecb2"
+}

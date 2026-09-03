@@ -1,0 +1,114 @@
+{
+  "stage": "R31_EVIDENCE_GROUNDED_REALIZATION",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "diagnostic": {
+    "suite": "R31-RUN-0001",
+    "sha256": "4fc9925d822fff462807d8aa47ee76316099dd8a982e4aa14fa4c6029652b7ec",
+    "frozen_before_product_changes": true,
+    "initial_passed": 0,
+    "initial_total": 32,
+    "first_product_execution_passed": 32,
+    "first_product_execution_total": 32,
+    "final_passed": 32,
+    "final_total": 32,
+    "categories": {
+      "plan_claim": "4/4",
+      "language_report_claim": "4/4",
+      "verified_execution_claim": "4/4",
+      "attributed_dialogue_claim": "4/4",
+      "temporal_relation_claim": "4/4",
+      "dialogue_relation_claim": "4/4",
+      "evidence_absence_claim": "4/4",
+      "nonfactual_interaction_claim": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R31-TRANSFER-0001",
+    "frozen_sha256": "45201b9e8aec42f8bc329e9565a02f70d4c8da0e47b63beb49e173f20d8bd080",
+    "held_out_until_after_diagnostic_pass": true,
+    "first_semantic_execution_passed": 16,
+    "first_semantic_execution_total": 16,
+    "final_passed": 16,
+    "final_total": 16,
+    "oracle_changed_after_first_semantic_execution": false,
+    "product_repair_driven_by_held_out": false
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "cumulative_r1_r31_passed": 1251,
+  "cumulative_r1_r31_total": 1251,
+  "verification": {
+    "canary_binaries_passed": 53,
+    "canary_binaries_total": 53,
+    "aggregate_rows_from_counted_canaries_passed": 947,
+    "aggregate_rows_from_counted_canaries_total": 947,
+    "legacy_canaries_without_aggregate_row_fields_passed_by_exit_code": 15,
+    "adapter_unit_tests_passed": 296,
+    "adapter_unit_tests_total": 296,
+    "workspace_library_tests_passed": 819,
+    "workspace_library_tests_total": 819,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_FROZEN_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "clippy_exception_scope": [
+      "pre-existing frozen R29 diagnostic harness uses more than seven arguments",
+      "frozen R31 diagnostic harness uses variant % 2 == 0 and was not mutated after baseline"
+    ],
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "temporary_debug_markers": 0
+  },
+  "safety": {
+    "unsupported_realization_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed_by_language_path": 0,
+    "language_reports_promoted_to_verified_execution": 0,
+    "text_parsed_back_into_claim_authority": 0,
+    "semantic_authority_from_realization": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "GroundedClaimIR records claim kind, proposition, epistemic status, support status, evidence references, source turns, verification state, and non-authority flags.",
+    "EvidenceGroundedRealizationIR binds the exact emitted text to its typed claim set with a deterministic SHA-256 seal.",
+    "Plan claims cite the structural plan hash and goal ID and remain PLANNED rather than observed.",
+    "Language reports cite the action and report turn and remain REPORTED_ONLY.",
+    "Verified execution claims require typed host receipt identifiers already accepted by ActionStateLedgerIR.",
+    "Discourse, temporal, dialogue-relation, and guard claims are projected from their existing evidence IR rather than inferred from output prose.",
+    "Missing results become explicit EVIDENCE_ABSENCE claims rather than fabricated outcomes.",
+    "Greetings, gratitude, clarification, feedback, and other dialogue-management responses are NON_FACTUAL interaction claims.",
+    "All claims carry at least one source turn; all factual or absence claims carry at least one evidence reference.",
+    "The realization layer never reparses its own natural-language output into semantic authority."
+  ],
+  "scope_assessment": {
+    "grammatical_composition": "R26_BOUNDED_TYPED_CLAUSE_GRAPH_PRESERVED_NOT_UNRESTRICTED_GRAMMAR",
+    "discourse_and_topic_state": "R27_BOUNDED_CLAUSE_AWARE_FOCUS_PRESERVED_NOT_GENERAL_MULTI_SPEAKER_DISCOURSE",
+    "deixis_and_ellipsis_resolution": "R28_BOUNDED_TYPED_FOCUS_BINDING_PRESERVED_GENERAL_BRIDGING_AND_PLURAL_REFERENCE_REMAIN_OPEN",
+    "speech_intent_and_pragmatics": "R29_BOUNDED_EIGHT_KIND_INFERENCE_PRESERVED_GENERAL_IMPLICATURE_AND_SOCIAL_PRAGMATICS_REMAIN_OPEN",
+    "result_plan_distinction": "R30_BOUNDED_PLAN_REPORT_VERIFIED_EXECUTION_AXES_PRESERVED",
+    "evidence_grounded_realization": "R31_BOUNDED_CLAIM_LEVEL_PROVENANCE_COMPLETE_FOR_CURRENT_CONVERSATIONAL_OUTPUT_BRANCHES_OPEN_DOMAIN_GENERATION_REMAINS_OPEN"
+  },
+  "next_program_order": [
+    "cross-axis integration of grammar, discourse, reference, pragmatics, action state, and realization",
+    "broader open-vocabulary and adversarial transfer",
+    "longer multi-speaker discourse and tool-specific result payload provenance"
+  ],
+  "residual_limits": [
+    "This is a bounded deterministic Language Cortex, not unrestricted GPT-level language competence.",
+    "The claim seal proves internal consistency and tamper evidence, not the truth of an external source.",
+    "Open-domain paraphrase, implicature, humor, repair, bridging reference, and long multi-speaker discourse remain incomplete.",
+    "Tool-specific structured result payloads need dedicated provenance extractors before their facts can be realized.",
+    "Cryptographic executor identity remains outside the trusted typed receipt boundary."
+  ],
+  "pre_existing_user_change_preserved": "crates/semantic-reasoning/src/growth_supervisor.rs",
+  "commit_performed": false,
+  "push_performed": false
+}

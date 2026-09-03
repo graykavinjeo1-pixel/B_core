@@ -1,0 +1,17 @@
+{
+  "run_id": "R15-RUN-0001",
+  "status": "FAIL",
+  "suite": "dialogue-relation-canary",
+  "total": 36,
+  "passed": 21,
+  "failed": 15,
+  "failed_boundaries": [
+    "Korean declarative connectors containing 이유/결과 were misclassified as questions",
+    "English consequence questions retained from as a topic term",
+    "그 결과 collided with the pre-existing typed result-reference path"
+  ],
+  "disposition": "PRESERVED_DIAGNOSTIC_FAILURE_REPAIRED_IN_SAME_R15_INCREMENT",
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0
+}

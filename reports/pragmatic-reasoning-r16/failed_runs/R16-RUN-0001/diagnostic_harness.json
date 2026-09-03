@@ -1,0 +1,18 @@
+{
+  "run_id": "R16-RUN-0001-HARNESS",
+  "status": "FAIL",
+  "suite": "dialogue-path-canary",
+  "evaluated_before_harness_failure": 6,
+  "failed_boundary": "The Korean diagnostic case embedded a non-ASCII surface label in conversation_id even though the public conversation request contract permits ASCII identifiers only.",
+  "semantic_failure": false,
+  "repair": "Keep the Korean utterance and expected semantics unchanged; replace only the harness conversation identifier with an ASCII ordinal.",
+  "final_suite": {
+    "total": 30,
+    "passed": 30,
+    "failed": 0
+  },
+  "disposition": "PRESERVED_HARNESS_FAILURE_REPAIRED_BEFORE_HELD_OUT_EXECUTION",
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0
+}

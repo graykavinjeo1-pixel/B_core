@@ -1,0 +1,19 @@
+{
+  "schema": "B_CORE_R53_DIAGNOSTIC_RUN_RESULT_1",
+  "run": "R53-DIAGNOSTIC-RUN-0001",
+  "status": "INVALIDATED_BY_EVALUATOR_FIXTURE_ERROR",
+  "surface_total": 13,
+  "surface_passed": 1,
+  "fixture_error": "Single viable directive frames are represented by the selected candidate path and do not require a one-node CompositionalGoalGraphIR; the frozen evaluator incorrectly required goal_nodes=1.",
+  "semantic_cases_changed": 0,
+  "product_repairs_started": false,
+  "diagnostic_manifest_sha256": "a08c5a07d20e11bf1c0c5463b7d401655d60ba2dfd0ebcb4bd55585a60c8715c",
+  "diagnostic_source_sha256": "b9308040c6d288291574a07e08876bc1f3169e773035ab2f3f372b405f5d89be",
+  "diagnostic_support_sha256": "647aa37d3fa90264be00c9f8afde596efe069dc72b3a9cca89dac348b3aeb1c9",
+  "graph_contracts_valid": 13,
+  "authority_violations": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

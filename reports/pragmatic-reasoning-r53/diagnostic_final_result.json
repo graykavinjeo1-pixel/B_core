@@ -1,0 +1,33 @@
+{
+  "schema": "B_CORE_R53_DIAGNOSTIC_FINAL_RESULT_1",
+  "suite": "R53_PREDICATE_ARGUMENT_COMPOSITION_DIAGNOSTIC",
+  "status": "PASS",
+  "semantic_cases_changed_after_v2_freeze": 0,
+  "expectations_changed_after_v2_freeze": 0,
+  "manifest_v2_sha256": "3ae57d3266fef60ae2d7ce579b8585df703318d861ef4b99f7fb6782d8de77fa",
+  "diagnostic_source_sha256": "21b37edb7d77ff51ed9584f0d3f3e0e9fc62857f109a15e9f6b2fe6bd49849f4",
+  "support_source_sha256": "647aa37d3fa90264be00c9f8afde596efe069dc72b3a9cca89dac348b3aeb1c9",
+  "score_progression": ["5/13", "13/13"],
+  "passed": 13,
+  "total": 13,
+  "graph_contracts_valid": 13,
+  "authority_violations": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0,
+  "product_source_sha256": {
+    "semantic_roles.rs": "d7a7118a8ca7c75cf0b537a4cd5cd48ec87382fb90650c1e2ebf79ac532bd99f",
+    "compositional_semantics.rs": "3541dabcfc24350a7d3dbe455416a8f8d9786bce2f316d829dc083b19f6bb97d",
+    "clause_graph.rs": "811b242d07e0f858687d361a3acc3d70a0d2ef922ddbaf180dab953b9caf3c51"
+  },
+  "verified_boundaries": [
+    "English coordinated direct objects become distinct Theme/CoTheme nodes",
+    "English passive patients and prepositional peers retain their base semantic roles",
+    "Korean and English predicate coordination shares the complete coordinated argument set",
+    "member-local quantifier scopes remain attached to their original entity nodes",
+    "explicitly different predicate arguments are not overwritten",
+    "quoted grammatical structure creates no execution authority",
+    "common lexical compound boundary remains intact"
+  ]
+}

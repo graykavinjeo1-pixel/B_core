@@ -1,0 +1,141 @@
+{
+  "stage": "R49_TYPED_COMPOUND_GUARD_EXPRESSION",
+  "status": "PASS",
+  "sealed": true,
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "commit_created": false,
+  "push_performed": false,
+  "canonical_integrity": {
+    "status": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "predecessor_regression": {
+    "r48_diagnostic_passed": 12,
+    "r48_diagnostic_total": 12,
+    "r48_transfer_passed": 8,
+    "r48_transfer_total": 8,
+    "trusted_evidence_lifecycle_preserved": true,
+    "external_actions_executed": 0
+  },
+  "diagnostic": {
+    "suite": "R49_COMPOUND_GUARD_EXPRESSION_DIAGNOSTIC",
+    "frozen_case_source_sha256": "6059cb32e86f95ebcf275afe52f9ee88c5bfe3b5a6d552613ddd61a75812efd9",
+    "preimplementation_support_source_sha256": "69897b014e66147d1ecf3dc5b80d3b0b4cd5894cfc4673f169f896400424e7f0",
+    "final_support_source_sha256": "03948624e6ff79e385110e41e698204273f41bd68a28ecac7891914ac5a74242",
+    "support_source_change_after_baseline": "RUSTFMT_ONLY",
+    "preimplementation_baseline_passed": 0,
+    "preimplementation_baseline_total": 12,
+    "final_json_sha256": "b93b98daf5ac1e037bb9859017b83a46926769d8265a015f9491629cf147b265",
+    "final_passed": 12,
+    "final_total": 12,
+    "oracle_corrections": 0
+  },
+  "held_out_transfer": {
+    "suite": "R49_COMPOUND_GUARD_EXPRESSION_HELD_OUT_TRANSFER",
+    "frozen_source_sha256": "fa57b48257a9295c6ee27819442d2d3c2215906b524440493d1627f9d5101b08",
+    "first_exposure_passed": 7,
+    "first_exposure_total": 8,
+    "first_failure": "Korean realization of the distinct INVALID atom used the compositionally equivalent phrase NOT(VALID), so nested cross-language rebinding changed the canonical expression tree and hash.",
+    "product_repair": "Give INVALID its own Korean lexical realization and grounding, 무효, while retaining 유효하지 않다 as the compositional NOT(VALID) form.",
+    "final_json_sha256": "3233843fddf42586963133b09fab29f75f507b0c9f1ff1ffb8deed7c49c5bd61",
+    "final_passed": 8,
+    "final_total": 8,
+    "oracle_corrections": 0
+  },
+  "implementation": {
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_25",
+    "discourse_program_schema": "B_CORE_DISCOURSE_PROGRAM_IR_4",
+    "discourse_program_guard_schema": "B_CORE_DISCOURSE_PROGRAM_GUARD_IR_3",
+    "condition_expression_schema": "B_CORE_GUARD_CONDITION_EXPRESSION_IR_1",
+    "operators": [
+      "ATOM",
+      "ALL",
+      "ANY",
+      "NOT"
+    ],
+    "maximum_expression_depth": 4,
+    "maximum_expression_nodes": 16,
+    "and_precedence_over_or": true,
+    "parenthesized_scope_preserved": true,
+    "compound_negation_normal_form": "ATOM_LEVEL_NOT_WITH_DE_MORGAN_NORMALIZATION",
+    "expression_sha256_validated": true,
+    "surface_condition_sha256_preserved": true,
+    "cross_language_expression_sha256_stable": true,
+    "condition_internal_alternative_is_action_alternative": false,
+    "ordinary_action_alternative_still_fails_closed": true,
+    "mixed_subject_expression_replay": "FAIL_CLOSED",
+    "natural_language_condition_satisfaction": false,
+    "language_semantic_authority": false,
+    "language_execution_authority": false,
+    "semantic_payload_mutated": false,
+    "new_semantic_concept_generation": 0
+  },
+  "verification": {
+    "fresh_r49_tasks_passed": 20,
+    "fresh_r49_tasks_total": 20,
+    "adapter_library_tests_passed": 397,
+    "adapter_library_tests_total": 397,
+    "workspace_substantive_tests_passed": 921,
+    "workspace_substantive_tests_total": 921,
+    "cargo_test_workspace": "PASS",
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "new_r49_unit_invariants": 2,
+    "git_diff_check": "PASS"
+  },
+  "portable_package": {
+    "path": "pakage",
+    "package_id": "B_CORE_PORTABLE_PRODUCT_CORE_R49_WORKTREE_ABI1",
+    "source_base_commit": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+    "source_worktree_status": "UNCOMMITTED_R13_R49_LANGUAGE_CORTEX_INTEGRATION",
+    "adapter_product_files_synced": 43,
+    "adapter_product_hash_mismatches": 0,
+    "research_canaries_included": 0,
+    "workspace_unit_tests_passed": 424,
+    "workspace_unit_tests_total": 424,
+    "minimal_runtime_canaries_passed": 4,
+    "minimal_runtime_canaries_total": 4,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS",
+    "network_or_llm_cargo_dependency_hits": 0,
+    "default_runtime": "RUST_ONLY",
+    "python_paddle_ocr": "OPTIONAL_DISABLED_BY_DEFAULT"
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_r49_language_path": 0,
+    "recursive_source_mutations": 0,
+    "full_catalog_scans": 0,
+    "routing_false_negatives": 0,
+    "preexisting_growth_supervisor_user_change_preserved": true
+  },
+  "deployment_and_rollback": {
+    "conversation_state_schema_changed": true,
+    "old_persisted_conversation_state_requires_migration_or_drain": true,
+    "core_abi_changed": false,
+    "rollback": "Restore the R48 adapter sources and package metadata; do not load B_CORE_CONVERSATION_STATE_25 records into the R48 adapter without an explicit down-migration."
+  },
+  "build_cache_cleanup": {
+    "root_target_files_removed": 12564,
+    "root_target_bytes_removed": 7856159024,
+    "package_target_files_removed": 5434,
+    "package_target_bytes_removed": 3554589943,
+    "root_target_absent_after_cleanup": true,
+    "package_target_absent_after_cleanup": true
+  },
+  "completion_boundary": {
+    "r49_complete": true,
+    "broad_gpt_level_objective_complete": false,
+    "remaining_success_assumed_stages": 1,
+    "remaining_stage_sequence": [
+      "R50_FINAL_INTEGRATION_REGRESSION_AND_SEALING"
+    ],
+    "final_integration_stage": "R50",
+    "unrestricted_gpt_level_equivalence_claimed": false
+  }
+}

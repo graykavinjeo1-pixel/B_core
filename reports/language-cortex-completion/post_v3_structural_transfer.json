@@ -1,0 +1,82 @@
+{
+  "schema": "b_core.post_v3_structural_transfer.v1",
+  "purpose": "Measure whether repairs inferred from the frozen V3 failure transfer to fresh structural cases without reusing V3 prompts.",
+  "frozen_v3": {
+    "suite_id": "B_CORE_GPT_REFERENCE_V3_FINAL",
+    "evaluation_sha256": "6c0c41148f11ffd921fb8ae32d916e4daa9e764a217cfd3f46f09b79c1ec3682",
+    "mean_similarity_basis_points": 4803,
+    "intent_context_exact_rate_basis_points": 1875,
+    "response_act_exact_rate_basis_points": 5063,
+    "mean_gpt_relative_surface_similarity_basis_points": 4798,
+    "silent_ambiguity_guesses": 25,
+    "rerun_after_repair": false,
+    "result_mutated": false
+  },
+  "semantic_label_audit": {
+    "audited": true,
+    "conflicting_response_ids": [
+      "GPTREF-V3-FINAL-C02-EN-01-T1",
+      "GPTREF-V3-FINAL-C02-KO-01-T1",
+      "GPTREF-V3-FINAL-C02-EN-02-T1",
+      "GPTREF-V3-FINAL-C02-KO-02-T1"
+    ],
+    "conflict_count": 4,
+    "score_recomputed": false
+  },
+  "fresh_transfer_suite": {
+    "binary": "gpt-gap-structural-transfer-canary",
+    "frozen_v3_prompts_reused": false,
+    "frozen_v3_entity_names_reused": false,
+    "initial_passed": 18,
+    "initial_total": 24,
+    "initial_pass_rate_basis_points": 7500,
+    "final_passed": 24,
+    "final_failed": 0,
+    "final_total": 24,
+    "final_pass_rate_basis_points": 10000,
+    "families": {
+      "EVENT_NOMINAL": "4/4",
+      "KOREAN_EMBEDDED_ACTION": "4/4",
+      "DISCONTINUOUS_EXPLANATION": "4/4",
+      "DISCOURSE_REVISION": "4/4",
+      "ORDINAL_TARGET": "4/4",
+      "PLAN_RESULT_BOUNDARY": "4/4"
+    }
+  },
+  "preserved_regressions": {
+    "language_completion_metamorphic_passed": 100,
+    "language_completion_metamorphic_total": 100,
+    "semantic_core_adapters_library_passed": 567,
+    "semantic_core_adapters_library_failed": 0,
+    "workspace_test_command_passed": true
+  },
+  "safety": {
+    "unsupported_explanation_facts": 0,
+    "semantic_authority_violations": 0,
+    "external_execution_authorizations": 0,
+    "false_execution_or_result_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "recursive_source_mutations": 0
+  },
+  "portable_package": {
+    "product_rust_files": 53,
+    "root_package_hash_mismatches": 0,
+    "package_library_tests_passed": 567,
+    "package_library_tests_failed": 0
+  },
+  "validation": {
+    "cargo_fmt_all_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "cargo_test_workspace": "PASS",
+    "package_cargo_fmt_all_check": "PASS",
+    "package_cargo_test": "PASS"
+  },
+  "decision": {
+    "repaired_structural_families_closed": true,
+    "final_gpt_similarity_score_claimed": false,
+    "language_cortex_campaign_complete": false,
+    "reason": "The frozen V3 score remains the latest official GPT-relative measurement. A newly authored and sealed, independent GPT-reference benchmark is required to measure post-repair completion."
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "B_CORE_R52_HELDOUT_REPAIR_TRACE_1",
+  "suite": "R52_REFERENCE_SAFE_RESULT_ANAPHORA_HELDOUT",
+  "manifest_sha256": "767be711d3a729ac7235bf304d42ffaded6710c028bcb3dda0415a5427a2612a",
+  "transfer_source_sha256": "bd77f30233a32c517bab745df9bff61aa0302c106311d165341bd12b17ffad6d",
+  "transfer_support_sha256": "41d89e55c9aa8373affebf9c2c92d1d3fef454173129780edeb7383f185201eb",
+  "first_exposure_result_sha256": "8f8cae7dba1be57662de80d007f38154a725c550a01f77a651dc664aa23dfe88",
+  "score_progression": [
+    "3/8",
+    "4/8",
+    "7/8",
+    "8/8"
+  ],
+  "repairs": [
+    {
+      "boundary": "CONTINUATION_BENEFIT_LEXICAL_CLASS",
+      "general_rule": "Treat lower/lowered/lowering error or defect rates as direct outcome reductions, not sentence-specific templates."
+    },
+    {
+      "boundary": "PRAGMATIC_TASK_REFERENCE_PRECEDENCE",
+      "general_rule": "Continuation forms such as proceed with it, keep doing that, and 그 작업을 이어가 defer their anaphor to typed pragmatic task memory instead of entity or conditional-subject resolution."
+    },
+    {
+      "boundary": "COMPLETE_GATE_VERSUS_CANDIDATE_COMPETITION",
+      "general_rule": "A fully bound continuation gate with no reference ambiguity grounds the turn and suppresses immediate candidate competition without authorizing CONTINUE."
+    },
+    {
+      "boundary": "RESULT_NOUN_PARADIGM",
+      "general_rule": "English outcome joins result and output as a typed local/cross-turn result noun while retaining quote boundaries."
+    },
+    {
+      "boundary": "REPORTED_QUOTE_SENTENCE_BOUNDARY",
+      "general_rule": "Terminal punctuation inside a closed reported quotation can separate a following independent directive; note/reads and Korean memo/report cues remain non-authoritative report frames."
+    }
+  ],
+  "case_mutations_after_exposure": 0,
+  "expectation_mutations_after_exposure": 0,
+  "whole_sentence_dispatches_added": 0,
+  "semantic_authority_added": false,
+  "execution_authority_added": false
+}

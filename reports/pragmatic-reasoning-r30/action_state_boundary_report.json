@@ -1,0 +1,118 @@
+{
+  "stage": "R30_ACTION_STATE_AND_RESULT_BOUNDARY",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "diagnostic": {
+    "suite": "R30-RUN-0001",
+    "sha256": "dea008baae0dab708c8ae3b91e53eb843cd15e010a65f58391d3811ec1f80f68",
+    "frozen_before_product_changes": true,
+    "initial_passed": 0,
+    "initial_total": 32,
+    "first_product_execution_passed": 32,
+    "first_product_execution_total": 32,
+    "final_passed": 32,
+    "final_total": 32,
+    "categories": {
+      "plan_is_not_result": "4/4",
+      "language_attempt_report": "4/4",
+      "language_in_progress_report": "4/4",
+      "language_success_claim": "4/4",
+      "language_failure_claim": "4/4",
+      "verified_host_evidence": "4/4",
+      "receipt_rejection_and_text_spoof": "4/4",
+      "typed_status_query": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R30-RUN-0002",
+    "frozen_sha256": "3fb2ccad7093ab7c3f0e7f8c2869e77c2ad21656ff90f2cdecfd60f988eb49fc",
+    "held_out_until_after_diagnostic_product_pass": true,
+    "first_semantic_execution_passed": 16,
+    "first_semantic_execution_total": 16,
+    "final_passed": 16,
+    "final_total": 16,
+    "oracle_changed_after_first_semantic_execution": false,
+    "product_repair_driven_by_held_out": false
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "cumulative_r1_r30_passed": 1203,
+  "cumulative_r1_r30_total": 1203,
+  "verification": {
+    "canary_binaries_first_cumulative_passed": 23,
+    "canary_binaries_first_cumulative_total": 51,
+    "canary_binaries_second_cumulative_passed": 46,
+    "canary_binaries_second_cumulative_total": 51,
+    "canary_binaries_final_passed": 51,
+    "canary_binaries_final_total": 51,
+    "adapter_unit_tests_passed": 294,
+    "adapter_unit_tests_total": 294,
+    "workspace_library_tests_passed": 817,
+    "workspace_library_tests_total": 817,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_PRE_EXISTING_FROZEN_R29_HARNESS_EXCEPTION",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "temporary_debug_markers": 0,
+    "regression_repairs": [
+      "Action-state analysis now abstains when no action ledger record exists, preserving ordinary epistemic, temporal, modal, and conditional propositions containing words such as failure, result, or status.",
+      "An explicit new action request in the same turn takes precedence over incidental success or failure language, preserving compositional multi-goal requests.",
+      "Typed status realization retains the established result-absence wording needed by earlier speech-act and long-horizon dialogue paths.",
+      "User-entered uppercase technical acronyms are restored in action-state output while the normalized semantic subject remains unchanged."
+    ]
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed_by_language_path": 0,
+    "language_reports_that_changed_verified_execution_state": 0,
+    "text_receipt_spoofs_accepted": 0,
+    "invalid_hash_receipts_accepted": 0,
+    "unknown_action_receipts_accepted": 0,
+    "terminal_receipts_without_start_accepted": 0,
+    "semantic_authority_from_action_language": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "ActionStateLedgerIR stores plan status, verified execution status, and language-reported status as independent axes.",
+    "ActionPlanStatusIR distinguishes ACTIVE, SUPERSEDED, and WITHDRAWN plans without implying execution.",
+    "ActionExecutionStatusIR remains NOT_OBSERVED until the typed host API accepts a verifier-hash-bound EXECUTION_STARTED receipt; only a later matching terminal receipt can produce SUCCEEDED or FAILED.",
+    "ActionReportedStatusIR records ATTEMPTED, IN_PROGRESS_CLAIMED, SUCCESS_CLAIMED, or FAILURE_CLAIMED without changing the verified execution axis.",
+    "ActionStateAnalysisIR binds reports and queries to one active action and fails closed when the target is absent or ambiguous.",
+    "Text claiming that a receipt, terminal, or console proved success is explicitly non-authoritative and cannot enter the typed evidence channel.",
+    "Conversation state hashing covers the action-state ledger, including evidence identifiers and lifecycle transitions.",
+    "Result questions realize the typed record: active plan, unverified report, verified in-progress execution, verified success, or verified failure."
+  ],
+  "scope_assessment": {
+    "grammatical_composition": "R26_BOUNDED_TYPED_CLAUSE_GRAPH_PRESERVED_NOT_UNRESTRICTED_GRAMMAR",
+    "discourse_and_topic_state": "R27_BOUNDED_CLAUSE_AWARE_FOCUS_PRESERVED_NOT_GENERAL_MULTI_SPEAKER_DISCOURSE",
+    "deixis_and_ellipsis_resolution": "R28_BOUNDED_TYPED_FOCUS_BINDING_PRESERVED_GENERAL_BRIDGING_AND_PLURAL_REFERENCE_REMAIN_OPEN",
+    "speech_intent_and_pragmatics": "R29_BOUNDED_EIGHT_KIND_INFERENCE_PRESERVED_GENERAL_IMPLICATURE_AND_SOCIAL_PRAGMATICS_REMAIN_OPEN",
+    "result_plan_distinction": "R30_BOUNDED_PLAN_REPORT_VERIFIED_EXECUTION_AXES_COMPLETE_ARBITRARY_TOOL_PROTOCOLS_AND_DISTRIBUTED_EXECUTION_REMAIN_OPEN",
+    "evidence_grounded_realization": "NEXT_DEPENDENCY_TYPED_ACTION_PROVENANCE_NOW_AVAILABLE_OPEN_DOMAIN_CLAIM_LEVEL_REALIZATION_REMAINS_OPEN"
+  },
+  "next_program_order": [
+    "claim-level evidence-grounded sentence realization",
+    "cross-axis integration of grammar, discourse, reference, pragmatics, action state, and realization",
+    "broader open-vocabulary and adversarial transfer"
+  ],
+  "next_residual": [
+    "cryptographic host identity or signature authentication beyond the current trusted typed API boundary and tamper-evident receipt hash",
+    "multiple concurrent executions for one action and distributed executor reconciliation",
+    "partial progress, cancellation, timeout, rollback, and retry sub-states",
+    "tool-specific result payload schemas and claim-level provenance extraction",
+    "open-domain evidence-grounded realization",
+    "open-vocabulary GPT-level fluency"
+  ],
+  "pre_existing_user_change_preserved": "crates/semantic-reasoning/src/growth_supervisor.rs",
+  "commit_performed": false,
+  "push_performed": false
+}

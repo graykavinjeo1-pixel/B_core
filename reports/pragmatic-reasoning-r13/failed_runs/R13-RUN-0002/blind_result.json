@@ -1,0 +1,19 @@
+{
+  "schema": "B_CORE_TYPED_COREFERENCE_BLIND_RESULT_1",
+  "run_id": "R13-RUN-0002",
+  "suite_prefix": "R13_RUN2_",
+  "frozen_before_evaluation": true,
+  "cases": 29,
+  "passed": 26,
+  "failed": 3,
+  "failed_cases": [
+    "R13_RUN2_KO_PERSON_00",
+    "R13_RUN2_KO_PERSON_01",
+    "R13_RUN2_KO_PERSON_02"
+  ],
+  "shared_root_cause": "Korean semantic-role arguments named 스케줄러 were classified as PERSON solely because they occupied an agent-like role, leaving two person-compatible antecedents.",
+  "required_repair": "Classify explicit system nouns before role-based person fallback; retain fail-closed behavior for true ties.",
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "runtime_source_mutations": 0
+}

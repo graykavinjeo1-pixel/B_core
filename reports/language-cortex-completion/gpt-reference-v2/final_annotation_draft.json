@@ -1,0 +1,4386 @@
+{
+  "schema": "B_CORE_GPT_REFERENCE_SUITE_IR_1",
+  "suite_id": "B_CORE_GPT_REFERENCE_V2_FINAL",
+  "split": "FINAL",
+  "frozen": false,
+  "reference_model_id": "PENDING_THREE_INDEPENDENT_GPT_RUNS",
+  "reference_generation_date": "2026-09-03",
+  "reference_system_prompt_sha256": "c1d4ad34d7cf75ab45c0ef1e189cb72ac8f8aa6437f4f62da5271d351d3ed870",
+  "generation_configuration_sha256": "01051eac002987e6e921775d4a5b671b80261f6f6571c928dc31def70571523e",
+  "input_suite_sha256": "ff80de6025b7ef07627642367d098da835f920b75ba34915979be609e0189b5d",
+  "responses": [
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-01",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CACHE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CACHE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-KO-01-T1",
+      "raw_reference_sha256": "f2b6c12e01d41b27641b021314728ebca1e799a891892f93a65ca681eb29666f",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-01",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_CACHE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_CACHE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:ENTITY:C_CACHE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-KO-01-T2",
+      "raw_reference_sha256": "ca12a235903b88fb81e40f4e9d43be8ba3a3daab91989c1f97096fb26e39bc0b",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-01",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:RESULT:GOAL:INVESTIGATE"
+      ],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-KO-01-T3",
+      "raw_reference_sha256": "39716272b79dd09a46bc165b18580ad15f284c3688e8bd4eeff94820d94a4c74",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-01",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CACHE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CACHE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ELLIPSIS:ENTITY:C_CACHE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-KO-01-T4",
+      "raw_reference_sha256": "b4a4def103d795e47213dd8a3462dac1547001b7a65c9ddd8ca755b49390e149",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-02",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-KO-02-T1",
+      "raw_reference_sha256": "ac39def1dcd79fd986b023fcdd40d18420d0ad4c40f5fba44ceecb83c8984ad4",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-02",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:ENTITY:C_SERVICE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-KO-02-T2",
+      "raw_reference_sha256": "f01da4793c06d26ec0a1e1af037d58e4376a223b4cb5a49a8b54330fc4389dd8",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-02",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:RESULT:GOAL:INVESTIGATE"
+      ],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-KO-02-T3",
+      "raw_reference_sha256": "4b1caeb5010408aedc60b9ce339be74a86c8690e58f31693c8af90f9cf95bae8",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-02",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ELLIPSIS:ENTITY:C_SERVICE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-KO-02-T4",
+      "raw_reference_sha256": "acc7227a20e86715d00af59ad6b008e35470c795230e9a8e51bf16423551ee74",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-01",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CACHE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CACHE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-EN-01-T1",
+      "raw_reference_sha256": "5054d51b20f06adb3bcb018634817f9d7549946592fb879d96c59e8caf0399e6",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-01",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_CACHE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_CACHE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:ENTITY:C_CACHE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-EN-01-T2",
+      "raw_reference_sha256": "9e5316db268a0c1e81920a1e131bc37b0456b1e92d8fb30dbccb93fc51fdcde9",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-01",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:RESULT:GOAL:INVESTIGATE"
+      ],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-EN-01-T3",
+      "raw_reference_sha256": "14bd64d87386c3200b79da4eaa1bfb2de010d5b42d4d04882ff47e00012acd5d",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-01",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CACHE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CACHE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ELLIPSIS:ENTITY:C_CACHE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-EN-01-T4",
+      "raw_reference_sha256": "3b692d6b38184b279cbeacc73b8be93193c4439f2b062d04565f30a74261130d",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-02",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-EN-02-T1",
+      "raw_reference_sha256": "26b596636aa4819722716d98a59fe14f0e8018a73d413b82485f9b7139c011e5",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-02",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:ENTITY:C_SERVICE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-EN-02-T2",
+      "raw_reference_sha256": "d720e18d9a67007fc2084a66698b0e44e2d39ee0da00776cfe91a4bef1a4e025",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-02",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:RESULT:GOAL:INVESTIGATE"
+      ],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-EN-02-T3",
+      "raw_reference_sha256": "e1763817822c6d9042512732b130e51524c735dbba4151146e22de3f9fcd9bcd",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-02",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ELLIPSIS:ENTITY:C_SERVICE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C01-EN-02-T4",
+      "raw_reference_sha256": "68dd2ac6dabca7769510d45a9e92d0196983430746fe689b3297272b2af31799",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-01",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:CLARIFICATION_REQUEST"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-KO-01-T1",
+      "raw_reference_sha256": "7af89847eff734530158b9573a12ec4ae72248b3fe5b717233ca9389d409e3b4",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-01",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ELLIPSIS:ENTITY:C_SERVICE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-KO-01-T2",
+      "raw_reference_sha256": "9f2103c1ab356564f29650190891d7117373185a43b973e6718cf8272d05d3cf",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-01",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:ENTITY:C_SERVICE"
+      ],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-KO-01-T3",
+      "raw_reference_sha256": "2738d9f81cfbd841720e647e85ccb81d4fb1cd113cab3d2da06cdc18a6aa91f6",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-01",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-KO-01-T4",
+      "raw_reference_sha256": "de03075b56a54d28cab02303590937994698d70ceeff8d0805853299617cab30",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-02",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:CLARIFICATION_REQUEST"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-KO-02-T1",
+      "raw_reference_sha256": "4009e7da392b7422bc04bf2d54d4280c54253d04656f15034c0bfeb00f4ced4e",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-02",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVER"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ELLIPSIS:ENTITY:C_SERVER"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-KO-02-T2",
+      "raw_reference_sha256": "0b442abc7d53e7db6af3861795d27ab88f02c7e92a12661b3a6f3334314b1941",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-02",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:ENTITY:C_SERVER"
+      ],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-KO-02-T3",
+      "raw_reference_sha256": "5b28192a083dd85481f913a959fee9cc808747d3c2ce8cb734bafc4f7fa80589",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-02",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-KO-02-T4",
+      "raw_reference_sha256": "0d0c2966e475448875cfc2ba02595e9161349b50b85e0eb162ba0b44cdba5c39",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-01",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:CLARIFICATION_REQUEST"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-EN-01-T1",
+      "raw_reference_sha256": "7cc14c4fd624addbe8ff67a0069cbf37c493e2f9c16363aee1b93451a79723b1",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-01",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ELLIPSIS:ENTITY:C_SERVICE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-EN-01-T2",
+      "raw_reference_sha256": "ecaae7ebb5471ad302cc96adc0fa673ff0f31a10c84f3e23f80a62f458707c98",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-01",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:ENTITY:C_SERVICE"
+      ],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-EN-01-T3",
+      "raw_reference_sha256": "f357631b4478aa97c03b403fbf15ce8ccd84abb386ea64fb638b7fea78aba8a4",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-01",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-EN-01-T4",
+      "raw_reference_sha256": "4778dfb4df1731d31794e967b05dddefe723afef5ca93f97e96596bd526f0cbc",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-02",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:CLARIFICATION_REQUEST"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-EN-02-T1",
+      "raw_reference_sha256": "fa5faf34cee28543768c818f961766191e238f3b442b517c6a2ad129799f9f59",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-02",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVER"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ELLIPSIS:ENTITY:C_SERVER"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-EN-02-T2",
+      "raw_reference_sha256": "f94e02c724d35d4c1cf7a2ff46efbb4b15cc471373fd12faf6b562bd229f1efe",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-02",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:ENTITY:C_SERVER"
+      ],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-EN-02-T3",
+      "raw_reference_sha256": "09fd70557e4a4d64dffffd1eeab50fdc0cc2c0e826ae316c658ed16c0dd5d7f0",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-02",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C02-EN-02-T4",
+      "raw_reference_sha256": "99ce0ec12cfe39ad1ac3d989190f730e51014a66b0012391e9b560ee2c0a196d",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-01",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "ENTITY:C_WORKER",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:REPAIR:C_SERVER",
+        "GOAL_SUBJECT:REPAIR:C_WORKER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:REPAIR:ENTITY:C_SERVER",
+        "THEME:REPAIR:ENTITY:C_WORKER"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-KO-01-T1",
+      "raw_reference_sha256": "4a723d51e1160b90940a55112104f015f1e8400b5c61c09a4656dc731c855cb8",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-01",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_SERVER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_SERVER"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_SERVER"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-KO-01-T2",
+      "raw_reference_sha256": "6fbed0d81151b43db8f7cc85ee29554164fe32c4adb3db5da5ffdb8b010dedea",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-01",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_WORKER",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_WORKER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_WORKER"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_WORKER"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-KO-01-T3",
+      "raw_reference_sha256": "0fe8671e9923a979d7d44c8ff04a0e1f5c964dbb56dd49e47e9d147ad66b3bbb",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-01",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-KO-01-T4",
+      "raw_reference_sha256": "f034b04a650488331fdde7e5b69b690056918e60155975aaed73dcce70a4f3f2",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-02",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CODE",
+        "ENTITY:C_FILE",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:REPAIR:C_CODE",
+        "GOAL_SUBJECT:REPAIR:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:REPAIR:ENTITY:C_CODE",
+        "THEME:REPAIR:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-KO-02-T1",
+      "raw_reference_sha256": "77e61a939e2069dca4d9bd1201dd0c15f17b09f8a73d163cef966c6eba971d8d",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-02",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_FILE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_FILE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-KO-02-T2",
+      "raw_reference_sha256": "c46e7046caec80f90dad6183258abf50148b228301f02886a11473d10aea309d",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-02",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CODE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_CODE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_CODE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_CODE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-KO-02-T3",
+      "raw_reference_sha256": "8740081cced173b8ad6014306e33ad273d792eb1ea1a580b837ffc58ed1a73f2",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-02",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-KO-02-T4",
+      "raw_reference_sha256": "cfb5ebfa522f7b8b29fb9ebb81fe7c7346cd8f5f96da52bde2ce513bd69c58c6",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-01",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "ENTITY:C_WORKER",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:REPAIR:C_SERVER",
+        "GOAL_SUBJECT:REPAIR:C_WORKER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:REPAIR:ENTITY:C_SERVER",
+        "THEME:REPAIR:ENTITY:C_WORKER"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-EN-01-T1",
+      "raw_reference_sha256": "b394a6e998b9623cb179f9c09ec2841c97023522793eef6bffb11a3d9eb7caf1",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-01",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_SERVER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_SERVER"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_SERVER"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-EN-01-T2",
+      "raw_reference_sha256": "832e48baaa20789bd9bf636021729887d3979725ef30173aec3b6425067763c7",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-01",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_WORKER",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_WORKER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_WORKER"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_WORKER"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-EN-01-T3",
+      "raw_reference_sha256": "9c293240327666dfe0f02452a844369d89c97e1b01a3209acf632887bcda21fb",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-01",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-EN-01-T4",
+      "raw_reference_sha256": "aeb0ce44bd5682eca428b080e9634e0de48ff01d107353ecf9d3a4d34e48b314",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-02",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CODE",
+        "ENTITY:C_FILE",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:REPAIR:C_CODE",
+        "GOAL_SUBJECT:REPAIR:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:REPAIR:ENTITY:C_CODE",
+        "THEME:REPAIR:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-EN-02-T1",
+      "raw_reference_sha256": "8ed88976b957099d9cb3c98689d416ffa0e879772ade36b8312f07881d7f8f09",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-02",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_FILE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_FILE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-EN-02-T2",
+      "raw_reference_sha256": "e166631df930c8a99746ab86e2ce30bbaf7d341c9a21a775381a1a4932365fe1",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-02",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CODE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_CODE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_CODE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_CODE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-EN-02-T3",
+      "raw_reference_sha256": "8b30aa5fb82410b30344c3291fb00cee89f5cfac6da1f4e4e4a6f5bf9a2909c4",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-02",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C03-EN-02-T4",
+      "raw_reference_sha256": "326dd578241a12ea2a612e81fd499289d2e5a36df600ab24f621bd401f5f0820",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-01",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CODE",
+        "ENTITY:C_FILE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CODE",
+        "GOAL_SUBJECT:INVESTIGATE:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CODE",
+        "THEME:INVESTIGATE:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-KO-01-T1",
+      "raw_reference_sha256": "d3428fd233f0b9b00a7a97c1518bd6c90b4fd0808df1fdebe654ae4f4ccefecb",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-01",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CODE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_CODE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_CODE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ORDINAL:ENTITY:C_CODE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-KO-01-T2",
+      "raw_reference_sha256": "db22ed64da9d11d5e55b4981133234983d9d84d46edc6a74db9959361d21e881",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-01",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_FILE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ELLIPSIS:ENTITY:C_FILE",
+        "REFERENCE:ORDINAL:ENTITY:C_FILE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-KO-01-T3",
+      "raw_reference_sha256": "3f898ae6e9fc5cb1ba6d1a53fd2f31056f98431707cafe8f8b23d5bad28e19ac",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-01",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PLURAL:ENTITY:C_FILE+ENTITY:C_CODE"
+      ],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-KO-01-T4",
+      "raw_reference_sha256": "88909bd7f93ba58b5016e9c144f466155eb5175413e6303df277f5322c0475f5",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-02",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "ENTITY:C_QUEUE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CACHE",
+        "GOAL_SUBJECT:INVESTIGATE:C_QUEUE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CACHE",
+        "THEME:INVESTIGATE:ENTITY:C_QUEUE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-KO-02-T1",
+      "raw_reference_sha256": "7706aa07e29da38bea903e003a238867e09d300980e484ebf8a628e9c8d12133",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-02",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_QUEUE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_QUEUE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_QUEUE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ORDINAL:ENTITY:C_QUEUE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-KO-02-T2",
+      "raw_reference_sha256": "86de9d37d2cd980ce348e2b14952791b2cd83455ff242ad26540971d44c9bf46",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-02",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_CACHE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_CACHE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ELLIPSIS:ENTITY:C_CACHE",
+        "REFERENCE:ORDINAL:ENTITY:C_CACHE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-KO-02-T3",
+      "raw_reference_sha256": "b2c11f07240345df74c89f3d000022b198992f63b7a2eea9d7743d7781afeb2e",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-02",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PLURAL:ENTITY:C_CACHE+ENTITY:C_QUEUE"
+      ],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-KO-02-T4",
+      "raw_reference_sha256": "66b725892deb62093c423f3730e71773e6f4ddca765d9ac45ef847bc0a303ed9",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-01",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CODE",
+        "ENTITY:C_FILE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CODE",
+        "GOAL_SUBJECT:INVESTIGATE:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CODE",
+        "THEME:INVESTIGATE:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-EN-01-T1",
+      "raw_reference_sha256": "3a3c72568615daa906311fce8082d6c37d32e229876fc2151774acb4f7deaaec",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-01",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CODE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_CODE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_CODE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ORDINAL:ENTITY:C_CODE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-EN-01-T2",
+      "raw_reference_sha256": "58e887c62ecdaf9ff5ec9c4e30b24b11fac1370fe6027dc6ac768123966097f7",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-01",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_FILE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ELLIPSIS:ENTITY:C_FILE",
+        "REFERENCE:ORDINAL:ENTITY:C_FILE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-EN-01-T3",
+      "raw_reference_sha256": "540172dce21972cf2fd9fb8b07d7a7324425d6d3360bd067f60758f225cc9d2c",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-01",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PLURAL:ENTITY:C_FILE+ENTITY:C_CODE"
+      ],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-EN-01-T4",
+      "raw_reference_sha256": "d663ad291a6eb9ac30ddc1f71587ba3fc78d61f84d7af4c6e0843b5ff8a3d0be",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-02",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "ENTITY:C_QUEUE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CACHE",
+        "GOAL_SUBJECT:INVESTIGATE:C_QUEUE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CACHE",
+        "THEME:INVESTIGATE:ENTITY:C_QUEUE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-EN-02-T1",
+      "raw_reference_sha256": "6cb878375af7595be136c6921a3556eb4c7a63339e9cf0865d8abfa9bafa48ce",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-02",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_QUEUE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_QUEUE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_QUEUE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ORDINAL:ENTITY:C_QUEUE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-EN-02-T2",
+      "raw_reference_sha256": "e265f6e3802a2edcbf7f6cdb459bd681f11f64a14f76740472cd0f2d00be6032",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-02",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_CACHE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_CACHE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ELLIPSIS:ENTITY:C_CACHE",
+        "REFERENCE:ORDINAL:ENTITY:C_CACHE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-EN-02-T3",
+      "raw_reference_sha256": "1ced5e55d3c5364545763fe3c0ea9c27c8ec3126b33a0c2c0ec47811db912571",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-02",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PLURAL:ENTITY:C_CACHE+ENTITY:C_QUEUE"
+      ],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C04-EN-02-T4",
+      "raw_reference_sha256": "aeb8dad24a5b855b36424ba6622ad6f5e97a2f9472c90dfd861fc114d291f1e5",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-01",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CACHE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CACHE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-KO-01-T1",
+      "raw_reference_sha256": "c9bcb216eff52dc0cea5f741c9780f4b391eb3275e69eb22a0c8d5351589d5cd",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-01",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_QUEUE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_QUEUE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_QUEUE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-KO-01-T2",
+      "raw_reference_sha256": "c3a4d64e85032369d3be6baadfc0ac4d80a4405f9d57a35332d95aca5e00549a",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-01",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "response_act": "TOPIC_TRANSITION",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "DERIVED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:TOPIC_TRANSITION"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:DISCOURSE_TOPIC_TRANSITION:DERIVED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-KO-01-T3",
+      "raw_reference_sha256": "761e735daac134dde16fb8c8fa89172310406e03e2916ada3ea4fdc590401494",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-01",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:TOPIC:ENTITY:C_CACHE"
+      ],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-KO-01-T4",
+      "raw_reference_sha256": "25bd14c20cd5c2bf91f632c11bf4285e9909fb9f8759063944c50b45dd2837f2",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-02",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-KO-02-T1",
+      "raw_reference_sha256": "9f4ad7a949aaf904474945baffccf5ca1498efc74623ff71267c819c805faf6a",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-02",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_LOG",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_LOG",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_LOG"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-KO-02-T2",
+      "raw_reference_sha256": "cb4545fdec7870c9026c79e961c85710fd5dfacbdd1f0e3ce1ceeb7d7eb10c29",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-02",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "response_act": "TOPIC_TRANSITION",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "DERIVED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:TOPIC_TRANSITION"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:DISCOURSE_TOPIC_TRANSITION:DERIVED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-KO-02-T3",
+      "raw_reference_sha256": "28adf352e7c1114abc2613296cb2d889463f9d5266c69ffaf3d175aa79b609ba",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-02",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:TOPIC:ENTITY:C_SERVICE"
+      ],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-KO-02-T4",
+      "raw_reference_sha256": "ad2b2ccb4636d9d71a57d7fbb8c569ddec6b2611249d71d17f867a75ce8d40cf",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-01",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CACHE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CACHE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-EN-01-T1",
+      "raw_reference_sha256": "dbdf83f1c812491d464dc2c3de78807017e6ddceaad88f262fbc6d111b52cb82",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-01",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_QUEUE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_QUEUE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_QUEUE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-EN-01-T2",
+      "raw_reference_sha256": "3d25ed8ad2f30a6cbb26483817f627b2a4cb3feaa4e319fc66997366e2d0445c",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-01",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "response_act": "TOPIC_TRANSITION",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "DERIVED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:TOPIC_TRANSITION"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:DISCOURSE_TOPIC_TRANSITION:DERIVED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-EN-01-T3",
+      "raw_reference_sha256": "4df5872859695318c332713e13ed94c154d1d1b7417a4065661e862505bf1beb",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-01",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:TOPIC:ENTITY:C_CACHE"
+      ],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-EN-01-T4",
+      "raw_reference_sha256": "b79ed75d72d883e6df5ab392b710f8f83c35dd1440a307996f33963a0f2d7983",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-02",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-EN-02-T1",
+      "raw_reference_sha256": "f03dadad4ab8224871e8fc7f327f1231e0462cc01b7b501089e6aadaa375b612",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-02",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_LOG",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_LOG",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_LOG"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-EN-02-T2",
+      "raw_reference_sha256": "10f0b33b00e8c2dd00254764e62e6c685f008217554bc2391bc9c56ec63c8515",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-02",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "response_act": "TOPIC_TRANSITION",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "DERIVED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:TOPIC_TRANSITION"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:DISCOURSE_TOPIC_TRANSITION:DERIVED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-EN-02-T3",
+      "raw_reference_sha256": "3d275cf6c3f137e12dc3a92decb36cda442558452cee593a1ffd7489c4df619f",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-02",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:TOPIC:ENTITY:C_SERVICE"
+      ],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C05-EN-02-T4",
+      "raw_reference_sha256": "a69dfe59f39db165648d1fa7acb181ff8b649e3fa10fff9748d632b970bc1365",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-01",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "response_act": "ACTION_STATE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:ACTION_STATE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN",
+        "CLAIM:LANGUAGE_REPORT:REPORTED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-KO-01-T1",
+      "raw_reference_sha256": "81698081b3baaaac01600beeffd0f2f5d33ff07b80c6dfc86c59a76e22a9c4e1",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-01",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "response_act": "DISCOURSE_ANSWER",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "DERIVED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:DISCOURSE_ANSWER"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:ATTRIBUTED_DIALOGUE_RECORD:DERIVED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-KO-01-T2",
+      "raw_reference_sha256": "fc777f4c8fa807063712aba72fe942ae895771fd81999865df21b9479898fc63",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-01",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-KO-01-T3",
+      "raw_reference_sha256": "5c4907051113210c4e1f522d7617c2fad0ecfe3bb5b7db79223fb68b478356b8",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-01",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-KO-01-T4",
+      "raw_reference_sha256": "5c6805efffec868bd9cf7127196d3b5576935028b5603555107480957a5511ca",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-02",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "response_act": "ACTION_STATE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:ACTION_STATE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN",
+        "CLAIM:LANGUAGE_REPORT:REPORTED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-KO-02-T1",
+      "raw_reference_sha256": "2b6c43089cee2188d1f5cd4647bd06e892c5a8a7e0d135dcf9d1ed8d53af7204",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-02",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "response_act": "DISCOURSE_ANSWER",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "DERIVED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:DISCOURSE_ANSWER"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:ATTRIBUTED_DIALOGUE_RECORD:DERIVED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-KO-02-T2",
+      "raw_reference_sha256": "5983c79554a8acf01358429b741f1c731361f297b8333c187c47c67abbdfec17",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-02",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-KO-02-T3",
+      "raw_reference_sha256": "31e16d8918186080f9f8ba5943e50a6cf3910d95ab16061966c6209220f3ef44",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-02",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-KO-02-T4",
+      "raw_reference_sha256": "e4508e4038b9f0eec59fa4b085d737e0e28761f1a156468e083732f65db5364c",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-01",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "response_act": "ACTION_STATE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:ACTION_STATE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN",
+        "CLAIM:LANGUAGE_REPORT:REPORTED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-EN-01-T1",
+      "raw_reference_sha256": "e185e9335f4998a8f9d93f5fc9300e815e649c553b7a42094cf3b358921bbfa1",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-01",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "response_act": "DISCOURSE_ANSWER",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "DERIVED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:DISCOURSE_ANSWER"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:ATTRIBUTED_DIALOGUE_RECORD:DERIVED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-EN-01-T2",
+      "raw_reference_sha256": "3cda3b68ff37fecef20aa70d23b1f83306ad1253a60ad54bc909075de5f033c7",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-01",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-EN-01-T3",
+      "raw_reference_sha256": "dded299bf7fdc0ed5b632986564bc8ad75b78ffe1a7481f81785000191c59658",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-01",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-EN-01-T4",
+      "raw_reference_sha256": "70814964733b4c6656a6433647343779e67bd0ed05e450fb994da736fef1c581",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-02",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "response_act": "ACTION_STATE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:ACTION_STATE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN",
+        "CLAIM:LANGUAGE_REPORT:REPORTED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-EN-02-T1",
+      "raw_reference_sha256": "df27b39cbe6489beebed281240fe619ca60a12aee90cdfd301d482a04c2f336b",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-02",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "response_act": "DISCOURSE_ANSWER",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "DERIVED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:DISCOURSE_ANSWER"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:ATTRIBUTED_DIALOGUE_RECORD:DERIVED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-EN-02-T2",
+      "raw_reference_sha256": "8782dd0464a813ee712d38beb0f611184a581408d5be1969409b551ede59a143",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-02",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-EN-02-T3",
+      "raw_reference_sha256": "446a4fbc40a0f30139553e06bbd402968df5494c2084e439a69a46024bb82d6a",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-02",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C06-EN-02-T4",
+      "raw_reference_sha256": "47ab4994ceb2fda59cffa38ccd6c7ae5fd65abd14da56cfc13fa67f6138249e3",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-01",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:REPAIR:C_SERVER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:REPAIR:ENTITY:C_SERVER"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-KO-01-T1",
+      "raw_reference_sha256": "968beb7bd309b3c145e2f5eba1208193a3f1a33c08429e0afd430df42780e30e",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-01",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-KO-01-T2",
+      "raw_reference_sha256": "a4c717dbc845b73e50f1775df47cc2b17c6e36543f20a3937fa4a293732e7c39",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-01",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "response_act": "ACTION_STATE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:ACTION_STATE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN",
+        "CLAIM:LANGUAGE_REPORT:REPORTED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-KO-01-T3",
+      "raw_reference_sha256": "5acc7cb32a75bf51e12637df66c32b78a77b15fb881bb5c6263255e59d984d02",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-01",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "response_act": "PLAN_RESULT_STATUS",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_RESULT_STATUS"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN",
+        "CLAIM:LANGUAGE_REPORT:REPORTED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-KO-01-T4",
+      "raw_reference_sha256": "5cde7b371606bf1e76948eec2f26ede28ebb1a0d4d312b25cf38689151c39038",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-02",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_FILE",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:REPAIR:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:REPAIR:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-KO-02-T1",
+      "raw_reference_sha256": "7823f74781a5e0a7716726810608500dffa1bcec116e305bcf67a3cddf03a1b7",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-02",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-KO-02-T2",
+      "raw_reference_sha256": "b57b02c2114072230448cedaf92c56c70c98ae875b6fad87f575368a79cc2a92",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-02",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "response_act": "ACTION_STATE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:ACTION_STATE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN",
+        "CLAIM:LANGUAGE_REPORT:REPORTED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-KO-02-T3",
+      "raw_reference_sha256": "df3e3e449a90d094893f3509773a8978320beec7ca2d09b2f26977f9bbe44fe4",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-02",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "response_act": "PLAN_RESULT_STATUS",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_RESULT_STATUS"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN",
+        "CLAIM:LANGUAGE_REPORT:REPORTED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-KO-02-T4",
+      "raw_reference_sha256": "a4d2e9916963d0cb251983cacca1cb4201da927572b0f6937efbd3ec30d345be",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-01",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:REPAIR:C_SERVER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:REPAIR:ENTITY:C_SERVER"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-EN-01-T1",
+      "raw_reference_sha256": "69abc2006127806eccd421a9ae1391b359322b6b29688e193a8eeead1ffd0b78",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-01",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-EN-01-T2",
+      "raw_reference_sha256": "f305a5af4ee693e46995448662192b5fc833f84fff185cf7ccb2236f2135e423",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-01",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "response_act": "ACTION_STATE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:ACTION_STATE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN",
+        "CLAIM:LANGUAGE_REPORT:REPORTED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-EN-01-T3",
+      "raw_reference_sha256": "cc962c0964e145a53095294ed722dafe5820aa814936d3f5dfd9882bc0f1f175",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-01",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "response_act": "PLAN_RESULT_STATUS",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_RESULT_STATUS"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN",
+        "CLAIM:LANGUAGE_REPORT:REPORTED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-EN-01-T4",
+      "raw_reference_sha256": "1d3af31930c8692b3b444edc4088788b34c1e972ad5bb82d40502aceb6fb7d28",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-02",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_FILE",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:REPAIR:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:REPAIR:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-EN-02-T1",
+      "raw_reference_sha256": "8e28004921edfbfc8eede83b3bdabcc114cb7ae56cf0419ee53e938bcc04d1a6",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-02",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-EN-02-T2",
+      "raw_reference_sha256": "fc5095698ebc4f6d4afae2ba68d79b8913135e3657b8ee7e0daee29b604e0b1b",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-02",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "response_act": "ACTION_STATE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:ACTION_STATE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN",
+        "CLAIM:LANGUAGE_REPORT:REPORTED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-EN-02-T3",
+      "raw_reference_sha256": "cfcd5e6acc5a404cf9fa250160acb2873bb1f45dd4f2c81569bef831cde91823",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-02",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "response_act": "PLAN_RESULT_STATUS",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_RESULT_STATUS"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN",
+        "CLAIM:LANGUAGE_REPORT:REPORTED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C07-EN-02-T4",
+      "raw_reference_sha256": "356e52c7b1e162e7d17a2425f65c2ddde2d5f9b5dde921eb097746e01df40adc",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-01",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "response_act": "AFFECT_SUPPORT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:AFFECT_SUPPORT"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-KO-01-T1",
+      "raw_reference_sha256": "dfc52c6c1ee72c3460b02940da435abd03cf11327bcc34a82acbde7da4fbd721",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-01",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "response_act": "SOCIAL_BACKCHANNEL",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:SOCIAL_BACKCHANNEL"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-KO-01-T2",
+      "raw_reference_sha256": "9b795ebea6d9f9cb8e2283c29d7566d62f6e3ba312f5e15d1d75f37a4a12c5ac",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-01",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_FILE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-KO-01-T3",
+      "raw_reference_sha256": "1d3b6202177f5fee9d5253a1b08804ad2d0a9bada2c5fe26ae148a14817641ad",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-01",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-KO-01-T4",
+      "raw_reference_sha256": "2acd9e9b86a7dd30fc1ca3f4492fb3e639bead69c67caf07a71af19ef996a9a1",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-02",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "response_act": "AFFECT_SUPPORT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:AFFECT_SUPPORT"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-KO-02-T1",
+      "raw_reference_sha256": "7853b674748b478d9e79a6054d9c36bf490e09d9c5cc6ef6783464985e90f79e",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-02",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "response_act": "SOCIAL_BACKCHANNEL",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:SOCIAL_BACKCHANNEL"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-KO-02-T2",
+      "raw_reference_sha256": "96f85db12a25dc708186c35f14ae809f2861596b0171aad2afb0869eb4cbbc65",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-02",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CACHE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CACHE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-KO-02-T3",
+      "raw_reference_sha256": "3e73baa90a8c2c1bf189dfcd04c1c073c5bcdfd5e3e91ced07c29bd62b4f565e",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-02",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-KO-02-T4",
+      "raw_reference_sha256": "2c8d2f77749e294f1ac5cecd8c06c271042e94f212c974938417d49917d3db19",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-01",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "response_act": "AFFECT_SUPPORT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:AFFECT_SUPPORT"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-EN-01-T1",
+      "raw_reference_sha256": "3188e3d20712498ece58ffa7d2917edce0c34ab12de4cb9bc488c28f960a3c38",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-01",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "response_act": "SOCIAL_BACKCHANNEL",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:SOCIAL_BACKCHANNEL"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-EN-01-T2",
+      "raw_reference_sha256": "4a99b46ec6a795ca307772c3594422f83c6929231429f82feec0410b2ed078f9",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-01",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_FILE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-EN-01-T3",
+      "raw_reference_sha256": "4f3b9e26af62f9a065323c6abd4ac65b65147889780ab6707373c9d67b0cb98f",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-01",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-EN-01-T4",
+      "raw_reference_sha256": "fb26fb77d4c33f23a991c5faaca4012b9ef7091e202fafed9340d6ce0204d20c",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-02",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "response_act": "AFFECT_SUPPORT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:AFFECT_SUPPORT"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-EN-02-T1",
+      "raw_reference_sha256": "0abc93df1807a9bd3f690ca290e0285ff166bb2b135f16fae660cf84bab4e645",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-02",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "response_act": "SOCIAL_BACKCHANNEL",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:SOCIAL_BACKCHANNEL"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-EN-02-T2",
+      "raw_reference_sha256": "4c819f424bec3d3f3ef0d2f557024bc5118e8d3301b61d7c4d693451155e13f6",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-02",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CACHE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CACHE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-EN-02-T3",
+      "raw_reference_sha256": "a8ae1b14478f47aa9bbadddf11fa1bb4f33116ffbaba75d096627d25f0f7cfaf",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-02",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C08-EN-02-T4",
+      "raw_reference_sha256": "b703ba9cca2470c0a6d20598ce7483158a291c0bc5d2b0e87a3ac0dcfa2fd4eb",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-01",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "ENTITY:C_QUEUE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CACHE",
+        "GOAL_SUBJECT:INVESTIGATE:C_QUEUE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CACHE",
+        "THEME:INVESTIGATE:ENTITY:C_QUEUE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-KO-01-T1",
+      "raw_reference_sha256": "87febb124bfd04966fe98a957656e064672162237ecad0ecfd4ccd5afa7f0f59",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-01",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:CLARIFICATION_REQUEST"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-KO-01-T2",
+      "raw_reference_sha256": "2c8cb29a6d50cd6d2940f8aa3278a1826b66f27609b040da32da31a3325b896f",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-01",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_QUEUE",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:REPAIR:C_QUEUE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:REPAIR:ENTITY:C_QUEUE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CLARIFICATION:ENTITY:C_QUEUE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-KO-01-T3",
+      "raw_reference_sha256": "d86f540c2c1efe1b0ee131477761843c996c03ef4bc3f6cd11b52e352637d2f1",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-01",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_CACHE"
+      ],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-KO-01-T4",
+      "raw_reference_sha256": "9a15da0251bf6f768da811938e421b9a815c749bf522a0341d5c58c37bd43ab6",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-02",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_LOG",
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_LOG",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_LOG",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-KO-02-T1",
+      "raw_reference_sha256": "6a5883c0f7ac2a90d8a5573f3b4245c99bf073ac9372e26ddfda2e41111f9d29",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-02",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:CLARIFICATION_REQUEST"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-KO-02-T2",
+      "raw_reference_sha256": "e561e199615766a96a54683649edf80835d8bdf21e389bba9ec5ba5737266917",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-02",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_LOG",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:REPAIR:C_LOG",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:REPAIR:ENTITY:C_LOG"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CLARIFICATION:ENTITY:C_LOG"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-KO-02-T3",
+      "raw_reference_sha256": "860c424a3f76d3d818109be93e4beccfdaddf3ab6105f43bced023a92bb4f89c",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-02",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_SERVICE"
+      ],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-KO-02-T4",
+      "raw_reference_sha256": "907b6ad75e820ecde663f33c772a2b619bfad42ec7d6a54f4de1a1b5c03d275c",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-01",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "ENTITY:C_QUEUE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CACHE",
+        "GOAL_SUBJECT:INVESTIGATE:C_QUEUE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CACHE",
+        "THEME:INVESTIGATE:ENTITY:C_QUEUE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-EN-01-T1",
+      "raw_reference_sha256": "e228785e530531a9d385b238016e9d767574e8b2afc4c07d53a22d63f05a5384",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-01",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:CLARIFICATION_REQUEST"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-EN-01-T2",
+      "raw_reference_sha256": "5d7c9ceddd2f65092b6d359ba1f648e3a2668c3a17f4bb3f7ed72f7d5c65abed",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-01",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_QUEUE",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:REPAIR:C_QUEUE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:REPAIR:ENTITY:C_QUEUE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CLARIFICATION:ENTITY:C_QUEUE"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-EN-01-T3",
+      "raw_reference_sha256": "106d5d3c714f79090fbdcafbedf45818363a5118e652c37a08902c720b2db4f8",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-01",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_CACHE"
+      ],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-EN-01-T4",
+      "raw_reference_sha256": "c72df7814ef0d191a3d8aa5b0619bcb8d17dc635cc6e4f2127eccce31d764ada",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-02",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_LOG",
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_LOG",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_LOG",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-EN-02-T1",
+      "raw_reference_sha256": "8ee78887a89b24c322d7e9da09f89d5236e0a2525c1c0c365c96d071c3421dd9",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-02",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:CLARIFICATION_REQUEST"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-EN-02-T2",
+      "raw_reference_sha256": "153189edc9b9f3d3e53a2219a37df993523e3008684a306f8457aebf05b37533",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-02",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_LOG",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:REPAIR:C_LOG",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:REPAIR:ENTITY:C_LOG"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CLARIFICATION:ENTITY:C_LOG"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-EN-02-T3",
+      "raw_reference_sha256": "6a2e313b2c3257c891b4441b494e6df98a41c66a9a5d43d0c2780bd5ab66638c",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-02",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_SERVICE"
+      ],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C09-EN-02-T4",
+      "raw_reference_sha256": "c13e6f6f194f632971dd96a38e7aa2ef12774abb50752940c8f5359d3565a106",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-01",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-KO-01-T1",
+      "raw_reference_sha256": "d06c7f5b9f5dcd9a1aec2490a8b3b17b5e231d3635fb9e7426a69fb27991d0f8",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-01",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_LOG",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_LOG",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_LOG"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_LOG"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-KO-01-T2",
+      "raw_reference_sha256": "4bdda80fd47ccd76d55fc2f24563d6f11957ec0502be5f799084a4dca9c4f1a2",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-01",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:RESULT:GOAL:INVESTIGATE"
+      ],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-KO-01-T3",
+      "raw_reference_sha256": "046933e5fa702e7951db3f7620a546916c5333ee3978bdfac13a333eb5af0eba",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-01",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "response_act": "SOCIAL_BACKCHANNEL",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:SOCIAL_BACKCHANNEL"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-KO-01-T4",
+      "raw_reference_sha256": "30edc2fbf344082e5f0e6b61705a7632de8f73a692a6e6773b2c75d09f911d37",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-02",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVER"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-KO-02-T1",
+      "raw_reference_sha256": "f3f93c55e94e9f46243660a45a80f9a23777fcdc540867e75f8df4119cc4059c",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-02",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_WORKER",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_WORKER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_WORKER"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_WORKER"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-KO-02-T2",
+      "raw_reference_sha256": "13c57a45ca39938bf99acd6c37a78d43be53e2cd68ba52ac4b04f6a1cfb4e912",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-02",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:RESULT:GOAL:INVESTIGATE"
+      ],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-KO-02-T3",
+      "raw_reference_sha256": "995fa4da82387aada943e5212efe5aaa7ed8a4363037107d714f00ca9d4a66a3",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-02",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "response_act": "SOCIAL_BACKCHANNEL",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:SOCIAL_BACKCHANNEL"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-KO-02-T4",
+      "raw_reference_sha256": "9ac910cb387662faf1f275908b15429394243e5fd6dfa0a8962c36f6ef019375",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-01",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-EN-01-T1",
+      "raw_reference_sha256": "59926e77b4e2cf476fc05a82cde2e44c712e7231972d2721d5a9c3970afed408",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-01",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_LOG",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_LOG",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_LOG"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_LOG"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-EN-01-T2",
+      "raw_reference_sha256": "f803986d95581630ac63aabac46c27f600331775bade49f4bbecacc2786f69b8",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-01",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:RESULT:GOAL:INVESTIGATE"
+      ],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-EN-01-T3",
+      "raw_reference_sha256": "f89cc5ed99982d7c6d43bd8b64705c14fec1679a77eae60acd08bdc343f57163",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-01",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "response_act": "SOCIAL_BACKCHANNEL",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:SOCIAL_BACKCHANNEL"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-EN-01-T4",
+      "raw_reference_sha256": "3c21381f9dfa76db25b789d1d36c7025d30ff7ee8f6df7e8fadb172427f4276b",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-02",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVER"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-EN-02-T1",
+      "raw_reference_sha256": "5e2fb0481c9a7b650503887ad64a7835a9d682d10dcd6325618795fbb2ccb4a6",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-02",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_WORKER",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_WORKER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_WORKER"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_WORKER"
+      ],
+      "required_propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-EN-02-T2",
+      "raw_reference_sha256": "905469120d49f7abbfccd97875cdf8afae8925bbfc3c7117ba4672cd0ad1bd42",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-02",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:RESULT:GOAL:INVESTIGATE"
+      ],
+      "required_propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-EN-02-T3",
+      "raw_reference_sha256": "68888eb403970a4ecef97ba6df9413b84df21d8125d3759c4d26bb3f40263222",
+      "critical_boundary": true,
+      "ambiguity_requires_clarification": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-02",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "response_act": "SOCIAL_BACKCHANNEL",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:SOCIAL_BACKCHANNEL"
+      ],
+      "discourse_bindings": [],
+      "required_propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "prohibited_propositions": [
+        "CLAIM:VERIFIED_EXECUTION:VERIFIED_OBSERVED"
+      ],
+      "reference_surface": "PENDING_GPT_REFERENCE:GPTREF-V2-FINAL-C10-EN-02-T4",
+      "raw_reference_sha256": "cdd5b0eaba68a2dc8fcad5df735a65b30057ef089c7c2fff650b61b7f5a5be6c",
+      "critical_boundary": false,
+      "ambiguity_requires_clarification": false
+    }
+  ],
+  "suite_payload_sha256": ""
+}

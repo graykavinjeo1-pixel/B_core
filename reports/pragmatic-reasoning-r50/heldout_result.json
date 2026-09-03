@@ -1,0 +1,27 @@
+{
+  "schema": "B_CORE_R50_HELDOUT_RUN_RESULT_1",
+  "suite": "R50_LANGUAGE_CORTEX_INTEGRATION_HELDOUT",
+  "status": "PASS",
+  "total": 8,
+  "first_exposure_passed": 6,
+  "first_exposure_failed": 2,
+  "first_failures": {
+    "R50H_01": "Korean same-turn nominal antecedent extraction did not accept object particles 을/를.",
+    "R50H_04": "English discourse-program ellipsis did not recognize the compositional form 'that procedure ... as well'."
+  },
+  "product_repairs": [
+    "Korean same-turn nominal antecedents now accept object particles 을/를 through the general nominal-role path.",
+    "English discourse-program ellipsis now accepts procedure/workflow anaphors and strips the additive tail 'as well'."
+  ],
+  "test_inputs_changed_after_first_exposure": false,
+  "expected_outputs_changed_after_first_exposure": false,
+  "final_passed": 8,
+  "final_failed": 0,
+  "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_12",
+  "integration_schema": "B_CORE_LANGUAGE_CORTEX_RESPONSE_INTEGRATION_IR_1",
+  "unsupported_explanation_facts": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

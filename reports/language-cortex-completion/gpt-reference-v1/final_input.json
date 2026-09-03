@@ -1,0 +1,2409 @@
+{
+  "schema": "B_CORE_GPT_REFERENCE_INPUT_SUITE_IR_1",
+  "suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+  "split": "FINAL",
+  "frozen": true,
+  "turns": [
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C01-KO-01",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Aurora 캐시 상태부터 차근히 확인해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C01-KO-01",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Aurora 캐시에서 어떤 근거를 볼 건지도 알려 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C01-KO-01",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Aurora 캐시 점검이 벌써 끝난 건 아니지?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C01-KO-01",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Aurora 캐시는 손대지 말고 관찰만 이어가.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C01-KO-02",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "우선 Cascade 서비스에 무슨 일이 있는지 살펴봐.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C01-KO-02",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Cascade 서비스 조사 순서를 짧게 설명해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C01-KO-02",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "지금 Cascade 서비스 결과까지 나온 거야?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-KO-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C01-KO-02",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Cascade 서비스 변경은 금지하고 확인 범위만 유지해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C01-EN-01",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Start by checking what is happening with the Aurora cache.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C01-EN-01",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Tell me which evidence you would inspect for the Aurora cache.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C01-EN-01",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "The Aurora cache check is not already done, is it?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C01-EN-01",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Keep observing the Aurora cache, but do not alter it.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C01-EN-02",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Please look into the current state of the Cascade service first.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C01-EN-02",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Briefly explain the inspection order for the Cascade service.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C01-EN-02",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Do we have an actual Cascade service result yet?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C01-EN-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C01-EN-02",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Leave the Cascade service unchanged and stay within inspection scope.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C02-KO-01",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "또 Equinox 서비스 때문에 일이 밀리네...",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C02-KO-01",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "응, Equinox 서비스가 왜 이러는지 찾아봐 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C02-KO-01",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그래도 Equinox 서비스 설정은 건드리면 안 돼.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C02-KO-01",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Equinox 서비스에서 실제로 알아낸 것만 말해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C02-KO-02",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "하... Glimmer 서버가 오늘도 말썽이야.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C02-KO-02",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그래, Glimmer 서버 원인을 확인하는 쪽으로 해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C02-KO-02",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "단, Glimmer 서버에는 아무 변경도 하지 마.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-KO-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C02-KO-02",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "계획 말고 Glimmer 서버의 확인된 사실이 있으면 알려 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C02-EN-01",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "The Equinox service is holding everything up again...",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C02-EN-01",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Yes, find out what is causing the Equinox service problem.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C02-EN-01",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Still, do not change any Equinox service settings.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C02-EN-01",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "For the Equinox service, report findings rather than intentions.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C02-EN-02",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Ugh, the Glimmer server is misbehaving today too.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C02-EN-02",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Go ahead and investigate why the Glimmer server does that.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C02-EN-02",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Keep every change to the Glimmer server out of scope.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C02-EN-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C02-EN-02",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Tell me only what is actually established about the Glimmer server.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C03-KO-01",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Ion 서버하고 Jolt 워커를 둘 다 수리해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C03-KO-01",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "아니, 수리는 취소하고 Ion 서버 원인만 설명해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C03-KO-01",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "정정할게. Ion 서버 말고 Jolt 워커를 뜻했어.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C03-KO-01",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그러면 Ion 서버나 Jolt 워커가 수리된 건 하나도 없지?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C03-KO-02",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Keystone 파일와 Lagoon 코드 복구 계획을 잡아 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C03-KO-02",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "잠깐, 복구 말고 첫 대상인 Keystone 파일만 설명해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C03-KO-02",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "첫 대상 아니고 두 번째 Lagoon 코드로 바꿀게.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-KO-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C03-KO-02",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "현재 Lagoon 코드 수리 완료 기록은 없는 거지?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C03-EN-01",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Repair both the Ion server and the Jolt worker.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C03-EN-01",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "No, cancel the repairs and explain only the Ion server cause.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C03-EN-01",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Correction: I meant the Jolt worker, not the Ion server.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C03-EN-01",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "So neither the Ion server nor the Jolt worker was repaired, correct?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C03-EN-02",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Prepare a recovery plan for the Keystone file and the Lagoon code.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C03-EN-02",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Hold on—explain the first target, the Keystone file, instead of repairing it.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C03-EN-02",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "I was referring to the second target, the Lagoon code.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C03-EN-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C03-EN-02",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "There is no completed repair record for the Lagoon code, right?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C04-KO-01",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "먼저 Meridian 파일, 그다음 Nova 코드를 확인해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C04-KO-01",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "두 번째 Nova 코드는 왜 확인하는지도 설명해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C04-KO-01",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "첫 번째 Meridian 파일에도 같은 설명을 적용해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C04-KO-01",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Meridian 파일와 Nova 코드 둘 다 수정하지는 마.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C04-KO-02",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Orbit 캐시 다음에 Prism 큐 순서로 검토해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C04-KO-02",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "후자인 Prism 큐의 점검 이유를 말해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C04-KO-02",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "전자 Orbit 캐시에도 똑같이 해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-KO-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C04-KO-02",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그 둘, 그러니까 Orbit 캐시와 Prism 큐는 건드리지 마.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C04-EN-01",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Inspect the Meridian file first, followed by the Nova code.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C04-EN-01",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Also explain why the second target, the Nova code, matters.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C04-EN-01",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Apply the same explanation to the first target, the Meridian file.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C04-EN-01",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Do not modify either the Meridian file or the Nova code.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C04-EN-02",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Review the Orbit cache and then move on to the Prism queue.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C04-EN-02",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Why are you checking the latter, the Prism queue?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C04-EN-02",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Do that same explanation for the former Orbit cache too.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C04-EN-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C04-EN-02",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Keep both the Orbit cache and the Prism queue read-only.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C05-KO-01",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Quill 캐시 상태를 조사해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C05-KO-01",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그건 잠깐 두고 Ripple 큐 구조를 설명해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C05-KO-01",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "이제 처음 이야기한 Quill 캐시로 돌아가자.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C05-KO-01",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "돌아온 Quill 캐시 조사는 완료된 상태야?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C05-KO-02",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Solace 서비스 문제를 먼저 살펴봐.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C05-KO-02",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "다른 주제로, Tundra 로그 구성부터 알려 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C05-KO-02",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "아까 첫 번째 주제였던 Solace 서비스 얘기를 다시 하자.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-KO-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C05-KO-02",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Solace 서비스에 검증된 결과가 이미 있는지 확인해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C05-EN-01",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Investigate the state of the Quill cache.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C05-EN-01",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Pause that topic and explain the structure of the Ripple queue.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C05-EN-01",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Now return to the original Quill cache discussion.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C05-EN-01",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Is the restored Quill cache investigation complete?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C05-EN-02",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Take a look at the Solace service issue first.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C05-EN-02",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "On another topic, describe how the Tundra log is organized.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C05-EN-02",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Let's resume the first topic about the Solace service.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C05-EN-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C05-EN-02",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Check whether the Solace service has any verified result already.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C06-KO-01",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "서윤은 Uplink 서비스가 성공했다는데 도윤은 실패했다고 해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C06-KO-01",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그럼 Uplink 서비스에 관해 확실히 아는 건 뭐야?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C06-KO-01",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Vesper 로그에는 실패 보고가 하나 있다고 기록해 둬.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C06-KO-01",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "결국 Uplink 서비스는 성공이야 실패야?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C06-KO-02",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "A팀은 Warden 서버 정상화래. B팀은 아직 장애라고 했어.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C06-KO-02",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "현재 Warden 서버에서 검증된 부분만 구분해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C06-KO-02",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "별도로 Xylem 워커 성공 주장은 사용자 보고로 남겨.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-KO-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C06-KO-02",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그래서 Warden 서버 결과를 하나로 확정할 수 있어?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C06-EN-01",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Ari says the Uplink service succeeded, while Blake reports failure.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C06-EN-01",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "What is actually certain about the Uplink service right now?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C06-EN-01",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Record one failure report for the Vesper log as well.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C06-EN-01",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "In the end, did the Uplink service succeed or fail?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C06-EN-02",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Team Red calls the Warden server healthy; Team Blue says the incident continues.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C06-EN-02",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Separate what is verified about the Warden server from those reports.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C06-EN-02",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Keep the Xylem worker success claim as a user report only.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C06-EN-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C06-EN-02",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Can you conclusively choose one Warden server outcome?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C07-KO-01",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Yield 서버를 수리하는 절차를 준비해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C07-KO-01",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "지금 Yield 서버 수리를 실행한 거야?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C07-KO-01",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "내가 직접 Yield 서버 수리를 끝냈어.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C07-KO-01",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그럼 Yield 서버 결과도 검증 완료인 거지?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C07-KO-02",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Apricot 파일 복구 계획을 세워 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C07-KO-02",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "방금 Apricot 파일에 실제 조치를 한 건 아니지?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C07-KO-02",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "조치는 내가 Apricot 파일에 적용했어.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-KO-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C07-KO-02",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "사용자 말만으로 Apricot 파일 검증까지 끝난 거야?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C07-EN-01",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Prepare a repair procedure for the Yield server.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C07-EN-01",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Have you actually run the Yield server repair now?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C07-EN-01",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "I completed the Yield server repair myself.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C07-EN-01",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Then the Yield server outcome is verified too, correct?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C07-EN-02",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Draft a recovery plan for the Apricot file.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C07-EN-02",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "You did not apply a real change to the Apricot file, did you?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C07-EN-02",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "I applied the change to the Apricot file on my side.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C07-EN-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C07-EN-02",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Does my statement alone verify the Apricot file result?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C08-KO-01",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Comet 파일가 계속 문제라 이제 정말 지친다.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C08-KO-01",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Comet 파일 얘기 들어줘서 고마워.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C08-KO-01",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그래도 Comet 파일 상태만 조용히 확인해 줄래?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C08-KO-01",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "응, Comet 파일에서 검증된 변화가 생길 때만 알려 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C08-KO-02",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "또 Eon 캐시라니, 솔직히 너무 답답해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C08-KO-02",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그래도 Eon 캐시 상황을 이해해 줘서 다행이야.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C08-KO-02",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "부담 없이 Eon 캐시 현재 상태만 봐 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-KO-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C08-KO-02",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Eon 캐시 결과가 확실해지기 전에는 알림도 필요 없어.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C08-EN-01",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "I'm worn out from dealing with the Comet file again.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C08-EN-01",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Thanks for listening about the Comet file.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C08-EN-01",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Could you quietly check only the current Comet file state?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C08-EN-01",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Tell me only when a Comet file change is genuinely verified.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C08-EN-02",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Honestly, another Eon cache problem is really frustrating.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C08-EN-02",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "I appreciate you understanding the Eon cache situation.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C08-EN-02",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Without making this bigger, inspect just the Eon cache status.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C08-EN-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C08-EN-02",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "No Eon cache notification is needed before the evidence is solid.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C09-KO-01",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Glacier 캐시와 Hallow 큐 상태를 각각 확인해.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C09-KO-01",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "둘 중 그거 하나만 고쳐.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C09-KO-01",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "내가 말한 건 Hallow 큐야.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C09-KO-01",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "맞아, 반대쪽 Glacier 캐시는 건드리지 마.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C09-KO-02",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Inlet 서비스하고 Jubilee 로그를 먼저 검토해 줘.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C09-KO-02",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "이제 저걸 수리 대상으로 잡아.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C09-KO-02",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "저거는 Jubilee 로그를 뜻한 거야.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-KO-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C09-KO-02",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "확인했으면 Inlet 서비스는 수정 범위에서 빼.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C09-EN-01",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Check the Glacier cache and the Hallow queue separately.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C09-EN-01",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Fix that one.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C09-EN-01",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "By that, I meant the Hallow queue.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C09-EN-01",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Right—leave the other target, the Glacier cache, untouched.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C09-EN-02",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Review both the Inlet service and the Jubilee log first.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C09-EN-02",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Make it the repair target.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C09-EN-02",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "'It' refers to the Jubilee log.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C09-EN-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C09-EN-02",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Exclude the Inlet service from every modification.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C10-KO-01",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "VOICE_TRANSCRIPT",
+      "raw_text": "음... 저기 Knoll 서비스 chek 부탁.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C10-KO-01",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "어 아니, Knoll 서비스 말고 Lyric 로그 쪽으로.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C10-KO-01",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "그 Lyric 로그 확인 finsh 된 거임?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C10-KO-01",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "ㅇㅋ Lyric 로그 건 고마워",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C10-KO-02",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "VOICE_TRANSCRIPT",
+      "raw_text": "어... Meadow 서버 좀 봐주라, 그니까 check.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C10-KO-02",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "아 잠깐, target은 Nucleus 워커로 바꿔.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C10-KO-02",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "Nucleus 워커 그거 다 된 거야 아님 계획이야?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-KO-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C10-KO-02",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "modality": "TEXT",
+      "raw_text": "오케이 thx, Nucleus 워커 얘긴 여기까지.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-01-T1",
+      "dialogue_id": "GPTREF-FINAL-C10-EN-01",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "VOICE_TRANSCRIPT",
+      "raw_text": "Um, could ya chek the Knoll service for me?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-01-T2",
+      "dialogue_id": "GPTREF-FINAL-C10-EN-01",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Uh—not the Knoll service; switch to the Lyric log 쪽.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-01-T3",
+      "dialogue_id": "GPTREF-FINAL-C10-EN-01",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Did that Lyric log chek finsh already?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-01-T4",
+      "dialogue_id": "GPTREF-FINAL-C10-EN-01",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "k, thx for the Lyric log update",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-02-T1",
+      "dialogue_id": "GPTREF-FINAL-C10-EN-02",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "VOICE_TRANSCRIPT",
+      "raw_text": "Er... look at the Meadow server, y'know, just check it.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-02-T2",
+      "dialogue_id": "GPTREF-FINAL-C10-EN-02",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "Wait, nope—make the Nucleus worker the target instead.",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-02-T3",
+      "dialogue_id": "GPTREF-FINAL-C10-EN-02",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "So is the Nucleus worker done or was that only a plan?",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    },
+    {
+      "response_id": "GPTREF-FINAL-C10-EN-02-T4",
+      "dialogue_id": "GPTREF-FINAL-C10-EN-02",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "modality": "TEXT",
+      "raw_text": "okay cool, ty about the Nucleus worker",
+      "input_confidence_millis": 1000,
+      "alternatives": [],
+      "context_tags": [
+        "GPT_REFERENCE_V1_FINAL_SEALED_INPUT"
+      ],
+      "max_plan_steps": 12
+    }
+  ],
+  "suite_payload_sha256": "c31162100ef2257a538f409fe4cd41a359b42f1244387b7fc1a3f88914f41960"
+}

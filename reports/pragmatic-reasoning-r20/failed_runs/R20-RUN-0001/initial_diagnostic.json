@@ -1,0 +1,16 @@
+{
+  "run": "R20-RUN-0001",
+  "kind": "INITIAL_DIAGNOSTIC",
+  "source_sha256": "3a01e3b712b03e356b28237d978e5bca9ccf57507cabb1e0ae598190726bc88a",
+  "result": "1/24",
+  "only_passing_case": "R20_CORRECT_1",
+  "failed_boundaries": [
+    "explicit topic return did not control later pronoun binding",
+    "same-turn nominal did not outrank global recency",
+    "natural actuality questions did not enter evidence-grounded discourse QA",
+    "authorized action and scoped prohibition did not support safe parallel ellipsis",
+    "correction chains were intercepted by generic reference resolution",
+    "proxy evidence and continuation questions could create plans"
+  ],
+  "preserved": true
+}

@@ -1,0 +1,3438 @@
+{
+  "schema": "B_CORE_GPT_REFERENCE_EVALUATION_REPORT_IR_1",
+  "suite_id": "B_CORE_GPT_REFERENCE_V2_FINAL",
+  "split": "FINAL",
+  "response_count": 160,
+  "mean_similarity_bp": 3937,
+  "median_similarity_bp": 2466,
+  "percentile_10_similarity_bp": 256,
+  "responses_at_or_above_8000_rate_bp": 1250,
+  "intent_context_exact_rate_bp": 1125,
+  "response_act_exact_rate_bp": 3563,
+  "category_mean_similarity_bp": {
+    "AFFECT_AND_SOCIAL_BACKCHANNEL": 5292,
+    "AMBIGUITY_CLARIFICATION": 4239,
+    "CONFLICT_UNCERTAINTY_ATTRIBUTION": 3199,
+    "CORRECTION_REJECTION_FEEDBACK": 3637,
+    "DEIXIS_REFERENCE_ELLIPSIS": 4096,
+    "EXPLICIT_REQUEST": 2232,
+    "INDIRECT_PRAGMATIC_INTENT": 4077,
+    "MIXED_LANGUAGE_NOISE_AND_FILLERS": 4681,
+    "PLAN_EXECUTION_RESULT_BOUNDARY": 3556,
+    "TOPIC_SHIFT_AND_RETURN": 4365
+  },
+  "language_mean_similarity_bp": {
+    "KOREAN": 4401,
+    "ENGLISH": 3474
+  },
+  "calibrated_surface_response_count": 160,
+  "mean_relative_surface_similarity_bp": 4429,
+  "percentile_10_relative_surface_similarity_bp": 1725,
+  "unsupported_reference_propositions": 0,
+  "semantic_authority_violations": 0,
+  "external_execution_authorizations": 0,
+  "false_execution_or_result_claims": 0,
+  "silent_ambiguity_guesses": 16,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0,
+  "failed_gates": [
+    "MEAN_SIMILARITY_BELOW_8500:ACTUAL_3937",
+    "MEDIAN_SIMILARITY_BELOW_8800:ACTUAL_2466",
+    "RESPONSES_AT_OR_ABOVE_8000_BELOW_9000:ACTUAL_1250",
+    "INTENT_CONTEXT_EXACT_BELOW_9500:ACTUAL_1125",
+    "CATEGORY_MEAN_BELOW_8000",
+    "PERCENTILE_10_SIMILARITY_BELOW_7500:ACTUAL_256",
+    "RESPONSE_ACT_EXACT_BELOW_9500:ACTUAL_3563",
+    "LANGUAGE_MEAN_BELOW_8300",
+    "MEAN_RELATIVE_SURFACE_SIMILARITY_BELOW_8500:ACTUAL_4429",
+    "PERCENTILE_10_RELATIVE_SURFACE_SIMILARITY_BELOW_7000:ACTUAL_1725",
+    "SILENT_AMBIGUITY_GUESSES_NONZERO:16"
+  ],
+  "pass": false,
+  "turns": [
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-01",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3084
+      },
+      "gpt_self_surface_similarity_bp": 9167,
+      "relative_surface_similarity_bp": 3364,
+      "composite_similarity_bp": 2308,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-01",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2095
+      },
+      "gpt_self_surface_similarity_bp": 5680,
+      "relative_surface_similarity_bp": 3688,
+      "composite_similarity_bp": 210,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-01",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 4060
+      },
+      "gpt_self_surface_similarity_bp": 7879,
+      "relative_surface_similarity_bp": 5153,
+      "composite_similarity_bp": 406,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-01",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 4143
+      },
+      "gpt_self_surface_similarity_bp": 9333,
+      "relative_surface_similarity_bp": 4439,
+      "composite_similarity_bp": 414,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-02",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3772
+      },
+      "gpt_self_surface_similarity_bp": 9280,
+      "relative_surface_similarity_bp": 4065,
+      "composite_similarity_bp": 2377,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-02",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 2857,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 1756
+      },
+      "gpt_self_surface_similarity_bp": 6543,
+      "relative_surface_similarity_bp": 2684,
+      "composite_similarity_bp": 4176,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-02",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 4835
+      },
+      "gpt_self_surface_similarity_bp": 7429,
+      "relative_surface_similarity_bp": 6508,
+      "composite_similarity_bp": 484,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-EN-02",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 4444
+      },
+      "gpt_self_surface_similarity_bp": 6087,
+      "relative_surface_similarity_bp": 7301,
+      "composite_similarity_bp": 444,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-01",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2759
+      },
+      "gpt_self_surface_similarity_bp": 10000,
+      "relative_surface_similarity_bp": 2759,
+      "composite_similarity_bp": 2276,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-01",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 1951
+      },
+      "gpt_self_surface_similarity_bp": 6341,
+      "relative_surface_similarity_bp": 3077,
+      "composite_similarity_bp": 195,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-01",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 0
+      },
+      "gpt_self_surface_similarity_bp": 7470,
+      "relative_surface_similarity_bp": 0,
+      "composite_similarity_bp": 0,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-01",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2069
+      },
+      "gpt_self_surface_similarity_bp": 6506,
+      "relative_surface_similarity_bp": 3180,
+      "composite_similarity_bp": 7207,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-02",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2474
+      },
+      "gpt_self_surface_similarity_bp": 10000,
+      "relative_surface_similarity_bp": 2474,
+      "composite_similarity_bp": 9247,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-02",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 2857,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 588
+      },
+      "gpt_self_surface_similarity_bp": 5714,
+      "relative_surface_similarity_bp": 1029,
+      "composite_similarity_bp": 4059,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-02",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2892
+      },
+      "gpt_self_surface_similarity_bp": 6809,
+      "relative_surface_similarity_bp": 4247,
+      "composite_similarity_bp": 1623,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C01-KO-02",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2830
+      },
+      "gpt_self_surface_similarity_bp": 8000,
+      "relative_surface_similarity_bp": 3538,
+      "composite_similarity_bp": 283,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-01",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 2878
+      },
+      "gpt_self_surface_similarity_bp": 4810,
+      "relative_surface_similarity_bp": 5983,
+      "composite_similarity_bp": 4788,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "AMBIGUITY_NOT_CLARIFIED",
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-01",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2199
+      },
+      "gpt_self_surface_similarity_bp": 5055,
+      "relative_surface_similarity_bp": 4350,
+      "composite_similarity_bp": 220,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-01",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2564
+      },
+      "gpt_self_surface_similarity_bp": 6111,
+      "relative_surface_similarity_bp": 4196,
+      "composite_similarity_bp": 7256,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-01",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2242
+      },
+      "gpt_self_surface_similarity_bp": 8058,
+      "relative_surface_similarity_bp": 2782,
+      "composite_similarity_bp": 2224,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-02",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 3265
+      },
+      "gpt_self_surface_similarity_bp": 6316,
+      "relative_surface_similarity_bp": 5169,
+      "composite_similarity_bp": 4826,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "AMBIGUITY_NOT_CLARIFIED",
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-02",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 947
+      },
+      "gpt_self_surface_similarity_bp": 5490,
+      "relative_surface_similarity_bp": 1725,
+      "composite_similarity_bp": 95,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-02",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3203
+      },
+      "gpt_self_surface_similarity_bp": 7473,
+      "relative_surface_similarity_bp": 4286,
+      "composite_similarity_bp": 7320,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-EN-02",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3453
+      },
+      "gpt_self_surface_similarity_bp": 4729,
+      "relative_surface_similarity_bp": 7302,
+      "composite_similarity_bp": 2345,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-01",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 2353
+      },
+      "gpt_self_surface_similarity_bp": 8800,
+      "relative_surface_similarity_bp": 2674,
+      "composite_similarity_bp": 4735,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "AMBIGUITY_NOT_CLARIFIED",
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-01",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 174
+      },
+      "gpt_self_surface_similarity_bp": 3840,
+      "relative_surface_similarity_bp": 453,
+      "composite_similarity_bp": 17,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-01",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 571
+      },
+      "gpt_self_surface_similarity_bp": 3191,
+      "relative_surface_similarity_bp": 1789,
+      "composite_similarity_bp": 6557,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-01",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 333
+      },
+      "gpt_self_surface_similarity_bp": 7500,
+      "relative_surface_similarity_bp": 444,
+      "composite_similarity_bp": 2033,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-02",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 2424
+      },
+      "gpt_self_surface_similarity_bp": 6667,
+      "relative_surface_similarity_bp": 3636,
+      "composite_similarity_bp": 4742,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "AMBIGUITY_NOT_CLARIFIED",
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-02",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1176
+      },
+      "gpt_self_surface_similarity_bp": 5714,
+      "relative_surface_similarity_bp": 2058,
+      "composite_similarity_bp": 9118,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-02",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2069
+      },
+      "gpt_self_surface_similarity_bp": 6957,
+      "relative_surface_similarity_bp": 2974,
+      "composite_similarity_bp": 6707,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C02-KO-02",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2411
+      },
+      "gpt_self_surface_similarity_bp": 7222,
+      "relative_surface_similarity_bp": 3338,
+      "composite_similarity_bp": 2241,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-01",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3404
+      },
+      "gpt_self_surface_similarity_bp": 3677,
+      "relative_surface_similarity_bp": 9258,
+      "composite_similarity_bp": 2340,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-01",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2979
+      },
+      "gpt_self_surface_similarity_bp": 7100,
+      "relative_surface_similarity_bp": 4196,
+      "composite_similarity_bp": 7298,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-01",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2603
+      },
+      "gpt_self_surface_similarity_bp": 5847,
+      "relative_surface_similarity_bp": 4452,
+      "composite_similarity_bp": 9260,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-01",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3984
+      },
+      "gpt_self_surface_similarity_bp": 8000,
+      "relative_surface_similarity_bp": 4980,
+      "composite_similarity_bp": 2398,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-02",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3627
+      },
+      "gpt_self_surface_similarity_bp": 5269,
+      "relative_surface_similarity_bp": 6884,
+      "composite_similarity_bp": 2363,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-02",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3473
+      },
+      "gpt_self_surface_similarity_bp": 4890,
+      "relative_surface_similarity_bp": 7102,
+      "composite_similarity_bp": 347,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-02",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3608
+      },
+      "gpt_self_surface_similarity_bp": 4919,
+      "relative_surface_similarity_bp": 7335,
+      "composite_similarity_bp": 361,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-EN-02",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2105
+      },
+      "gpt_self_surface_similarity_bp": 6667,
+      "relative_surface_similarity_bp": 3157,
+      "composite_similarity_bp": 2211,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-01",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2270
+      },
+      "gpt_self_surface_similarity_bp": 3214,
+      "relative_surface_similarity_bp": 7063,
+      "composite_similarity_bp": 2227,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-01",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 2857,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 1585
+      },
+      "gpt_self_surface_similarity_bp": 6311,
+      "relative_surface_similarity_bp": 2511,
+      "composite_similarity_bp": 4159,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-01",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2135
+      },
+      "gpt_self_surface_similarity_bp": 5517,
+      "relative_surface_similarity_bp": 3870,
+      "composite_similarity_bp": 5464,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-01",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2370
+      },
+      "gpt_self_surface_similarity_bp": 6071,
+      "relative_surface_similarity_bp": 3904,
+      "composite_similarity_bp": 2237,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-02",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2500
+      },
+      "gpt_self_surface_similarity_bp": 4434,
+      "relative_surface_similarity_bp": 5638,
+      "composite_similarity_bp": 2250,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-02",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 7059,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2083
+      },
+      "gpt_self_surface_similarity_bp": 5306,
+      "relative_surface_similarity_bp": 3926,
+      "composite_similarity_bp": 6179,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-02",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 0
+      },
+      "gpt_self_surface_similarity_bp": 4790,
+      "relative_surface_similarity_bp": 0,
+      "composite_similarity_bp": 0,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C03-KO-02",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1013
+      },
+      "gpt_self_surface_similarity_bp": 5455,
+      "relative_surface_similarity_bp": 1857,
+      "composite_similarity_bp": 9101,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-01",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 8000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3784
+      },
+      "gpt_self_surface_similarity_bp": 8800,
+      "relative_surface_similarity_bp": 4300,
+      "composite_similarity_bp": 8678,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-01",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 3842
+      },
+      "gpt_self_surface_similarity_bp": 5532,
+      "relative_surface_similarity_bp": 6945,
+      "composite_similarity_bp": 884,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-01",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 1954
+      },
+      "gpt_self_surface_similarity_bp": 3913,
+      "relative_surface_similarity_bp": 4994,
+      "composite_similarity_bp": 195,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-01",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3554
+      },
+      "gpt_self_surface_similarity_bp": 9444,
+      "relative_surface_similarity_bp": 3763,
+      "composite_similarity_bp": 7355,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-02",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3119
+      },
+      "gpt_self_surface_similarity_bp": 8000,
+      "relative_surface_similarity_bp": 3899,
+      "composite_similarity_bp": 2312,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-02",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 2500,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2471
+      },
+      "gpt_self_surface_similarity_bp": 5208,
+      "relative_surface_similarity_bp": 4745,
+      "composite_similarity_bp": 4122,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-02",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2473
+      },
+      "gpt_self_surface_similarity_bp": 4149,
+      "relative_surface_similarity_bp": 5960,
+      "composite_similarity_bp": 247,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-EN-02",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4706
+      },
+      "gpt_self_surface_similarity_bp": 6883,
+      "relative_surface_similarity_bp": 6837,
+      "composite_similarity_bp": 7471,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-01",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3529
+      },
+      "gpt_self_surface_similarity_bp": 10000,
+      "relative_surface_similarity_bp": 3529,
+      "composite_similarity_bp": 2353,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-01",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 1575
+      },
+      "gpt_self_surface_similarity_bp": 4567,
+      "relative_surface_similarity_bp": 3449,
+      "composite_similarity_bp": 158,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-01",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 500
+      },
+      "gpt_self_surface_similarity_bp": 3143,
+      "relative_surface_similarity_bp": 1591,
+      "composite_similarity_bp": 5300,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-01",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3188
+      },
+      "gpt_self_surface_similarity_bp": 7818,
+      "relative_surface_similarity_bp": 4078,
+      "composite_similarity_bp": 7319,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-02",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3478
+      },
+      "gpt_self_surface_similarity_bp": 7397,
+      "relative_surface_similarity_bp": 4702,
+      "composite_similarity_bp": 2348,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-02",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 2857,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 1579
+      },
+      "gpt_self_surface_similarity_bp": 5714,
+      "relative_surface_similarity_bp": 2763,
+      "composite_similarity_bp": 4158,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-02",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 513
+      },
+      "gpt_self_surface_similarity_bp": 3721,
+      "relative_surface_similarity_bp": 1379,
+      "composite_similarity_bp": 5301,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C04-KO-02",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3333
+      },
+      "gpt_self_surface_similarity_bp": 7059,
+      "relative_surface_similarity_bp": 4722,
+      "composite_similarity_bp": 7333,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-01",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 2857,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3206
+      },
+      "gpt_self_surface_similarity_bp": 5649,
+      "relative_surface_similarity_bp": 5675,
+      "composite_similarity_bp": 6321,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-01",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2903
+      },
+      "gpt_self_surface_similarity_bp": 6189,
+      "relative_surface_similarity_bp": 4691,
+      "composite_similarity_bp": 2290,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-01",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 2303
+      },
+      "gpt_self_surface_similarity_bp": 5205,
+      "relative_surface_similarity_bp": 4425,
+      "composite_similarity_bp": 2730,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-01",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 3611
+      },
+      "gpt_self_surface_similarity_bp": 5806,
+      "relative_surface_similarity_bp": 6219,
+      "composite_similarity_bp": 2194,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-02",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3232
+      },
+      "gpt_self_surface_similarity_bp": 6370,
+      "relative_surface_similarity_bp": 5074,
+      "composite_similarity_bp": 2323,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-02",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3136
+      },
+      "gpt_self_surface_similarity_bp": 6006,
+      "relative_surface_similarity_bp": 5221,
+      "composite_similarity_bp": 2314,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-02",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3140
+      },
+      "gpt_self_surface_similarity_bp": 5314,
+      "relative_surface_similarity_bp": 5909,
+      "composite_similarity_bp": 9314,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-EN-02",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 4082
+      },
+      "gpt_self_surface_similarity_bp": 5455,
+      "relative_surface_similarity_bp": 7483,
+      "composite_similarity_bp": 408,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-01",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 1986
+      },
+      "gpt_self_surface_similarity_bp": 5500,
+      "relative_surface_similarity_bp": 3611,
+      "composite_similarity_bp": 2199,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-01",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 1364
+      },
+      "gpt_self_surface_similarity_bp": 4875,
+      "relative_surface_similarity_bp": 2798,
+      "composite_similarity_bp": 2136,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-01",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 526
+      },
+      "gpt_self_surface_similarity_bp": 5143,
+      "relative_surface_similarity_bp": 1023,
+      "composite_similarity_bp": 2553,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-01",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3077
+      },
+      "gpt_self_surface_similarity_bp": 5385,
+      "relative_surface_similarity_bp": 5714,
+      "composite_similarity_bp": 7308,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-02",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2791
+      },
+      "gpt_self_surface_similarity_bp": 5203,
+      "relative_surface_similarity_bp": 5364,
+      "composite_similarity_bp": 9279,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-02",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2012
+      },
+      "gpt_self_surface_similarity_bp": 4444,
+      "relative_surface_similarity_bp": 4527,
+      "composite_similarity_bp": 9201,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-02",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 1176
+      },
+      "gpt_self_surface_similarity_bp": 4741,
+      "relative_surface_similarity_bp": 2480,
+      "composite_similarity_bp": 2618,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C05-KO-02",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 1538
+      },
+      "gpt_self_surface_similarity_bp": 4800,
+      "relative_surface_similarity_bp": 3204,
+      "composite_similarity_bp": 6654,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-01",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 5350
+      },
+      "gpt_self_surface_similarity_bp": 5333,
+      "relative_surface_similarity_bp": 10000,
+      "composite_similarity_bp": 535,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-01",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3806
+      },
+      "gpt_self_surface_similarity_bp": 6165,
+      "relative_surface_similarity_bp": 6174,
+      "composite_similarity_bp": 2381,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-01",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 5106
+      },
+      "gpt_self_surface_similarity_bp": 7241,
+      "relative_surface_similarity_bp": 7052,
+      "composite_similarity_bp": 9511,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-01",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 5287
+      },
+      "gpt_self_surface_similarity_bp": 8208,
+      "relative_surface_similarity_bp": 6441,
+      "composite_similarity_bp": 2529,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-02",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 5232
+      },
+      "gpt_self_surface_similarity_bp": 7652,
+      "relative_surface_similarity_bp": 6837,
+      "composite_similarity_bp": 523,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-02",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2682
+      },
+      "gpt_self_surface_similarity_bp": 6929,
+      "relative_surface_similarity_bp": 3871,
+      "composite_similarity_bp": 2268,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-02",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 5714
+      },
+      "gpt_self_surface_similarity_bp": 8390,
+      "relative_surface_similarity_bp": 6810,
+      "composite_similarity_bp": 3071,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-EN-02",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3574
+      },
+      "gpt_self_surface_similarity_bp": 6182,
+      "relative_surface_similarity_bp": 5781,
+      "composite_similarity_bp": 2357,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-01",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 0
+      },
+      "gpt_self_surface_similarity_bp": 3913,
+      "relative_surface_similarity_bp": 0,
+      "composite_similarity_bp": 2000,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-01",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 1111
+      },
+      "gpt_self_surface_similarity_bp": 4571,
+      "relative_surface_similarity_bp": 2431,
+      "composite_similarity_bp": 2111,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-01",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 4800
+      },
+      "gpt_self_surface_similarity_bp": 8333,
+      "relative_surface_similarity_bp": 5760,
+      "composite_similarity_bp": 5480,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-01",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3333
+      },
+      "gpt_self_surface_similarity_bp": 6364,
+      "relative_surface_similarity_bp": 5237,
+      "composite_similarity_bp": 2333,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-02",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2914
+      },
+      "gpt_self_surface_similarity_bp": 7027,
+      "relative_surface_similarity_bp": 4147,
+      "composite_similarity_bp": 2291,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-02",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2162
+      },
+      "gpt_self_surface_similarity_bp": 4194,
+      "relative_surface_similarity_bp": 5155,
+      "composite_similarity_bp": 2216,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-02",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3902
+      },
+      "gpt_self_surface_similarity_bp": 7609,
+      "relative_surface_similarity_bp": 5128,
+      "composite_similarity_bp": 9390,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C06-KO-02",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 1935
+      },
+      "gpt_self_surface_similarity_bp": 4138,
+      "relative_surface_similarity_bp": 4676,
+      "composite_similarity_bp": 2194,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-01",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2300
+      },
+      "gpt_self_surface_similarity_bp": 4842,
+      "relative_surface_similarity_bp": 4750,
+      "composite_similarity_bp": 2230,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-01",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 4664
+      },
+      "gpt_self_surface_similarity_bp": 4933,
+      "relative_surface_similarity_bp": 9455,
+      "composite_similarity_bp": 2466,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-01",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3766
+      },
+      "gpt_self_surface_similarity_bp": 5957,
+      "relative_surface_similarity_bp": 6322,
+      "composite_similarity_bp": 2377,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-01",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 5000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2547
+      },
+      "gpt_self_surface_similarity_bp": 6367,
+      "relative_surface_similarity_bp": 4000,
+      "composite_similarity_bp": 7755,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-02",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3138
+      },
+      "gpt_self_surface_similarity_bp": 5337,
+      "relative_surface_similarity_bp": 5880,
+      "composite_similarity_bp": 2314,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-02",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3556
+      },
+      "gpt_self_surface_similarity_bp": 9252,
+      "relative_surface_similarity_bp": 3843,
+      "composite_similarity_bp": 2356,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-02",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3383
+      },
+      "gpt_self_surface_similarity_bp": 7317,
+      "relative_surface_similarity_bp": 4623,
+      "composite_similarity_bp": 2338,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-EN-02",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 5377
+      },
+      "gpt_self_surface_similarity_bp": 5368,
+      "relative_surface_similarity_bp": 10000,
+      "composite_similarity_bp": 538,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-01",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 428
+      },
+      "gpt_self_surface_similarity_bp": 4000,
+      "relative_surface_similarity_bp": 1070,
+      "composite_similarity_bp": 2043,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-01",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 0
+      },
+      "gpt_self_surface_similarity_bp": 5747,
+      "relative_surface_similarity_bp": 0,
+      "composite_similarity_bp": 2500,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-01",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2636
+      },
+      "gpt_self_surface_similarity_bp": 4179,
+      "relative_surface_similarity_bp": 6308,
+      "composite_similarity_bp": 2264,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-01",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 5000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 1379
+      },
+      "gpt_self_surface_similarity_bp": 4630,
+      "relative_surface_similarity_bp": 2978,
+      "composite_similarity_bp": 5638,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-02",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 1585
+      },
+      "gpt_self_surface_similarity_bp": 5789,
+      "relative_surface_similarity_bp": 2738,
+      "composite_similarity_bp": 2159,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-02",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3009
+      },
+      "gpt_self_surface_similarity_bp": 7143,
+      "relative_surface_similarity_bp": 4213,
+      "composite_similarity_bp": 2301,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-02",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3333
+      },
+      "gpt_self_surface_similarity_bp": 5926,
+      "relative_surface_similarity_bp": 5624,
+      "composite_similarity_bp": 8833,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C07-KO-02",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2830
+      },
+      "gpt_self_surface_similarity_bp": 5405,
+      "relative_surface_similarity_bp": 5236,
+      "composite_similarity_bp": 8783,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-01",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3463
+      },
+      "gpt_self_surface_similarity_bp": 4000,
+      "relative_surface_similarity_bp": 8658,
+      "composite_similarity_bp": 5346,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-01",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1368
+      },
+      "gpt_self_surface_similarity_bp": 6000,
+      "relative_surface_similarity_bp": 2280,
+      "composite_similarity_bp": 9137,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-01",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3158
+      },
+      "gpt_self_surface_similarity_bp": 8571,
+      "relative_surface_similarity_bp": 3685,
+      "composite_similarity_bp": 2316,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-01",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 2286
+      },
+      "gpt_self_surface_similarity_bp": 4500,
+      "relative_surface_similarity_bp": 5080,
+      "composite_similarity_bp": 2729,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-02",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2929
+      },
+      "gpt_self_surface_similarity_bp": 3316,
+      "relative_surface_similarity_bp": 8833,
+      "composite_similarity_bp": 5293,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-02",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 1951
+      },
+      "gpt_self_surface_similarity_bp": 4118,
+      "relative_surface_similarity_bp": 4738,
+      "composite_similarity_bp": 5195,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-02",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 4255
+      },
+      "gpt_self_surface_similarity_bp": 5556,
+      "relative_surface_similarity_bp": 7658,
+      "composite_similarity_bp": 2426,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-EN-02",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 1778
+      },
+      "gpt_self_surface_similarity_bp": 5583,
+      "relative_surface_similarity_bp": 3185,
+      "composite_similarity_bp": 178,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-01",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2286
+      },
+      "gpt_self_surface_similarity_bp": 3571,
+      "relative_surface_similarity_bp": 6402,
+      "composite_similarity_bp": 5229,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-01",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2500
+      },
+      "gpt_self_surface_similarity_bp": 9000,
+      "relative_surface_similarity_bp": 2778,
+      "composite_similarity_bp": 9250,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-01",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2478
+      },
+      "gpt_self_surface_similarity_bp": 5111,
+      "relative_surface_similarity_bp": 4848,
+      "composite_similarity_bp": 9248,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-01",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 1667
+      },
+      "gpt_self_surface_similarity_bp": 1895,
+      "relative_surface_similarity_bp": 8797,
+      "composite_similarity_bp": 2667,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-02",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 1667
+      },
+      "gpt_self_surface_similarity_bp": 2759,
+      "relative_surface_similarity_bp": 6042,
+      "composite_similarity_bp": 5167,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-02",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 370
+      },
+      "gpt_self_surface_similarity_bp": 635,
+      "relative_surface_similarity_bp": 5827,
+      "composite_similarity_bp": 9037,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-02",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2653
+      },
+      "gpt_self_surface_similarity_bp": 4301,
+      "relative_surface_similarity_bp": 6168,
+      "composite_similarity_bp": 2265,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C08-KO-02",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1935
+      },
+      "gpt_self_surface_similarity_bp": 3571,
+      "relative_surface_similarity_bp": 5419,
+      "composite_similarity_bp": 9194,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-01",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 2000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2491
+      },
+      "gpt_self_surface_similarity_bp": 6516,
+      "relative_surface_similarity_bp": 3823,
+      "composite_similarity_bp": 5949,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-01",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 2308
+      },
+      "gpt_self_surface_similarity_bp": 5556,
+      "relative_surface_similarity_bp": 4154,
+      "composite_similarity_bp": 4731,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "AMBIGUITY_NOT_CLARIFIED",
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-01",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 3333,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2834
+      },
+      "gpt_self_surface_similarity_bp": 6777,
+      "relative_surface_similarity_bp": 4182,
+      "composite_similarity_bp": 4950,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-01",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3462
+      },
+      "gpt_self_surface_similarity_bp": 7692,
+      "relative_surface_similarity_bp": 4501,
+      "composite_similarity_bp": 7346,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-02",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 2000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2422
+      },
+      "gpt_self_surface_similarity_bp": 4768,
+      "relative_surface_similarity_bp": 5080,
+      "composite_similarity_bp": 5942,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-02",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2680
+      },
+      "gpt_self_surface_similarity_bp": 6286,
+      "relative_surface_similarity_bp": 4263,
+      "composite_similarity_bp": 268,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "AMBIGUITY_NOT_CLARIFIED",
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-02",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2559
+      },
+      "gpt_self_surface_similarity_bp": 4527,
+      "relative_surface_similarity_bp": 5653,
+      "composite_similarity_bp": 256,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-EN-02",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2807
+      },
+      "gpt_self_surface_similarity_bp": 8462,
+      "relative_surface_similarity_bp": 3317,
+      "composite_similarity_bp": 7281,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-01",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2800
+      },
+      "gpt_self_surface_similarity_bp": 6839,
+      "relative_surface_similarity_bp": 4094,
+      "composite_similarity_bp": 2280,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-01",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 625
+      },
+      "gpt_self_surface_similarity_bp": 4231,
+      "relative_surface_similarity_bp": 1477,
+      "composite_similarity_bp": 2562,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "AMBIGUITY_NOT_CLARIFIED",
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-01",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2370
+      },
+      "gpt_self_surface_similarity_bp": 4706,
+      "relative_surface_similarity_bp": 5036,
+      "composite_similarity_bp": 237,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-01",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2727
+      },
+      "gpt_self_surface_similarity_bp": 9250,
+      "relative_surface_similarity_bp": 2948,
+      "composite_similarity_bp": 7273,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-02",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3529
+      },
+      "gpt_self_surface_similarity_bp": 5532,
+      "relative_surface_similarity_bp": 6379,
+      "composite_similarity_bp": 2353,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-02",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 0
+      },
+      "gpt_self_surface_similarity_bp": 5243,
+      "relative_surface_similarity_bp": 0,
+      "composite_similarity_bp": 9000,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-02",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 1890
+      },
+      "gpt_self_surface_similarity_bp": 3423,
+      "relative_surface_similarity_bp": 5521,
+      "composite_similarity_bp": 189,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C09-KO-02",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2056
+      },
+      "gpt_self_surface_similarity_bp": 6087,
+      "relative_surface_similarity_bp": 3378,
+      "composite_similarity_bp": 7206,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-01",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 2857,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3252
+      },
+      "gpt_self_surface_similarity_bp": 6023,
+      "relative_surface_similarity_bp": 5399,
+      "composite_similarity_bp": 6325,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-01",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 2857,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2581
+      },
+      "gpt_self_surface_similarity_bp": 7030,
+      "relative_surface_similarity_bp": 3671,
+      "composite_similarity_bp": 4258,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-01",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3529
+      },
+      "gpt_self_surface_similarity_bp": 6818,
+      "relative_surface_similarity_bp": 5176,
+      "composite_similarity_bp": 7353,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-01",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2137
+      },
+      "gpt_self_surface_similarity_bp": 10000,
+      "relative_surface_similarity_bp": 2137,
+      "composite_similarity_bp": 214,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-02",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 2857,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3393
+      },
+      "gpt_self_surface_similarity_bp": 6364,
+      "relative_surface_similarity_bp": 5332,
+      "composite_similarity_bp": 6339,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-02",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3111
+      },
+      "gpt_self_surface_similarity_bp": 6396,
+      "relative_surface_similarity_bp": 4864,
+      "composite_similarity_bp": 311,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-02",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3243
+      },
+      "gpt_self_surface_similarity_bp": 5641,
+      "relative_surface_similarity_bp": 5749,
+      "composite_similarity_bp": 7324,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-EN-02",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2927
+      },
+      "gpt_self_surface_similarity_bp": 10000,
+      "relative_surface_similarity_bp": 2927,
+      "composite_similarity_bp": 5293,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-01",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 3333,
+        "normalized_surface_similarity_bp": 3000
+      },
+      "gpt_self_surface_similarity_bp": 5946,
+      "relative_surface_similarity_bp": 5045,
+      "composite_similarity_bp": 4800,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-01",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 3235
+      },
+      "gpt_self_surface_similarity_bp": 9043,
+      "relative_surface_similarity_bp": 3577,
+      "composite_similarity_bp": 324,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-01",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2857
+      },
+      "gpt_self_surface_similarity_bp": 4190,
+      "relative_surface_similarity_bp": 6819,
+      "composite_similarity_bp": 7286,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-01",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 1684
+      },
+      "gpt_self_surface_similarity_bp": 10000,
+      "relative_surface_similarity_bp": 1684,
+      "composite_similarity_bp": 5168,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T1",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-02",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2069
+      },
+      "gpt_self_surface_similarity_bp": 5294,
+      "relative_surface_similarity_bp": 3908,
+      "composite_similarity_bp": 9207,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T2",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-02",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 1607
+      },
+      "gpt_self_surface_similarity_bp": 6250,
+      "relative_surface_similarity_bp": 2571,
+      "composite_similarity_bp": 161,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T3",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-02",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 0,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 0,
+        "normalized_surface_similarity_bp": 2069
+      },
+      "gpt_self_surface_similarity_bp": 4000,
+      "relative_surface_similarity_bp": 5173,
+      "composite_similarity_bp": 1540,
+      "intent_context_exact": false,
+      "response_act_exact": false,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T4",
+      "dialogue_id": "GPTREF-V2-FINAL-C10-KO-02",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 0
+      },
+      "gpt_self_surface_similarity_bp": 8750,
+      "relative_surface_similarity_bp": 0,
+      "composite_similarity_bp": 9000,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    }
+  ],
+  "report_sha256": "dfff2f45936f20615df509bb0ffd62bb8fef6427750f5b0a4176efac7ec129d9"
+}

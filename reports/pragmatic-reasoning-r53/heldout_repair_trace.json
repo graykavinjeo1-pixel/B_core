@@ -1,0 +1,18 @@
+{
+  "schema": "B_CORE_R53_HELDOUT_REPAIR_TRACE_1",
+  "suite": "R53_PREDICATE_ARGUMENT_COMPOSITION_HELDOUT",
+  "manifest_sha256": "1b80c8880714925d287ee32fea74808e8bea69692b7616c85bb6db63d381d420",
+  "transfer_source_sha256": "456402412f8df656f0bc1ceaa2c23268407ed95db3742a18eb9a2c3d5d4dd8e7",
+  "shared_support_sha256": "647aa37d3fa90264be00c9f8afde596efe069dc72b3a9cca89dac348b3aeb1c9",
+  "score_progression": ["8/8", "8/8"],
+  "post_exposure_product_repair": {
+    "trigger": "pre-existing conditional-workflow library regressions",
+    "boundary": "NOUN_COORDINATION_VERSUS_CLAUSE_COORDINATION",
+    "general_rule": "Close an English direct-argument span before and-if, unless, when, once, because, then, or but clause boundaries so conditional material cannot become a coordinated object."
+  },
+  "case_mutations_after_exposure": 0,
+  "expectation_mutations_after_exposure": 0,
+  "whole_sentence_dispatches_added": 0,
+  "semantic_authority_added": false,
+  "execution_authority_added": false
+}

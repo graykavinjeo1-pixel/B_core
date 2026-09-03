@@ -2,8 +2,11 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use dockable_semantic_core::PlanIntentIR;
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 
 pub const LANGUAGE_KNOWLEDGE_SCHEMA: &str = "B_CORE_LANGUAGE_KNOWLEDGE_IR_1";
+pub const LANGUAGE_DIALOGUE_DIRECTIVE_ANALYSIS_SCHEMA: &str =
+    "B_CORE_LANGUAGE_DIALOGUE_DIRECTIVE_ANALYSIS_IR_1";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -51,6 +54,99 @@ pub enum PragmaticFunctionIR {
     ExactDiagnosis,
 }
 
+/// A language-specific expression may identify one role in a dialogue
+/// directive, but no individual word carries the complete instruction. The
+/// frame is compiled only when compatible target, operator, and value atoms
+/// compose in one unquoted utterance.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum LanguageDialogueDirectiveAtomIR {
+    AssistantResponseTarget,
+    SetOperator,
+    ClauseInitialSetOperator,
+    ResponseLengthConcise,
+    ResponseLengthDetailed,
+    ResponseFormatBullets,
+    ResponseFormatNumbered,
+    ResponseFormatTable,
+    ResponseFormatPlain,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum LanguageDialogueDirectiveAxisIR {
+    ResponseLength,
+    ResponseFormat,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum LanguageDialogueDirectiveValueIR {
+    Concise,
+    Detailed,
+    Bullets,
+    Numbered,
+    Table,
+    Plain,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct LanguageDialogueDirectiveFrameIR {
+    pub axis: LanguageDialogueDirectiveAxisIR,
+    pub value: LanguageDialogueDirectiveValueIR,
+    pub evidence_knowledge_ids: Vec<String>,
+    pub confidence_millis: u16,
+    pub semantic_authority: bool,
+    pub external_execution_authorized: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct LanguageDialogueDirectiveAnalysisIR {
+    pub schema: String,
+    pub source_text_sha256: String,
+    pub matched_knowledge_ids: Vec<String>,
+    pub frames: Vec<LanguageDialogueDirectiveFrameIR>,
+    pub unresolved_axes: Vec<LanguageDialogueDirectiveAxisIR>,
+    pub semantic_authority: bool,
+    pub external_execution_authorized: bool,
+    pub analysis_sha256: String,
+}
+
+impl LanguageDialogueDirectiveAnalysisIR {
+    pub fn validate_source(&self, source: &str) -> bool {
+        let matched = self.matched_knowledge_ids.iter().collect::<BTreeSet<_>>();
+        let unresolved = self
+            .unresolved_axes
+            .iter()
+            .copied()
+            .collect::<BTreeSet<_>>();
+        let frame_axes = self
+            .frames
+            .iter()
+            .map(|frame| frame.axis)
+            .collect::<BTreeSet<_>>();
+        let mut canonical = self.clone();
+        canonical.analysis_sha256.clear();
+        self.schema == LANGUAGE_DIALOGUE_DIRECTIVE_ANALYSIS_SCHEMA
+            && self.source_text_sha256 == sha256(source.trim().as_bytes())
+            && self.source_text_sha256.len() == 64
+            && matched.len() == self.matched_knowledge_ids.len()
+            && unresolved.len() == self.unresolved_axes.len()
+            && frame_axes.len() == self.frames.len()
+            && frame_axes.is_disjoint(&unresolved)
+            && self.frames.len() <= 4
+            && self.frames.iter().all(|frame| {
+                !frame.evidence_knowledge_ids.is_empty()
+                    && frame.confidence_millis <= 1_000
+                    && !frame.semantic_authority
+                    && !frame.external_execution_authorized
+            })
+            && !self.semantic_authority
+            && !self.external_execution_authorized
+            && self.analysis_sha256 == sha256_json(&canonical)
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct LanguageKnowledgeEntryIR {
     pub schema: String,
@@ -65,6 +161,8 @@ pub struct LanguageKnowledgeEntryIR {
     pub intent_hint: Option<PlanIntentIR>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub pragmatic_function: Option<PragmaticFunctionIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub dialogue_directive_atom: Option<LanguageDialogueDirectiveAtomIR>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -239,6 +337,171 @@ impl LanguageKnowledgeBase {
         })
     }
 
+    /// Compile lexical expression atoms into a phenotype-neutral dialogue
+    /// directive. Quoted material is excluded, contradictory values remain
+    /// unresolved, and the result cannot authorize semantics or execution.
+    pub fn analyze_dialogue_directives(&self, text: &str) -> LanguageDialogueDirectiveAnalysisIR {
+        let unquoted = normalize(&strip_quoted_spans(text));
+        let mut matched_knowledge_ids = Vec::new();
+        let mut target_ids = Vec::new();
+        let mut operator_ids = Vec::new();
+        let mut values = BTreeMap::<
+            LanguageDialogueDirectiveAxisIR,
+            BTreeMap<LanguageDialogueDirectiveValueIR, Vec<String>>,
+        >::new();
+        let mut value_matches = Vec::<(
+            LanguageDialogueDirectiveAxisIR,
+            LanguageDialogueDirectiveValueIR,
+            String,
+            String,
+        )>::new();
+        for entry in self
+            .entries
+            .values()
+            .filter(|entry| entry.dialogue_directive_atom.is_some())
+        {
+            let atom = entry
+                .dialogue_directive_atom
+                .expect("filtered directive atom");
+            let matched_form = entry
+                .surface_forms
+                .iter()
+                .filter(|form| match atom {
+                    LanguageDialogueDirectiveAtomIR::ClauseInitialSetOperator => {
+                        clause_initial_surface_matches(&unquoted, form, entry.language)
+                    }
+                    _ => surface_matches(&unquoted, form, entry.language),
+                })
+                .map(|form| normalize(form))
+                .max_by_key(|form| form.len());
+            let Some(matched_form) = matched_form else {
+                continue;
+            };
+            matched_knowledge_ids.push(entry.knowledge_id.clone());
+            match atom {
+                LanguageDialogueDirectiveAtomIR::AssistantResponseTarget => {
+                    target_ids.push(entry.knowledge_id.clone());
+                }
+                LanguageDialogueDirectiveAtomIR::SetOperator
+                | LanguageDialogueDirectiveAtomIR::ClauseInitialSetOperator => {
+                    operator_ids.push(entry.knowledge_id.clone());
+                }
+                LanguageDialogueDirectiveAtomIR::ResponseLengthConcise => {
+                    value_matches.push((
+                        LanguageDialogueDirectiveAxisIR::ResponseLength,
+                        LanguageDialogueDirectiveValueIR::Concise,
+                        entry.knowledge_id.clone(),
+                        matched_form,
+                    ));
+                }
+                LanguageDialogueDirectiveAtomIR::ResponseLengthDetailed => {
+                    value_matches.push((
+                        LanguageDialogueDirectiveAxisIR::ResponseLength,
+                        LanguageDialogueDirectiveValueIR::Detailed,
+                        entry.knowledge_id.clone(),
+                        matched_form,
+                    ));
+                }
+                LanguageDialogueDirectiveAtomIR::ResponseFormatBullets => {
+                    value_matches.push((
+                        LanguageDialogueDirectiveAxisIR::ResponseFormat,
+                        LanguageDialogueDirectiveValueIR::Bullets,
+                        entry.knowledge_id.clone(),
+                        matched_form,
+                    ));
+                }
+                LanguageDialogueDirectiveAtomIR::ResponseFormatNumbered => {
+                    value_matches.push((
+                        LanguageDialogueDirectiveAxisIR::ResponseFormat,
+                        LanguageDialogueDirectiveValueIR::Numbered,
+                        entry.knowledge_id.clone(),
+                        matched_form,
+                    ));
+                }
+                LanguageDialogueDirectiveAtomIR::ResponseFormatTable => {
+                    value_matches.push((
+                        LanguageDialogueDirectiveAxisIR::ResponseFormat,
+                        LanguageDialogueDirectiveValueIR::Table,
+                        entry.knowledge_id.clone(),
+                        matched_form,
+                    ));
+                }
+                LanguageDialogueDirectiveAtomIR::ResponseFormatPlain => {
+                    value_matches.push((
+                        LanguageDialogueDirectiveAxisIR::ResponseFormat,
+                        LanguageDialogueDirectiveValueIR::Plain,
+                        entry.knowledge_id.clone(),
+                        matched_form,
+                    ));
+                }
+            }
+        }
+        for (axis, value, knowledge_id, matched_form) in &value_matches {
+            let shadowed = value_matches
+                .iter()
+                .any(|(other_axis, other_value, _, other_form)| {
+                    other_axis == axis
+                        && other_value != value
+                        && other_form.len() > matched_form.len()
+                        && other_form.contains(matched_form)
+                });
+            if !shadowed {
+                values
+                    .entry(*axis)
+                    .or_default()
+                    .entry(*value)
+                    .or_default()
+                    .push(knowledge_id.clone());
+            }
+        }
+        matched_knowledge_ids.sort();
+        matched_knowledge_ids.dedup();
+        target_ids.sort();
+        target_ids.dedup();
+        operator_ids.sort();
+        operator_ids.dedup();
+        let mut frames = Vec::new();
+        let mut unresolved_axes = Vec::new();
+        if !target_ids.is_empty() && !operator_ids.is_empty() {
+            for (axis, axis_values) in values {
+                if axis_values.len() == 1 {
+                    let (value, value_ids) = axis_values.iter().next().expect("one axis value");
+                    let mut evidence_knowledge_ids = target_ids
+                        .iter()
+                        .chain(operator_ids.iter())
+                        .chain(value_ids.iter())
+                        .cloned()
+                        .collect::<Vec<_>>();
+                    evidence_knowledge_ids.sort();
+                    evidence_knowledge_ids.dedup();
+                    frames.push(LanguageDialogueDirectiveFrameIR {
+                        axis,
+                        value: *value,
+                        evidence_knowledge_ids,
+                        confidence_millis: 960,
+                        semantic_authority: false,
+                        external_execution_authorized: false,
+                    });
+                } else if axis_values.len() > 1 {
+                    unresolved_axes.push(axis);
+                }
+            }
+        }
+        let mut analysis = LanguageDialogueDirectiveAnalysisIR {
+            schema: LANGUAGE_DIALOGUE_DIRECTIVE_ANALYSIS_SCHEMA.to_string(),
+            source_text_sha256: sha256(text.trim().as_bytes()),
+            matched_knowledge_ids,
+            frames,
+            unresolved_axes,
+            semantic_authority: false,
+            external_execution_authorized: false,
+            analysis_sha256: String::new(),
+        };
+        analysis.analysis_sha256 = sha256_json(&analysis);
+        debug_assert!(analysis.validate_source(text));
+        analysis
+    }
+
     pub fn statistics(&self) -> LanguageKnowledgeStatisticsIR {
         let count_language = |language| {
             self.entries
@@ -307,6 +570,59 @@ fn normalize(text: &str) -> String {
         .collect::<Vec<_>>()
         .join(" ")
         .to_lowercase()
+}
+
+fn strip_quoted_spans(text: &str) -> String {
+    let mut output = String::with_capacity(text.len());
+    let mut closing_quote = None;
+    for character in text.chars() {
+        if let Some(closing) = closing_quote {
+            if character == closing {
+                closing_quote = None;
+            }
+            output.push(' ');
+            continue;
+        }
+        closing_quote = match character {
+            '‘' => Some('’'),
+            '“' => Some('”'),
+            '"' => Some('"'),
+            _ => None,
+        };
+        output.push(if closing_quote.is_some() {
+            ' '
+        } else {
+            character
+        });
+    }
+    output
+}
+
+fn clause_initial_surface_matches(
+    text: &str,
+    surface_form: &str,
+    language: LanguageCodeIR,
+) -> bool {
+    let form = normalize(surface_form);
+    text.trim_start_matches(|character: char| {
+        character.is_whitespace() || matches!(character, '-' | '—' | ',' | '.' | '!' | '?')
+    })
+    .strip_prefix(&form)
+    .is_some_and(|rest| {
+        language != LanguageCodeIR::English
+            || rest
+                .chars()
+                .next()
+                .is_none_or(|character| !character.is_ascii_alphanumeric() && character != '_')
+    })
+}
+
+fn sha256(bytes: &[u8]) -> String {
+    format!("{:x}", Sha256::digest(bytes))
+}
+
+fn sha256_json<T: Serialize>(value: &T) -> String {
+    sha256(&serde_json::to_vec(value).expect("language directive analysis serializes"))
 }
 
 fn surface_matches(text: &str, surface_form: &str, language: LanguageCodeIR) -> bool {
@@ -404,7 +720,33 @@ fn entry(
         semantic_tags: tags.iter().map(|tag| (*tag).to_string()).collect(),
         intent_hint,
         pragmatic_function,
+        dialogue_directive_atom: None,
     }
+}
+
+#[allow(clippy::too_many_arguments)]
+fn directive_entry(
+    id: &str,
+    language: LanguageCodeIR,
+    category: LanguageKnowledgeCategoryIR,
+    register: LanguageRegisterIR,
+    forms: &[&str],
+    concept: &str,
+    atom: LanguageDialogueDirectiveAtomIR,
+) -> LanguageKnowledgeEntryIR {
+    let mut entry = entry(
+        id,
+        language,
+        category,
+        register,
+        forms,
+        concept,
+        &[],
+        None,
+        None,
+    );
+    entry.dialogue_directive_atom = Some(atom);
+    entry
 }
 
 #[allow(clippy::too_many_lines)]
@@ -412,12 +754,165 @@ fn builtin_entries() -> Vec<LanguageKnowledgeEntryIR> {
     use LanguageCodeIR::{English as En, Korean as Ko};
     use LanguageKnowledgeCategoryIR::{Grammar, Idiom, InternetLanguage, Slang, Word};
     use LanguageRegisterIR::{Formal, Informal, Internet, Neutral};
-    use PlanIntentIR::{Create, Explain, Investigate, Learn, Plan, Repair};
+    use PlanIntentIR::{Communicate, Create, Execute, Explain, Investigate, Learn, Plan, Repair};
     use PragmaticFunctionIR::{
         Acknowledge, Approve, Cause, Caution, Condition, Emphasize, ExactDiagnosis, Hedge, Laugh,
         Proceed, Reject, Request, Sequence,
     };
     vec![
+        directive_entry(
+            "KO.DIRECTIVE.TARGET.ASSISTANT_RESPONSE",
+            Ko,
+            Word,
+            Neutral,
+            &["답변", "응답", "대답", "답해", "말해"],
+            "assistant_response_target",
+            LanguageDialogueDirectiveAtomIR::AssistantResponseTarget,
+        ),
+        directive_entry(
+            "KO.DIRECTIVE.OPERATOR.SET",
+            Ko,
+            Grammar,
+            Neutral,
+            &["해줘", "해 줘", "해주세요", "답해", "말해줘", "유지해"],
+            "set_dialogue_directive",
+            LanguageDialogueDirectiveAtomIR::SetOperator,
+        ),
+        directive_entry(
+            "KO.DIRECTIVE.VALUE.CONCISE",
+            Ko,
+            Word,
+            Neutral,
+            &["짧", "간결하게", "간단히", "핵심만"],
+            "concise_response_length",
+            LanguageDialogueDirectiveAtomIR::ResponseLengthConcise,
+        ),
+        directive_entry(
+            "KO.DIRECTIVE.VALUE.DETAILED",
+            Ko,
+            Word,
+            Neutral,
+            &["자세히", "상세하게", "구체적으로"],
+            "detailed_response_length",
+            LanguageDialogueDirectiveAtomIR::ResponseLengthDetailed,
+        ),
+        directive_entry(
+            "KO.DIRECTIVE.FORMAT.BULLETS",
+            Ko,
+            Word,
+            Neutral,
+            &["글머리표로", "불릿으로", "목록으로", "항목별로"],
+            "bulleted_response_format",
+            LanguageDialogueDirectiveAtomIR::ResponseFormatBullets,
+        ),
+        directive_entry(
+            "KO.DIRECTIVE.FORMAT.NUMBERED",
+            Ko,
+            Word,
+            Neutral,
+            &["번호 목록으로", "번호를 매겨", "번호 매겨"],
+            "numbered_response_format",
+            LanguageDialogueDirectiveAtomIR::ResponseFormatNumbered,
+        ),
+        directive_entry(
+            "KO.DIRECTIVE.FORMAT.TABLE",
+            Ko,
+            Word,
+            Neutral,
+            &["표로", "테이블로", "표 형식으로"],
+            "table_response_format",
+            LanguageDialogueDirectiveAtomIR::ResponseFormatTable,
+        ),
+        directive_entry(
+            "KO.DIRECTIVE.FORMAT.PLAIN",
+            Ko,
+            Word,
+            Neutral,
+            &["일반 문장으로", "평문으로"],
+            "plain_response_format",
+            LanguageDialogueDirectiveAtomIR::ResponseFormatPlain,
+        ),
+        directive_entry(
+            "EN.DIRECTIVE.TARGET.ASSISTANT_RESPONSE",
+            En,
+            Word,
+            Neutral,
+            &["answer", "response", "reply", "explanation"],
+            "assistant_response_target",
+            LanguageDialogueDirectiveAtomIR::AssistantResponseTarget,
+        ),
+        directive_entry(
+            "EN.DIRECTIVE.OPERATOR.POLITE_SET",
+            En,
+            Grammar,
+            Neutral,
+            &["please", "could you", "would you"],
+            "set_dialogue_directive",
+            LanguageDialogueDirectiveAtomIR::SetOperator,
+        ),
+        directive_entry(
+            "EN.DIRECTIVE.OPERATOR.IMPERATIVE_SET",
+            En,
+            Grammar,
+            Neutral,
+            &["answer", "respond", "reply", "keep", "make"],
+            "set_dialogue_directive",
+            LanguageDialogueDirectiveAtomIR::ClauseInitialSetOperator,
+        ),
+        directive_entry(
+            "EN.DIRECTIVE.VALUE.CONCISE",
+            En,
+            Word,
+            Neutral,
+            &["briefly", "concisely", "short", "concise", "to the point"],
+            "concise_response_length",
+            LanguageDialogueDirectiveAtomIR::ResponseLengthConcise,
+        ),
+        directive_entry(
+            "EN.DIRECTIVE.VALUE.DETAILED",
+            En,
+            Word,
+            Neutral,
+            &["in detail", "detailed", "thoroughly", "comprehensive"],
+            "detailed_response_length",
+            LanguageDialogueDirectiveAtomIR::ResponseLengthDetailed,
+        ),
+        directive_entry(
+            "EN.DIRECTIVE.FORMAT.BULLETS",
+            En,
+            Word,
+            Neutral,
+            &["bullet points", "bulleted list", "bullets"],
+            "bulleted_response_format",
+            LanguageDialogueDirectiveAtomIR::ResponseFormatBullets,
+        ),
+        directive_entry(
+            "EN.DIRECTIVE.FORMAT.NUMBERED",
+            En,
+            Word,
+            Neutral,
+            &["numbered list", "numbered points"],
+            "numbered_response_format",
+            LanguageDialogueDirectiveAtomIR::ResponseFormatNumbered,
+        ),
+        directive_entry(
+            "EN.DIRECTIVE.FORMAT.TABLE",
+            En,
+            Word,
+            Neutral,
+            &["in a table", "a table", "table format", "tabular format"],
+            "table_response_format",
+            LanguageDialogueDirectiveAtomIR::ResponseFormatTable,
+        ),
+        directive_entry(
+            "EN.DIRECTIVE.FORMAT.PLAIN",
+            En,
+            Word,
+            Neutral,
+            &["plain text", "plain prose"],
+            "plain_response_format",
+            LanguageDialogueDirectiveAtomIR::ResponseFormatPlain,
+        ),
         entry(
             "KO.WORD.PLAN",
             Ko,
@@ -485,6 +980,28 @@ fn builtin_entries() -> Vec<LanguageKnowledgeEntryIR> {
             None,
         ),
         entry(
+            "KO.WORD.EXECUTE",
+            Ko,
+            Word,
+            Neutral,
+            &["열어", "읽어", "저장", "실행", "보여", "계속"],
+            "execute_action",
+            &["execute"],
+            Some(Execute),
+            None,
+        ),
+        entry(
+            "KO.WORD.COMMUNICATE",
+            Ko,
+            Word,
+            Neutral,
+            &["말해", "대화", "채팅"],
+            "communicate",
+            &["dialogue"],
+            Some(Communicate),
+            None,
+        ),
+        entry(
             "EN.WORD.PLAN",
             En,
             Word,
@@ -500,7 +1017,9 @@ fn builtin_entries() -> Vec<LanguageKnowledgeEntryIR> {
             En,
             Word,
             Neutral,
-            &["inspect", "analyze", "diagnose", "check"],
+            &[
+                "inspect", "analyze", "diagnose", "check", "verify", "validate",
+            ],
             "investigate",
             &["diagnosis"],
             Some(Investigate),
@@ -548,6 +1067,28 @@ fn builtin_entries() -> Vec<LanguageKnowledgeEntryIR> {
             "explain",
             &["explanation"],
             Some(Explain),
+            None,
+        ),
+        entry(
+            "EN.WORD.EXECUTE",
+            En,
+            Word,
+            Neutral,
+            &["open", "read", "save", "run", "show", "continue"],
+            "execute_action",
+            &["execute"],
+            Some(Execute),
+            None,
+        ),
+        entry(
+            "EN.WORD.COMMUNICATE",
+            En,
+            Word,
+            Neutral,
+            &["talk", "chat", "tell"],
+            "communicate",
+            &["dialogue"],
+            Some(Communicate),
             None,
         ),
         entry(
@@ -982,5 +1523,98 @@ mod tests {
         assert_eq!(english.detected_language, LanguageCodeIR::English);
         assert_eq!(english.intent, PlanIntentIR::Repair);
         assert_eq!(english.detected_register, LanguageRegisterIR::Internet);
+    }
+
+    #[test]
+    fn dialogue_directive_atoms_compose_without_memorizing_sentences_or_promoting_quotes() {
+        let knowledge = LanguageKnowledgeBase::default();
+        for (text, expected) in [
+            (
+                "답변은 핵심만 간결하게 해줘.",
+                LanguageDialogueDirectiveValueIR::Concise,
+            ),
+            (
+                "응답을 구체적으로 말해줘.",
+                LanguageDialogueDirectiveValueIR::Detailed,
+            ),
+            (
+                "Please keep the response to the point.",
+                LanguageDialogueDirectiveValueIR::Concise,
+            ),
+            (
+                "Make the explanation detailed.",
+                LanguageDialogueDirectiveValueIR::Detailed,
+            ),
+        ] {
+            let analysis = knowledge.analyze_dialogue_directives(text);
+            assert!(analysis.validate_source(text), "{analysis:#?}");
+            assert_eq!(analysis.frames.len(), 1, "text={text} {analysis:#?}");
+            assert_eq!(analysis.frames[0].value, expected, "text={text}");
+            assert!(!analysis.frames[0].semantic_authority);
+            assert!(!analysis.frames[0].external_execution_authorized);
+        }
+
+        for (text, expected) in [
+            ("답변은 표로 해줘.", LanguageDialogueDirectiveValueIR::Table),
+            (
+                "응답은 번호 목록으로 해주세요.",
+                LanguageDialogueDirectiveValueIR::Numbered,
+            ),
+            (
+                "Answer with bullet points.",
+                LanguageDialogueDirectiveValueIR::Bullets,
+            ),
+            (
+                "Please keep the response in plain text.",
+                LanguageDialogueDirectiveValueIR::Plain,
+            ),
+        ] {
+            let analysis = knowledge.analyze_dialogue_directives(text);
+            assert!(analysis.validate_source(text), "{analysis:#?}");
+            assert_eq!(analysis.frames.len(), 1, "text={text} {analysis:#?}");
+            assert_eq!(
+                analysis.frames[0].axis,
+                LanguageDialogueDirectiveAxisIR::ResponseFormat
+            );
+            assert_eq!(analysis.frames[0].value, expected, "text={text}");
+        }
+
+        let combined = knowledge.analyze_dialogue_directives("답변은 짧게 표로 해줘.");
+        assert!(combined.validate_source("답변은 짧게 표로 해줘."));
+        assert_eq!(combined.frames.len(), 2, "{combined:#?}");
+        assert!(combined.frames.iter().any(|frame| {
+            frame.axis == LanguageDialogueDirectiveAxisIR::ResponseLength
+                && frame.value == LanguageDialogueDirectiveValueIR::Concise
+        }));
+        assert!(combined.frames.iter().any(|frame| {
+            frame.axis == LanguageDialogueDirectiveAxisIR::ResponseFormat
+                && frame.value == LanguageDialogueDirectiveValueIR::Table
+        }));
+
+        for text in [
+            "그 답변은 간결했다.",
+            "The response was concise.",
+            "‘답변은 짧게 해줘’라는 문장을 설명해.",
+            "Explain the sentence \"Answer briefly\".",
+        ] {
+            let analysis = knowledge.analyze_dialogue_directives(text);
+            assert!(analysis.validate_source(text), "{analysis:#?}");
+            assert!(analysis.frames.is_empty(), "text={text} {analysis:#?}");
+        }
+
+        let conflict = knowledge.analyze_dialogue_directives("답변은 짧고 자세히 해줘.");
+        assert!(conflict.validate_source("답변은 짧고 자세히 해줘."));
+        assert!(conflict.frames.is_empty());
+        assert_eq!(
+            conflict.unresolved_axes,
+            vec![LanguageDialogueDirectiveAxisIR::ResponseLength]
+        );
+        let format_conflict = knowledge.analyze_dialogue_directives("답변은 표로 목록으로 해줘.");
+        assert!(format_conflict.validate_source("답변은 표로 목록으로 해줘."));
+        assert!(format_conflict.frames.is_empty());
+        assert_eq!(
+            format_conflict.unresolved_axes,
+            vec![LanguageDialogueDirectiveAxisIR::ResponseFormat]
+        );
     }
 }

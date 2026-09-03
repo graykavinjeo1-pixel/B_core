@@ -1,0 +1,995 @@
+{
+  "schema": "B_CORE_GPT_REFERENCE_FINAL_INPUT_AUDIT_1",
+  "suite_id": "B_CORE_GPT_REFERENCE_V2_FINAL",
+  "final_input_sha256": "ff80de6025b7ef07627642367d098da835f920b75ba34915979be609e0189b5d",
+  "development_input_sha256": "ef2a003c6a7b4aeb1ae3143e1e8c4f0401aa3cce894d7eb953474643425f3f3e",
+  "prior_final_input_sha256": "c31162100ef2257a538f409fe4cd41a359b42f1244387b7fc1a3f88914f41960",
+  "dialogues": 40,
+  "responses": 160,
+  "category_response_counts": {
+    "AFFECT_AND_SOCIAL_BACKCHANNEL": 16,
+    "AMBIGUITY_CLARIFICATION": 16,
+    "CONFLICT_UNCERTAINTY_ATTRIBUTION": 16,
+    "CORRECTION_REJECTION_FEEDBACK": 16,
+    "DEIXIS_REFERENCE_ELLIPSIS": 16,
+    "EXPLICIT_REQUEST": 16,
+    "INDIRECT_PRAGMATIC_INTENT": 16,
+    "MIXED_LANGUAGE_NOISE_AND_FILLERS": 16,
+    "PLAN_EXECUTION_RESULT_BOUNDARY": 16,
+    "TOPIC_SHIFT_AND_RETURN": 16
+  },
+  "language_response_counts": {
+    "KOREAN": 80,
+    "ENGLISH": 80
+  },
+  "duplicate_final_prompts": 0,
+  "exact_development_prompt_reuse": 0,
+  "mean_nearest_development_similarity_bp": 3801,
+  "percentile_95_nearest_development_similarity_bp": 6038,
+  "maximum_nearest_development_similarity_bp": 7143,
+  "overlap_rows": [
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-EN-02-T4",
+      "nearest_development_response_id": "GPTREF-DEV-C09-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 7143
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-EN-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 6957
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-EN-01-T3",
+      "nearest_development_response_id": "GPTREF-DEV-C09-EN-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 6667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-EN-01-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-EN-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 6667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-KO-01-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C07-KO-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 6250
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-KO-01-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C10-KO-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 6154
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-EN-02-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C03-EN-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 6087
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-EN-01-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-EN-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 6087
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-EN-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C09-EN-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 6038
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-KO-02-T3",
+      "nearest_development_response_id": "GPTREF-DEV-C09-KO-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 6000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-EN-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C07-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5882
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-EN-02-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C09-EN-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 5882
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-EN-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C03-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5714
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-EN-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-EN-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5556
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-EN-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C06-EN-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5455
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-EN-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-EN-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5455
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-EN-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-EN-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-EN-02-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C02-EN-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 5333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-EN-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C02-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5263
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-EN-01-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C06-EN-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 5217
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-EN-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C03-EN-01-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5124
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-EN-01-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C09-EN-03-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 5000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-EN-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-EN-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-KO-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C03-KO-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-EN-02-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C09-EN-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 5000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-KO-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C06-KO-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-KO-02-T3",
+      "nearest_development_response_id": "GPTREF-DEV-C07-KO-03-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 5000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-KO-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C09-KO-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-EN-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-KO-01-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-KO-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 5000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-EN-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4762
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-EN-01-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C08-EN-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4722
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-KO-01-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C08-KO-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-KO-01-T2",
+      "nearest_development_response_id": "GPTREF-DEV-C06-KO-03-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 4615
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-EN-02-T3",
+      "nearest_development_response_id": "GPTREF-DEV-C07-EN-03-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 4615
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-EN-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C06-EN-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4545
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-EN-01-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-EN-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4545
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-EN-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-EN-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4507
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-EN-02-T3",
+      "nearest_development_response_id": "GPTREF-DEV-C03-EN-03-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 4444
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-EN-01-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-EN-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4444
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-EN-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C01-EN-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4444
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-EN-02-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C07-EN-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4396
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-EN-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C01-EN-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4340
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-EN-02-T4",
+      "nearest_development_response_id": "GPTREF-DEV-C05-EN-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 4286
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-KO-02-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C07-KO-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4286
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-EN-01-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C05-EN-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4286
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-KO-02-T2",
+      "nearest_development_response_id": "GPTREF-DEV-C05-KO-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 4286
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-EN-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C08-EN-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4286
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-KO-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C08-KO-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4286
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-KO-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-KO-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4286
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-EN-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-EN-01-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4255
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-EN-01-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-EN-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4211
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-EN-02-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C08-EN-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 4211
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-EN-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C06-EN-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4211
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-EN-01-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C01-EN-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4211
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-KO-02-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C09-KO-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4068
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-EN-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-KO-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C02-KO-01-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-KO-02-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C02-KO-03-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-KO-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C06-KO-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-EN-01-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-EN-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-KO-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-KO-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-EN-01-T4",
+      "nearest_development_response_id": "GPTREF-DEV-C05-EN-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-EN-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C07-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-EN-01-T4",
+      "nearest_development_response_id": "GPTREF-DEV-C09-EN-03-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-EN-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C08-EN-01-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-KO-02-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C02-KO-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-EN-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-EN-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C09-EN-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-EN-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-EN-01-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-KO-02-T3",
+      "nearest_development_response_id": "GPTREF-DEV-C09-KO-03-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 4000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-EN-02-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C01-EN-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3883
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-KO-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-KO-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3830
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-EN-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C09-EN-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3810
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-EN-02-T2",
+      "nearest_development_response_id": "GPTREF-DEV-C05-EN-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3810
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-EN-01-T3",
+      "nearest_development_response_id": "GPTREF-DEV-C08-EN-03-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3810
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-EN-01-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C08-EN-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3750
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-KO-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C06-KO-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3750
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-EN-02-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C07-EN-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3711
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-KO-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C08-KO-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3684
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-EN-02-T2",
+      "nearest_development_response_id": "GPTREF-DEV-C08-EN-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3652
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-EN-02-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C07-EN-03-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3636
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-EN-01-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C03-EN-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3636
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-EN-01-T2",
+      "nearest_development_response_id": "GPTREF-DEV-C09-EN-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3636
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-KO-02-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C05-KO-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3636
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-KO-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C09-KO-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3636
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-KO-02-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-KO-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3529
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-EN-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C05-EN-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3529
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-KO-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C02-KO-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3529
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-EN-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C06-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3519
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-EN-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C02-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3511
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-EN-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C08-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3478
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-EN-01-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C05-EN-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3448
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-KO-02-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C09-KO-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-KO-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C01-KO-01-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-EN-01-T2",
+      "nearest_development_response_id": "GPTREF-DEV-C01-EN-03-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-KO-01-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C09-KO-03-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-KO-01-T3",
+      "nearest_development_response_id": "GPTREF-DEV-C10-KO-03-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-EN-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C06-EN-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-KO-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-KO-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-EN-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C05-EN-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-KO-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C05-KO-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-KO-02-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C07-KO-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-EN-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C08-EN-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-EN-01-T2",
+      "nearest_development_response_id": "GPTREF-DEV-C04-EN-03-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-KO-01-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C09-KO-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-EN-02-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C10-EN-03-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-KO-02-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-KO-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C10-KO-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C10-KO-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3333
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-EN-01-T3",
+      "nearest_development_response_id": "GPTREF-DEV-C02-EN-03-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3279
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-EN-01-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C07-EN-01-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3226
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-EN-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C02-EN-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3158
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-KO-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C07-KO-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3158
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-EN-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C08-EN-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3158
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-KO-01-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C02-KO-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3077
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-KO-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C02-KO-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3077
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-KO-01-T3",
+      "nearest_development_response_id": "GPTREF-DEV-C01-KO-03-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 3077
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-KO-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C07-KO-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3077
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-KO-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C01-KO-01-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3043
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-EN-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C06-EN-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 3000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-EN-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C01-EN-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2857
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-KO-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C02-KO-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2857
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-KO-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C03-KO-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2857
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-KO-01-T2",
+      "nearest_development_response_id": "GPTREF-DEV-C04-KO-03-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2857
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-KO-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C02-KO-01-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2857
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-KO-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C06-KO-02-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2857
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-EN-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C02-EN-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2800
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-KO-01-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-KO-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-KO-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C08-KO-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-KO-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C06-KO-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-KO-01-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C03-KO-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C03-KO-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C03-KO-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-KO-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C01-KO-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-KO-01-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C08-KO-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-KO-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C06-KO-02-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-KO-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C07-KO-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-KO-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C07-KO-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-EN-01-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C09-EN-01-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2632
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-KO-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C08-KO-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2581
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-KO-01-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C01-KO-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2500
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-KO-01-T4",
+      "nearest_development_response_id": "GPTREF-DEV-C07-KO-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2500
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C01-KO-02-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C01-KO-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2500
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-KO-01-T1",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-KO-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2500
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-KO-01-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C07-KO-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2500
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-KO-01-T2",
+      "nearest_development_response_id": "GPTREF-DEV-C09-KO-03-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2500
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-KO-02-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C09-KO-02-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2381
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-KO-01-T4",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-KO-01-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 2353
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-KO-01-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C07-KO-03-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2222
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C09-KO-01-T4",
+      "nearest_development_response_id": "GPTREF-DEV-C07-KO-01-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2222
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-KO-01-T2",
+      "nearest_development_response_id": "GPTREF-DEV-C02-KO-03-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C02-KO-01-T3",
+      "nearest_development_response_id": "GPTREF-DEV-C03-KO-03-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C04-KO-02-T2",
+      "nearest_development_response_id": "GPTREF-DEV-C06-KO-03-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-KO-02-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C07-KO-03-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-KO-01-T4",
+      "nearest_development_response_id": "GPTREF-DEV-C02-KO-03-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-KO-02-T4",
+      "nearest_development_response_id": "GPTREF-DEV-C03-KO-03-T4",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 2000
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C06-EN-01-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C07-EN-01-T2",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 1935
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-KO-01-T3",
+      "nearest_development_response_id": "GPTREF-FINAL-C05-KO-02-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 1818
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C08-KO-01-T1",
+      "nearest_development_response_id": "GPTREF-DEV-C02-KO-03-T1",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 1667
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C07-KO-02-T2",
+      "nearest_development_response_id": "GPTREF-FINAL-C04-KO-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_FINAL",
+      "similarity_bp": 1569
+    },
+    {
+      "final_response_id": "GPTREF-V2-FINAL-C05-KO-01-T2",
+      "nearest_development_response_id": "GPTREF-DEV-C09-KO-01-T3",
+      "nearest_comparison_suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+      "similarity_bp": 1538
+    }
+  ],
+  "b_core_evaluations": 0,
+  "external_llm_calls": 0,
+  "audit_sha256": "9252cb70d7dccd8d87c34a7b644f4fd70dc2d9af3560ce277da90f5076fba3d5"
+}

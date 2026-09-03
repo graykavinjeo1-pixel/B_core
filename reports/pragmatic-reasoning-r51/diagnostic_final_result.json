@@ -1,0 +1,15 @@
+{
+  "schema": "B_CORE_R51_DEFEASIBLE_DISCOURSE_DECISION_CANARY_1",
+  "suite": "R51_DEFEASIBLE_DISCOURSE_DECISION_DIAGNOSTIC",
+  "total": 12,
+  "passed": 12,
+  "failed": 0,
+  "response_contracts_valid": 12,
+  "authority_violations": 0,
+  "unsupported_explanation_facts": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0,
+  "strict_continuation_authority_check": true
+}

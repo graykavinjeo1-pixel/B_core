@@ -1,0 +1,45 @@
+{
+  "schema": "B_CORE_R53_HELDOUT_MANIFEST_1",
+  "stage": "R53_STRUCTURAL_PREDICATE_ARGUMENT_COMPOSITION_GENERALIZATION",
+  "suite": "R53_PREDICATE_ARGUMENT_COMPOSITION_HELDOUT",
+  "frozen_after_diagnostic_repair": true,
+  "frozen_before_first_execution": true,
+  "case_count": 8,
+  "case_ids": [
+    "R53_H01",
+    "R53_H02",
+    "R53_H03",
+    "R53_H04",
+    "R53_H05",
+    "R53_H06",
+    "R53_H07",
+    "R53_H08"
+  ],
+  "coverage": [
+    "bare-noun coordination",
+    "comma plus conjunction coordination",
+    "multiword coordinated members",
+    "three predicates by two quantified arguments in English",
+    "three predicates by two quantified arguments in Korean",
+    "coordinated prepositional instruments",
+    "quoted predicate/argument cross product without authority",
+    "two predicates with explicitly distinct argument groups"
+  ],
+  "transfer_source_sha256": "456402412f8df656f0bc1ceaa2c23268407ed95db3742a18eb9a2c3d5d4dd8e7",
+  "shared_support_sha256": "647aa37d3fa90264be00c9f8afde596efe069dc72b3a9cca89dac348b3aeb1c9",
+  "diagnostic_source_sha256_at_freeze": "21b37edb7d77ff51ed9584f0d3f3e0e9fc62857f109a15e9f6b2fe6bd49849f4",
+  "product_source_sha256_at_freeze": {
+    "semantic_roles.rs": "005b632357562ffdc432d326c50017548c553d2aa8a03f737150c74b2fcf6b2f"
+  },
+  "acceptance": {
+    "all_cases_pass": true,
+    "case_mutations_after_exposure": 0,
+    "expectation_mutations_after_exposure": 0,
+    "authority_violations": 0,
+    "whole_sentence_dispatches": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "recursive_source_mutations": 0
+  }
+}

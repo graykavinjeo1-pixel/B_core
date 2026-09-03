@@ -1,0 +1,114 @@
+{
+  "stage": "R16_BOUNDED_MULTI_HOP_DIALOGUE_PATHS_AND_TRUTH_MAINTENANCE",
+  "status": "PASS",
+  "scope": "Conversation-local bounded causal path traversal with belief-lineage truth maintenance, modal preservation, and evidence-faithful Korean/English realization",
+  "canonical_integrity": {
+    "status": "PASS",
+    "canonical_file_count": 10,
+    "manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "implementation": {
+    "language": "Rust",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_12",
+    "relation_graph_schema": "B_CORE_DIALOGUE_RELATION_GRAPH_IR_2",
+    "answer_schema": "B_CORE_DIALOGUE_RELATION_ANSWER_IR_2",
+    "maximum_relations": 32,
+    "maximum_paths": 8,
+    "maximum_path_hops": 6,
+    "path_directions": [
+      "BACKWARD_CAUSE",
+      "FORWARD_CONSEQUENCE"
+    ],
+    "non_causal_path_kinds": [
+      "CONCESSION"
+    ],
+    "endpoint_statuses": [
+      "ACTIVE",
+      "SOURCE_INACTIVE",
+      "TARGET_INACTIVE",
+      "BOTH_INACTIVE"
+    ],
+    "graph_hash": "SHA-256",
+    "source_hashes": {
+      "crates/semantic-core-adapters/src/discourse_relations.rs": "3a32c0c392c6bb84d3e0e8554224746f384e2b10aa2ec1cb2e0142f0c55311d7",
+      "crates/semantic-core-adapters/src/conversation.rs": "756b5d485a982de9054e389bcdfc29cd87dd9813821d5ec9eb60d75f81059266",
+      "crates/semantic-core-adapters/src/cognitive.rs": "4d653ea12f35c114e84499c5249a73f714afa49a98ad931fdea0666baa628392",
+      "crates/semantic-core-adapters/src/lib.rs": "83e2034d15a3882cbccd2ac3a0b68dcaf5cf12b5b3359dec6af004e718f31d6e",
+      "crates/semantic-core-adapters/src/dialogue_path_canary.rs": "9d7491f4387f40108517f6af72cd0289b496f717c60940899002acd30ad36817",
+      "crates/semantic-core-adapters/src/dialogue_path_transfer_canary.rs": "fee2b8a58b1fedccfc41af489e6ee79f0fd6fc8042cd4b29266b3e2d246e19b7"
+    }
+  },
+  "final_suites": {
+    "R16-RUN-0001": {
+      "kind": "frozen_diagnostic",
+      "total": 30,
+      "passed": 30,
+      "failed": 0
+    },
+    "R16-RUN-0002": {
+      "kind": "held_out_transfer_and_attack",
+      "first_execution": "19/20",
+      "final_execution": "20/20",
+      "total": 20,
+      "passed": 20,
+      "failed": 0
+    },
+    "r16_fresh_total": 50,
+    "r16_fresh_passed": 50,
+    "prior_sealed_r1_to_r15": 577,
+    "cumulative_r1_to_r16": 627,
+    "canary_binaries": {
+      "passed": 23,
+      "total": 23
+    }
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "semantic_core_adapters_tests": {
+      "passed": 241,
+      "failed": 0
+    },
+    "workspace_tests": {
+      "passed": 765,
+      "failed": 0
+    },
+    "git_diff_check": "PASS",
+    "build_cache_cleanup": {
+      "removed_files": 9871,
+      "removed_bytes_reported": "8.5 GiB",
+      "target_directory_exists_after_cleanup": false
+    }
+  },
+  "reasoning_guards": {
+    "path_traversal_is_bounded": true,
+    "path_truncation_is_explicit": true,
+    "cycles_are_rejected_by_relation_identity": true,
+    "concession_is_excluded_from_causal_paths": true,
+    "inactive_belief_endpoint_is_excluded_from_answers": true,
+    "nonactual_world_is_preserved": true,
+    "contested_endpoint_is_disclosed": true,
+    "dialogue_claim_only": true,
+    "causal_truth_established": false,
+    "semantic_authority": false,
+    "external_execution_authorized": false,
+    "relation_qa_creates_grounded_plan": false
+  },
+  "dependencies": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_in_canonical_r16_path": false,
+    "recursive_source_mutations": 0
+  },
+  "git": {
+    "branch": "main",
+    "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+    "remote": "https://github.com/graykavinjeo1-pixel/B_core.git",
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  },
+  "next_increment_started": false,
+  "disposition": "R16_SEALED_LOCALLY_CONTINUE_ONLY_WITH_A_NEW_BOUNDED_INCREMENT"
+}

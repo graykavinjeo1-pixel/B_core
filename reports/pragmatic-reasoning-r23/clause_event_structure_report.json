@@ -1,0 +1,98 @@
+{
+  "stage": "R23_RELATIVE_CLAUSE_AND_EVENT_SEQUENCE_STRUCTURE",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "diagnostic": {
+    "suite": "R23-RUN-0001",
+    "sha256": "5c98b34a87af9f3d085eae3d9de1b32cff679fc57a55966416b48248894ebd4d",
+    "initial_passed": 3,
+    "initial_total": 24,
+    "final_passed": 24,
+    "final_total": 24,
+    "initial_category_passes": {
+      "relative_clause_attachment": "0/4",
+      "nested_quantifier_scope": "1/4",
+      "cross_turn_event_ordinal": "0/4",
+      "event_ordinal_range_fails_closed": "0/4",
+      "relative_predicate_has_no_goal_authority": "0/4",
+      "grounded_relative_realization": "2/4"
+    }
+  },
+  "held_out": {
+    "suite": "R23-RUN-0002",
+    "frozen_sha256": "7be8f1b428f974ccf974e5e40f65769e837f8b08c2a61648b40550cc20527dfd",
+    "first_semantic_execution_passed": 16,
+    "first_semantic_execution_total": 16,
+    "oracle_changed": false,
+    "product_tuning_after_held_out": false
+  },
+  "fresh_blind_tasks_passed": 40,
+  "fresh_blind_tasks_total": 40,
+  "cumulative_r1_r23_passed": 907,
+  "cumulative_r1_r23_total": 907,
+  "regression_repair": {
+    "first_full_canary_passed": 29,
+    "first_full_canary_total": 37,
+    "failed_binaries": 8,
+    "cause": "USER_FACING_QUOTED_REALIZATION_USED_AS_EVENT_MEMORY",
+    "repair": "Preserve the original semantic clause for a single goal and store one unquoted normalized clause per event only for multi-goal sequences.",
+    "older_tests_or_oracles_changed": false,
+    "final_full_canary_passed": 37,
+    "final_full_canary_total": 37
+  },
+  "verification": {
+    "canary_binaries_passed": 37,
+    "canary_binaries_total": 37,
+    "adapter_unit_tests_passed": 278,
+    "adapter_unit_tests_total": 278,
+    "workspace_tests_passed": 802,
+    "workspace_tests_total": 802,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "unsupported_explanation_facts": 0,
+    "semantic_authority_from_language": false,
+    "external_execution_authorized_by_reference_binding": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "typed RelativeClauseAttachmentIR with head, dependents, embedded event, negation, and evidence",
+    "independent head and dependent quantifier scopes",
+    "relative-clause actions are descriptive and non-authoritative",
+    "Korean temporal adnominals remain ordered requested events",
+    "latest-turn event batches support bounded Korean and English ordinal reference",
+    "cross-language event selection reuses one typed goal identity",
+    "out-of-range event ordinal references fail closed",
+    "typed relative structures drive Korean and English realization",
+    "event memory is separated from quoted user-facing realization"
+  ],
+  "scope_assessment": {
+    "grammatical_composition": "ADVANCED_WITH_BOUNDED_RELATIVE_ATTACHMENT_AND_NESTED_QUANTIFIERS",
+    "discourse_and_topic_state": "ADVANCED_WITH_ORDERED_EVENT_BATCH_MEMORY",
+    "deixis_and_ellipsis_resolution": "ADVANCED_WITH_CROSS_TURN_EVENT_ORDINALS",
+    "speech_intent_and_pragmatics": "INHERITED_AND_REGRESSION_VERIFIED",
+    "result_plan_distinction": "PRESERVED_ACROSS_EVENT_REFERENCE",
+    "evidence_grounded_realization": "ADVANCED_FROM_TYPED_RELATIVE_STRUCTURE_BUT_STILL_BOUNDED"
+  },
+  "next_residual": [
+    "multiple nested relative clauses",
+    "open-ended predicate morphology and lexical coverage",
+    "richer temporal and causal event-result chains",
+    "distant and implicit event reference beyond bounded ordinals",
+    "open-vocabulary generative fluency"
+  ],
+  "commit_performed": false,
+  "push_performed": false
+}

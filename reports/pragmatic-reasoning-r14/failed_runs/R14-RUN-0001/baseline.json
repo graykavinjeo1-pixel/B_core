@@ -1,0 +1,27 @@
+{
+  "schema": "B_CORE_ONTOLOGY_COREFERENCE_BASELINE_1",
+  "run_id": "R14-RUN-0001",
+  "frozen_before_implementation": true,
+  "base_commit": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "canonical_manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+  "cases": 44,
+  "passed": 5,
+  "failed": 39,
+  "passing_controls": [
+    "EN_ENTITY_INCOMPATIBLE_ONLY_PERSON",
+    "EN_EVENT_AMBIGUOUS_FIX",
+    "EN_EVENT_ONTOLOGY_MISMATCH",
+    "EN_EVENT_QUOTED_REFERENCE",
+    "KO_ENTITY_QUOTED_REFERENCE"
+  ],
+  "failure_classes": {
+    "entity_paraphrase_resolution": 18,
+    "entity_ambiguity_or_unbound_guard": 3,
+    "event_paraphrase_resolution": 16,
+    "event_role_selection": 2
+  },
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "runtime_source_mutations": 0
+}

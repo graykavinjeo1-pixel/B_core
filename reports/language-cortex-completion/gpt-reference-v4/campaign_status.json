@@ -1,0 +1,18 @@
+{
+  "schema": "B_CORE_GPT_REFERENCE_V4_CAMPAIGN_STATUS_1",
+  "suite_id": "B_CORE_GPT_REFERENCE_V4_FINAL",
+  "status": "WAITING_FOR_INDEPENDENT_INPUT_AUTHOR_AND_THREE_REFERENCE_RUNS",
+  "official_result": {
+    "suite_id": "B_CORE_GPT_REFERENCE_V3_FINAL",
+    "mean_score_bp": 4803,
+    "disposition": "FAIL"
+  },
+  "v4_input_authored": false,
+  "v4_input_sealed": false,
+  "gpt_reference_runs_sealed": 0,
+  "b_core_runs": 0,
+  "completion_decision_made": false,
+  "runtime_external_llm_calls": 0,
+  "candidate_outputs_accepted_while_authoring": false,
+  "next_action": "AUTHOR_AND_SEAL_INDEPENDENT_V4_INPUT_BEFORE_ANY_CANDIDATE_RUN"
+}

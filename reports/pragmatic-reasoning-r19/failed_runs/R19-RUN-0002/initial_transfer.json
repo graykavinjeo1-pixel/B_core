@@ -1,0 +1,25 @@
+{
+  "run": "R19-RUN-0002",
+  "kind": "HELD_OUT_TRANSFER_AND_ATTACK_FIRST_EXECUTION",
+  "suite_source_sha256": "23573467d02018f8d0774c4cc05ebda51c51dbe43dfd205bb2c0aa1b19fb1acb",
+  "passed": 13,
+  "failed": 3,
+  "total": 16,
+  "failed_cases": [
+    {
+      "case_id": "QUD_TRANSFER_XLANG_1",
+      "failure": "English ordinal selection chose the correct Korean option but retained the Korean folder surface instead of realizing folder in the answer language"
+    },
+    {
+      "case_id": "QUD_TRANSFER_XLANG_3",
+      "failure": "English lexical selection chose the correct Korean backup option but retained its Korean lexical surface"
+    },
+    {
+      "case_id": "QUD_TRANSFER_SOCIAL_2",
+      "failure": "잠깐 preserved the pending question but was not typed as HoldFloor or BackchannelOnly"
+    }
+  ],
+  "repair": "Localized only the selected option surface to the answer language while retaining the same option identity, and typed bounded wait expressions as HoldFloor",
+  "held_out_predicate_changed": false,
+  "final_suite_source_sha256": "23573467d02018f8d0774c4cc05ebda51c51dbe43dfd205bb2c0aa1b19fb1acb"
+}

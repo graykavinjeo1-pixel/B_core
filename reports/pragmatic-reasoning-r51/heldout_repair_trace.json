@@ -1,0 +1,46 @@
+{
+  "schema": "B_CORE_R51_HELDOUT_REPAIR_TRACE_1",
+  "suite": "R51_DEFEASIBLE_DISCOURSE_DECISION_HELDOUT",
+  "manifest_mutations": 0,
+  "expectation_mutations": 0,
+  "exposures": [
+    {
+      "exposure": 1,
+      "passed": 3,
+      "failed": 5
+    },
+    {
+      "exposure": 2,
+      "passed": 6,
+      "failed": 2
+    },
+    {
+      "exposure": 3,
+      "passed": 6,
+      "failed": 2
+    },
+    {
+      "exposure": 4,
+      "passed": 6,
+      "failed": 2
+    },
+    {
+      "exposure": 5,
+      "passed": 8,
+      "failed": 0
+    }
+  ],
+  "general_repairs": [
+    "Recognize only-when/때만 as typed condition cues and Korean 줄 때 as a direct benefit form.",
+    "Reject stop-branch terms as current-task candidates and restore the prior typed task.",
+    "Ground requested assessment nominals and Korean 평가하다 connective forms to INVESTIGATE.",
+    "Ignore action mentions inside quoted spans when selecting the outer pragmatic target.",
+    "Preserve Korean embedded-question complements as the investigation subject.",
+    "Treat assessment as an action nominal only under an explicit request construction.",
+    "Keep 감사 inside a multi-token audit phrase instead of deleting it as gratitude."
+  ],
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

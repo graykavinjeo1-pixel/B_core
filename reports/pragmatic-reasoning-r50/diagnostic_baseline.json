@@ -1,0 +1,18 @@
+{
+  "schema": "B_CORE_R50_DIAGNOSTIC_BASELINE_1",
+  "suite": "R50_LANGUAGE_CORTEX_INTEGRATION_DIAGNOSTIC",
+  "frozen_before_implementation": true,
+  "total": 12,
+  "passed": 0,
+  "failed": 12,
+  "observed_response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_11",
+  "observed_integration_schema": "MISSING",
+  "failure_boundary": "FULL_RESPONSE_INTEGRATION_RECEIPT_ABSENT",
+  "diagnostic_manifest_sha256": "119cd420bd79ae63e66a3905e181e6052bec38901e5cae362fba14955f6c8bb2",
+  "diagnostic_source_sha256": "1f97778107194ab9454d2fe27f50e66bf596b8dbc04058ffada5d37056be0f54",
+  "support_source_sha256": "0f1c81c4f2bcab48e7f180b590c7bcfe9e00552c86d47877c6b6971b271629a7",
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

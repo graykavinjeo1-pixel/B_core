@@ -1,0 +1,14 @@
+{
+  "schema": "B_CORE_ONTOLOGY_COREFERENCE_FAILED_RUN_1",
+  "run_id": "R14-RUN-0002-FRESH-TRANSFER",
+  "frozen_before_execution": true,
+  "cases": 26,
+  "passed": 25,
+  "failed": 1,
+  "failed_case_ids": [
+    "KO_STORAGE_CACHE"
+  ],
+  "root_cause": "the semantic-role mention path did not retain the multiword Korean entity span 저장 계층",
+  "repair": "added a bounded ontology mention supplement for multiword spans only; ordinary single-token mentions remain owned by the semantic-role graph",
+  "disposition": "PRESERVED_AND_ROOT_REPAIRED"
+}

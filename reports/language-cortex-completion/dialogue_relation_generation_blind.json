@@ -1,0 +1,32 @@
+{
+  "schema": "B_CORE_DIALOGUE_RELATION_GENERATION_BLIND_REPORT_1",
+  "suite": "DIALOGUE-RELATION-GENERATION-BLIND-R27-RUN-0001",
+  "frozen_before_first_execution": true,
+  "fresh_cases": 16,
+  "passed": 16,
+  "failed": 0,
+  "cross_language_semantic_pairs": 8,
+  "cross_language_semantic_pairs_passed": 8,
+  "generative_path_rate_millis": 1000,
+  "categories": {
+    "direct_cause": 4,
+    "direct_result": 2,
+    "concession": 2,
+    "transitive_causal_path": 2,
+    "multiple_causal_paths": 2,
+    "nonactual_causal_endpoint": 2,
+    "missing_dialogue_relation": 2
+  },
+  "typed_relation_kinds": 3,
+  "maximum_retained_paths": 8,
+  "maximum_path_hops": 6,
+  "reaffirmed_equivalent_targets_preserve_prior_relations": true,
+  "corrections_and_retractions_deactivate_stale_relations": true,
+  "unsupported_explanation_facts": 0,
+  "semantic_authority": false,
+  "execution_authority": false,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

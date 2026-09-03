@@ -1,0 +1,28 @@
+{
+  "schema": "B_CORE_TYPED_COREFERENCE_BASELINE_1",
+  "run_id": "R13-RUN-0001",
+  "frozen_before_implementation": true,
+  "canonical_manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "command": "cargo run -q -p semantic-core-adapters --bin typed-coreference-canary",
+  "cases": 30,
+  "passed": 0,
+  "failed": 30,
+  "observed_boundaries": {
+    "typed_person_pronouns_resolved": 0,
+    "belief_holder_possessives_resolved": 0,
+    "long_distance_event_target_preserved": 0,
+    "typed_nonperson_target_preserved": 0,
+    "ambiguous_or_unbound_references_failed_closed": 0
+  },
+  "failure_classes": [
+    "PERSON_PRONOUNS_NOT_RECOGNIZED",
+    "POSSESSIVE_BELIEF_HOLDER_NOT_BOUND",
+    "LATEST_TURN_OBJECT_OVERRIDES_TYPED_ENTITY",
+    "EVENT_REFERENT_REPLACED_BY_LATEST_GOAL",
+    "UNBOUND_AND_TIED_PERSON_REFERENCES_DO_NOT_FAIL_CLOSED"
+  ],
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "source_mutations_by_runtime": 0
+}

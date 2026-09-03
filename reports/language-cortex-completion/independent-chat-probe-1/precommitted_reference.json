@@ -1,0 +1,292 @@
+{
+  "schema": "B_CORE_INDEPENDENT_CHAT_PROBE_PRECOMMIT_1",
+  "probe_label": "one-agent diagnostic; not the official three-reference V4 score",
+  "candidate_consulted_before_freeze": false,
+  "created_date": "2026-09-03",
+  "dialogue_count": 6,
+  "response_point_count": 24,
+  "dialogues": [
+    {
+      "dialogue_id": "ko_indirect_intent",
+      "language": "KOREAN",
+      "axis": "indirect_intent",
+      "turns": [
+        {
+          "turn_index": 1,
+          "user": "오늘 저녁에 친구를 만나는데, 둘 다 시끄러운 곳은 별로 안 좋아해.",
+          "expected_assistant": "조용히 이야기할 저녁 장소를 찾는 것 같네요. 어느 동네인지와 음식 취향, 예산을 알려주시면 잘 맞는 선택지를 좁혀볼게요.",
+          "expected_intent": {"primary": "seek_dinner_venue_help", "implicit": true, "constraints": ["quiet", "two_people"]},
+          "expected_response_act": "INFER_AND_CLARIFY",
+          "critical_discourse_bindings": ["둘 다 = 사용자와 친구", "시끄러운 곳은 별로 = 조용한 장소 선호"],
+          "required_propositions": ["사용자가 조용한 저녁 장소를 찾는 것으로 조심스럽게 추론", "추천에 필요한 위치와 취향 또는 예산을 질문"],
+          "prohibited_propositions": ["특정 장소를 이미 예약했다고 주장", "사용자가 명시적으로 식당 추천을 요청했다고 단정"]
+        },
+        {
+          "turn_index": 2,
+          "user": "성수역 근처고, 한 사람당 3만 원 정도 생각해.",
+          "expected_assistant": "성수역 근처에서 1인 3만 원 안팎, 대화하기 편한 곳으로 보면 되겠네요. 한식·양식·일식 중 어느 쪽이 더 끌리세요? 원하면 그 조건으로 몇 가지 유형을 바로 제안할게요.",
+          "expected_intent": {"primary": "supply_venue_constraints", "implicit": false, "constraints": ["near_Seongsu_station", "about_30000_KRW_per_person", "quiet"]},
+          "expected_response_act": "ACKNOWLEDGE_AND_NARROW",
+          "critical_discourse_bindings": ["성수역 근처 = 찾는 저녁 장소의 위치", "한 사람당 3만 원 = 1인 예산", "이전 턴의 조용함 조건 유지"],
+          "required_propositions": ["위치와 예산을 정확히 반영", "조용함 조건을 유지", "음식 종류를 확인하거나 조건에 맞는 범주를 제시"],
+          "prohibited_propositions": ["총예산이 3만 원이라고 변경", "실재 업소의 최신 영업 상태를 확인했다고 주장"]
+        },
+        {
+          "turn_index": 3,
+          "user": "파스타보다는 따뜻한 국물 있는 게 좋겠다.",
+          "expected_assistant": "그럼 파스타보다는 전골, 샤부샤부, 국물 있는 한식 쪽이 잘 맞겠어요. 조용함과 예산까지 생각하면 작은 전골집이나 좌석 간격이 넓은 샤부샤부집부터 찾아보는 게 좋겠습니다.",
+          "expected_intent": {"primary": "refine_food_preference", "implicit": true, "constraints": ["warm_broth", "not_pasta", "quiet", "near_Seongsu_station", "about_30000_KRW_per_person"]},
+          "expected_response_act": "RECOMMEND_CATEGORIES",
+          "critical_discourse_bindings": ["파스타보다는 = 양식 선호 질문에 대한 부정적 비교", "따뜻한 국물 = 찾는 저녁 메뉴의 새 핵심 조건"],
+          "required_propositions": ["국물 요리 선호를 반영", "전골·샤부샤부·국물 한식 같은 적절한 범주 제안", "기존 조용함과 예산 맥락 유지"],
+          "prohibited_propositions": ["파스타를 추천", "특정 가게에 자리가 있다고 주장"]
+        },
+        {
+          "turn_index": 4,
+          "user": "좋아, 그럼 조용한 전골집 쪽으로 찾아볼게.",
+          "expected_assistant": "좋아요. 성수역 근처, 1인 3만 원 안팎, 조용한 전골집을 기준으로 보면 되겠네요. 방문 전에는 최근 후기에서 소음과 좌석 간격을 확인하고 예약 가능 여부도 살펴보세요.",
+          "expected_intent": {"primary": "accept_recommendation_and_close", "implicit": false, "selection": "quiet_hotpot_restaurant"},
+          "expected_response_act": "CONFIRM_AND_OFFER_PRACTICAL_TIP",
+          "critical_discourse_bindings": ["그럼 = 앞서 제시된 국물 요리 범주에서 결론", "전골집 쪽 = 최종 선택 범주", "기존 위치·예산·조용함 조건 유지"],
+          "required_propositions": ["조용한 전골집 선택을 확인", "누적 조건을 간단히 요약", "확인하지 않은 예약이나 영업 정보를 사실로 말하지 않음"],
+          "prohibited_propositions": ["예약 완료 주장", "특정 업소가 확실히 조용하다고 보증"]
+        }
+      ]
+    },
+    {
+      "dialogue_id": "en_correction_retargeting",
+      "language": "ENGLISH",
+      "axis": "correction_retargeting",
+      "turns": [
+        {
+          "turn_index": 1,
+          "user": "Can you draft a two-sentence thank-you note to my manager for covering Friday's client call?",
+          "expected_assistant": "Thank you for stepping in to cover Friday’s client call. I really appreciate your support and the time you took to help keep things on track.",
+          "expected_intent": {"primary": "draft_thank_you_note", "recipient": "manager", "length": "two_sentences", "reason": "covering_Friday_client_call"},
+          "expected_response_act": "PRODUCE_REQUESTED_DRAFT",
+          "critical_discourse_bindings": ["my manager = note recipient", "covering Friday's client call = reason for thanks"],
+          "required_propositions": ["exactly two sentences", "thanks the manager for covering the Friday client call", "professional tone"],
+          "prohibited_propositions": ["claim that the call went well", "add facts about why the user missed the call"]
+        },
+        {
+          "turn_index": 2,
+          "user": "Actually, not my manager—the whole project team. I want to thank them for finishing the launch checklist.",
+          "expected_assistant": "Thank you all for pulling together to finish the launch checklist. I really appreciate the care and effort everyone put into getting it across the line.",
+          "expected_intent": {"primary": "correct_and_retarget_draft", "recipient": "project_team", "reason": "finishing_launch_checklist", "supersedes": ["manager", "Friday_client_call"]},
+          "expected_response_act": "REVISE_DRAFT_TO_CORRECTION",
+          "critical_discourse_bindings": ["not my manager = revoke previous recipient", "the whole project team = replacement recipient", "them = project team", "finishing the launch checklist = replacement reason"],
+          "required_propositions": ["address the whole team", "thank them for finishing the launch checklist", "remove manager and client-call framing", "remain two sentences unless explicitly changed"],
+          "prohibited_propositions": ["thank the manager", "mention Friday's client call", "retain superseded details"]
+        },
+        {
+          "turn_index": 3,
+          "user": "Make it less formal and don't use the phrase 'across the line.'",
+          "expected_assistant": "Thanks, everyone, for teaming up to finish the launch checklist. I really appreciate all the care and effort you put into it.",
+          "expected_intent": {"primary": "retone_and_edit_draft", "tone": "less_formal", "avoid_phrase": "across the line"},
+          "expected_response_act": "REVISE_DRAFT_WITH_STYLE_CONSTRAINTS",
+          "critical_discourse_bindings": ["it = current team thank-you draft", "across the line = prohibited phrase from prior draft", "launch-checklist purpose remains active"],
+          "required_propositions": ["less formal wording", "preserve thanks to the team for the checklist", "omit the prohibited phrase"],
+          "prohibited_propositions": ["use 'across the line'", "restore manager or client-call details", "explain instead of supplying the revision"]
+        },
+        {
+          "turn_index": 4,
+          "user": "Keep the first sentence, but replace the second with: 'Couldn't have done it without you.'",
+          "expected_assistant": "Thanks, everyone, for teaming up to finish the launch checklist. Couldn’t have done it without you.",
+          "expected_intent": {"primary": "perform_exact_partial_replacement", "preserve": "current_first_sentence", "replacement_second_sentence": "Couldn't have done it without you."},
+          "expected_response_act": "APPLY_EXACT_EDIT",
+          "critical_discourse_bindings": ["the first sentence = first sentence of immediately prior draft", "the second = second sentence of immediately prior draft", "you = project team"],
+          "required_propositions": ["preserve the prior first sentence", "use the supplied second sentence verbatim apart from typographic apostrophe", "return the resulting two-sentence note"],
+          "prohibited_propositions": ["rewrite the first sentence", "retain any part of the old second sentence", "reintroduce superseded recipient or reason"]
+        }
+      ]
+    },
+    {
+      "dialogue_id": "ko_deixis_ellipsis",
+      "language": "KOREAN",
+      "axis": "deixis_ellipsis",
+      "turns": [
+        {
+          "turn_index": 1,
+          "user": "내일 장 볼 목록을 간단히 만들어 줘. 사과, 달걀, 식빵이면 돼.",
+          "expected_assistant": "내일 장 볼 목록: 사과, 달걀, 식빵.",
+          "expected_intent": {"primary": "create_shopping_list", "items": ["사과", "달걀", "식빵"], "format": "concise"},
+          "expected_response_act": "CREATE_LIST",
+          "critical_discourse_bindings": ["목록 = 내일 장보기", "이면 돼 = 제시한 세 품목이면 충분"],
+          "required_propositions": ["사과·달걀·식빵을 모두 포함", "간단한 목록으로 표현"],
+          "prohibited_propositions": ["요청하지 않은 품목 추가", "실제로 구매했다고 주장"]
+        },
+        {
+          "turn_index": 2,
+          "user": "거기에 우유도 넣어 줘.",
+          "expected_assistant": "내일 장 볼 목록: 사과, 달걀, 식빵, 우유.",
+          "expected_intent": {"primary": "add_item_to_existing_list", "item": "우유"},
+          "expected_response_act": "UPDATE_LIST",
+          "critical_discourse_bindings": ["거기에 = 직전의 내일 장 볼 목록", "우유도 = 기존 품목을 유지하며 우유 추가"],
+          "required_propositions": ["기존 세 품목 유지", "우유 추가", "갱신된 목록 제시"],
+          "prohibited_propositions": ["새 목록으로 보고 기존 품목 삭제", "우유를 달걀이나 식빵의 속성으로 해석"]
+        },
+        {
+          "turn_index": 3,
+          "user": "그건 저지방으로, 달걀은 12개.",
+          "expected_assistant": "내일 장 볼 목록: 사과, 달걀 12개, 식빵, 저지방 우유.",
+          "expected_intent": {"primary": "specify_item_attributes", "updates": {"우유": "저지방", "달걀": "12개"}},
+          "expected_response_act": "RESOLVE_REFERENCE_AND_UPDATE_LIST",
+          "critical_discourse_bindings": ["그건 = 직전 턴에서 추가한 우유", "달걀은 = 기존 목록의 달걀", "저지방 = 우유의 종류", "12개 = 달걀 수량"],
+          "required_propositions": ["우유를 저지방으로 수정", "달걀 수량을 12개로 지정", "사과와 식빵 유지"],
+          "prohibited_propositions": ["사과를 저지방으로 수식", "우유를 12개로 지정", "기존 품목 누락"]
+        },
+        {
+          "turn_index": 4,
+          "user": "좋아. 그 두 개만 맨 위로 올려 줘.",
+          "expected_assistant": "내일 장 볼 목록: 저지방 우유, 달걀 12개, 사과, 식빵.",
+          "expected_intent": {"primary": "reorder_existing_list", "move_to_top": ["우유", "달걀"]},
+          "expected_response_act": "RESOLVE_REFERENCE_AND_REORDER",
+          "critical_discourse_bindings": ["그 두 개 = 직전 턴에서 속성을 지정한 우유와 달걀", "맨 위 = 목록의 첫 두 위치", "기존 속성 저지방·12개 유지"],
+          "required_propositions": ["저지방 우유와 달걀 12개를 첫 두 항목으로 이동", "사과와 식빵도 유지", "품목 속성 유지"],
+          "prohibited_propositions": ["사과와 식빵 삭제", "우유와 달걀 외 품목을 위로 옮겼다고 해석", "목록 밖 행동을 실행했다고 주장"]
+        }
+      ]
+    },
+    {
+      "dialogue_id": "en_plan_verified_boundary",
+      "language": "ENGLISH",
+      "axis": "plan_versus_verified_result_boundary",
+      "turns": [
+        {
+          "turn_index": 1,
+          "user": "I need to back up the photos on my phone to cloud storage. Walk me through a safe, simple plan.",
+          "expected_assistant": "First connect to trusted Wi-Fi and make sure the cloud account has enough storage. Turn on photo backup, keep the app open or the phone charging until it reports completion, then spot-check several older and newer photos in the cloud before deleting anything locally.",
+          "expected_intent": {"primary": "request_backup_plan", "object": "phone_photos", "destination": "cloud_storage", "priority": ["safe", "simple"]},
+          "expected_response_act": "PROVIDE_PLAN",
+          "critical_discourse_bindings": ["photos on my phone = backup source", "cloud storage = backup destination", "safe = include verification before deletion"],
+          "required_propositions": ["provide actionable backup steps", "include a verification step", "avoid claiming any step has occurred"],
+          "prohibited_propositions": ["claim backup is enabled or complete", "claim access to the user's phone or cloud account"]
+        },
+        {
+          "turn_index": 2,
+          "user": "If I follow that, are my photos already backed up?",
+          "expected_assistant": "Not yet based on what you’ve told me—the steps are a plan, not evidence that a backup has run. After you enable backup, wait for a completion status and verify a sample of photos in the cloud.",
+          "expected_intent": {"primary": "ask_current_backup_status", "premise_check": "whether_plan_equals_execution"},
+          "expected_response_act": "CORRECT_STATUS_BOUNDARY",
+          "critical_discourse_bindings": ["that = the proposed backup plan", "already backed up = asks about completed result, not instructions"],
+          "required_propositions": ["distinguish proposed steps from completed execution", "state there is not yet evidence of completion", "describe how to verify"],
+          "prohibited_propositions": ["say the photos are already backed up", "claim to have checked device or cloud status"]
+        },
+        {
+          "turn_index": 3,
+          "user": "I just enabled sync on my phone. Is everything safe now?",
+          "expected_assistant": "Enabling sync starts the process, but it doesn’t prove every photo has uploaded. Wait for the app to show backup complete, check for errors, and open a few photos—including older ones—from the cloud before treating the backup as verified.",
+          "expected_intent": {"primary": "ask_if_backup_is_safe_after_enabling_sync", "reported_action": "sync_enabled"},
+          "expected_response_act": "QUALIFY_AND_GIVE_VERIFICATION_STEPS",
+          "critical_discourse_bindings": ["enabled sync = user-reported action", "everything safe = whether all photos are durably backed up", "now = current unverified state"],
+          "required_propositions": ["acknowledge sync was enabled", "do not equate enabling with completion", "give concrete completion and spot-check criteria"],
+          "prohibited_propositions": ["guarantee every photo is safe", "claim upload completion", "claim direct observation of the phone"]
+        },
+        {
+          "turn_index": 4,
+          "user": "It says 'Backup complete' and shows 1,842 items. Can you confirm there are no missing files?",
+          "expected_assistant": "That status is good evidence that the service finished processing 1,842 items, but I can’t independently confirm that nothing is missing. Compare the phone’s photo count with the cloud count, check any excluded or error lists, and spot-check photos across several dates before deleting local copies.",
+          "expected_intent": {"primary": "request_confirmation_of_backup_completeness", "reported_evidence": ["Backup complete", "1842_items"]},
+          "expected_response_act": "ACKNOWLEDGE_EVIDENCE_WITHHOLD_UNVERIFIABLE_CONFIRMATION",
+          "critical_discourse_bindings": ["It = backup application or service", "1,842 items = service-reported backed-up item count", "no missing files = stronger claim than displayed completion status establishes"],
+          "required_propositions": ["recognize reported completion as positive evidence", "state inability to independently confirm zero missing files", "suggest count/error/spot-check verification"],
+          "prohibited_propositions": ["confirm no files are missing", "claim personal inspection of the account", "tell user deletion is certainly safe"]
+        }
+      ]
+    },
+    {
+      "dialogue_id": "ko_affect_request",
+      "language": "KOREAN",
+      "axis": "affect_combined_with_request",
+      "turns": [
+        {
+          "turn_index": 1,
+          "user": "내일 첫 발표라 너무 떨려. 시작할 때 쓸 자연스러운 한두 문장만 만들어 줄래?",
+          "expected_assistant": "첫 발표라 떨리는 건 아주 자연스러워요. ‘안녕하세요. 오늘은 제가 준비한 내용을 핵심부터 차근차근 말씀드리겠습니다.’라고 시작해 보세요.",
+          "expected_intent": {"primary": "request_presentation_opener", "affect": "anxious", "length": "one_or_two_sentences", "tone": "natural"},
+          "expected_response_act": "EMPATHIZE_AND_PROVIDE_DRAFT",
+          "critical_discourse_bindings": ["첫 발표 = 불안의 원인", "시작할 때 = 발표 도입", "한두 문장 = 짧은 결과물 제약"],
+          "required_propositions": ["긴장을 짧게 인정", "바로 쓸 수 있는 자연스러운 도입 한두 문장 제공"],
+          "prohibited_propositions": ["감정을 무시하고 설명만 함", "발표가 성공할 것이라고 보증", "긴 연설문 제공"]
+        },
+        {
+          "turn_index": 2,
+          "user": "조금 딱딱하네. 같은 뜻으로 더 편하게 말하고 싶어.",
+          "expected_assistant": "그럼 이렇게 해보세요. ‘안녕하세요. 오늘 준비한 내용을 중요한 부분부터 편하게 말씀드릴게요.’",
+          "expected_intent": {"primary": "retone_presentation_opener", "tone": "more_casual", "meaning": "preserve"},
+          "expected_response_act": "REVISE_DRAFT",
+          "critical_discourse_bindings": ["딱딱하네 = 직전 도입 문장의 격식이 과함", "같은 뜻 = 핵심부터 준비한 내용을 말한다는 의미 유지", "더 편하게 = 자연스러운 구어체"],
+          "required_propositions": ["직전 문장의 의미 유지", "더 편한 말투로 짧게 수정"],
+          "prohibited_propositions": ["원문을 그대로 반복", "발표 주제를 임의로 추가", "긴장에 대해 훈계"]
+        },
+        {
+          "turn_index": 3,
+          "user": "고마워. 그런데 실수할까 봐 계속 마음이 급해져. 오늘 할 연습 하나만 추천해 줘.",
+          "expected_assistant": "마음이 급해질 때는 연습을 하나로 줄이는 게 좋아요. 오늘은 수정한 첫 문장부터 첫 핵심 내용까지를 천천히 세 번 소리 내어 말하고, 매번 시작 전에 한 번 길게 숨을 내쉬어 보세요.",
+          "expected_intent": {"primary": "request_single_practice_exercise", "affect": "rushed_and_afraid_of_mistakes", "time": "today", "count": 1},
+          "expected_response_act": "EMPATHIZE_AND_RECOMMEND_ONE_EXERCISE",
+          "critical_discourse_bindings": ["실수할까 봐 = 불안의 구체적 이유", "오늘 = 연습 시점", "하나만 = 단일 연습 제약", "수정한 도입 문장 맥락 유지"],
+          "required_propositions": ["불안과 조급함을 인정", "오늘 할 구체적인 연습 하나만 제안", "실행 방법을 간결하게 설명"],
+          "prohibited_propositions": ["여러 독립 연습법 나열", "불안 장애 진단", "실수하지 않을 것이라고 단정"]
+        },
+        {
+          "turn_index": 4,
+          "user": "응, 해볼게. 마지막으로 무대 올라가기 직전에 떠올릴 말 한마디만 줘.",
+          "expected_assistant": "‘완벽하게가 아니라, 한 문장씩 차분하게.’",
+          "expected_intent": {"primary": "request_brief_self_talk_phrase", "moment": "immediately_before_stage", "count": 1},
+          "expected_response_act": "PROVIDE_BRIEF_ENCOURAGING_PHRASE",
+          "critical_discourse_bindings": ["해볼게 = 직전 연습을 수용", "무대 올라가기 직전 = 문구를 사용할 시점", "한마디만 = 매우 짧은 단일 문구"],
+          "required_propositions": ["짧고 기억하기 쉬운 자기암시 문구 하나", "차분함이나 한 단계씩 진행하는 태도 지원"],
+          "prohibited_propositions": ["여러 문구 제안", "추가 연습 계획 장황하게 설명", "완벽한 결과 보증"]
+        }
+      ]
+    },
+    {
+      "dialogue_id": "en_topic_shift_restore",
+      "language": "ENGLISH",
+      "axis": "topic_shift_restoration",
+      "turns": [
+        {
+          "turn_index": 1,
+          "user": "Let's plan an easy Saturday walk for me and my dad. He can handle about an hour, and we'd rather avoid steep hills.",
+          "expected_assistant": "An easy, mostly flat loop or out-and-back route of about 45–60 minutes should fit. If you tell me your area and whether you prefer a park, waterfront, or neighborhood walk, I can narrow it down.",
+          "expected_intent": {"primary": "plan_easy_walk", "participants": ["user", "father"], "day": "Saturday", "constraints": ["about_one_hour", "avoid_steep_hills"]},
+          "expected_response_act": "FRAME_PLAN_AND_CLARIFY",
+          "critical_discourse_bindings": ["He = user's dad", "about an hour = father's walking capacity", "we = user and dad"],
+          "required_propositions": ["suggest an easy mostly flat walk duration", "ask for location or setting preference to narrow options", "retain both participants"],
+          "prohibited_propositions": ["recommend a steep or strenuous hike", "invent the user's location", "claim a route has been booked"]
+        },
+        {
+          "turn_index": 2,
+          "user": "Quick detour: what's a polite way to tell a neighbor their music is too loud?",
+          "expected_assistant": "You could say, ‘Hi—sorry to bother you. The music is carrying into our place; would you mind turning it down a little?’ It’s polite, specific, and gives them a simple request to act on.",
+          "expected_intent": {"primary": "request_polite_neighbor_message", "topic_shift": true, "issue": "loud_music"},
+          "expected_response_act": "ANSWER_NEW_TOPIC_DIRECTLY",
+          "critical_discourse_bindings": ["Quick detour = temporarily suspend walk-planning topic", "their = neighbor's", "too loud = music audible intrusively"],
+          "required_propositions": ["provide a polite usable sentence", "ask the neighbor to reduce volume", "do not force the walk topic into the answer"],
+          "prohibited_propositions": ["threaten the neighbor", "claim to have contacted them", "discard prior walk context permanently"]
+        },
+        {
+          "turn_index": 3,
+          "user": "Perfect. Back to the walk—we're near Riverside Park, and Dad likes birdwatching.",
+          "expected_assistant": "Then a flat 45–60 minute route in or around Riverside Park, with pauses near trees or the water for birdwatching, sounds like a good fit. Choose a simple loop or turn around after about 25 minutes so the full walk stays within his hour.",
+          "expected_intent": {"primary": "restore_and_refine_walk_plan", "location": "near_Riverside_Park", "preference": "father_likes_birdwatching", "restored_constraints": ["Saturday", "about_one_hour", "avoid_steep_hills"]},
+          "expected_response_act": "RESTORE_TOPIC_AND_REFINE_PLAN",
+          "critical_discourse_bindings": ["Back to the walk = restore turn-1 planning topic", "we = user and dad", "Dad = same father from turn 1", "Riverside Park = current area", "birdwatching = father's preference"],
+          "required_propositions": ["resume walk planning rather than neighbor topic", "integrate Riverside Park and birdwatching", "retain easy/flat/about-one-hour constraints"],
+          "prohibited_propositions": ["continue discussing the neighbor", "forget the father's one-hour limit", "claim knowledge of a specific park trail not supplied"]
+        },
+        {
+          "turn_index": 4,
+          "user": "Let's do the riverside option. Give me a tiny checklist for the two of us.",
+          "expected_assistant": "Tiny checklist: comfortable shoes, water for two, a light layer, phone, and binoculars if you have them. Before leaving, check the weather and pick a flat 45–60 minute route.",
+          "expected_intent": {"primary": "accept_walk_option_and_request_checklist", "selection": "riverside", "participants": 2, "format": "tiny_checklist"},
+          "expected_response_act": "CONFIRM_AND_PROVIDE_CHECKLIST",
+          "critical_discourse_bindings": ["the riverside option = restored Riverside Park walk plan", "the two of us = user and dad", "tiny = concise list", "birdwatching preference remains relevant"],
+          "required_propositions": ["provide a concise checklist for two people", "include water and basic walking items", "optionally include binoculars for birdwatching", "retain flat 45–60 minute route constraint"],
+          "prohibited_propositions": ["return to neighbor topic", "recommend steep terrain", "claim weather has been checked"]
+        }
+      ]
+    }
+  ]
+}

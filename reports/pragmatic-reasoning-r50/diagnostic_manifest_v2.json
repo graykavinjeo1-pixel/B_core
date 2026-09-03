@@ -1,0 +1,16 @@
+{
+  "schema": "B_CORE_R50_DIAGNOSTIC_MANIFEST_2",
+  "run": "R50-DIAGNOSTIC-RUN-0002",
+  "predecessor_run": "R50-DIAGNOSTIC-RUN-0001",
+  "case_count": 12,
+  "semantic_cases_changed": 0,
+  "fixture_corrections": [
+    "R50_11 adds the already-required rebinding turn that exposes mixed-subject ambiguity.",
+    "R50_12 expects BACKCHANNEL_ONLY for a standalone acknowledgement."
+  ],
+  "product_repair": "Reference consistency now counts resolution operations and verifies the unique bound referent set instead of double-counting both representations.",
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

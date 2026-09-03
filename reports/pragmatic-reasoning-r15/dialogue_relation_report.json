@@ -1,0 +1,91 @@
+{
+  "stage": "R15_TYPED_CAUSAL_AND_CONCESSIVE_MULTI_TURN_DISCOURSE",
+  "status": "PASS",
+  "scope": "Conversation-local cross-turn causal, consequence, and concession links plus evidence-bounded Korean/English QA",
+  "canonical_integrity": {
+    "status": "PASS",
+    "canonical_file_count": 10,
+    "manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "implementation": {
+    "language": "Rust",
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_11",
+    "relation_graph_schema": "B_CORE_DIALOGUE_RELATION_GRAPH_IR_1",
+    "answer_schema": "B_CORE_DIALOGUE_RELATION_ANSWER_IR_1",
+    "relation_kinds": [
+      "CAUSE",
+      "CONSEQUENCE",
+      "CONCESSION"
+    ],
+    "maximum_relations": 32,
+    "maximum_antecedent_turn_distance": 8,
+    "graph_hash": "SHA-256",
+    "source_hashes": {
+      "crates/semantic-core-adapters/src/discourse_relations.rs": "fdf21b3fe271e3e22ae63ca35011f986e8ae85888bfde0749cca39402ef49b7e",
+      "crates/semantic-core-adapters/src/dialogue_relation_canary.rs": "8b2330d378402c73af33c291736e561d35aebe1b05bd3d5d45f43e46e0b3493b",
+      "crates/semantic-core-adapters/src/dialogue_relation_transfer_canary.rs": "c5d1ab83cad6ce26e5196976706114c005c972f2434f42d16f11b07249266277"
+    }
+  },
+  "final_suites": {
+    "R15-RUN-0001": {
+      "kind": "frozen_diagnostic",
+      "total": 36,
+      "passed": 36,
+      "failed": 0
+    },
+    "R15-RUN-0002": {
+      "kind": "held_out_transfer_and_adversarial",
+      "total": 15,
+      "passed": 15,
+      "failed": 0
+    },
+    "r15_fresh_total": 51,
+    "r15_fresh_passed": 51,
+    "prior_sealed_r1_to_r14": 526,
+    "cumulative_r1_to_r15": 577,
+    "all_canary_binaries_exit_zero": true
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "semantic_core_adapters_tests": {
+      "passed": 239,
+      "failed": 0
+    },
+    "workspace_tests": {
+      "passed": 763,
+      "failed": 0
+    },
+    "git_diff_check": "PASS",
+    "build_cache_cleanup": {
+      "removed_files": 9948,
+      "removed_bytes_reported": "8.3 GiB",
+      "target_directory_exists_after_cleanup": false
+    }
+  },
+  "authority_guards": {
+    "dialogue_claim_only": true,
+    "causal_truth_established": false,
+    "semantic_authority": false,
+    "external_execution_authorized": false,
+    "relation_qa_creates_grounded_plan": false,
+    "relation_qa_creates_mechanism_knowledge": false,
+    "ambiguous_or_unbound_antecedent": "CLARIFICATION_REQUIRED",
+    "quoted_connector_creates_relation": false
+  },
+  "dependencies": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_in_canonical_r15_path": false,
+    "recursive_source_mutations": 0
+  },
+  "git": {
+    "branch": "main",
+    "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  },
+  "disposition": "R15_SEALED_LOCALLY_CONTINUE_ONLY_WITH_A_NEW_BOUNDED_INCREMENT"
+}

@@ -1,0 +1,13 @@
+You are producing a blind GPT reference surface set for a conversational-language benchmark.
+
+The complete contents of final_input.json are appended to this request. Use only that appended input. Do not inspect any file, repository, program output, candidate answer, B_Core artifact, or external source, and do not call any tool. The input contains 40 independent dialogues and 160 user turns. Process each dialogue in turn_index order. For each user turn, write the assistant reply that you would naturally give at that point, using the preceding turns and your own preceding replies within that dialogue as context.
+
+Requirements:
+- Reply in the turn's language (Korean or English).
+- Preserve the user's actual intent, topic, corrections, references, ellipsis, attribution, uncertainty, and plan/execution/result distinctions.
+- Be natural and concise. Ask a focused clarification when the request is genuinely ambiguous.
+- Never claim that a check, repair, save, deployment, or other external action was completed; no tools or real systems are available.
+- Do not mention this benchmark, the JSON, these instructions, B_Core, or scoring.
+- Do not copy or paraphrase any candidate system output; none is available.
+- Produce exactly one non-empty response for every response_id, with no duplicate or missing IDs.
+- Return only the JSON object required by reference_surface_output_schema.json. Do not add Markdown or commentary.

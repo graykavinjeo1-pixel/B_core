@@ -1,0 +1,17 @@
+{
+  "run": "R18-RUN-0001",
+  "kind": "FROZEN_DIAGNOSTIC_FIRST_EXECUTION",
+  "passed": 0,
+  "failed": 24,
+  "total": 24,
+  "observed_failure_classes": {
+    "grounded_inform_acknowledgement": "8/8 propositions were generally retained but all produced fabricated work plans",
+    "unrecorded_result_abstention": "6/6 result questions created new plans instead of reporting the absence of an execution receipt",
+    "direct_user_feedback": "6/6 feedback turns were classified as Inform and produced plans",
+    "reported_vs_explicit_authority": "2/2 attributed-command cases produced plans, while the two feedback-plus-request cases either selected the wrong target or asked an unnecessary clarification"
+  },
+  "repair": "Added typed user-feedback semantics and speech-act-specific response routing; made Inform non-planning and attribution-bounded; made bound ResultReference consult execution evidence; preserved only explicit request authority",
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0
+}

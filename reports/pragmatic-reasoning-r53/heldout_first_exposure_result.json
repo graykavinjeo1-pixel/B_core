@@ -1,0 +1,22 @@
+{
+  "schema": "B_CORE_R53_HELDOUT_FIRST_EXPOSURE_RESULT_1",
+  "suite": "R53_PREDICATE_ARGUMENT_COMPOSITION_HELDOUT",
+  "run": "R53-HELDOUT-RUN-0001",
+  "status": "PASS",
+  "manifest_sha256": "1b80c8880714925d287ee32fea74808e8bea69692b7616c85bb6db63d381d420",
+  "transfer_source_sha256": "456402412f8df656f0bc1ceaa2c23268407ed95db3742a18eb9a2c3d5d4dd8e7",
+  "shared_support_sha256": "647aa37d3fa90264be00c9f8afde596efe069dc72b3a9cca89dac348b3aeb1c9",
+  "passed": 8,
+  "total": 8,
+  "graph_contracts_valid": 8,
+  "authority_violations": 0,
+  "case_mutations_after_exposure": 0,
+  "expectation_mutations_after_exposure": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0,
+  "product_source_sha256_at_first_exposure": {
+    "semantic_roles.rs": "005b632357562ffdc432d326c50017548c553d2aa8a03f737150c74b2fcf6b2f"
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "stage": "R34_PERSISTENT_DISCOURSE_GROUP",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "diagnostic": {
+    "suite": "R34-RUN-0001",
+    "sha256": "a4d5ecfc3d2897bc8204df5a94e2de649c52f110561ec3f2376179ebc870707b",
+    "frozen_before_product_changes": true,
+    "baseline_passed": 2,
+    "baseline_total": 28,
+    "repair_progression": [
+      "2/28 authoritative baseline",
+      "25/28 after persistent action/proposition group state, interruption restoration, correction-aware source membership, and structural state/completion paraphrases",
+      "28/28 after word-boundary-safe state detection, English took-care completion recognition, and Korean discourse-repair actor extraction"
+    ],
+    "final_passed": 28,
+    "final_total": 28,
+    "categories": {
+      "interrupted_action_group_recall": "4/4",
+      "structural_status_query_paraphrase": "4/4",
+      "compositional_completion_report_paraphrase": "4/4",
+      "interrupted_speaker_group_recall": "4/4",
+      "established_group_survives_third_speaker": "4/4",
+      "persistent_group_tracks_source_correction": "4/4",
+      "persistent_group_ambiguity_fails_closed": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R34-TRANSFER-0001",
+    "sha256": "8e26af8bc7203f02c95e7ef139967a37c066e90b07359cf6fe6feaa74f55959a",
+    "held_out_until_after_diagnostic_pass": true,
+    "first_exposure_passed": 20,
+    "first_exposure_total": 20,
+    "final_passed": 20,
+    "final_total": 20,
+    "oracle_changed_after_first_exposure": false,
+    "product_repair_driven_by_held_out": false,
+    "categories": {
+      "heldout_interrupted_action_group": "4/4",
+      "heldout_action_state_paraphrase": "4/4",
+      "heldout_interrupted_speaker_group": "4/4",
+      "heldout_correction_aware_group": "4/4",
+      "heldout_group_ambiguity": "4/4"
+    }
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "cumulative_r1_r34_passed": 1387,
+  "cumulative_r1_r34_total": 1387,
+  "verification": {
+    "metadata_discovered_canary_binaries_passed": 59,
+    "metadata_discovered_canary_binaries_total": 59,
+    "metadata_discovered_canary_cases_passed": 1394,
+    "metadata_discovered_canary_cases_total": 1394,
+    "adapter_unit_tests_passed": 310,
+    "adapter_unit_tests_total": 310,
+    "workspace_library_tests_passed": 833,
+    "workspace_library_tests_total": 833,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_HISTORICAL_FROZEN_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "build_cache_cleanup": {
+      "target": "I:\\B_Core\\target",
+      "bytes_before": 18279713367,
+      "cargo_clean_files_removed": 13235,
+      "cargo_clean_reported_size": "17.0 GiB",
+      "target_exists_after": false
+    }
+  },
+  "safety": {
+    "unsupported_realization_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed_by_language_path": 0,
+    "language_reports_promoted_to_verified_execution": 0,
+    "attributed_propositions_promoted_to_world_truth": 0,
+    "semantic_authority_from_discourse_group": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "Conversation state schema 18 stores bounded, hash-bound action and attributed-proposition discourse groups separately from semantic concept payloads.",
+    "An action group retains exact goal membership across at least five neutral interruptions and resolves only when requested cardinality is valid.",
+    "An established two-source proposition group survives later third-speaker material when an explicit historical group expression is used.",
+    "Proposition group members are source identities; resolution selects the newest active proposition for each member so explicit corrections replace stale content.",
+    "English action-state terms require lexical boundaries, preventing statement from activating the state query route.",
+    "Completion reports remain unverified language reports, while progress/status forms remain non-mutating queries.",
+    "Group state carries neither semantic authority nor external execution authority, and rehashed authority tampering is rejected."
+  ],
+  "six_axis_assessment": {
+    "grammatical_composition": "MULTI_ACTION_AND_MULTI_PROPOSITION_MEMBERS_REMAIN_DISTINCT_UNDER_GROUP_COMPOSITION",
+    "discourse_and_topic_state": "HASH_BOUND_GROUP_MEMBERSHIP_PERSISTS_ACROSS_NEUTRAL_INTERRUPTION_AND_LATER_DISTRACTORS",
+    "deixis_and_ellipsis_resolution": "EXPLICIT_PAIR_TWO_BOTH_AND_BILINGUAL_GROUP_EXPRESSIONS_BIND_TYPED_MEMBERS_OR_FAIL_CLOSED",
+    "speech_intent_and_pragmatics": "STATUS_QUERY_COMPLETION_REPORT_COMPARISON_AND_CORRECTION_REMAIN_DISTINCT",
+    "result_plan_distinction": "PLANNED_REPORTED_AND_VERIFIED_ACTION_STATES_REMAIN_SEPARATE_FOR_EVERY_GROUP_MEMBER",
+    "evidence_grounded_realization": "GROUP_OUTPUT_CITES_SELECTED_ACTION_OR_PROPOSITION_REFERENTS_WITH_ZERO_UNSUPPORTED_FACTS"
+  },
+  "residual_limits": [
+    "This is bounded deterministic language engineering and does not establish GPT-level general language competence.",
+    "Only action and attributed-proposition group kinds are persistent; arbitrary nested, overlapping, and open-world discourse sets are not yet modeled.",
+    "Persistent groups are bounded to eight groups and sixteen turns, with compact inspectable Korean and English paraphrase vocabularies.",
+    "Topic-return operations do not yet reactivate arbitrary historical group stacks or resolve unrestricted associative bridging.",
+    "Natural realization remains structurally faithful but less varied and conversational than a generative language model."
+  ],
+  "next_program_order": [
+    "typed nested and overlapping discourse sets with explicit membership revision",
+    "topic-linked group suspension and restoration across longer dialogue",
+    "broader compositional pragmatic paraphrases without lexical substring routing",
+    "more natural evidence-grounded realization while preserving claim-level provenance"
+  ],
+  "pre_existing_user_change_preserved": "crates/semantic-reasoning/src/growth_supervisor.rs",
+  "commit_performed": false,
+  "push_performed": false
+}

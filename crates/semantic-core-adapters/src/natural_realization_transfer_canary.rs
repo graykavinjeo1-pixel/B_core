@@ -1,0 +1,123 @@
+//! Frozen R61 held-out transfer cases. Do not inspect or edit after the initial baseline run.
+
+mod natural_realization_canary_support;
+
+use natural_realization_canary_support::{emit, Case};
+use semantic_core_adapters::LanguageCodeIR;
+
+const CASES: &[Case] = &[
+    Case {
+        id: "R61_H01",
+        category: "heldout_korean_repair",
+        setup: &[],
+        query: "Orchid 작업 큐 문제를 고쳐줘",
+        language: LanguageCodeIR::Korean,
+        expected_act: "PLAN_PREVIEW",
+        required_fragments: &["Orchid", "먼저", "수리", "검증", "아직 실행"],
+        forbidden_fragments: &["선택 행동", "검증 계획으로 처리"],
+        max_chars: 220,
+    },
+    Case {
+        id: "R61_H02",
+        category: "heldout_english_investigation",
+        setup: &[],
+        query: "Find the cause of the Saffron scheduler failure",
+        language: LanguageCodeIR::English,
+        expected_act: "PLAN_PREVIEW",
+        required_fragments: &["Saffron", "state", "cause", "check", "not executed"],
+        forbidden_fragments: &["diagnostic execution", "planned operations"],
+        max_chars: 260,
+    },
+    Case {
+        id: "R61_H03",
+        category: "heldout_korean_creation",
+        setup: &[],
+        query: "Topaz 배포 설정을 생성해",
+        language: LanguageCodeIR::Korean,
+        expected_act: "PLAN_PREVIEW",
+        required_fragments: &["Topaz", "완료 조건", "만든", "검증", "아직 실행"],
+        forbidden_fragments: &["선택 행동", "검증 계획"],
+        max_chars: 220,
+    },
+    Case {
+        id: "R61_H04",
+        category: "heldout_english_explanation",
+        setup: &[],
+        query: "Describe the Violet cache policy",
+        language: LanguageCodeIR::English,
+        expected_act: "PLAN_PREVIEW",
+        required_fragments: &["Violet", "evidence", "explanation", "not executed"],
+        forbidden_fragments: &["synthesize explanation", "communicate result"],
+        max_chars: 260,
+    },
+    Case {
+        id: "R61_H05",
+        category: "heldout_korean_inform",
+        setup: &[],
+        query: "현재 GPU 온도 경고가 켜져 있어",
+        language: LanguageCodeIR::Korean,
+        expected_act: "INFORM_ACKNOWLEDGEMENT",
+        required_fragments: &["GPU", "경고", "말한 내용", "확인된 사실"],
+        forbidden_fragments: &["검증 계획"],
+        max_chars: 190,
+    },
+    Case {
+        id: "R61_H06",
+        category: "heldout_english_feedback",
+        setup: &[],
+        query: "That answer missed the main point",
+        language: LanguageCodeIR::English,
+        expected_act: "USER_FEEDBACK",
+        required_fragments: &["missed", "point"],
+        forbidden_fragments: &["acknowledge", "user feedback"],
+        max_chars: 150,
+    },
+    Case {
+        id: "R61_H07",
+        category: "heldout_korean_affect",
+        setup: &[],
+        query: "오류가 자꾸 반복돼서 정말 답답해",
+        language: LanguageCodeIR::Korean,
+        expected_act: "AFFECT_SUPPORT",
+        required_fragments: &["답답", "확인"],
+        forbidden_fragments: &["변경 작업을 시작했다고 가정", "감정"],
+        max_chars: 170,
+    },
+    Case {
+        id: "R61_H08",
+        category: "heldout_english_reference",
+        setup: &[],
+        query: "Do that one again",
+        language: LanguageCodeIR::English,
+        expected_act: "CLARIFICATION_REQUEST",
+        required_fragments: &["what", "that", "target"],
+        forbidden_fragments: &["resolution", "referent"],
+        max_chars: 170,
+    },
+    Case {
+        id: "R61_H09",
+        category: "heldout_korean_result_absence",
+        setup: &["Jade 로그 문제를 조사해"],
+        query: "그 결과는 어떻게 됐어?",
+        language: LanguageCodeIR::Korean,
+        expected_act: "RESULT_ABSENCE",
+        required_fragments: &["Jade", "실행 결과", "계획"],
+        forbidden_fragments: &["EVIDENCE_ABSENCE", "ResultReference"],
+        max_chars: 210,
+    },
+    Case {
+        id: "R61_H10",
+        category: "heldout_english_plan_result",
+        setup: &["Run the Copper backup"],
+        query: "Is that complete or still just a plan?",
+        language: LanguageCodeIR::English,
+        expected_act: "PLAN_RESULT_STATUS",
+        required_fragments: &["Copper", "plan", "execution result", "not"],
+        forbidden_fragments: &["ACTIVE", "NOT_OBSERVED", "UNAVAILABLE"],
+        max_chars: 240,
+    },
+];
+
+fn main() {
+    emit("R61-NATURAL-REALIZATION-HELDOUT", true, CASES);
+}

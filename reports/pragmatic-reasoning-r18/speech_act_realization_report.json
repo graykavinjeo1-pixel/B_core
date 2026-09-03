@@ -1,0 +1,143 @@
+{
+  "stage": "R18_SPEECH_ACT_AND_EVIDENCE_STATE_REALIZATION",
+  "status": "PASS",
+  "scope": "Speech-act-specific grounded response selection, direct feedback realization, reported-information boundaries, and execution-result fidelity",
+  "canonical_integrity": {
+    "status": "PASS",
+    "canonical_file_count": 10,
+    "manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "implementation": {
+    "language": "Rust",
+    "feedback_ir": {
+      "type": "UserFeedbackIR",
+      "kinds": [
+        "Unhelpful",
+        "Misunderstood",
+        "MissedPoint",
+        "TooVerbose",
+        "TooBrief",
+        "Incorrect"
+      ],
+      "quoted_span_safe": true,
+      "pure_feedback_creates_plan": false,
+      "feedback_plus_explicit_request_preserves_request_authority": true
+    },
+    "inform_policy": {
+      "stores_proposition_referent": true,
+      "creates_plan": false,
+      "promotes_report_to_established_fact": false
+    },
+    "result_policy": {
+      "typed_result_reference_precedes_generic_qa": true,
+      "plan_counts_as_execution_result": false,
+      "missing_execution_receipt_is_disclosed": true,
+      "missing_result_creates_replacement_plan": false
+    },
+    "affect_policy": {
+      "pure_affect_precedes_generic_inform": true,
+      "pure_affect_creates_plan": false
+    },
+    "source_hashes": {
+      "crates/semantic-core-adapters/Cargo.toml": "6660cedef2f462f54598add0b4e055ef57ae14ca4fa2ab390c9b8971748cc86f",
+      "crates/semantic-core-adapters/src/pragmatics.rs": "92a6214b2d58ed4e26bba0298e5cca26e4ac7696e300613e721bf9b0fab34ec4",
+      "crates/semantic-core-adapters/src/cognitive.rs": "35a1093b24075d3f82450500e9547875c723fa61be7b3baa8728b225e16055a0",
+      "crates/semantic-core-adapters/src/conversation.rs": "acb8e6a4a98d0b5e98c018e468c7275fc5ba03801a59187a72b12760b0b2ea4c",
+      "crates/semantic-core-adapters/src/lib.rs": "98d2e3651e0fcec712f3306b5018a0c41e49fe9fa4dee2ab483b9c40a1c9b19f",
+      "crates/semantic-core-adapters/src/speech_act_realization_canary.rs": "a8daffd4a0a25f1fb98905cef76c4872b13e9cb1d04bc95225e53c5d8663e8fb",
+      "crates/semantic-core-adapters/src/speech_act_realization_transfer_canary.rs": "9c67351be6fa74fedde2ec9bd2c2fe6402d562476d8587e0bfa6ab43fe7c9056"
+    }
+  },
+  "final_suites": {
+    "R18-RUN-0001": {
+      "kind": "frozen_diagnostic",
+      "first_execution": "0/24",
+      "final_execution": "24/24",
+      "total": 24,
+      "passed": 24,
+      "failed": 0
+    },
+    "R18-RUN-0002": {
+      "kind": "held_out_transfer_and_attack",
+      "first_semantic_execution": "15/16",
+      "first_semantic_failure_case": "TRANSFER_RESULT_2",
+      "first_semantic_failure_class": "Generic presupposition QA intercepted an exact bound ResultReference before the execution-evidence check",
+      "final_execution": "16/16",
+      "total": 16,
+      "passed": 16,
+      "failed": 0
+    },
+    "r18_fresh_total": 40,
+    "r18_fresh_passed": 40,
+    "r17_regression": {
+      "passed": 40,
+      "total": 40
+    },
+    "prior_sealed_r1_to_r17": 667,
+    "cumulative_r1_to_r18": 707,
+    "canary_binaries": {
+      "passed": 27,
+      "total": 27
+    }
+  },
+  "validation": {
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "semantic_core_adapters_tests": {
+      "passed": 253,
+      "failed": 0
+    },
+    "workspace_tests": {
+      "passed": 777,
+      "failed": 0
+    },
+    "git_diff_check": "PASS",
+    "build_cache_cleanup": {
+      "removed_files": 10798,
+      "removed_bytes_reported": "8.9 GiB",
+      "target_directory_exists_after_cleanup": false
+    }
+  },
+  "reasoning_guards": {
+    "raw_text_is_semantic_authority": false,
+    "reported_content_is_established_fact": false,
+    "quoted_feedback_is_direct_user_feedback": false,
+    "pure_feedback_authorizes_action": false,
+    "validated_plan_is_execution_evidence": false,
+    "missing_result_is_fabricated": false,
+    "unsupported_freeform_claims": 0
+  },
+  "architectural_assessment": {
+    "current_defects_prove_native_3b_to_9b_model_required": false,
+    "observed_primary_bottleneck": "Speech-act collapse and loss of execution-evidence state during response routing",
+    "meaning_nodes_and_language_forms_alone_are_sufficient": false,
+    "required_additional_mechanisms": [
+      "compositional grammar",
+      "typed discourse state",
+      "reference resolution",
+      "pragmatic inference",
+      "execution-evidence tracking",
+      "grounded realization"
+    ],
+    "gpt_class_open_domain_fluency_proven": false,
+    "future_learned_decoder_status": "OPTIONAL_AND_NOT_JUSTIFIED_BY_CURRENT_DEFECTS",
+    "future_decoder_boundary": "IR_CONDITIONED_NON_AUTHORITATIVE_REALIZER_ONLY"
+  },
+  "dependencies": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_in_canonical_r18_path": false,
+    "recursive_source_mutations": 0
+  },
+  "git": {
+    "branch": "main",
+    "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c4f",
+    "remote": "https://github.com/graykavinjeo1-pixel/B_core.git",
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  },
+  "goal_complete": false,
+  "disposition": "R18_SEALED_LOCALLY_BROADER_GPT_LEVEL_LANGUAGE_GOAL_REMAINS_OPEN"
+}

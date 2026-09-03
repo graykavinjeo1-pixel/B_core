@@ -26,6 +26,13 @@ path = "src/cognitive_api_canary.rs"
 name = "b-core-cognitive-api"
 path = "src/cognitive_api_main.rs"
 
+[features]
+# The adapter and semantic core remain Rust-only by default. PaddleOCR is an
+# optional compatibility bridge for deployments that explicitly opt in to a
+# local Python runtime.
+default = []
+python-paddle-ocr = []
+
 [dependencies]
 dockable-semantic-core = { path = "../dockable-semantic-core", version = "0.1.0" }
 serde = { version = "1.0", features = ["derive"] }

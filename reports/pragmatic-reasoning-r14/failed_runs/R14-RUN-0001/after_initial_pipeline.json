@@ -1,0 +1,29 @@
+{
+  "schema": "B_CORE_ONTOLOGY_COREFERENCE_FAILED_RUN_1",
+  "run_id": "R14-RUN-0001-AFTER-INITIAL-PIPELINE",
+  "cases": 44,
+  "passed": 30,
+  "failed": 14,
+  "failed_case_ids": [
+    "EN_ENTITY_REPORT_DOCUMENT",
+    "EN_ENTITY_REPOSITORY_CODEBASE",
+    "EN_ENTITY_FOLDER_DIRECTORY",
+    "KO_ENTITY_REPORT_DOCUMENT",
+    "KO_ENTITY_REPOSITORY_CODEBASE",
+    "KO_ENTITY_FOLDER_DIRECTORY",
+    "CROSS_KO_EN_ENTITY_DOCUMENT",
+    "CROSS_EN_KO_ENTITY_REPOSITORY",
+    "CROSS_KO_EN_ENTITY_FOLDER",
+    "EN_EVENT_INSPECT_REVIEW",
+    "KO_EVENT_INSPECT_REVIEW",
+    "CROSS_KO_EN_EVENT_REVIEW",
+    "EN_EVENT_ROLE_SELECTS_PARSER_FIX",
+    "KO_EVENT_ROLE_SELECTS_SERVER_DEPLOY"
+  ],
+  "root_causes": [
+    "generic filler mentions were treated as individuated ontology candidates",
+    "Korean predicate forms were over-read as event nominal references",
+    "an embedded entity span consumed a longer role-constrained event reference"
+  ],
+  "disposition": "PRESERVED_AND_ROOT_REPAIRED"
+}

@@ -1,0 +1,150 @@
+{
+  "stage": "R42_INTERACTION_PROVENANCE_GRAPH",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "commit_created": false,
+  "push_performed": false,
+  "diagnostic": {
+    "suite": "R42_INTERACTION_PROVENANCE_DIAGNOSTIC",
+    "frozen_sha256": "94c991b288545e5f3f34583efa8bd55345b3702063afb17869852def0c723755",
+    "baseline_passed": 0,
+    "baseline_total": 28,
+    "first_product_execution_passed": 28,
+    "first_product_execution_total": 28,
+    "final_passed": 28,
+    "final_total": 28,
+    "categories": [
+      "request_goal_plan_chain",
+      "language_report_isolation",
+      "trusted_start_observation",
+      "terminal_verified_result",
+      "report_revision_history",
+      "text_spoof_rejection",
+      "receipt_fail_closed"
+    ]
+  },
+  "held_out_transfer": {
+    "suite": "R42_INTERACTION_PROVENANCE_TRANSFER",
+    "frozen_sha256": "1c099e570c776e76221b112d6cf9aed442608531e30b82b3416d252e5686fc38",
+    "preimplementation_baseline_passed": 0,
+    "preimplementation_baseline_total": 20,
+    "held_out_until_after_diagnostic_pass": true,
+    "first_exposure_passed": 20,
+    "first_exposure_total": 20,
+    "final_passed": 20,
+    "final_total": 20,
+    "oracle_or_fixture_changes_after_first_exposure": 0
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "inherited_accounting": {
+    "r1_r41_row_cases_passed": 1723,
+    "r1_r41_row_cases_total": 1723,
+    "r1_r42_row_cases_passed": 1771,
+    "r1_r42_row_cases_total": 1771,
+    "direct_response_special_cases_passed": 7,
+    "direct_response_special_cases_total": 7,
+    "aggregate_adapter_cases_passed": 1778,
+    "aggregate_adapter_cases_total": 1778
+  },
+  "implementation": {
+    "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_10",
+    "provenance_schema": "B_CORE_INTERACTION_PROVENANCE_GRAPH_IR_1",
+    "language_report_record_schema": "B_CORE_ACTION_LANGUAGE_REPORT_RECORD_IR_1",
+    "evidence_audit_schema": "B_CORE_ACTION_EVIDENCE_AUDIT_IR_1",
+    "node_kinds": [
+      "LANGUAGE_INPUT",
+      "SEMANTIC_GOAL",
+      "PLANNED_ACTION",
+      "LANGUAGE_REPORT",
+      "EXECUTION_OBSERVATION",
+      "VERIFICATION_RECEIPT",
+      "VERIFIED_RESULT",
+      "REALIZED_CLAIM"
+    ],
+    "relations": [
+      "INPUT_GROUNDS_GOAL",
+      "GOAL_PROJECTS_PLAN",
+      "REPORT_DESCRIBES_PLAN",
+      "SUPERSEDES_REPORT",
+      "OBSERVATION_STARTS_EXECUTION",
+      "VERIFICATION_VERIFIES_OBSERVATION",
+      "VERIFICATION_ESTABLISHES_RESULT",
+      "SOURCE_GROUNDS_CLAIM"
+    ],
+    "node_hash_sealed": true,
+    "edge_hash_sealed": true,
+    "graph_hash_sealed": true,
+    "report_revision_history_retained": true,
+    "trusted_evidence_audit_history_retained": true,
+    "unsupported_links": 0,
+    "semantic_authority": false,
+    "language_can_advance_execution": false,
+    "external_action_executed": false
+  },
+  "regression_repairs": [
+    {
+      "boundary": "unsupported_presupposition_realization",
+      "defect": "A discourse answer with no evidence references or source turns was incorrectly marked as derived from dialogue records.",
+      "repair": "Empty-evidence discourse answers are now explicit EvidenceAbsent/Unknown claims grounded by the current query turn."
+    },
+    {
+      "boundary": "topic_anchored_claim_provenance",
+      "defect": "A topic-anchored claim carried an action identity but its fallback source node did not.",
+      "repair": "Action-bearing non-report, non-verified claims now bind to their corresponding typed action plan node."
+    }
+  ],
+  "verification": {
+    "metadata_discovered_workspace_canary_binaries_passed": 79,
+    "metadata_discovered_workspace_canary_binaries_total": 79,
+    "adapter_canary_binaries_passed": 75,
+    "adapter_canary_binaries_total": 75,
+    "adapter_unit_tests_passed": 353,
+    "adapter_unit_tests_total": 353,
+    "workspace_library_tests_passed": 876,
+    "workspace_library_tests_total": 876,
+    "cargo_test_workspace": "PASS",
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_BOUNDED_HISTORICAL_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "unit_invariants_added": 7,
+    "build_cache_cleanup": {
+      "target": "I:\\B_Core\\target",
+      "files_before": 28764,
+      "bytes_before": 32902115852,
+      "cargo_clean_reported_size": "30.6 GiB",
+      "target_exists_after": false
+    }
+  },
+  "safety": {
+    "unsupported_realization_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_cortex_path": 0,
+    "recursive_source_mutations": 0,
+    "semantic_authority": false,
+    "external_action_execution_authority": false,
+    "implementation_language": "RUST"
+  },
+  "limitations": [
+    "The internal SHA-256 chain detects mutation but is not an external executor signature or trust root.",
+    "Tool-specific payload truth and multi-executor reconciliation remain outside R42.",
+    "Partial progress, cancellation, rollback, and final package-level adversarial integration remain for R43 or later bounded work."
+  ],
+  "preexisting_user_change_preserved": {
+    "path": "crates/semantic-reasoning/src/growth_supervisor.rs",
+    "exact_change": ".filter(|entry| { !entry.file_name().to_string_lossy().starts_with(\"failure_\") })"
+  },
+  "next": {
+    "remaining_major_stages_if_successful": 1,
+    "next_stage": "R43_SIX_AXIS_INTEGRATION_AND_PACKAGE_GATE",
+    "final_integration_stage": true
+  }
+}

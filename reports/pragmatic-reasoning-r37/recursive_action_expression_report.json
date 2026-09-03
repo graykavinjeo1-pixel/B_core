@@ -1,0 +1,129 @@
+{
+  "stage": "R37_RECURSIVE_ACTION_EXPRESSION",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "diagnostic": {
+    "suite": "R37-RUN-0001",
+    "sha256": "2d93fc8e7e1afd2ad081fe515cc951dba742cb1b031dafd9f17fc2763ed37914",
+    "frozen_before_product_changes": true,
+    "baseline_passed": 0,
+    "baseline_total": 28,
+    "repair_progression": [
+      "0/28 authoritative baseline",
+      "6/28 after the first recursive AST parser and evaluator",
+      "20/28 after preserving parentheses through semantic-surface normalization",
+      "25/28 after protecting Korean report particles from fuzzy lexical rewriting",
+      "28/28 after protecting Korean report conjugations and classifying negated report filters as read-only selection queries"
+    ],
+    "final_passed": 28,
+    "final_total": 28,
+    "categories": {
+      "parenthesized_precedence": "4/4",
+      "complement_scope": "4/4",
+      "reported_relative_filter": "4/4",
+      "negated_report_filter": "4/4",
+      "predicate_union": "4/4",
+      "nested_relative_intersection": "4/4",
+      "malformed_or_unknown_fails_closed": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R37-TRANSFER-0001",
+    "sha256": "3c0511ea5ea9133687595ed98b7984f0b2b16a82311f5e8ed41f66e3c780a55c",
+    "held_out_until_after_diagnostic_pass": true,
+    "first_exposure_passed": 20,
+    "first_exposure_total": 20,
+    "final_passed": 20,
+    "final_total": 20,
+    "oracle_changed_after_first_exposure": false,
+    "product_repair_driven_by_held_out": false,
+    "first_exposure_failures": [],
+    "categories": {
+      "heldout_precedence_scope": "4/4",
+      "heldout_complement_scope": "4/4",
+      "heldout_relative_filters": "4/4",
+      "heldout_predicate_composition": "4/4",
+      "heldout_surface_order": "4/4"
+    }
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "cumulative_r1_r36_passed": 1483,
+  "cumulative_r1_r36_total": 1483,
+  "cumulative_r1_r37_passed": 1531,
+  "cumulative_r1_r37_total": 1531,
+  "verification": {
+    "metadata_discovered_canary_binaries_passed": 65,
+    "metadata_discovered_canary_binaries_total": 65,
+    "metadata_discovered_canary_cases_passed": 1538,
+    "metadata_discovered_canary_cases_total": 1538,
+    "adapter_unit_tests_passed": 324,
+    "adapter_unit_tests_total": 324,
+    "workspace_library_tests_passed": 847,
+    "workspace_library_tests_total": 847,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_HISTORICAL_FROZEN_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "build_cache_cleanup": {
+      "target": "I:\\B_Core\\target",
+      "bytes_before": 20782849438,
+      "files_removed": 14871,
+      "cargo_clean_reported_size": "19.4 GiB",
+      "target_exists_after": false
+    }
+  },
+  "safety": {
+    "unsupported_realization_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed_by_language_path": 0,
+    "language_reports_promoted_to_verified_execution": 0,
+    "questions_promoted_to_language_reports": 0,
+    "semantic_authority_from_action_query": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "ActionSetExpressionIR is a bounded recursive tree with source-set, subject-term, state-predicate, union, intersection, difference, and complement nodes.",
+    "Parentheses survive normalization and control recursive parse structure; each node stores evaluated ledger-bound action IDs and is hash-covered by its containing ActionSetQueryIR.",
+    "Recursive expressions are bounded to depth 8 and 32 nodes and reject malformed parentheses, unknown branches, duplicate or out-of-source IDs, and tampered cached evaluations.",
+    "Relative reported-completion filters intersect with a parenthesized subject union without turning a status question into a new language report.",
+    "Korean report particles and conjugations remain grammatical surfaces rather than being fuzzily rewritten into the report-document noun.",
+    "The original query surface supplies grouping and operators while independently resolved discourse membership supplies the source action set."
+  ],
+  "six_axis_assessment": {
+    "grammatical_composition": "BOUNDED_RECURSIVE_ACTION_SET_AST_PRESERVES_PARENTHESES_MIXED_PRECEDENCE_COMPLEMENT_SCOPE_AND_RELATIVE_FILTER_ATTACHMENT",
+    "discourse_and_topic_state": "PERSISTENT_TYPED_ACTION_GROUPS_SUPPLY_HASH_BOUND_SOURCE_SETS_WITHOUT_LANGUAGE_OWNING_MEMBERSHIP",
+    "deixis_and_ellipsis_resolution": "GROUP_REFERENCES_RESOLVE_BEFORE_RECURSIVE_EVALUATION_WHILE_INSERTED_MEMBER_SUMMARIES_CANNOT_BECOME_USER_OPERATORS",
+    "speech_intent_and_pragmatics": "POSITIVE_AND_NEGATED_REPORT_FILTERS_HAVE_READ_ONLY_SELECTION_FORCE_AND_DO_NOT_BECOME_OUTCOME_ASSERTIONS",
+    "result_plan_distinction": "PLAN_REPORTED_AND_VERIFIED_EXECUTION_AXES_REMAIN_SEPARATE_DURING_RECURSIVE_FILTERING",
+    "evidence_grounded_realization": "SELECTED_ACTION_OUTPUT_REMAINS_LEDGER_BOUND_WITH_ZERO_UNSUPPORTED_CLAIMS_OR_EXECUTION_PROMOTION"
+  },
+  "residual_limits": [
+    "This remains bounded deterministic language engineering and does not establish GPT-level open-domain language competence.",
+    "The recursive grammar is limited to depth 8, 32 nodes, controlled Korean and English operator surfaces, ledger subjects, and the existing action-state predicate catalog.",
+    "Arbitrary relational subqueries, unrestricted nested relative clauses, and open-domain property composition are not implemented.",
+    "Explicit discourse-group membership revision, nested composite-group identity, and unrestricted group ellipsis remain open.",
+    "Natural realization remains less varied than a generative language model even though its factual and execution claims remain evidence-bound."
+  ],
+  "next_program_order": [
+    "explicit discourse-group membership addition removal and composite-group identity",
+    "topic suspension restoration over revised and nested groups",
+    "broader typed deixis and ellipsis over composite discourse objects",
+    "compositional speech-intent and pragmatic inference with ambiguity preservation",
+    "request report observation and verified-result provenance across complex clauses",
+    "more natural evidence-grounded realization with claim-level support checks"
+  ],
+  "pre_existing_user_change_preserved": "crates/semantic-reasoning/src/growth_supervisor.rs",
+  "commit_performed": false,
+  "push_performed": false
+}

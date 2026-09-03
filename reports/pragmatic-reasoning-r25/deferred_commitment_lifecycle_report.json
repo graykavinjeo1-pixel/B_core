@@ -1,0 +1,110 @@
+{
+  "stage": "R25_DEFERRED_COMMITMENT_LIFECYCLE",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "diagnostic": {
+    "suite": "R25-RUN-0001",
+    "sha256": "b71932a5101067aa6e3357464cea933cf523fda6c4d3285b252bd092e7169abe",
+    "frozen_before_product_changes": true,
+    "initial_passed": 0,
+    "initial_total": 24,
+    "final_passed": 24,
+    "final_total": 24,
+    "initial_category_passes": {
+      "pending_commitment_persistence": "0/4",
+      "language_claim_cannot_activate": "0/4",
+      "verified_evidence_activation": "0/4",
+      "mismatched_or_contradicted_evidence": "0/4",
+      "pending_commitment_withdrawal": "0/4",
+      "exactly_once_activation": "0/4"
+    }
+  },
+  "held_out": {
+    "suite": "R25-RUN-0002",
+    "frozen_sha256": "2cabeadf763c426e96354ba76884e4361646f082c7f0d0486c547b404e9db83e",
+    "first_semantic_execution_passed": 15,
+    "first_semantic_execution_total": 16,
+    "first_failures": [
+      "R25_TRANSFER_3: the evidential statement `백업이 확인됐어` was incorrectly classified as a withdrawal because `됐어` was matched as an unrestricted substring"
+    ],
+    "final_passed": 16,
+    "final_total": 16,
+    "oracle_changed_after_first_semantic_execution": false,
+    "product_repair_after_held_out": true,
+    "repair_scope": "Korean withdrawal morphology now accepts `됐어` only as a standalone form or leading discourse marker. It no longer fires inside an evidential predicate. No held-out sentence identity or expected output was added to product code."
+  },
+  "fresh_blind_tasks_passed": 40,
+  "fresh_blind_tasks_total": 40,
+  "cumulative_r1_r25_passed": 987,
+  "cumulative_r1_r25_total": 987,
+  "verification": {
+    "canary_binaries_passed": 41,
+    "canary_binaries_total": 41,
+    "adapter_unit_tests_passed": 280,
+    "adapter_unit_tests_total": 280,
+    "workspace_tests_passed": 804,
+    "workspace_tests_total": 804,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "forbidden_dependency_audit": "PASS"
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed": 0,
+    "unsupported_explanation_facts": 0,
+    "semantic_authority_from_language_claim": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "hash-bound DeferredActionCommitmentIR persists normalized antecedent, action, status, turn history, and evidence identifiers in conversation state",
+    "natural-language assertions remain dialogue evidence and cannot satisfy or activate a pending commitment",
+    "a separate typed host API accepts condition evidence only when conversation, commitment, condition hash, disposition, source, and receipt hash agree",
+    "verified-satisfied evidence activates exactly one GoalIR while verified-contradicted evidence retires the commitment",
+    "withdrawal retires pending commitments as well as active goals",
+    "replayed, mismatched, tampered, or non-pending receipts fail closed",
+    "activation creates a deliberable goal but performs no external action",
+    "Korean and English postposed conditional clauses are represented without direct sentence-to-execution dispatch"
+  ],
+  "scope_assessment": {
+    "grammatical_composition": "ADVANCED_FOR_BOUNDED_KOREAN_AND_ENGLISH_POSTPOSED_CONDITIONALS_NOT_GENERAL_GRAMMAR",
+    "discourse_and_topic_state": "ADVANCED_WITH_HASH_BOUND_PENDING_ACTIVATED_CONTRADICTED_AND_WITHDRAWN_COMMITMENT_STATE",
+    "deixis_and_ellipsis_resolution": "UNCHANGED_BOUNDED_SUPPORT_GENERAL_RESOLUTION_REMAINS_OPEN",
+    "speech_intent_and_pragmatics": "ADVANCED_FOR_CONDITIONAL_AUTHORITY_LANGUAGE_CLAIMS_REMAIN_NON_AUTHORITATIVE",
+    "result_plan_distinction": "ADVANCED_PENDING_COMMITMENT_ACTIVE_GOAL_AND_EXECUTED_RESULT_ARE_SEPARATE",
+    "evidence_grounded_realization": "ADVANCED_FOR_TYPED_RECEIPTS_BUT_SUBSTANTIVE_DOMAIN_REALIZATION_REMAINS_OPEN"
+  },
+  "trust_boundary": {
+    "statement": "Receipt hashing provides integrity binding, not independent truth or caller authentication.",
+    "current_authority": "The host is responsible for admitting only trusted verifier, execution, or authorization receipts through the typed evidence API.",
+    "not_claimed": "No claim is made that an unkeyed SHA-256 receipt authenticates an external verifier."
+  },
+  "next_program_order": [
+    "general grammatical composition",
+    "discourse and topic state",
+    "deixis and ellipsis resolution",
+    "speech intent and pragmatic inference",
+    "execution-result versus plan distinction",
+    "evidence-grounded sentence realization"
+  ],
+  "next_residual": [
+    "nested and conflicting commitments across multiple speakers",
+    "credentialed or verifier-authenticated evidence beyond the current host trust boundary",
+    "multiple pending conditional graphs and compound antecedents",
+    "general Korean and English morphology and syntactic composition",
+    "long-distance and ambiguous deixis or ellipsis with explicit uncertainty",
+    "substantive evidence-backed answer generation rather than bounded acknowledgement",
+    "open-vocabulary generative fluency"
+  ],
+  "commit_performed": false,
+  "push_performed": false
+}

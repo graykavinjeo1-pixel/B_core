@@ -1,0 +1,163 @@
+{
+  "stage": "R44_CONVERSATIONAL_DEFINITION_GROUNDING",
+  "status": "PASS",
+  "sealed": true,
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "commit_created": false,
+  "push_performed": false,
+  "diagnostic": {
+    "suite": "R44_CONVERSATIONAL_DEFINITION_GROUNDING_DIAGNOSTIC",
+    "original_preimplementation_sha256": "ACCBC82131182C55A44D1ABD24B33A27355A2DA2625D6AC6A830028182141C28",
+    "preimplementation_baseline_passed": 0,
+    "preimplementation_baseline_total": 28,
+    "pre_product_harness_compatibility_correction": {
+      "reason": "The response extension is backward-compatible and deliberately retains B_CORE_CONVERSATION_TURN_RESPONSE_11, so an erroneous schema-12 expectation was corrected before product execution.",
+      "diagnostic_sha256_after_correction": "F8B4CEBE6532EC422B95E86C0C5FE0CD9A01F5B177F409D474A74A5CECAD86DE",
+      "transfer_sha256_after_correction": "34DB9E1ED9AA59BD5CE0B2E19DF80931C5FFA869D29F05EB91093A9C18ED0F7C"
+    },
+    "first_product_execution_passed": 20,
+    "first_product_execution_total": 28,
+    "oracle_corrections_after_first_execution": 3,
+    "oracle_correction_reasons": [
+      "Two DELETE cases were corrected to the canonical EXECUTE PlanIR intent.",
+      "A Korean alias was no longer expected to gain an unprovided Romanized English alias."
+    ],
+    "product_repairs": [
+      "Recognize asserted definition paraphrases while rejecting questioned, reported, quoted, ambiguous, and hypothetical definitions.",
+      "Allow an ASCII lexical alias to take Korean predicate morphology without duplicating semantics.",
+      "Recognize bounded Korean and English repeat-ellipsis surface variants.",
+      "Resolve repeat ellipsis through exactly one non-withdrawn action-ledger record when the user explicitly restores an older topic; ambiguous histories fail closed."
+    ],
+    "final_sealed_sha256": "D7277B907DE5A6F0AB2DA17D79FC329D84D9F3B1A1DEBDAA310C4C283659785B",
+    "final_passed": 28,
+    "final_total": 28,
+    "categories": {
+      "korean_opaque_definition": 4,
+      "english_opaque_definition": 4,
+      "shared_semantic_payload": 2,
+      "alias_chain": 2,
+      "learned_scope": 4,
+      "definition_persistence": 4,
+      "definition_rejection": 4,
+      "learned_discourse_reuse": 4
+    }
+  },
+  "held_out_transfer": {
+    "suite": "R44_CONVERSATIONAL_DEFINITION_GROUNDING_TRANSFER",
+    "original_preimplementation_sha256": "9BCBE1F8F534F76FBA87CFF7154E95FCA2E871758D78BC18E57B7CDF79BB998A",
+    "held_out_until_after_diagnostic_pass": true,
+    "pre_first_exposure_sha256": "780FAB996FE2089C426AFAC833A1D48BBEC30BB34233D8C1A5B537FEEBB31A1E",
+    "first_exposure_passed": 16,
+    "first_exposure_total": 20,
+    "oracle_corrections_after_first_exposure": 2,
+    "oracle_correction_reason": "Two why-questions presupposed an unverified failure or slowness. The existing fail-closed presupposition boundary was correct, so the oracle now requires no plan instead of silently accepting the premise.",
+    "product_repairs_after_first_exposure": [
+      "An action request with no semantic frame, inferred goal, or selected pragmatic node now requires clarification instead of falling through to a generic PLAN."
+    ],
+    "cumulative_regression_repair": "The productive English forms recheck and rechecked were attached to the existing INVESTIGATE operator, closing one R34 transfer regression without weakening the unresolved-predicate boundary.",
+    "final_sealed_sha256": "29CFF8EEC7B2A31F3EF05DC324ABB8F5CCE14E7102AE21E2D45AFB3751EBF6E6",
+    "final_passed": 20,
+    "final_total": 20,
+    "categories": {
+      "definition_paraphrase": 4,
+      "cross_language_alias_chain": 4,
+      "delayed_cross_language_reuse": 4,
+      "learned_scope_transfer": 4,
+      "adversarial_definition": 4
+    }
+  },
+  "implementation": {
+    "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_11",
+    "definition_grounding_schema": "B_CORE_DEFINITION_GROUNDING_IR_1",
+    "predicate_alias_binding_schema": "B_CORE_PREDICATE_ALIAS_BINDING_IR_1",
+    "new_semantic_concept_generation": 0,
+    "binding_requires_exactly_one_existing_operator": true,
+    "alias_of_alias_reuses_existing_semantic_payload": true,
+    "semantic_payload_hash_separate_from_binding_hash": true,
+    "semantic_payload_mutated": false,
+    "semantic_authority": false,
+    "external_action_execution_authorized": false,
+    "unknown_directive_generic_plan_fallback": false,
+    "withdrawn_historical_action_reactivation": false,
+    "ambiguous_historical_action_selection": false
+  },
+  "verification": {
+    "fresh_r44_tasks_passed": 48,
+    "fresh_r44_tasks_total": 48,
+    "r1_r44_row_cases_passed": 1867,
+    "r1_r44_row_cases_total": 1867,
+    "direct_response_special_cases_passed": 7,
+    "direct_response_special_cases_total": 7,
+    "aggregate_adapter_cases_passed": 1874,
+    "aggregate_adapter_cases_total": 1874,
+    "metadata_discovered_workspace_canaries_passed": 83,
+    "metadata_discovered_workspace_canaries_total": 83,
+    "adapter_library_tests_passed": 371,
+    "adapter_library_tests_total": 371,
+    "workspace_library_tests_passed": 894,
+    "workspace_library_tests_total": 894,
+    "workspace_binary_tests_passed": 1,
+    "workspace_binary_tests_total": 1,
+    "cargo_test_workspace": "PASS",
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_BOUNDED_HISTORICAL_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "new_r44_unit_invariants": 12,
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "temporary_r44_debug_markers": 0
+  },
+  "portable_package": {
+    "path": "pakage",
+    "package_id": "B_CORE_PORTABLE_PRODUCT_CORE_R44_WORKTREE_ABI1",
+    "source_base_commit": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+    "source_worktree_status": "UNCOMMITTED_R13_R44_LANGUAGE_CORTEX_INTEGRATION",
+    "adapter_product_files_synced": 43,
+    "adapter_product_hash_mismatches": 0,
+    "core_files_synced": 20,
+    "core_hash_mismatches": 0,
+    "research_canaries_included": 0,
+    "minimal_runtime_canaries_passed": 4,
+    "minimal_runtime_canaries_total": 4,
+    "workspace_unit_tests_passed": 398,
+    "workspace_unit_tests_total": 398,
+    "cargo_test_workspace": "PASS",
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_BOUNDED_HISTORICAL_HARNESS_EXCEPTIONS",
+    "network_or_llm_cargo_dependency_hits": 0,
+    "adapter_owns_semantic_state": false,
+    "semantic_reasoning_workspace_member": false,
+    "recursive_workspace_member": false,
+    "default_runtime": "RUST_ONLY",
+    "python_paddle_ocr": "OPTIONAL_DISABLED_BY_DEFAULT"
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_cortex_path": 0,
+    "recursive_source_mutations": 0,
+    "unsupported_realization_claims": 0,
+    "language_semantic_authority": false,
+    "language_execution_authority": false,
+    "preexisting_growth_supervisor_user_change_preserved": true
+  },
+  "build_cache_cleanup": {
+    "root_target_files_removed": 23062,
+    "root_target_bytes_removed": 31237561802,
+    "package_target_files_removed": 5434,
+    "package_target_bytes_removed": 3498595757,
+    "root_target_absent_after_cleanup": true,
+    "package_target_absent_after_cleanup": true
+  },
+  "completion_boundary": {
+    "r44_complete": true,
+    "broad_gpt_level_objective_complete": false,
+    "next_engineering_stage": "R45_PRODUCTIVE_GRAMMATICAL_COMPOSITION_GENERALIZATION",
+    "unrestricted_gpt_level_equivalence_claimed": false
+  }
+}

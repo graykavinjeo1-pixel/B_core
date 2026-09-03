@@ -1,0 +1,16 @@
+{
+  "run": "R20-RUN-0001",
+  "corrections": [
+    {
+      "reason": "A singular proposition immediately after two separate source turns has a valid recency antecedent; the test was changed to ask actual-world status over the competing records.",
+      "before_sha256": "3a01e3b712b03e356b28237d978e5bca9ccf57507cabb1e0ae598190726bc88a",
+      "after_sha256": "869e232b234d48ba7876fc16e7a3e280437737c68eff85466b9ec43e9a94a9dc",
+      "baseline_after_correction": "1/24"
+    },
+    {
+      "reason": "The harness compared English 'No execution result' case-sensitively and expected ANALYZE although the sealed canonical predicate is INVESTIGATE.",
+      "after_sha256": "da8d38f63db0f37759789a4b1cd55ca5b2e5585f89a3143ab68d67fbbffabe51",
+      "input_or_product_semantics_changed": false
+    }
+  ]
+}

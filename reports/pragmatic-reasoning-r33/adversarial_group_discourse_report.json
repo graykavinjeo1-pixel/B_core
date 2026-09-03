@@ -1,0 +1,133 @@
+{
+  "stage": "R33_ADVERSARIAL_GROUP_DISCOURSE",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "diagnostic": {
+    "suite": "R33-RUN-0001",
+    "sha256": "113257c308797f5a630eaf8ab28db54c56029494c77476e6059a3616bc9e4d6d",
+    "frozen_before_product_changes": true,
+    "baseline_passed": 6,
+    "baseline_total": 28,
+    "repair_progression": [
+      "6/28 authoritative baseline",
+      "27/28 after plural action, plural proposition, and correction-aware group mechanisms",
+      "28/28 after discourse-repair prefixes were separated from actor identity"
+    ],
+    "final_passed": 28,
+    "final_total": 28,
+    "categories": {
+      "plural_action_status_query": "4/4",
+      "plural_action_language_report": "4/4",
+      "plural_action_verified_execution": "4/4",
+      "plural_multi_speaker_proposition_reference": "4/4",
+      "correction_aware_speaker_group": "4/4",
+      "explicit_focus_possessive_bridge": "4/4",
+      "group_reference_ambiguity_fails_closed": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R33-TRANSFER-0001",
+    "sha256": "6c56078c1631349006b3f913a0472a39b47b199433349dfd36d3915cbd21beba",
+    "held_out_until_after_diagnostic_pass": true,
+    "first_exposure_passed": 19,
+    "first_exposure_total": 20,
+    "first_exposure_failure": "R33X_QUERY_EN_1: the bounded action-state vocabulary recognized status but not its state synonym",
+    "final_passed": 20,
+    "final_total": 20,
+    "oracle_changed_after_first_exposure": false,
+    "product_repair_driven_by_held_out": true,
+    "held_out_driven_repair": "Added state/states to the general state-noun class and fixed no case identity or expected output in product code",
+    "categories": {
+      "heldout_plural_action_query": "4/4",
+      "heldout_plural_action_report": "4/4",
+      "heldout_plural_action_verified": "4/4",
+      "heldout_multi_speaker_group": "4/4",
+      "heldout_group_ambiguity": "4/4"
+    }
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "cumulative_r1_r33_passed": 1339,
+  "cumulative_r1_r33_total": 1339,
+  "verification": {
+    "metadata_discovered_canary_binaries_initial_passed": 58,
+    "metadata_discovered_canary_binaries_initial_total": 61,
+    "initial_cumulative_regressions": [
+      "action-state-boundary-canary:R30_HOST_3",
+      "action-state-boundary-transfer-canary:R30_TRANSFER_2",
+      "typed-deixis-ellipsis-transfer-canary:R28_TRANSFER_4"
+    ],
+    "cumulative_regression_cause": "Non-action possessive-focus FRAME identifiers were passed as action GOAL hints after multi-hint integration",
+    "cumulative_regression_repair": "Only action-inheriting binding kinds may contribute action goal hints",
+    "metadata_discovered_canary_binaries_final_passed": 61,
+    "metadata_discovered_canary_binaries_final_total": 61,
+    "adapter_unit_tests_passed": 305,
+    "adapter_unit_tests_total": 305,
+    "workspace_library_tests_passed": 828,
+    "workspace_library_tests_total": 828,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_HISTORICAL_FROZEN_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "build_cache_cleanup": {
+      "target": "I:\\B_Core\\target",
+      "bytes_before": 21733130377,
+      "cargo_clean_files_removed": 17021,
+      "cargo_clean_reported_size": "20.2 GiB",
+      "target_exists_after": false
+    }
+  },
+  "safety": {
+    "unsupported_realization_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed_by_language_path": 0,
+    "language_reports_promoted_to_verified_execution": 0,
+    "attributed_propositions_promoted_to_world_truth": 0,
+    "semantic_authority_from_group_reference": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "Exactly-two and all-action selectors resolve active action sets into one group binding plus one typed member binding per action.",
+    "Multi-goal action analysis emits separate language reports and grounded claims without promoting reported completion to verified execution.",
+    "Plural proposition reference resolves only when exactly two active propositions have two distinct attributed sources; larger or non-unique sets fail closed.",
+    "Explicit corrections supersede the latest active proposition from the same normalized source even when state vocabulary does not expose a comparable lexical axis.",
+    "Discourse-repair prefixes such as Correction: are removed at actor extraction and never become part of actor identity.",
+    "Possessive focus bridging remains non-authoritative, and its frame identity is excluded from action-goal hint routing.",
+    "Grounded group realization cites each selected action and accepted receipt while preserving planned, reported, and verified states."
+  ],
+  "six_axis_assessment": {
+    "grammatical_composition": "COORDINATED_ACTIONS_RETAIN_DISTINCT_TYPED_GOALS_AND_GROUP_MEMBERSHIP",
+    "discourse_and_topic_state": "ACTIVE_ACTION_AND_ATTRIBUTED_PROPOSITION_SETS_ARE_HASH_BOUND_AND_REVISION_AWARE",
+    "deixis_and_ellipsis_resolution": "PLURAL_ACTION_PROPOSITION_AND_POSSESSIVE_FOCUS_BINDINGS_ARE_TYPED_AND_AMBIGUITY_FAILS_CLOSED",
+    "speech_intent_and_pragmatics": "STATUS_QUERIES_REPORTS_CORRECTIONS_AND_COMPARISON_REQUESTS_REMAIN_DISTINCT",
+    "result_plan_distinction": "PLANNED_LANGUAGE_REPORTED_AND_VERIFIED_EXECUTION_STATES_REMAIN_SEPARATE_FOR_EACH_GROUP_MEMBER",
+    "evidence_grounded_realization": "MULTI_ACTION_OUTPUT_IS_CLAIM_LEVEL_GROUNDED_AND_UNSUPPORTED_FACTS_REMAIN_ZERO"
+  },
+  "residual_limits": [
+    "This remains a bounded deterministic Language Cortex and does not establish GPT-level general language competence.",
+    "Plural proposition grouping currently requires exactly two active distinct sources rather than arbitrary discourse groups and memberships.",
+    "Action group markers and state-query paraphrases use a compact inspectable vocabulary rather than unrestricted paraphrase understanding.",
+    "Possessive bridging is bounded to explicit current discourse focus and does not solve unrestricted associative bridging.",
+    "Long conversations with nested group membership, interruptions, and open-vocabulary repairs require broader frozen suites.",
+    "Natural realization is structurally faithful but still less flexible and natural than a generative language model."
+  ],
+  "next_program_order": [
+    "open-vocabulary pragmatic paraphrase transfer across the six-axis integrated path",
+    "longer group membership and speaker-set tracking across interruptions and topic returns",
+    "broader associative bridging with typed ambiguity and provenance",
+    "more natural evidence-grounded realization without granting the language layer semantic authority"
+  ],
+  "pre_existing_user_change_preserved": "crates/semantic-reasoning/src/growth_supervisor.rs",
+  "commit_performed": false,
+  "push_performed": false
+}

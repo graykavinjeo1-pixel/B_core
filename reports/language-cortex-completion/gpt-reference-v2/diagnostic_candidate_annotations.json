@@ -1,0 +1,3348 @@
+{
+  "schema": "B_CORE_GPT_REFERENCE_CANDIDATE_BATCH_IR_1",
+  "suite_id": "B_CORE_GPT_REFERENCE_V2_FINAL",
+  "responses": [
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Make the Axiom cache the first thing you assess.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "3f083ea3aeccfef4b566cddaa2a4ac304956443415fe694eda6c13f46e7ae5f6",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Before that, outline the signals that matter for the Axiom cache.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "2cdcdc291c641d96337c1762b10b445be8313c8ef9242889f3018f9c2fe5dbf6",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T3",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the We are discussing an approach, not a Axiom cache finding yet, correct. I will narrow the cause of the We are discussing an approach, not a Axiom cache finding yet, correct. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "2de77671bdb3b7b9aaf2c03eff047cf411508dd18973482af9da551e93b64029",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-01-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Use read-only inspection for the Axiom cache; no writes.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "6889d448138441a02b6a682103360a6d4f080fbcf52fe37ae9cba778318e918a",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Put the Cipher service at the front of the diagnostic queue.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "f97bb4cc91bec17e48aa03ee50ef5d67b43104eb593d5b868d20ebf88dc35a9c",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the relevant evidence of the stated proposition. I will explain the stated proposition. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "3bc35c002f0339f6d9f86d48e3e3ec9c69d80f038fe40faeecfadaba071955ec",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Nothing has actually been established about the Cipher service yet, right?”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "93c55ac8b09c1e9d38fc57b0114c75b9ccfc9f819350427feaf1c7781d83580c",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-EN-02-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Observe the Cipher service without changing its state.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "8c47bde51f67a7a8bf997f4bd55683663fe2d7c842f4d0316d0f8d0bdccc3a3c",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “진단 순서에서 Axiom 캐시를 맨 앞에 둬.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "b728048aa512305e865ed4ad82aee0b28809145e00be27e38fcd799bcca1ec40",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Axiom 캐시를 판단할 때 볼 신호를 먼저 정리해.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "612d00a264cc7b65847ea32216fa4b28389255e86dd968f3632884d342d6ad3d",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T3",
+      "response_act": "DEFINITION_GROUNDING",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:DEFINITION_GROUNDING"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "질문·가정·인용·전언 속 정의는 사용자가 확정한 정의로 받아들이지 않았어.",
+      "candidate_surface_sha256": "db8d19134150a250a2fbacf0950f56f663781c35d36314f8e807162744c3aa82",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-01-T4",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_CACHE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_CACHE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_CACHE"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 Axiom 캐시의 현재 상태를 확인할게. Axiom 캐시의 원인을 좁힐게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "a58e910455b4ce28b8a054eef93dfce95e3e66d06fa1389859ddb2032f4f0d24",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T1",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 Cipher 서비스의 현재 상태를 확인할게. Cipher 서비스의 원인을 좁힐게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "7d869f0264f0c418da140a7d43aca6ffbab35020b165a982471cc3a8271cbab5",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 stated proposition의 관련 근거를 확인할게. stated proposition를 설명할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "85f18b520f495cb265bfafb8721bfe55b56a3b21ee316e0d99e29c595045ac7c",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T3",
+      "response_act": "PLAN_RESULT_STATUS",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_RESULT_STATUS"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED",
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Cipher 서비스는 아직 계획만 있는 상태야. Cipher 서비스에는 아직 실행 결과는 없어.",
+      "candidate_surface_sha256": "f457889a22ecacf7a85ea10e5db4ec691fc1e77356e653571d14e81a5633e5f6",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C01-KO-02-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Cipher 서비스에는 쓰지 말고 관찰만 해.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "771e1c63390191adc7052307198118d7d785110d0c5f9569c90ab8b388c2c256",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “I keep losing time to the Echo service this week.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "13bb0eff3a649c75c3aa05c56b85e24ff6b07a51d53d5e26fce3ec600c0aa233",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:SURFACE:WHAT"
+      ],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Help me narrow down what is behind it.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "e4c240eddf77ba8d95413eef80e79693111af8551c65a15150acdc5ca74425fe",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “I have not authorized any changes, though.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "9ef59e93a6cedae10fecb21f847eaf6f93ccfb229d494ad941f9f014dcd08f48",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-01-T4",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "DERIVED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:CONDITIONAL_GUARD:DERIVED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the relevant evidence of the stated proposition. I will explain the stated proposition. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "3bc35c002f0339f6d9f86d48e3e3ec9c69d80f038fe40faeecfadaba071955ec",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Another day, another problem with the Grove server.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "756f705a3d2c937450525437ffca35d46abbd951c3b126c4b97e038b1d24a5ae",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T2",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:CLARIFICATION_REQUEST"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Could you add a little more detail about what you want?",
+      "candidate_surface_sha256": "d95064cbf3e304fece37a174b577b02eb2f3b0a1aab24bba289e1eb4146e0d74",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Keep actual configuration changes outside the boundary.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "4346927f94fd572d29886b00214f951cf35c60a2b1f4caba6679d459bed2f410",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-EN-02-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Distinguish facts about the Grove server from guesses.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "d5bc19b5899ea5c1c9288872de803c5d1a7f6f34b0e31f1064dc5b3c4dda9dc8",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “요 며칠 Echo 서비스 때문에 계속 막히는데.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "47a12b933e1e12fe7482a4b9fe2f1161bc34d80fa28a7a1d766071056c086503",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T2",
+      "response_act": "DISCOURSE_ANSWER",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:DISCOURSE_ANSWER"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:ATTRIBUTED_DIALOGUE_RECORD:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "질문은 ‘그러는지 좁히는 걸 도와줘.’를 전제로 하지만, 대화에서는 참으로 검증되지 않았어. 그 전제를 받아들여 답을 만들지 않을게.",
+      "candidate_surface_sha256": "91184c978edda51cdf7265efa4d2efacbd221fab3a6e1e47dad1e46eec8622e5",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “바꾸는 건 아직 허용한 적 없어.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "50899900d6cd828f429300af2fede688cecece36c67e2938b2287a38c69551e7",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-01-T4",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "DERIVED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:CONDITIONAL_GUARD:DERIVED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 stated proposition의 관련 근거를 확인할게. stated proposition를 설명할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "85f18b520f495cb265bfafb8721bfe55b56a3b21ee316e0d99e29c595045ac7c",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “또 Grove 서버 문제라니 기운 빠진다.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "7d4088d1febc8c5d3c04badd6e0edaa5df039f0dbd93ea4ff3afd3ec2b902b75",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVER"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:ELLIPSIS:ENTITY:C_SERVER"
+      ],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 Grove 서버의 현재 상태를 확인할게. Grove 서버의 원인을 좁힐게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "c62aed367b2062df9ed8bf3d9e98a7476131437b58a7d547c1b830c9078194e8",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “단 실제 설정 변경은 빼 둬.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "307840af12fca56c7fe51531e2b5d5ec7fd230174f540d3dff6718513b615bd1",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C02-KO-02-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Grove 서버에 관해 사실로 굳어진 것만 구분해 줘.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "ecd986d5e1cc0f5b5c09e4635baa1629a6460949750b7def68ee63a35eabdf86",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Set up recovery steps for the Indigo server and the Jasper worker.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "de4ae2127e8dfd8a1328f8a3433c7dcabee28f15c8e3823033253747295dcd54",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_SERVER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_SERVER"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the relevant evidence of the Indigo server. I will explain the Indigo server. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "61e5d0c70087cf9229bf0cc63df902c309d8aa3ab44346aa7d550bd813b50575",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T3",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_WORKER",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_WORKER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_WORKER"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_WORKER"
+      ],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the relevant evidence of the Jasper worker. I will explain the Jasper worker. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "79a68e15990b8e4cc6efc0851bd85190863a2a4464c2ff39eb981176d3b4dcc9",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-01-T4",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the Neither target was really recovered, including the Jasper worker, correct. I will narrow the cause of the Neither target was really recovered, including the Jasper worker, correct. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "c2e5dee0090f0525d0ef640dfff882d97d82e8dfe9601fe940dbc53012d3e466",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Plan fixes for both the Kinetic file and the Lotus code.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "d1ff71321ad3ee3eacd01dc08de18f7f0fcb6c53afe1f34714e57eff76e3aa61",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Shelve the fixes and walk through the first Kinetic file issue.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "96c5dbd3858ac35c88c5b04ecab7133b0b5439d46da1e05d54ef735eeafb683a",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Correction—the later Lotus code, not the first item.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "7ecef158c49124c831656a64b91e07f1f79217026a876e3b926883b8f4033591",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-EN-02-T4",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the relevant evidence of the stated proposition. I will explain the stated proposition. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "3bc35c002f0339f6d9f86d48e3e3ec9c69d80f038fe40faeecfadaba071955ec",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Indigo 서버와 Jasper 워커 복구안을 같이 준비해.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "3fc89304e869e64eb3f068635ec934b5e24a61ab1a6af2881db23af35fb936cc",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 Indigo 서버 원인의 관련 근거를 확인할게. Indigo 서버 원인을 설명할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "75f068d015a945076d10794e185e4a0dd2f679d7781303dfd767ecde3467d25d",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T3",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_EXPLANATION",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_EXPLANATION",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_EXPLANATION"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 아니, 설명 대상은 Jasper 워커 쪽이야의 관련 근거를 확인할게. 아니, 설명 대상은 Jasper 워커 쪽이야를 설명할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "56c5e9a25c059b04decbfe049befd43a99acd18c589f91a8457153ef3e87cc87",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-01-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “결국 두 대상 모두 실제 복구된 건 아니지? Jasper 워커도 포함해서.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "0782b0c68d088bf1bbc94b50afd898798252f0c311128be73acf2cfcc5a3354e",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Kinetic 파일하고 Lotus 코드를 고칠 계획을 세워 줘.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "a99fed0b34d549145fba6f71648aecbdc7408f9a7501cafd2800dde0547ccded",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_FILE",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:EXPLAIN:C_FILE",
+        "GOAL_SUBJECT:REPAIR:C_FILE",
+        "RELATION:SEQUENCE:EVENT:REPAIR:REPAIR:LIVE:EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_FILE",
+        "THEME:REPAIR:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:ENTITY:C_FILE"
+      ],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 Kinetic 파일의 현재 상태를 확인할게. Kinetic 파일을 수리할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야. 알겠어. 먼저 Kinetic 파일의 관련 근거를 확인할게. Kinetic 파일을 설명할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야. 이 계획에는 아직 실행 결과는 없어.",
+      "candidate_surface_sha256": "0e2e625a22f54c378dd718fd3173655dca37700d4aafcf93e93df6bfe26beb88",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T3",
+      "response_act": "DEFINITION_GROUNDING",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:DEFINITION_GROUNDING"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "정의에서 이미 알려진 의미 연산자를 찾지 못해 어휘 연결을 만들지 않았어.",
+      "candidate_surface_sha256": "bd8a90c724dbcaba153d28b67e291acdbd73e1da11f8c5678feb004c51fee2b8",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C03-KO-02-T4",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Kinetic 파일에 관해 검증된 실행 결과는 아직 없어. Kinetic 파일은 아직 계획만 있는 상태야.",
+      "candidate_surface_sha256": "eb3ff225d1499bb328e212be004482ade75ff18f1b79eed504d045a3716a1dde",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T1",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_FILE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the Mosaic file before Nimbus code. I will narrow the cause of the Mosaic file before Nimbus code. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "913d615d326754d1a538632a1ebc9b9124eaca5e479c5f0d1e71c6b42f94c0d6",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T2",
+      "response_act": "INTERACTION_BOUNDARY",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INTERACTION_BOUNDARY"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "I recorded ‘explain why the item after the mosaic file, namely the nimbus code, is being reviewed.’ as a condition-pending request. The action is not active until the antecedent is verified. This interpretation does not authorize a new execution or establish an outcome as fact.",
+      "candidate_surface_sha256": "a079cc4ac338fd37591ad4b7937eaeca1f3f5477a39b528db265f5196bf128dd",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Give the preceding item that rationale as well.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "ae4148c5ebde53edd00f58f8647e1e06812c5f0b7e6403c8446cc4b7358e809a",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-01-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Neither the Mosaic file nor the Nimbus code is writable.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "c19e7a654892d739c20e74cae4092f57a04cdf222f1bdac4fcc9011e382544a9",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Use this order: the Opal cache first and the Pollen queue afterward.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "0ed45324c5e28c3256448a901cd408cc29ad60adaaa5e87326b722321a905c3a",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the completion conditions of the What is the purpose of checking the later item?. I will plan the What is the purpose of checking the later item?. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "9547398f367449d08f579decd683fd93e61b2ef52a70fef3919940ef21fe6f7a",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Apply that explanation to the earlier one too.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "5bcbc984655f76bd8d91eafa6b91ddb311d3e381c1485dbe21a17f622c84e63a",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-EN-02-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Treat both—the Opal cache and the Pollen queue—as read-only.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "3b9f89bd9ea0b2e89ed806284788cb624c40172fc8a48cc7fa2f9832727849a9",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Mosaic 파일를 본 다음 Nimbus 코드를 검토하는 순서로 해.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "939a21698bb56786bfa4a8bb8270b0950c5bd1ddcb2f80363e5e9dcdee35f6b9",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T2",
+      "response_act": "DISCOURSE_ANSWER",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "DERIVED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:DISCOURSE_ANSWER"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:ATTRIBUTED_DIALOGUE_RECORD:DERIVED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "질문은 ‘mosaic 파일 뒤에 오는 항목을 왜 보는지도 말해.’를 전제로 하지만, 대화에서는 참으로 검증되지 않았어. 그 전제를 받아들여 답을 만들지 않을게.",
+      "candidate_surface_sha256": "7cac6d54a7738de040ae24942cd572bbbbbfa7a54bf3f326e51ed2f782a3a050",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T3",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_EXPLANATION",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_EXPLANATION",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_EXPLANATION"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 설명을의 관련 근거를 확인할게. 설명을을 설명할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "551ebeafd98257bb1a878f90ea3bdf29a92e2b5a35a13ff00e6cfd115c000f76",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-01-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Mosaic 파일와 Nimbus 코드 어느 쪽도 쓰기 작업은 금지야.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "76486802977de17ff353a9e277f21a8535419f7c5cd790503e70ce1c0ecaa10f",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “검토 순서를 Opal 캐시 먼저, Pollen 큐 나중으로 잡아.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "1213519b39a06e36470c68acc4c4e5615e0a8840f0b165e50bc2759bf92be3d1",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 나중 항목의 점검 목적은 뭐야의 현재 상태를 확인할게. 나중 항목의 점검 목적은 뭐야의 원인을 좁힐게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "609de0df62aa46196ff5fa446cec47596f661028aaedd88d0bde11c2bcfcf737",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T3",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_EXPLANATION",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_EXPLANATION",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_EXPLANATION"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 설명을의 관련 근거를 확인할게. 설명을을 설명할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "551ebeafd98257bb1a878f90ea3bdf29a92e2b5a35a13ff00e6cfd115c000f76",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C04-KO-02-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “방금 묶은 둘, Opal 캐시와 Pollen 큐는 읽기 전용이야.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "5b517b5f22eb96f918ecf17b171d74b27b9a20577e13c45400ec3465c5151a8f",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T1",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the anomaly around Quartz cache. I will narrow the cause of the anomaly around Quartz cache. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "0f437234f9b2abcefb32351a86348032434d2d52e43cd16783d23a9516683638",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Put that thread on the shelf and walk me through the Rook queue layout.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "ac2432c6a25409824aff018c5ff853e794595707ff56fcb937e1c1d988c43323",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Pick back up the issue we parked first.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "0902654077a0eaf5246e88f805850d9217eb52bd2944ad29d4cade43c702ebe4",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-01-T4",
+      "response_act": "PLAN_RESULT_STATUS",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_RESULT_STATUS"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED",
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "The anomaly around Quartz cache is still only a plan. No execution result is recorded for the anomaly around Quartz cache, so it has not been verified as executed.",
+      "candidate_surface_sha256": "ce01bbe781f99b27e6b8ff087a1f99e3f29dad2649236e2616f95f6542ce9d0a",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Begin with the current Saffron service situation.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "0a06dec85cfa0514776a3b4350d8ca7da50072aa600aef7884190186ea5a4d00",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Set it aside; I want the architecture of the Timber log now.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "09c8eb173afe6b04a911501bbebf119ca8dd9ea5b274fb1176d2df60c2948c31",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T3",
+      "response_act": "TOPIC_TRANSITION",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "DERIVED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:TOPIC_TRANSITION"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:DISCOURSE_TOPIC_TRANSITION:DERIVED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. Let's return to the conversation that was set aside at the beginning topic. It is now the active topic. This only changes the conversation focus; it does not execute any work.",
+      "candidate_surface_sha256": "cb471a63e5f1616bda8a96984ada97f6059f7548c541ceeb434076ca288abc79",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-EN-02-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:TOPIC:SURFACE:CONVERSATION_THAT_WAS_SET_ASIDE_AT_THE_BEGINNING"
+      ],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Is there an actual result for that original Saffron service topic?”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "6d57a4e6eec89ba49f8ee6c877ef3e9b4af83af7b778a9e370403059b8eb062d",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Quartz 캐시 이상 징후부터 파악해.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "3db560b48df67cbe9a41e1c95f982e5a4ce9b21cea778d3f0749c7e16ed21d7c",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “그 실마리는 잠시 접고 Rook 큐 구성 이야기를 하자.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "73d1b0d7a176c59dd40102ab5330a44a0ff3a3d1730e28af187410cec964dd69",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “처음 접어 둔 문제로 다시 돌아가.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "ca6265c03a6fed2671d96867ed4390729cb678cac0c91081b6d6ac5fb2e29167",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-01-T4",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Quartz 캐시에 관해 검증된 실행 결과는 아직 없어. Quartz 캐시는 호스트 검증 영수증이 아닌 상태야.",
+      "candidate_surface_sha256": "64ffc5dd980fbb9dfe11e1d06e508b78708023c729abbddb7a56340572de6caa",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T1",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVICE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVICE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVICE"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 우선 Saffron 서비스 현황의 현재 상태를 확인할게. 우선 Saffron 서비스 현황의 원인을 좁힐게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "d712cf5d724bda9622aeb070194f087879e12ef7d1618b4c23f704de401106f7",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_LOG",
+        "EVENT:EXPLAIN:EXPLAIN:LIVE",
+        "GOAL:EXPLAIN:EXPLAIN",
+        "GOAL_SUBJECT:EXPLAIN:C_LOG",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXPLAIN:ENTITY:C_LOG"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 그 대화는 보류하고 Timber 로그 구조의 관련 근거를 확인할게. 그 대화는 보류하고 Timber 로그 구조를 설명할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "b736e7a3d244a085861bc13568faa8391a1b232fe0064180377e5b1941d3ee69",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “이제 맨 처음 보류한 대화를 재개하자.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "30fad407e358aa47f0d225dbd0d2c2c788bea80c6f4fe336207fff04f732337b",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C05-KO-02-T4",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Timber 로그 구조에 관해 검증된 실행 결과는 아직 없어. Timber 로그 구조는 아직 계획만 있는 상태야.",
+      "candidate_surface_sha256": "642985d5353bbb32761e93cf00e3a0e599e47e3ede9b2739daa2ff500deab542",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:SURFACE:UMBER"
+      ],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Mina calls the Umber service healthy, but Rowan says it is still broken.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "bd186e80749532de915f75d498685b689e150d8c213e6b00c2ea806c72e73a10",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Which parts of those accounts are actually supported?”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "fb70171e789a11fcd16c591ada670cd8df75c8e937110b681a057da756a00bb6",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Store the Vale log success story as a report, not a fact.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "a302397e142844d06a3f3b7e9829895d3fdf7f753adc0d5e3d4354cd649dcdc2",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-01-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Can the Umber service state be settled conclusively now?”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "584eb85640259142e3167bfd847011c72355db94d2aa7eda5ad67a8ec30e68b7",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:SURFACE:WILLOW"
+      ],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Operations reports the Willow server complete; Audit reports it incomplete.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "d007aa810e055d414ddb3133158e37180c9ed09ebc54c2fac083922307a386c5",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the relevant evidence of the stated proposition. I will explain the stated proposition. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "3bc35c002f0339f6d9f86d48e3e3ec9c69d80f038fe40faeecfadaba071955ec",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T3",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the Log the Xenon worker failure claim as user-provided information only. I will narrow the cause of the Log the Xenon worker failure claim as user-provided information only. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "05e446156eae99a0054a759f20ebd9d6fd401cc7e18b05a6f4c6dabebd14964e",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-EN-02-T4",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the relevant evidence of the conclusion. I will explain the conclusion. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "7694c8ad645895609aea32068095504688ffe26dff7c8f7523c713cad358aa13",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T1",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:CLARIFICATION_REQUEST"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "무엇을 원하는지 조금만 더 구체적으로 말해줘.",
+      "candidate_surface_sha256": "b8f5fb2b1a8aa536664197c30149871e630c7e2d690528a12c2e8c461b2c3c37",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 stated proposition의 관련 근거를 확인할게. stated proposition를 설명할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "85f18b520f495cb265bfafb8721bfe55b56a3b21ee316e0d99e29c595045ac7c",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T3",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:CLARIFICATION_REQUEST"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "‘별도로 vale 로그 성공 이야기는 제보로만 저장해.’가 어느 대상을 가리키는지 알려줘. 대상을 하나만 지정해줘.",
+      "candidate_surface_sha256": "8c43ec834aa93a0e5c8d6d20e011381ec1ac24ddcef4f695a4ae2ef3dff62195",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-01-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “그래서 Umber 서비스 상태를 하나로 확정할 수 있나?”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "17e211999f38253b225da35c882b6f0a696168fb5038f67d989bb08cb81e7889",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “운영팀은 Willow 서버가 끝났대. 감사팀은 미완료라고 했고.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "515f409ec3b6d2c5cae82dd32659d8f11db7be5cec9c8ed0f1b8aaf2cf75ffeb",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Willow 서버에 대한 보고와 검증 사실을 나눠 줘.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "f5a7b4dff9ec99245253c8329ca4413297e70989876d841c0c9af7bbfb4eb239",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Xenon 워커 실패 주장도 사용자 발화로 기록해 둬.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "06d4a374dc1cf37395bc57dca5f42ffe24734faec526176cc32371cea7ac2832",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C06-KO-02-T4",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 결론의 관련 근거를 확인할게. 결론을 설명할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "d2f274e9b4633f3a3f53ea798b713d599616b91720018724778db00fd27fe0b7",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T1",
+      "response_act": "DISCOURSE_ANSWER",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:DISCOURSE_ANSWER"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:ATTRIBUTED_DIALOGUE_RECORD:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "The question presupposes ‘map out how the yarrow server could be recovered.’, but the dialogue does not establish that premise as true. I will not build an answer by silently accepting it.",
+      "candidate_surface_sha256": "508a7d6c98d5bf0999e63fb6fa2da2c48f18756bd13a4937ed09460bb51a191c",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the That was only a plan; nothing was changed just now, correct. I will narrow the cause of the That was only a plan; nothing was changed just now, correct. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "12d419077897c898b2571215558cad1fed46801aabecb8a160fb0a3ba44c7f08",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “I ran the action against the Yarrow server from my own terminal.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "d036e66f828aa427f6be075820fdf6bf5fbd6520874583eec6ab424148ca284d",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-01-T4",
+      "response_act": "PLAN_RESULT_STATUS",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_RESULT_STATUS"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED",
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "The That was only a plan; nothing was changed just now, correct is still only a plan. No execution result is recorded for the That was only a plan; nothing was changed just now, correct, so it has not been verified as executed.",
+      "candidate_surface_sha256": "1d47de5eb2007a948aaa88def07943984dffd5fb0d5927edb8afb80a94605d0a",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Design an intervention procedure for the Acorn file.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "5960685724c37e850816ecdb7e065716f4de6ef7a555ae52265d727eb750d5bc",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “No operation has actually touched the Acorn file yet, right?”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "76da2d8f246ffeaa2259e36280f97c8a556a26f671d33402fb91cb6d74b3a73d",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “I am reporting that I carried it out myself.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "555618f608948fda9b4e7ca8524292e710b1d4f24c41e033757ce001af58279f",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-EN-02-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:SURFACE:ACORN"
+      ],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “That report alone does not prove the Acorn file outcome, does it?”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "e7ddf8dc57f1d804455661bd2f64b3a09658f60f981cff54b1532e199a8b0f4b",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Yarrow 서버를 복원하는 방법을 단계로 설계해.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "e1ee8b11bc791c33e7d7841e02740afe123f06cc8ccc46a0397f1566bbac4ee1",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T2",
+      "response_act": "DISCOURSE_ANSWER",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:DISCOURSE_ANSWER"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:ATTRIBUTED_DIALOGUE_RECORD:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "이건 출처가 있는 대화 기록이지, 사실로 검증된 내용은 아니야.",
+      "candidate_surface_sha256": "347cc60516cca2d90a0a884dbc2c4dea98f356d439bf7ef650715ea85c971ec6",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T3",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "EVENT:EXECUTE:EXECUTE:LIVE",
+        "GOAL:EXECUTE:EXECUTE",
+        "GOAL_SUBJECT:EXECUTE:C_SERVER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXECUTE:ENTITY:C_SERVER"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 Yarrow 서버에의 현재 상태를 확인할게. Yarrow 서버에를 수행할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "095f938b4d72aa4755b9af041a163b725f48e081c4c6d0fd62b932ee8e673caf",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-01-T4",
+      "response_act": "PLAN_RESULT_STATUS",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_RESULT_STATUS"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PROPOSITION:DISCOURSE_REFERENT:PROPOSITION:실행은_내가_내_환경에서_YARROW_서버에_했어"
+      ],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED",
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Yarrow 서버에는 아직 계획만 있는 상태야. Yarrow 서버에에는 아직 실행 결과는 없어.",
+      "candidate_surface_sha256": "b79b795ba97026bf10c1bc744111c466764ffe550805908d0edd950870c97408",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Acorn 파일 조치 절차를 미리 짜 줘.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "0503ad6bacac1217952641fa693560d6206c4680c1d4c7cd62e5708618c4aef4",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_FILE",
+        "EVENT:EXECUTE:EXECUTE:LIVE",
+        "GOAL:EXECUTE:EXECUTE",
+        "GOAL_SUBJECT:EXECUTE:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:EXECUTE:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 아직 Acorn 파일에는 아무 작업도 실행 안 했지의 현재 상태를 확인할게. 아직 Acorn 파일에는 아무 작업도 실행 안 했지의 원인을 좁힐게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "676a78f950d08c9e8e773e044f257e4ffffa1a3daa4a8b37de53fe1b87c5991c",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T3",
+      "response_act": "ACTION_STATE",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:ACTION_STATE"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:LANGUAGE_REPORT:REPORTED",
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "아직 Acorn 파일에는 아무 작업도 실행 안 했지는 끝났다는 사용자 보고가 있는 상태야. 아직 Acorn 파일에는 아무 작업도 실행 안 했지에는 아직 실행 결과는 없어.",
+      "candidate_surface_sha256": "4c30b1626a7342f568ec036e5ab3bd90e6f9341d92d9e0b4ddc4be09a05e10f8",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C07-KO-02-T4",
+      "response_act": "PLAN_RESULT_STATUS",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "REPORTED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_RESULT_STATUS"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:LANGUAGE_REPORT:REPORTED",
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "아직 Acorn 파일에는 아무 작업도 실행 안 했지는 끝났다는 사용자 보고가 있는 상태야. 아직 Acorn 파일에는 아무 작업도 실행 안 했지에 관해 검증된 실행 결과는 아직 없어.",
+      "candidate_surface_sha256": "ea8f99e47aaab2f7a5b552f3ba7161d36131cda41eef9109ef5cf07462ff27d5",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “I cannot face another Cinder file incident today.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "7b5ea2904eb192dd239e2be52785cb10eb69cf3570b605d3b39438add44e9fe9",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T2",
+      "response_act": "SOCIAL_BACKCHANNEL",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:SOCIAL_BACKCHANNEL"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "You're welcome. Tell me if you need anything else.",
+      "candidate_surface_sha256": "3f0d6aca378b03d202fac3a24d2e79bea399b5df38eab42a6280ebb7f75c6f2f",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T3",
+      "response_act": "DISCOURSE_ANSWER",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "DERIVED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:DISCOURSE_ANSWER"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:ATTRIBUTED_DIALOGUE_RECORD:DERIVED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "The question presupposes ‘when ready, just assess the cinder file quietly.’, but the dialogue does not establish that premise as true. I will not build an answer by silently accepting it.",
+      "candidate_surface_sha256": "1b033637b254e56eee44d209fc07af6a62a176fa5cc370bd7761188a957f89b0",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-01-T4",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the relevant evidence of the stated proposition. I will explain the stated proposition. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "3bc35c002f0339f6d9f86d48e3e3ec9c69d80f038fe40faeecfadaba071955ec",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Seeing the Elara cache fail again is draining.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "4e13127188d9ae49e403405130a02b9daf826cdc83cd9de9f0d64409262dfa0e",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “I appreciate you hearing me out.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "93ce47cca4dd66f08522b39db2d8ed9d449a83c1892df978aa0ec34bae97607e",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Keep it small and look only at the Elara cache state.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "92c2c69c2171c87d26b641a12c5a45f26613c0416021c3a73df36be4f9ac76c2",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-EN-02-T4",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_ENTITY",
+        "EVENT:MODIFY:EXECUTE:LIVE",
+        "GOAL:MODIFY:EXECUTE",
+        "GOAL_SUBJECT:MODIFY:C_ENTITY",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:MODIFY:ENTITY:C_ENTITY"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:ENTITY:C_ENTITY"
+      ],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the Stay. I will perform the Stay. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "09ec2ab947a73b7259183ac8be6ec47805c4446c8f6785242a11a0187b9b47c4",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “오늘은 또 Cinder 파일 문제를 볼 힘도 없다.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "0fbbc99c10feec80aec8a929962f51b92344001a5d50bc6dc0e77a72c64875c2",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T2",
+      "response_act": "SOCIAL_BACKCHANNEL",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:SOCIAL_BACKCHANNEL"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "천만에. 더 필요한 게 있으면 말해줘.",
+      "candidate_surface_sha256": "260565b5682b41fd73c4b2ed1cc83a42d7152047d2bef309bb03359411967f15",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T3",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_FILE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_FILE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_FILE"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 Cinder 파일의 현재 상태를 확인할게. Cinder 파일의 원인을 좁힐게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "651e2a7bf9645149bd3f970556aba9ee137edc389e9d62d2d9e4d06782aa5872",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-01-T4",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 stated proposition의 관련 근거를 확인할게. stated proposition를 설명할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "85f18b520f495cb265bfafb8721bfe55b56a3b21ee316e0d99e29c595045ac7c",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Elara 캐시가 또 이러니 정말 지겹다.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "765259b7a844c3f48f2e1d6662a4668c17da8c4eeff558d061f4b751bcf1f038",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T2",
+      "response_act": "SOCIAL_BACKCHANNEL",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:SOCIAL_BACKCHANNEL"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "천만에. 더 필요한 게 있으면 말해줘.",
+      "candidate_surface_sha256": "260565b5682b41fd73c4b2ed1cc83a42d7152047d2bef309bb03359411967f15",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T3",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:CLARIFICATION_REQUEST"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "‘일을 키우지 말고 elara 캐시 현황만 봐 줄래?’가 어느 대상을 가리키는지 알려줘. 대상을 하나만 지정해줘.",
+      "candidate_surface_sha256": "da7672bc42a85d35da210c7971d34a7be53bc8004e56b2ee3b6677031768b419",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C08-KO-02-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “확실한 변화가 없으면 조용히 있어도 돼.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "3ab5f3b549879a36ebd000590b8d1bf932a65efec5dd163fbf5432c78ef298ba",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T1",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the Garnet cache. I will narrow the cause of the Garnet cache. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "39e04f5fa3e6dcb892025e7ffcc04c6e30f110539b033f228c494d7985114d3f",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Patch the one we just mentioned.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "6bd787c0f61471b54c97bdde3df431f42c57a2d83d8cd059e0ff850d13b03c3c",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T3",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_QUEUE",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_QUEUE",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_QUEUE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:CORRECTION:ENTITY:C_QUEUE"
+      ],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the Haven queue. I will narrow the cause of the Haven queue. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "96fc61a833b3777e83d9f15b7649758cc40826235defaad59110013be5738784",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-01-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Keep the earlier Garnet cache outside the action scope.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "551424bdb610ec42e19de0899c1d4285f52e242ccb8bbcd6db28134098b77460",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T1",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the Islet service. I will narrow the cause of the Islet service. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "3b02c051c80f61c79c11ca302ce0eed1c25c00fc363d39deecf981aa9fbe380d",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_ENTITY",
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "GOAL:REPAIR:REPAIR",
+        "GOAL_SUBJECT:REPAIR:C_ENTITY",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:REPAIR:ENTITY:C_ENTITY"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:PRONOMINAL:ENTITY:C_ENTITY"
+      ],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the Use. I will repair the Use. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "abc172430ed32cdc4059ce38431b3c6b4e213f73ad44a2b7d777575ac053bce2",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T3",
+      "response_act": "DEFINITION_GROUNDING",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:DEFINITION_GROUNDING"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "I could not ground the definition to an existing semantic operator, so I created no lexical binding.",
+      "candidate_surface_sha256": "f446a1f46705095ba4a19732a19e87cd8863a6dade1900cbd02601dfecac8deb",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-EN-02-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Do not touch the remaining Islet service.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "56a7634dc637ab5b6859e65d2de8ba91424b98c3da4c6701d3e59074f1ecc9a5",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Garnet 캐시와 Haven 큐를 나란히 비교해 봐.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "365ef28117e59d8de8ee43a50eb46e8309bdcd3b21d434fb72deddc7ca79616d",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "EVENT:REPAIR:REPAIR:LIVE",
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 방금 말한 쪽 하나의 현재 상태를 확인할게. 방금 말한 쪽 하나를 수리할게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "64d1e6bc9b54b8f19fff9712278d88ed60636d27ae4a07560c467e105fe9efed",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “내가 가리킨 건 뒤의 Haven 큐였어.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "46a59561cd2256cb7b66b3aafdef7b6908bf4dbfbd62e61e8c568a6362bcc510",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-01-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “앞의 Garnet 캐시는 조치 대상에서 제외해.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "e8120fa032c542c02f42aad18756804f29cbf50c1355f2717a82a4e6316e9af6",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “Islet 서비스하고 Juniper 로그 상태를 따로 정리해.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "e4c1fcfbd3d29a1d081d4a96a0374c9953276383f773bd9aa081bb317cfb52f0",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T2",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_goal": "ASK_CLARIFICATION",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:CLARIFICATION_REQUEST"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "무엇을 원하는지 조금만 더 구체적으로 말해줘.",
+      "candidate_surface_sha256": "b8f5fb2b1a8aa536664197c30149871e630c7e2d690528a12c2e8c461b2c3c37",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T3",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “여기서 이건 Juniper 로그를 말한 거야.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "eafdafba5ddb14084b506b14c5a06d048718c680aaf1e0af9b449e0c56c6b30e",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C09-KO-02-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “나머지 Islet 서비스에는 절대 손대지 마.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "0669f3285a699fcf822b87737ab0a91a1fb0f7d621cbecf2b650b2113a95e9dd",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T1",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the Kestrel service. I will narrow the cause of the Kestrel service. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "0e3ce5b0ee906149eff11344c38ea94510cff01b381c20b6f9a7a9c633c9221a",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T2",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the over to Lumen log 쪽. I will perform the over to Lumen log 쪽. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "4d286a2b0e5f6c01ca7d39af1b98c37d39fab824f2fd111ffc50cf9e52b00769",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T3",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:RESULT:GOAL:EXECUTE"
+      ],
+      "propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "No execution result is recorded yet for the over to lumen log 쪽. The over to lumen log 쪽 is not a host-verified execution receipt.",
+      "candidate_surface_sha256": "a1d56415008308e2483eddd7125a89f16d8dc0441e1fadcf720cad1c66ff918a",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-01-T4",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [
+        "REFERENCE:RESULT:GOAL:EXECUTE"
+      ],
+      "propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "No execution result is recorded yet for the over to lumen log 쪽. The over to lumen log 쪽 is not a host-verified execution receipt.",
+      "candidate_surface_sha256": "a1d56415008308e2483eddd7125a89f16d8dc0441e1fadcf720cad1c66ff918a",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T1",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_PREVIEW"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. First, I will check the current state of the Morrow server real quick. I will narrow the cause of the Morrow server real quick. I will verify the result. This work is still planned. This work is not executed.",
+      "candidate_surface_sha256": "47b8b154bb360dd0eb5af7b96f2a01f50aefda803dadd3b1a14b50fd6f1718fc",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “Wait—drop that and make the Nectar worker our target.”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "e674e185d136c743ff18fab1ff8a6adf0f035d53f8df7e4afd48adda8169e4b3",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T3",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "No execution result is recorded yet for the Morrow server real quick. The Morrow server real quick is still only a plan.",
+      "candidate_surface_sha256": "786629d2ce59cad7887b55a72d52ba2ff6449acb82e4fa03b8695c6f5d498ef9",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-EN-02-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Got it. You said “cool, ty; let's leave the Nectar worker there”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+      "candidate_surface_sha256": "375c76846bbc93de4690fb421a7f35afeb6f86707dd5c829516277ed53fdf1cf",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T1",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “음... Kestrel 서비스 상태 확잏 좀 해줘.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "1dc99412ea5c3909d3a9762acb2d039b3836396378d5bb8ea97d735e369db0f3",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “어 잠깐, Kestrel 서비스 말고 Lumen 로그 쪽이야.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "06343fc305c979b24537a7fa31c63660d3802ab250430dc8366da384474f5ee4",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": true
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T3",
+      "response_act": "RESULT_ABSENCE",
+      "response_goal": "ANSWER_VERIFIED_RESULT",
+      "epistemic_status": "UNKNOWN",
+      "meaning_atoms": [
+        "RESPONSE_ACT:RESULT_ABSENCE"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Lumen 로그에 관해 검증된 실행 결과는 아직 없어. Lumen 로그는 호스트 검증 영수증이 아닌 상태야.",
+      "candidate_surface_sha256": "6dcc69acab4b57f7681f16c51241c18090a39869cec22200366e30e1e10a339a",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-01-T4",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “ㅇㅋ, Lumen 로그 얘기 들어줘서 ㄱㅅ”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "494ad1c31325aba5b7848e484fe3d9b0f24f2aef52c76a337fd76de83aac4ecb",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T1",
+      "response_act": "PLAN_PREVIEW",
+      "response_goal": "PLAN_ACTIONS",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "ENTITY:C_SERVER",
+        "EVENT:INVESTIGATE:INVESTIGATE:LIVE",
+        "GOAL:INVESTIGATE:INVESTIGATE",
+        "GOAL_SUBJECT:INVESTIGATE:C_SERVER",
+        "RESPONSE_ACT:PLAN_PREVIEW",
+        "THEME:INVESTIGATE:ENTITY:C_SERVER"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 먼저 Morrow 서버의 현재 상태를 확인할게. Morrow 서버의 원인을 좁힐게. 결과를 검증할게. 이 작업은 아직 계획 상태야. 이 작업은 아직 실행한 것은 아니야.",
+      "candidate_surface_sha256": "035b0c26284fd3006ded30551b9b6b72fafcd41605d016fa1979c3540eb0b6e7",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T2",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:INFORM_ACKNOWLEDGEMENT"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "알겠어. 너는 “아니 wait, target을 Nectar 워커로 돌려.”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+      "candidate_surface_sha256": "3437de90a44d3cf63e8c2082c98c8a57918b52491164053bcbfdedf5c4ce02ef",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T3",
+      "response_act": "PLAN_RESULT_STATUS",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "PLANNED",
+      "meaning_atoms": [
+        "RESPONSE_ACT:PLAN_RESULT_STATUS"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:PLAN_STATUS:PLANNED",
+        "CLAIM:EVIDENCE_ABSENCE:UNKNOWN"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "Morrow 서버는 아직 계획만 있는 상태야. Morrow 서버에는 아직 실행 결과는 없어.",
+      "candidate_surface_sha256": "1a27129603dcb6b2ce0acb6b429c8fcde61b0a1f8ae861621f89c914374a0aaa",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    },
+    {
+      "response_id": "GPTREF-V2-FINAL-C10-KO-02-T4",
+      "response_act": "SOCIAL_BACKCHANNEL",
+      "response_goal": "ACKNOWLEDGE",
+      "epistemic_status": "INTERACTION",
+      "meaning_atoms": [
+        "RESPONSE_ACT:SOCIAL_BACKCHANNEL"
+      ],
+      "discourse_bindings": [],
+      "propositions": [
+        "CLAIM:INTERACTION_STATE:INTERACTION"
+      ],
+      "unsupported_propositions": [],
+      "candidate_surface": "천만에. 더 필요한 게 있으면 말해줘.",
+      "candidate_surface_sha256": "260565b5682b41fd73c4b2ed1cc83a42d7152047d2bef309bb03359411967f15",
+      "semantic_authority": false,
+      "external_execution_authorized": false,
+      "false_execution_or_result_claim": false,
+      "silent_ambiguity_guess": false
+    }
+  ],
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0,
+  "batch_payload_sha256": "3fdec863d434910941c6bc9f87744f355b84cccd0f40ac8db5b7f4fc057617d9"
+}

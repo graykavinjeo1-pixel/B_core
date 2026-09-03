@@ -75,6 +75,490 @@ name = "conditional-guard-canary"
 path = "src/conditional_guard_canary.rs"
 
 [[bin]]
+name = "typed-coreference-canary"
+path = "src/typed_coreference_canary.rs"
+
+[[bin]]
+name = "ontology-coreference-canary"
+path = "src/ontology_coreference_canary.rs"
+
+[[bin]]
+name = "ontology-transfer-canary"
+path = "src/ontology_transfer_canary.rs"
+
+[[bin]]
+name = "dialogue-relation-canary"
+path = "src/dialogue_relation_canary.rs"
+
+[[bin]]
+name = "dialogue-relation-transfer-canary"
+path = "src/dialogue_relation_transfer_canary.rs"
+
+[[bin]]
+name = "dialogue-path-canary"
+path = "src/dialogue_path_canary.rs"
+
+[[bin]]
+name = "dialogue-path-transfer-canary"
+path = "src/dialogue_path_transfer_canary.rs"
+
+[[bin]]
+name = "conversation-realization-canary"
+path = "src/conversation_realization_canary.rs"
+
+[[bin]]
+name = "conversation-realization-transfer-canary"
+path = "src/conversation_realization_transfer_canary.rs"
+
+[[bin]]
+name = "speech-act-realization-canary"
+path = "src/speech_act_realization_canary.rs"
+
+[[bin]]
+name = "speech-act-realization-transfer-canary"
+path = "src/speech_act_realization_transfer_canary.rs"
+
+[[bin]]
+name = "qud-adjacency-canary"
+path = "src/qud_adjacency_canary.rs"
+
+[[bin]]
+name = "qud-adjacency-transfer-canary"
+path = "src/qud_adjacency_transfer_canary.rs"
+
+[[bin]]
+name = "integrated-dialogue-coherence-canary"
+path = "src/integrated_dialogue_coherence_canary.rs"
+
+[[bin]]
+name = "integrated-dialogue-coherence-transfer-canary"
+path = "src/integrated_dialogue_coherence_transfer_canary.rs"
+
+[[bin]]
+name = "long-horizon-discourse-canary"
+path = "src/long_horizon_discourse_canary.rs"
+
+[[bin]]
+name = "long-horizon-discourse-transfer-canary"
+path = "src/long_horizon_discourse_transfer_canary.rs"
+
+[[bin]]
+name = "structural-realization-canary"
+path = "src/structural_realization_canary.rs"
+
+[[bin]]
+name = "structural-realization-transfer-canary"
+path = "src/structural_realization_transfer_canary.rs"
+
+[[bin]]
+name = "clause-event-structure-canary"
+path = "src/clause_event_structure_canary.rs"
+
+[[bin]]
+name = "clause-event-structure-transfer-canary"
+path = "src/clause_event_structure_transfer_canary.rs"
+
+[[bin]]
+name = "illocutionary-commitment-canary"
+path = "src/illocutionary_commitment_canary.rs"
+
+[[bin]]
+name = "illocutionary-commitment-transfer-canary"
+path = "src/illocutionary_commitment_transfer_canary.rs"
+
+[[bin]]
+name = "deferred-commitment-lifecycle-canary"
+path = "src/deferred_commitment_lifecycle_canary.rs"
+
+[[bin]]
+name = "deferred-commitment-lifecycle-transfer-canary"
+path = "src/deferred_commitment_lifecycle_transfer_canary.rs"
+
+[[bin]]
+name = "clause-graph-composition-canary"
+path = "src/clause_graph_composition_canary.rs"
+
+[[bin]]
+name = "clause-graph-composition-transfer-canary"
+path = "src/clause_graph_composition_transfer_canary.rs"
+
+[[bin]]
+name = "clause-aware-discourse-focus-canary"
+path = "src/clause_aware_discourse_focus_canary.rs"
+
+[[bin]]
+name = "clause-aware-discourse-focus-transfer-canary"
+path = "src/clause_aware_discourse_focus_transfer_canary.rs"
+
+[[bin]]
+name = "typed-deixis-ellipsis-canary"
+path = "src/typed_deixis_ellipsis_canary.rs"
+
+[[bin]]
+name = "typed-deixis-ellipsis-transfer-canary"
+path = "src/typed_deixis_ellipsis_transfer_canary.rs"
+
+[[bin]]
+name = "pragmatic-intent-canary"
+path = "src/pragmatic_intent_canary.rs"
+
+[[bin]]
+name = "pragmatic-intent-transfer-canary"
+path = "src/pragmatic_intent_transfer_canary.rs"
+
+[[bin]]
+name = "action-state-boundary-canary"
+path = "src/action_state_boundary_canary.rs"
+
+[[bin]]
+name = "action-state-boundary-transfer-canary"
+path = "src/action_state_boundary_transfer_canary.rs"
+
+[[bin]]
+name = "evidence-grounded-realization-canary"
+path = "src/evidence_grounded_realization_canary.rs"
+
+[[bin]]
+name = "evidence-grounded-realization-transfer-canary"
+path = "src/evidence_grounded_realization_transfer_canary.rs"
+
+[[bin]]
+name = "cross-axis-action-grounding-canary"
+path = "src/cross_axis_action_grounding_canary.rs"
+
+[[bin]]
+name = "cross-axis-action-grounding-transfer-canary"
+path = "src/cross_axis_action_grounding_transfer_canary.rs"
+
+[[bin]]
+name = "adversarial-group-discourse-canary"
+path = "src/adversarial_group_discourse_canary.rs"
+
+[[bin]]
+name = "adversarial-group-discourse-transfer-canary"
+path = "src/adversarial_group_discourse_transfer_canary.rs"
+
+[[bin]]
+name = "persistent-discourse-group-canary"
+path = "src/persistent_discourse_group_canary.rs"
+
+[[bin]]
+name = "persistent-discourse-group-transfer-canary"
+path = "src/persistent_discourse_group_transfer_canary.rs"
+
+[[bin]]
+name = "overlapping-discourse-set-canary"
+path = "src/overlapping_discourse_set_canary.rs"
+
+[[bin]]
+name = "overlapping-discourse-set-transfer-canary"
+path = "src/overlapping_discourse_set_transfer_canary.rs"
+
+[[bin]]
+name = "compositional-action-query-canary"
+path = "src/compositional_action_query_canary.rs"
+
+[[bin]]
+name = "compositional-action-query-transfer-canary"
+path = "src/compositional_action_query_transfer_canary.rs"
+
+[[bin]]
+name = "recursive-action-expression-canary"
+path = "src/recursive_action_expression_canary.rs"
+
+[[bin]]
+name = "recursive-action-expression-transfer-canary"
+path = "src/recursive_action_expression_transfer_canary.rs"
+
+[[bin]]
+name = "discourse-group-revision-canary"
+path = "src/discourse_group_revision_canary.rs"
+
+[[bin]]
+name = "discourse-group-revision-transfer-canary"
+path = "src/discourse_group_revision_transfer_canary.rs"
+
+[[bin]]
+name = "topic-group-restoration-canary"
+path = "src/topic_group_restoration_canary.rs"
+
+[[bin]]
+name = "topic-group-restoration-transfer-canary"
+path = "src/topic_group_restoration_transfer_canary.rs"
+
+[[bin]]
+name = "topic-anchored-deixis-canary"
+path = "src/topic_anchored_deixis_canary.rs"
+
+[[bin]]
+name = "topic-anchored-deixis-transfer-canary"
+path = "src/topic_anchored_deixis_transfer_canary.rs"
+
+[[bin]]
+name = "compositional-pragmatic-intent-canary"
+path = "src/compositional_pragmatic_intent_canary.rs"
+
+[[bin]]
+name = "compositional-pragmatic-intent-transfer-canary"
+path = "src/compositional_pragmatic_intent_transfer_canary.rs"
+
+[[bin]]
+name = "interaction-provenance-canary"
+path = "src/interaction_provenance_canary.rs"
+
+[[bin]]
+name = "interaction-provenance-transfer-canary"
+path = "src/interaction_provenance_transfer_canary.rs"
+
+[[bin]]
+name = "six-axis-integration-canary"
+path = "src/six_axis_integration_canary.rs"
+
+[[bin]]
+name = "six-axis-integration-transfer-canary"
+path = "src/six_axis_integration_transfer_canary.rs"
+
+[[bin]]
+name = "definition-grounding-canary"
+path = "src/definition_grounding_canary.rs"
+
+[[bin]]
+name = "definition-grounding-transfer-canary"
+path = "src/definition_grounding_transfer_canary.rs"
+
+[[bin]]
+name = "productive-grammar-composition-canary"
+path = "src/productive_grammar_composition_canary.rs"
+
+[[bin]]
+name = "productive-grammar-composition-transfer-canary"
+path = "src/productive_grammar_composition_transfer_canary.rs"
+
+[[bin]]
+name = "cross-turn-discourse-program-canary"
+path = "src/cross_turn_discourse_program_canary.rs"
+
+[[bin]]
+name = "cross-turn-discourse-program-transfer-canary"
+path = "src/discourse_program_transfer_canary.rs"
+
+[[bin]]
+name = "guarded-discourse-workflow-canary"
+path = "src/guarded_discourse_workflow_canary.rs"
+
+[[bin]]
+name = "guarded-discourse-workflow-transfer-canary"
+path = "src/guarded_discourse_workflow_transfer_canary.rs"
+
+[[bin]]
+name = "guarded-workflow-evidence-lifecycle-canary"
+path = "src/guarded_workflow_evidence_lifecycle_canary.rs"
+
+[[bin]]
+name = "guarded-workflow-evidence-lifecycle-transfer-canary"
+path = "src/guarded_workflow_evidence_lifecycle_transfer_canary.rs"
+
+[[bin]]
+name = "compound-guard-expression-canary"
+path = "src/compound_guard_expression_canary.rs"
+
+[[bin]]
+name = "compound-guard-expression-transfer-canary"
+path = "src/compound_guard_expression_transfer_canary.rs"
+
+[[bin]]
+name = "language-cortex-integration-canary"
+path = "src/language_cortex_integration_canary.rs"
+
+[[bin]]
+name = "language-cortex-integration-transfer-canary"
+path = "src/language_cortex_integration_transfer_canary.rs"
+
+[[bin]]
+name = "defeasible-discourse-decision-canary"
+path = "src/defeasible_discourse_decision_canary.rs"
+
+[[bin]]
+name = "defeasible-discourse-decision-transfer-canary"
+path = "src/defeasible_discourse_decision_transfer_canary.rs"
+
+[[bin]]
+name = "reference-safe-result-anaphora-canary"
+path = "src/reference_safe_result_anaphora_canary.rs"
+
+[[bin]]
+name = "reference-safe-result-anaphora-transfer-canary"
+path = "src/reference_safe_result_anaphora_transfer_canary.rs"
+
+[[bin]]
+name = "predicate-argument-composition-canary"
+path = "src/predicate_argument_composition_canary.rs"
+
+[[bin]]
+name = "predicate-argument-composition-transfer-canary"
+path = "src/predicate_argument_composition_transfer_canary.rs"
+
+[[bin]]
+name = "topic-scoped-pragmatic-state-canary"
+path = "src/topic_scoped_pragmatic_state_canary.rs"
+
+[[bin]]
+name = "topic-scoped-pragmatic-state-transfer-canary"
+path = "src/topic_scoped_pragmatic_state_transfer_canary.rs"
+
+[[bin]]
+name = "topic-scoped-reference-qud-canary"
+path = "src/topic_scoped_reference_qud_canary.rs"
+
+[[bin]]
+name = "topic-scoped-reference-qud-transfer-canary"
+path = "src/topic_scoped_reference_qud_transfer_canary.rs"
+
+[[bin]]
+name = "grammatical-scope-graph-canary"
+path = "src/grammatical_scope_graph_canary.rs"
+
+[[bin]]
+name = "grammatical-scope-graph-transfer-canary"
+path = "src/grammatical_scope_graph_transfer_canary.rs"
+
+[[bin]]
+name = "topic-context-consolidation-canary"
+path = "src/topic_context_consolidation_canary.rs"
+
+[[bin]]
+name = "topic-context-consolidation-transfer-canary"
+path = "src/topic_context_consolidation_transfer_canary.rs"
+
+[[bin]]
+name = "reference-resolution-composition-canary"
+path = "src/reference_resolution_composition_canary.rs"
+
+[[bin]]
+name = "reference-resolution-composition-transfer-canary"
+path = "src/reference_resolution_composition_transfer_canary.rs"
+
+[[bin]]
+name = "utterance-intent-pragmatic-inference-canary"
+path = "src/utterance_intent_pragmatic_inference_canary.rs"
+
+[[bin]]
+name = "utterance-intent-pragmatic-inference-transfer-canary"
+path = "src/utterance_intent_pragmatic_inference_transfer_canary.rs"
+
+[[bin]]
+name = "plan-result-lifecycle-canary"
+path = "src/plan_result_lifecycle_canary.rs"
+
+[[bin]]
+name = "plan-result-lifecycle-transfer-canary"
+path = "src/plan_result_lifecycle_transfer_canary.rs"
+
+[[bin]]
+name = "natural-realization-canary"
+path = "src/natural_realization_canary.rs"
+
+[[bin]]
+name = "natural-realization-transfer-canary"
+path = "src/natural_realization_transfer_canary.rs"
+
+[[bin]]
+name = "full-axis-integration-canary"
+path = "src/full_axis_integration_canary.rs"
+
+[[bin]]
+name = "full-axis-integration-transfer-canary"
+path = "src/full_axis_integration_transfer_canary.rs"
+
+[[bin]]
+name = "adversarial-api-regression-canary"
+path = "src/adversarial_api_regression_canary.rs"
+
+[[bin]]
+name = "adversarial-api-regression-transfer-canary"
+path = "src/adversarial_api_regression_transfer_canary.rs"
+
+[[bin]]
+name = "public-api-seal-canary"
+path = "src/public_api_seal_canary.rs"
+
+[[bin]]
+name = "discourse-inference-challenge-canary"
+path = "src/discourse_inference_challenge_canary.rs"
+
+[[bin]]
+name = "discourse-inference-challenge-transfer-canary"
+path = "src/discourse_inference_challenge_transfer_canary.rs"
+
+[[bin]]
+name = "language-completion-metamorphic-canary"
+path = "src/language_completion_metamorphic_canary.rs"
+
+[[bin]]
+name = "generative-language-architecture-canary"
+path = "src/generative_language_architecture_canary.rs"
+
+[[bin]]
+name = "clarification-composition-blind-canary"
+path = "src/clarification_composition_blind_canary.rs"
+
+[[bin]]
+name = "discourse-answer-generation-blind-canary"
+path = "src/discourse_answer_generation_blind_canary.rs"
+
+[[bin]]
+name = "temporal-answer-generation-blind-canary"
+path = "src/temporal_answer_generation_blind_canary.rs"
+
+[[bin]]
+name = "dialogue-relation-generation-blind-canary"
+path = "src/dialogue_relation_generation_blind_canary.rs"
+
+[[bin]]
+name = "definition-grounding-generation-blind-canary"
+path = "src/definition_grounding_generation_blind_canary.rs"
+
+[[bin]]
+name = "conditional-guard-generation-blind-canary"
+path = "src/conditional_guard_generation_blind_canary.rs"
+
+[[bin]]
+name = "interaction-boundary-generation-blind-canary"
+path = "src/interaction_boundary_generation_blind_canary.rs"
+
+[[bin]]
+name = "plan-preview-generation-blind-canary"
+path = "src/plan_preview_generation_blind_canary.rs"
+
+[[bin]]
+name = "topic-transition-generation-blind-canary"
+path = "src/topic_transition_generation_blind_canary.rs"
+
+[[bin]]
+name = "real-user-dialogue-blind-canary"
+path = "src/real_user_dialogue_blind_canary.rs"
+
+[[bin]]
+name = "gpt-gap-structural-transfer-canary"
+path = "src/gpt_gap_structural_transfer_canary.rs"
+
+[[bin]]
+name = "response-boundary-productive-canary"
+path = "src/response_boundary_productive_canary.rs"
+
+[[bin]]
+name = "combinatorial-discourse-matrix-canary"
+path = "src/combinatorial_discourse_matrix_canary.rs"
+
+[[bin]]
+name = "dialogue-directive-composition-blind-canary"
+path = "src/dialogue_directive_composition_blind_canary.rs"
+
+[[bin]]
+name = "response-format-composition-blind-canary"
+path = "src/response_format_composition_blind_canary.rs"
+
+[[bin]]
 name = "b-core-cognitive-api"
 path = "src/cognitive_api_main.rs"
 

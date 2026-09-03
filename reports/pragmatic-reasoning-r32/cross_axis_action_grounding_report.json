@@ -1,0 +1,122 @@
+{
+  "stage": "R32_CROSS_AXIS_ACTION_GROUNDING",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "pilot": {
+    "suite": "R32-RUN-0001",
+    "diagnostic_sha256": "f874db75f5bd3c07989394a3a4310a19d7f0a40468a5b3d4b1c833c277063198",
+    "transfer_draft_sha256": "93047fabcd829af5c07e1a686960067cb3b2549c3e447d9119b0bf89bc304ec2",
+    "baseline_passed": 4,
+    "baseline_total": 24,
+    "disposition": "REPLACED_BEFORE_PRODUCT_CHANGE_INVALID_FOCUS_ORACLE",
+    "reason": "Four ambiguity prompts already had an explicit discourse focus and therefore did not validly require abstention. They were replaced with unbound multi-action questions before any product repair."
+  },
+  "diagnostic": {
+    "suite": "R32-RUN-0002",
+    "sha256": "a34f05c24e104d1b0c90342760bf526e3c67144072795d7bb7442660b8051d2b",
+    "frozen_before_product_changes": true,
+    "baseline_passed": 7,
+    "baseline_total": 24,
+    "repair_progression": [
+      "7/24 authoritative baseline",
+      "15/24 after typed ordinal-to-goal action binding",
+      "23/24 after explicit topic and same-turn relation integration",
+      "24/24 after bounded Korean predicate normalization"
+    ],
+    "final_passed": 24,
+    "final_total": 24,
+    "categories": {
+      "ordinal_reference_to_typed_status": "4/4",
+      "ordinal_reference_to_language_report": "4/4",
+      "ordinal_reference_to_verified_execution": "4/4",
+      "topic_focus_to_deictic_action_report": "4/4",
+      "attributed_relation_to_non_authoritative_realization": "4/4",
+      "ambiguous_action_reference_fails_closed": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R32-TRANSFER-0001",
+    "sha256": "b6630e5b6b2dce64da6bb8070816d035f5d2e024ee19e76d4e7273de726083a8",
+    "held_out_until_after_diagnostic_pass": true,
+    "first_exposure_passed": 16,
+    "first_exposure_total": 16,
+    "final_passed": 16,
+    "final_total": 16,
+    "oracle_changed_after_first_exposure": false,
+    "product_repair_driven_by_held_out": false
+  },
+  "fresh_blind_tasks_passed": 40,
+  "fresh_blind_tasks_total": 40,
+  "cumulative_r1_r32_passed": 1291,
+  "cumulative_r1_r32_total": 1291,
+  "verification": {
+    "metadata_discovered_canary_binaries_passed": 59,
+    "metadata_discovered_canary_binaries_total": 59,
+    "adapter_unit_tests_passed": 300,
+    "adapter_unit_tests_total": 300,
+    "workspace_library_tests_passed": 823,
+    "workspace_library_tests_total": 823,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_HISTORICAL_FROZEN_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "build_cache_cleanup": {
+      "target": "I:\\B_Core\\target",
+      "bytes_before": 19412435221,
+      "cargo_clean_files_removed": 12647,
+      "cargo_clean_reported_size": "18.1 GiB",
+      "target_exists_after": false
+    }
+  },
+  "safety": {
+    "unsupported_realization_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed_by_language_path": 0,
+    "language_reports_promoted_to_verified_execution": 0,
+    "same_turn_relations_promoted_to_world_truth": 0,
+    "semantic_authority_from_realization": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "Event-sequence ordinal references carry an inherited goal ID into the typed action-state analyzer.",
+    "The inherited goal ID disambiguates actions that share a predicate without granting new execution authority.",
+    "Explicit topic return can bind Korean and English deictic action reports to the unique matching active goal.",
+    "Same-turn attribution actor coreference is bounded to a named actor followed by a reporting attitude and is disabled inside quotes.",
+    "Same-turn causal and temporal connectors create dialogue-relation evidence only; causal truth and semantic authority remain false.",
+    "Verified-execution realization cites both the selected action ID and accepted typed receipt IDs.",
+    "Unbound multi-action status questions preserve ambiguity and fail closed instead of selecting the most recent action."
+  ],
+  "six_axis_assessment": {
+    "grammatical_composition": "R26_CLAUSE_GRAPH_COMPOSITION_REMAINS_GREEN_AND_NOW_FEEDS_MULTI_GOAL_ACTION_BINDING",
+    "discourse_and_topic_state": "R27_FOCUS_AND_EXPLICIT_TOPIC_RETURN_REMAIN_GREEN_ACROSS_ACTION_REPORTS",
+    "deixis_and_ellipsis_resolution": "R28_TYPED_ORDINAL_TOPIC_AND_DEICTIC_BINDING_REMAIN_GREEN_IN_COMPOSED_TURNS",
+    "speech_intent_and_pragmatics": "R29_INTENT_AND_ATTRIBUTED_RELATION_BOUNDARIES_REMAIN_NON_AUTHORITATIVE",
+    "result_plan_distinction": "R30_PLAN_LANGUAGE_REPORT_AND_VERIFIED_EXECUTION_REMAIN_DISTINCT_AFTER_REFERENCE_BINDING",
+    "evidence_grounded_realization": "R31_CLAIM_PROVENANCE_REMAINS_FAITHFUL_AFTER_CROSS_AXIS_BINDING"
+  },
+  "residual_limits": [
+    "This is a bounded deterministic Language Cortex, not unrestricted GPT-level language competence.",
+    "Open-vocabulary paraphrase, broad implicature, humor, social repair, and unrestricted Korean morphology remain incomplete.",
+    "Longer adversarial multi-speaker conversations and bridging or plural reference need broader frozen transfer suites.",
+    "Tool-specific structured result payloads still need dedicated provenance extractors.",
+    "The internal evidence seal does not prove the truth of an external source."
+  ],
+  "next_program_order": [
+    "broader open-vocabulary and adversarial paraphrase transfer across the integrated six-axis path",
+    "longer multi-speaker discourse with conflicting speakers, repairs, topic returns, and plural or bridging reference",
+    "tool-specific result payload provenance without expanding language into semantic authority"
+  ],
+  "pre_existing_user_change_preserved": "crates/semantic-reasoning/src/growth_supervisor.rs",
+  "commit_performed": false,
+  "push_performed": false
+}

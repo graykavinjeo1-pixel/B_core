@@ -1,0 +1,37 @@
+{
+  "schema": "B_CORE_TEMPORAL_ANSWER_GENERATION_BLIND_REPORT_1",
+  "suite": "TEMPORAL-ANSWER-GENERATION-BLIND-R26-RUN-0001",
+  "frozen_before_first_execution": true,
+  "fresh_cases": 16,
+  "passed": 16,
+  "failed": 0,
+  "cross_language_semantic_pairs": 8,
+  "cross_language_semantic_pairs_passed": 8,
+  "generative_path_rate_millis": 1000,
+  "categories": [
+    "EVENT_TIME",
+    "DIRECT_BEFORE_RELATION",
+    "KOREAN_DIRECT_BEFORE_RELATION",
+    "TRANSITIVE_TEMPORAL_PATH",
+    "CONFLICTING_TEMPORAL_RELATIONS",
+    "UNRECORDED_TEMPORAL_RELATION",
+    "AMBIGUOUS_EVENT_TIME",
+    "MISSING_TEMPORAL_TARGET"
+  ],
+  "supported_relation_kinds": [
+    "BEFORE",
+    "DURING",
+    "SIMULTANEOUS"
+  ],
+  "event_time_separate_from_report_turn": true,
+  "transitive_path_explicit": true,
+  "conflicts_preserved_fail_closed": true,
+  "same_meaning_graph_across_output_languages": true,
+  "unsupported_explanation_facts": 0,
+  "language_semantic_authority": false,
+  "language_execution_authority": false,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

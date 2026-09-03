@@ -1,0 +1,69 @@
+{
+  "schema": "B_CORE_R20_INTEGRATED_DIALOGUE_COHERENCE_REPORT_1",
+  "status": "PASS",
+  "stage": "R20_INTEGRATED_DIALOGUE_COHERENCE",
+  "canonical_integrity": {
+    "status": "PASS",
+    "file_count": 10,
+    "manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "frozen_suites": {
+    "diagnostic": {
+      "initial_source_sha256": "3a01e3b712b03e356b28237d978e5bca9ccf57507cabb1e0ae598190726bc88a",
+      "first_semantic_baseline": "1/24",
+      "corrected_baseline_source_sha256": "869e232b234d48ba7876fc16e7a3e280437737c68eff85466b9ec43e9a94a9dc",
+      "corrected_semantic_baseline": "1/24",
+      "final_harness_source_sha256": "da8d38f63db0f37759789a4b1cd55ca5b2e5585f89a3143ab68d67fbbffabe51",
+      "final": "24/24"
+    },
+    "held_out_transfer": {
+      "source_sha256_before_first_semantic_execution": "9c48b97b16ebe1cb6a84f5c24c4421efac717fa0b4e1f4291660d7b89525ac3d",
+      "first_execution": "PANIC_ON_CROSS_LANGUAGE_TOPIC_ID_COLLISION",
+      "first_complete_run": "12/16",
+      "corrected_harness_source_sha256": "df7b9be37c91a6333cb6b8ae0dd63f61fcd322de287af5ddc09ec5b965519be2",
+      "final": "16/16"
+    }
+  },
+  "coverage": {
+    "grammatical_composition": "PASS_BOUNDED",
+    "discourse_and_topic_state": "PASS_BOUNDED",
+    "deixis_and_ellipsis": "PASS_BOUNDED",
+    "speech_intent_and_pragmatics": "PASS_BOUNDED",
+    "execution_result_vs_plan": "PASS_BOUNDED",
+    "evidence_grounded_realization": "PASS_BOUNDED"
+  },
+  "authority_invariants": {
+    "topic_transition_authorizes_execution": false,
+    "lexical_alias_mutates_semantic_payload": false,
+    "proxy_evidence_unlocks_continuation_gate": false,
+    "reported_or_uncertain_claim_becomes_dialogue_truth": false,
+    "plan_is_realized_as_execution_result": false,
+    "unsupported_explanation_facts": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_canonical_language_path": 0,
+    "recursive_source_mutations": 0,
+    "full_catalog_scans": 0,
+    "routing_false_negatives": 0
+  },
+  "verification": {
+    "r20_fresh_tasks": "40/40",
+    "cumulative_r1_r20_tasks": "787/787",
+    "canary_binaries": "31/31",
+    "semantic_core_adapters_unit_tests": "267/267",
+    "workspace_tests": "791/791",
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_workspace_all_targets_deny_warnings": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "repository": {
+    "branch": "main",
+    "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c4f",
+    "commit_created": false,
+    "push_performed": false,
+    "worktree_clean": false
+  },
+  "scope_statement": "R20 closes a bounded cross-axis integration regression. It does not establish GPT-class open-domain language understanding.",
+  "next_residual": "Long-context interference, nested multi-reference composition, open-vocabulary topic grounding, and less templated evidence-faithful realization remain open."
+}

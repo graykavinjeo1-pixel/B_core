@@ -1,0 +1,23 @@
+{
+  "schema": "B_CORE_R50_DIAGNOSTIC_RUN_RESULT_2",
+  "run": "R50-DIAGNOSTIC-RUN-0002",
+  "status": "PASS",
+  "total": 12,
+  "passed": 12,
+  "failed": 0,
+  "product_repairs": [
+    "R43 reference consistency now counts resolution operations and compares the unique bound referent set instead of double-counting one referent through two representations."
+  ],
+  "fixture_corrections": [
+    "R50_11 adds the already-required rebinding turn that exposes mixed-subject ambiguity.",
+    "R50_12 expects BACKCHANNEL_ONLY for a standalone acknowledgement."
+  ],
+  "semantic_cases_changed": 0,
+  "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_12",
+  "integration_schema": "B_CORE_LANGUAGE_CORTEX_RESPONSE_INTEGRATION_IR_1",
+  "unsupported_explanation_facts": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

@@ -1,0 +1,4453 @@
+{
+  "schema": "B_CORE_GPT_REFERENCE_EVALUATION_REPORT_IR_1",
+  "suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+  "split": "DEVELOPMENT",
+  "response_count": 240,
+  "mean_similarity_bp": 7036,
+  "median_similarity_bp": 7302,
+  "percentile_10_similarity_bp": 4323,
+  "responses_at_or_above_8000_rate_bp": 3625,
+  "intent_context_exact_rate_bp": 3000,
+  "response_act_exact_rate_bp": 10000,
+  "category_mean_similarity_bp": {
+    "AFFECT_AND_SOCIAL_BACKCHANNEL": 7916,
+    "AMBIGUITY_CLARIFICATION": 6470,
+    "CONFLICT_UNCERTAINTY_ATTRIBUTION": 6224,
+    "CORRECTION_REJECTION_FEEDBACK": 6722,
+    "DEIXIS_REFERENCE_ELLIPSIS": 8346,
+    "EXPLICIT_REQUEST": 7371,
+    "INDIRECT_PRAGMATIC_INTENT": 6360,
+    "MIXED_LANGUAGE_NOISE_AND_FILLERS": 7607,
+    "PLAN_EXECUTION_RESULT_BOUNDARY": 6173,
+    "TOPIC_SHIFT_AND_RETURN": 7174
+  },
+  "language_mean_similarity_bp": {
+    "KOREAN": 7095,
+    "ENGLISH": 6978
+  },
+  "unsupported_reference_propositions": 0,
+  "semantic_authority_violations": 0,
+  "external_execution_authorizations": 0,
+  "false_execution_or_result_claims": 0,
+  "silent_ambiguity_guesses": 9,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0,
+  "failed_gates": [
+    "MEAN_SIMILARITY_BELOW_8500:ACTUAL_7036",
+    "MEDIAN_SIMILARITY_BELOW_8800:ACTUAL_7302",
+    "RESPONSES_AT_OR_ABOVE_8000_BELOW_9000:ACTUAL_3625",
+    "INTENT_CONTEXT_EXACT_BELOW_9500:ACTUAL_3000",
+    "CATEGORY_MEAN_BELOW_8000",
+    "SILENT_AMBIGUITY_GUESSES_NONZERO:9"
+  ],
+  "pass": false,
+  "turns": [
+    {
+      "response_id": "GPTREF-DEV-C01-EN-01-T1",
+      "dialogue_id": "GPTREF-DEV-C01-EN-01",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4545
+      },
+      "composite_similarity_bp": 9455,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-EN-01-T2",
+      "dialogue_id": "GPTREF-DEV-C01-EN-01",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4156
+      },
+      "composite_similarity_bp": 9416,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-EN-01-T3",
+      "dialogue_id": "GPTREF-DEV-C01-EN-01",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2759
+      },
+      "composite_similarity_bp": 4359,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-EN-01-T4",
+      "dialogue_id": "GPTREF-DEV-C01-EN-01",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1719
+      },
+      "composite_similarity_bp": 5422,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-EN-02-T1",
+      "dialogue_id": "GPTREF-DEV-C01-EN-02",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4545
+      },
+      "composite_similarity_bp": 9455,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-EN-02-T2",
+      "dialogue_id": "GPTREF-DEV-C01-EN-02",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4250
+      },
+      "composite_similarity_bp": 9425,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-EN-02-T3",
+      "dialogue_id": "GPTREF-DEV-C01-EN-02",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2759
+      },
+      "composite_similarity_bp": 4359,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-EN-02-T4",
+      "dialogue_id": "GPTREF-DEV-C01-EN-02",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1600
+      },
+      "composite_similarity_bp": 5410,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-EN-03-T1",
+      "dialogue_id": "GPTREF-DEV-C01-EN-03",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4545
+      },
+      "composite_similarity_bp": 9455,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-EN-03-T2",
+      "dialogue_id": "GPTREF-DEV-C01-EN-03",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4103
+      },
+      "composite_similarity_bp": 9410,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-EN-03-T3",
+      "dialogue_id": "GPTREF-DEV-C01-EN-03",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2759
+      },
+      "composite_similarity_bp": 4359,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-EN-03-T4",
+      "dialogue_id": "GPTREF-DEV-C01-EN-03",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1532
+      },
+      "composite_similarity_bp": 5403,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-KO-01-T1",
+      "dialogue_id": "GPTREF-DEV-C01-KO-01",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 5455
+      },
+      "composite_similarity_bp": 9546,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-KO-01-T2",
+      "dialogue_id": "GPTREF-DEV-C01-KO-01",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 6667,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2857
+      },
+      "composite_similarity_bp": 8619,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-KO-01-T3",
+      "dialogue_id": "GPTREF-DEV-C01-KO-01",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2500
+      },
+      "composite_similarity_bp": 4917,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-KO-01-T4",
+      "dialogue_id": "GPTREF-DEV-C01-KO-01",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2353
+      },
+      "composite_similarity_bp": 7235,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-KO-02-T1",
+      "dialogue_id": "GPTREF-DEV-C01-KO-02",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 5455
+      },
+      "composite_similarity_bp": 9546,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-KO-02-T2",
+      "dialogue_id": "GPTREF-DEV-C01-KO-02",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 6667,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2906
+      },
+      "composite_similarity_bp": 8624,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-KO-02-T3",
+      "dialogue_id": "GPTREF-DEV-C01-KO-02",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2500
+      },
+      "composite_similarity_bp": 4917,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-KO-02-T4",
+      "dialogue_id": "GPTREF-DEV-C01-KO-02",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2602
+      },
+      "composite_similarity_bp": 7260,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-KO-03-T1",
+      "dialogue_id": "GPTREF-DEV-C01-KO-03",
+      "turn_index": 1,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 5455
+      },
+      "composite_similarity_bp": 9546,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-KO-03-T2",
+      "dialogue_id": "GPTREF-DEV-C01-KO-03",
+      "turn_index": 2,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 6667,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2857
+      },
+      "composite_similarity_bp": 8619,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-KO-03-T3",
+      "dialogue_id": "GPTREF-DEV-C01-KO-03",
+      "turn_index": 3,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2500
+      },
+      "composite_similarity_bp": 4917,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C01-KO-03-T4",
+      "dialogue_id": "GPTREF-DEV-C01-KO-03",
+      "turn_index": 4,
+      "category": "EXPLICIT_REQUEST",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2353
+      },
+      "composite_similarity_bp": 7235,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-EN-01-T1",
+      "dialogue_id": "GPTREF-DEV-C02-EN-01",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 667
+      },
+      "composite_similarity_bp": 7900,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-EN-01-T2",
+      "dialogue_id": "GPTREF-DEV-C02-EN-01",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3243
+      },
+      "composite_similarity_bp": 7324,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-EN-01-T3",
+      "dialogue_id": "GPTREF-DEV-C02-EN-01",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1951
+      },
+      "composite_similarity_bp": 6029,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-EN-01-T4",
+      "dialogue_id": "GPTREF-DEV-C02-EN-01",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3636
+      },
+      "composite_similarity_bp": 3697,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-EN-02-T1",
+      "dialogue_id": "GPTREF-DEV-C02-EN-02",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 654
+      },
+      "composite_similarity_bp": 7899,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-EN-02-T2",
+      "dialogue_id": "GPTREF-DEV-C02-EN-02",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3243
+      },
+      "composite_similarity_bp": 7324,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-EN-02-T3",
+      "dialogue_id": "GPTREF-DEV-C02-EN-02",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1951
+      },
+      "composite_similarity_bp": 6029,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-EN-02-T4",
+      "dialogue_id": "GPTREF-DEV-C02-EN-02",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3636
+      },
+      "composite_similarity_bp": 3697,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-EN-03-T1",
+      "dialogue_id": "GPTREF-DEV-C02-EN-03",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 658
+      },
+      "composite_similarity_bp": 7899,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-EN-03-T2",
+      "dialogue_id": "GPTREF-DEV-C02-EN-03",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3243
+      },
+      "composite_similarity_bp": 7324,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-EN-03-T3",
+      "dialogue_id": "GPTREF-DEV-C02-EN-03",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1951
+      },
+      "composite_similarity_bp": 6029,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-EN-03-T4",
+      "dialogue_id": "GPTREF-DEV-C02-EN-03",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3636
+      },
+      "composite_similarity_bp": 3697,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-KO-01-T1",
+      "dialogue_id": "GPTREF-DEV-C02-KO-01",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 0
+      },
+      "composite_similarity_bp": 7833,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-KO-01-T2",
+      "dialogue_id": "GPTREF-DEV-C02-KO-01",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3448
+      },
+      "composite_similarity_bp": 7345,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-KO-01-T3",
+      "dialogue_id": "GPTREF-DEV-C02-KO-01",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 741
+      },
+      "composite_similarity_bp": 7074,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-KO-01-T4",
+      "dialogue_id": "GPTREF-DEV-C02-KO-01",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3478
+      },
+      "composite_similarity_bp": 3681,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-KO-02-T1",
+      "dialogue_id": "GPTREF-DEV-C02-KO-02",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 0
+      },
+      "composite_similarity_bp": 7833,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-KO-02-T2",
+      "dialogue_id": "GPTREF-DEV-C02-KO-02",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3725
+      },
+      "composite_similarity_bp": 7373,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-KO-02-T3",
+      "dialogue_id": "GPTREF-DEV-C02-KO-02",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 741
+      },
+      "composite_similarity_bp": 7074,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-KO-02-T4",
+      "dialogue_id": "GPTREF-DEV-C02-KO-02",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3478
+      },
+      "composite_similarity_bp": 3681,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-KO-03-T1",
+      "dialogue_id": "GPTREF-DEV-C02-KO-03",
+      "turn_index": 1,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 0
+      },
+      "composite_similarity_bp": 7833,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-KO-03-T2",
+      "dialogue_id": "GPTREF-DEV-C02-KO-03",
+      "turn_index": 2,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3093
+      },
+      "composite_similarity_bp": 7309,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-KO-03-T3",
+      "dialogue_id": "GPTREF-DEV-C02-KO-03",
+      "turn_index": 3,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 741
+      },
+      "composite_similarity_bp": 7074,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C02-KO-03-T4",
+      "dialogue_id": "GPTREF-DEV-C02-KO-03",
+      "turn_index": 4,
+      "category": "INDIRECT_PRAGMATIC_INTENT",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3478
+      },
+      "composite_similarity_bp": 3681,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-EN-01-T1",
+      "dialogue_id": "GPTREF-DEV-C03-EN-01",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3519
+      },
+      "composite_similarity_bp": 9352,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-EN-01-T2",
+      "dialogue_id": "GPTREF-DEV-C03-EN-01",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 8000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3333
+      },
+      "composite_similarity_bp": 6633,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-EN-01-T3",
+      "dialogue_id": "GPTREF-DEV-C03-EN-01",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3069
+      },
+      "composite_similarity_bp": 7307,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-EN-01-T4",
+      "dialogue_id": "GPTREF-DEV-C03-EN-01",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2400
+      },
+      "composite_similarity_bp": 4323,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-EN-02-T1",
+      "dialogue_id": "GPTREF-DEV-C03-EN-02",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3744
+      },
+      "composite_similarity_bp": 9374,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-EN-02-T2",
+      "dialogue_id": "GPTREF-DEV-C03-EN-02",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 8000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3482
+      },
+      "composite_similarity_bp": 6648,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-EN-02-T3",
+      "dialogue_id": "GPTREF-DEV-C03-EN-02",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3019
+      },
+      "composite_similarity_bp": 7302,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-EN-02-T4",
+      "dialogue_id": "GPTREF-DEV-C03-EN-02",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2297
+      },
+      "composite_similarity_bp": 4313,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-EN-03-T1",
+      "dialogue_id": "GPTREF-DEV-C03-EN-03",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3738
+      },
+      "composite_similarity_bp": 9374,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-EN-03-T2",
+      "dialogue_id": "GPTREF-DEV-C03-EN-03",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 8000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3292
+      },
+      "composite_similarity_bp": 6629,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-EN-03-T3",
+      "dialogue_id": "GPTREF-DEV-C03-EN-03",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3200
+      },
+      "composite_similarity_bp": 7320,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-EN-03-T4",
+      "dialogue_id": "GPTREF-DEV-C03-EN-03",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2267
+      },
+      "composite_similarity_bp": 4310,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-KO-01-T1",
+      "dialogue_id": "GPTREF-DEV-C03-KO-01",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 5946
+      },
+      "composite_similarity_bp": 9595,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-KO-01-T2",
+      "dialogue_id": "GPTREF-DEV-C03-KO-01",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 7059,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2222
+      },
+      "composite_similarity_bp": 6193,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-KO-01-T3",
+      "dialogue_id": "GPTREF-DEV-C03-KO-01",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2143
+      },
+      "composite_similarity_bp": 5464,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-KO-01-T4",
+      "dialogue_id": "GPTREF-DEV-C03-KO-01",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2105
+      },
+      "composite_similarity_bp": 4877,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-KO-02-T1",
+      "dialogue_id": "GPTREF-DEV-C03-KO-02",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 6165
+      },
+      "composite_similarity_bp": 9617,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-KO-02-T2",
+      "dialogue_id": "GPTREF-DEV-C03-KO-02",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 7059,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2632
+      },
+      "composite_similarity_bp": 6234,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-KO-02-T3",
+      "dialogue_id": "GPTREF-DEV-C03-KO-02",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2222
+      },
+      "composite_similarity_bp": 5472,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-KO-02-T4",
+      "dialogue_id": "GPTREF-DEV-C03-KO-02",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2105
+      },
+      "composite_similarity_bp": 4877,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-KO-03-T1",
+      "dialogue_id": "GPTREF-DEV-C03-KO-03",
+      "turn_index": 1,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 6111
+      },
+      "composite_similarity_bp": 9611,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-KO-03-T2",
+      "dialogue_id": "GPTREF-DEV-C03-KO-03",
+      "turn_index": 2,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 7059,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1835
+      },
+      "composite_similarity_bp": 6154,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-KO-03-T3",
+      "dialogue_id": "GPTREF-DEV-C03-KO-03",
+      "turn_index": 3,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2222
+      },
+      "composite_similarity_bp": 5472,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C03-KO-03-T4",
+      "dialogue_id": "GPTREF-DEV-C03-KO-03",
+      "turn_index": 4,
+      "category": "CORRECTION_REJECTION_FEEDBACK",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2105
+      },
+      "composite_similarity_bp": 4877,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-EN-01-T1",
+      "dialogue_id": "GPTREF-DEV-C04-EN-01",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 8750,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3118
+      },
+      "composite_similarity_bp": 8874,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-EN-01-T2",
+      "dialogue_id": "GPTREF-DEV-C04-EN-01",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3900
+      },
+      "composite_similarity_bp": 9390,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-EN-01-T3",
+      "dialogue_id": "GPTREF-DEV-C04-EN-01",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 5000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3243
+      },
+      "composite_similarity_bp": 8324,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-EN-01-T4",
+      "dialogue_id": "GPTREF-DEV-C04-EN-01",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1864
+      },
+      "composite_similarity_bp": 6020,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-EN-02-T1",
+      "dialogue_id": "GPTREF-DEV-C04-EN-02",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 8750,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3542
+      },
+      "composite_similarity_bp": 8917,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-EN-02-T2",
+      "dialogue_id": "GPTREF-DEV-C04-EN-02",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3776
+      },
+      "composite_similarity_bp": 9378,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-EN-02-T3",
+      "dialogue_id": "GPTREF-DEV-C04-EN-02",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 5000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3351
+      },
+      "composite_similarity_bp": 8335,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-EN-02-T4",
+      "dialogue_id": "GPTREF-DEV-C04-EN-02",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1864
+      },
+      "composite_similarity_bp": 6020,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-EN-03-T1",
+      "dialogue_id": "GPTREF-DEV-C04-EN-03",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 8750,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3617
+      },
+      "composite_similarity_bp": 8924,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-EN-03-T2",
+      "dialogue_id": "GPTREF-DEV-C04-EN-03",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4020
+      },
+      "composite_similarity_bp": 9402,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-EN-03-T3",
+      "dialogue_id": "GPTREF-DEV-C04-EN-03",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 5000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3152
+      },
+      "composite_similarity_bp": 8315,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-EN-03-T4",
+      "dialogue_id": "GPTREF-DEV-C04-EN-03",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1864
+      },
+      "composite_similarity_bp": 6020,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-KO-01-T1",
+      "dialogue_id": "GPTREF-DEV-C04-KO-01",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2667
+      },
+      "composite_similarity_bp": 9267,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-KO-01-T2",
+      "dialogue_id": "GPTREF-DEV-C04-KO-01",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3448
+      },
+      "composite_similarity_bp": 9345,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-KO-01-T3",
+      "dialogue_id": "GPTREF-DEV-C04-KO-01",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 5000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3077
+      },
+      "composite_similarity_bp": 8308,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-KO-01-T4",
+      "dialogue_id": "GPTREF-DEV-C04-KO-01",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1458
+      },
+      "composite_similarity_bp": 7146,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-KO-02-T1",
+      "dialogue_id": "GPTREF-DEV-C04-KO-02",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3333
+      },
+      "composite_similarity_bp": 9333,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-KO-02-T2",
+      "dialogue_id": "GPTREF-DEV-C04-KO-02",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3571
+      },
+      "composite_similarity_bp": 9357,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-KO-02-T3",
+      "dialogue_id": "GPTREF-DEV-C04-KO-02",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 5000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3505
+      },
+      "composite_similarity_bp": 8351,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-KO-02-T4",
+      "dialogue_id": "GPTREF-DEV-C04-KO-02",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1458
+      },
+      "composite_similarity_bp": 7146,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-KO-03-T1",
+      "dialogue_id": "GPTREF-DEV-C04-KO-03",
+      "turn_index": 1,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3333
+      },
+      "composite_similarity_bp": 9333,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-KO-03-T2",
+      "dialogue_id": "GPTREF-DEV-C04-KO-03",
+      "turn_index": 2,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3571
+      },
+      "composite_similarity_bp": 9357,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-KO-03-T3",
+      "dialogue_id": "GPTREF-DEV-C04-KO-03",
+      "turn_index": 3,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 5000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3043
+      },
+      "composite_similarity_bp": 8304,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C04-KO-03-T4",
+      "dialogue_id": "GPTREF-DEV-C04-KO-03",
+      "turn_index": 4,
+      "category": "DEIXIS_REFERENCE_ELLIPSIS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1458
+      },
+      "composite_similarity_bp": 7146,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-EN-01-T1",
+      "dialogue_id": "GPTREF-DEV-C05-EN-01",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2778
+      },
+      "composite_similarity_bp": 9278,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-EN-01-T2",
+      "dialogue_id": "GPTREF-DEV-C05-EN-01",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6154,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2929
+      },
+      "composite_similarity_bp": 7947,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-EN-01-T3",
+      "dialogue_id": "GPTREF-DEV-C05-EN-01",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3077
+      },
+      "composite_similarity_bp": 5558,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-EN-01-T4",
+      "dialogue_id": "GPTREF-DEV-C05-EN-01",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2857
+      },
+      "composite_similarity_bp": 4953,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-EN-02-T1",
+      "dialogue_id": "GPTREF-DEV-C05-EN-02",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2827
+      },
+      "composite_similarity_bp": 9283,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-EN-02-T2",
+      "dialogue_id": "GPTREF-DEV-C05-EN-02",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6154,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3179
+      },
+      "composite_similarity_bp": 7972,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-EN-02-T3",
+      "dialogue_id": "GPTREF-DEV-C05-EN-02",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3333
+      },
+      "composite_similarity_bp": 5583,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-EN-02-T4",
+      "dialogue_id": "GPTREF-DEV-C05-EN-02",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2857
+      },
+      "composite_similarity_bp": 4953,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-EN-03-T1",
+      "dialogue_id": "GPTREF-DEV-C05-EN-03",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2778
+      },
+      "composite_similarity_bp": 9278,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-EN-03-T2",
+      "dialogue_id": "GPTREF-DEV-C05-EN-03",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6154,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3232
+      },
+      "composite_similarity_bp": 7977,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-EN-03-T3",
+      "dialogue_id": "GPTREF-DEV-C05-EN-03",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3143
+      },
+      "composite_similarity_bp": 5564,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-EN-03-T4",
+      "dialogue_id": "GPTREF-DEV-C05-EN-03",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2857
+      },
+      "composite_similarity_bp": 4953,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-KO-01-T1",
+      "dialogue_id": "GPTREF-DEV-C05-KO-01",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3077
+      },
+      "composite_similarity_bp": 9308,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-KO-01-T2",
+      "dialogue_id": "GPTREF-DEV-C05-KO-01",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2000
+      },
+      "composite_similarity_bp": 9200,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-KO-01-T3",
+      "dialogue_id": "GPTREF-DEV-C05-KO-01",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2308
+      },
+      "composite_similarity_bp": 6064,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-KO-01-T4",
+      "dialogue_id": "GPTREF-DEV-C05-KO-01",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3077
+      },
+      "composite_similarity_bp": 4975,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-KO-02-T1",
+      "dialogue_id": "GPTREF-DEV-C05-KO-02",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3478
+      },
+      "composite_similarity_bp": 9348,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-KO-02-T2",
+      "dialogue_id": "GPTREF-DEV-C05-KO-02",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2800
+      },
+      "composite_similarity_bp": 9280,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-KO-02-T3",
+      "dialogue_id": "GPTREF-DEV-C05-KO-02",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2727
+      },
+      "composite_similarity_bp": 6106,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-KO-02-T4",
+      "dialogue_id": "GPTREF-DEV-C05-KO-02",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3077
+      },
+      "composite_similarity_bp": 4975,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-KO-03-T1",
+      "dialogue_id": "GPTREF-DEV-C05-KO-03",
+      "turn_index": 1,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3077
+      },
+      "composite_similarity_bp": 9308,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-KO-03-T2",
+      "dialogue_id": "GPTREF-DEV-C05-KO-03",
+      "turn_index": 2,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2667
+      },
+      "composite_similarity_bp": 9267,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-KO-03-T3",
+      "dialogue_id": "GPTREF-DEV-C05-KO-03",
+      "turn_index": 3,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2308
+      },
+      "composite_similarity_bp": 6064,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C05-KO-03-T4",
+      "dialogue_id": "GPTREF-DEV-C05-KO-03",
+      "turn_index": 4,
+      "category": "TOPIC_SHIFT_AND_RETURN",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3077
+      },
+      "composite_similarity_bp": 4975,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-EN-01-T1",
+      "dialogue_id": "GPTREF-DEV-C06-EN-01",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3240
+      },
+      "composite_similarity_bp": 3074,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-EN-01-T2",
+      "dialogue_id": "GPTREF-DEV-C06-EN-01",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1854
+      },
+      "composite_similarity_bp": 9185,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-EN-01-T3",
+      "dialogue_id": "GPTREF-DEV-C06-EN-01",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4029
+      },
+      "composite_similarity_bp": 7653,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-EN-01-T4",
+      "dialogue_id": "GPTREF-DEV-C06-EN-01",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3288
+      },
+      "composite_similarity_bp": 3662,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-EN-02-T1",
+      "dialogue_id": "GPTREF-DEV-C06-EN-02",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3240
+      },
+      "composite_similarity_bp": 3074,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-EN-02-T2",
+      "dialogue_id": "GPTREF-DEV-C06-EN-02",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1827
+      },
+      "composite_similarity_bp": 9183,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-EN-02-T3",
+      "dialogue_id": "GPTREF-DEV-C06-EN-02",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3942
+      },
+      "composite_similarity_bp": 7644,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-EN-02-T4",
+      "dialogue_id": "GPTREF-DEV-C06-EN-02",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3288
+      },
+      "composite_similarity_bp": 3662,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-EN-03-T1",
+      "dialogue_id": "GPTREF-DEV-C06-EN-03",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3240
+      },
+      "composite_similarity_bp": 3074,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-EN-03-T2",
+      "dialogue_id": "GPTREF-DEV-C06-EN-03",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2039
+      },
+      "composite_similarity_bp": 9204,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-EN-03-T3",
+      "dialogue_id": "GPTREF-DEV-C06-EN-03",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4058
+      },
+      "composite_similarity_bp": 7656,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-EN-03-T4",
+      "dialogue_id": "GPTREF-DEV-C06-EN-03",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3288
+      },
+      "composite_similarity_bp": 3662,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-KO-01-T1",
+      "dialogue_id": "GPTREF-DEV-C06-KO-01",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 741
+      },
+      "composite_similarity_bp": 5408,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-KO-01-T2",
+      "dialogue_id": "GPTREF-DEV-C06-KO-01",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 541
+      },
+      "composite_similarity_bp": 7888,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-KO-01-T3",
+      "dialogue_id": "GPTREF-DEV-C06-KO-01",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2778
+      },
+      "composite_similarity_bp": 8111,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-KO-01-T4",
+      "dialogue_id": "GPTREF-DEV-C06-KO-01",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3077
+      },
+      "composite_similarity_bp": 4808,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-KO-02-T1",
+      "dialogue_id": "GPTREF-DEV-C06-KO-02",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 741
+      },
+      "composite_similarity_bp": 5408,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-KO-02-T2",
+      "dialogue_id": "GPTREF-DEV-C06-KO-02",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 526
+      },
+      "composite_similarity_bp": 7886,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-KO-02-T3",
+      "dialogue_id": "GPTREF-DEV-C06-KO-02",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2778
+      },
+      "composite_similarity_bp": 8111,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-KO-02-T4",
+      "dialogue_id": "GPTREF-DEV-C06-KO-02",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3077
+      },
+      "composite_similarity_bp": 4808,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-KO-03-T1",
+      "dialogue_id": "GPTREF-DEV-C06-KO-03",
+      "turn_index": 1,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 741
+      },
+      "composite_similarity_bp": 5408,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-KO-03-T2",
+      "dialogue_id": "GPTREF-DEV-C06-KO-03",
+      "turn_index": 2,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 541
+      },
+      "composite_similarity_bp": 7888,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-KO-03-T3",
+      "dialogue_id": "GPTREF-DEV-C06-KO-03",
+      "turn_index": 3,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2778
+      },
+      "composite_similarity_bp": 8111,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C06-KO-03-T4",
+      "dialogue_id": "GPTREF-DEV-C06-KO-03",
+      "turn_index": 4,
+      "category": "CONFLICT_UNCERTAINTY_ATTRIBUTION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3077
+      },
+      "composite_similarity_bp": 4808,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-EN-01-T1",
+      "dialogue_id": "GPTREF-DEV-C07-EN-01",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 5051
+      },
+      "composite_similarity_bp": 9505,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-EN-01-T2",
+      "dialogue_id": "GPTREF-DEV-C07-EN-01",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3704
+      },
+      "composite_similarity_bp": 3704,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-EN-01-T3",
+      "dialogue_id": "GPTREF-DEV-C07-EN-01",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 8000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4868
+      },
+      "composite_similarity_bp": 5920,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-EN-01-T4",
+      "dialogue_id": "GPTREF-DEV-C07-EN-01",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 5000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3590
+      },
+      "composite_similarity_bp": 4109,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-EN-02-T1",
+      "dialogue_id": "GPTREF-DEV-C07-EN-02",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 5196
+      },
+      "composite_similarity_bp": 9520,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-EN-02-T2",
+      "dialogue_id": "GPTREF-DEV-C07-EN-02",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3704
+      },
+      "composite_similarity_bp": 3704,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-EN-02-T3",
+      "dialogue_id": "GPTREF-DEV-C07-EN-02",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 8000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4479
+      },
+      "composite_similarity_bp": 5881,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-EN-02-T4",
+      "dialogue_id": "GPTREF-DEV-C07-EN-02",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 5000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3590
+      },
+      "composite_similarity_bp": 4109,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-EN-03-T1",
+      "dialogue_id": "GPTREF-DEV-C07-EN-03",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 5000
+      },
+      "composite_similarity_bp": 9500,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-EN-03-T2",
+      "dialogue_id": "GPTREF-DEV-C07-EN-03",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3704
+      },
+      "composite_similarity_bp": 3704,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-EN-03-T3",
+      "dialogue_id": "GPTREF-DEV-C07-EN-03",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 8000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4362
+      },
+      "composite_similarity_bp": 5870,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-EN-03-T4",
+      "dialogue_id": "GPTREF-DEV-C07-EN-03",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 5000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3590
+      },
+      "composite_similarity_bp": 4109,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-KO-01-T1",
+      "dialogue_id": "GPTREF-DEV-C07-KO-01",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 5806
+      },
+      "composite_similarity_bp": 9581,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-KO-01-T2",
+      "dialogue_id": "GPTREF-DEV-C07-KO-01",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2857
+      },
+      "composite_similarity_bp": 4953,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-KO-01-T3",
+      "dialogue_id": "GPTREF-DEV-C07-KO-01",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 8000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3200
+      },
+      "composite_similarity_bp": 6920,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-KO-01-T4",
+      "dialogue_id": "GPTREF-DEV-C07-KO-01",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 5000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3846
+      },
+      "composite_similarity_bp": 4718,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-KO-02-T1",
+      "dialogue_id": "GPTREF-DEV-C07-KO-02",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 5806
+      },
+      "composite_similarity_bp": 9581,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-KO-02-T2",
+      "dialogue_id": "GPTREF-DEV-C07-KO-02",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2857
+      },
+      "composite_similarity_bp": 4953,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-KO-02-T3",
+      "dialogue_id": "GPTREF-DEV-C07-KO-02",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 8000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3200
+      },
+      "composite_similarity_bp": 6920,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-KO-02-T4",
+      "dialogue_id": "GPTREF-DEV-C07-KO-02",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 5000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3846
+      },
+      "composite_similarity_bp": 4718,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-KO-03-T1",
+      "dialogue_id": "GPTREF-DEV-C07-KO-03",
+      "turn_index": 1,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 5806
+      },
+      "composite_similarity_bp": 9581,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-KO-03-T2",
+      "dialogue_id": "GPTREF-DEV-C07-KO-03",
+      "turn_index": 2,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2857
+      },
+      "composite_similarity_bp": 4953,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-KO-03-T3",
+      "dialogue_id": "GPTREF-DEV-C07-KO-03",
+      "turn_index": 3,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 8000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3200
+      },
+      "composite_similarity_bp": 6920,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C07-KO-03-T4",
+      "dialogue_id": "GPTREF-DEV-C07-KO-03",
+      "turn_index": 4,
+      "category": "PLAN_EXECUTION_RESULT_BOUNDARY",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 5000,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3846
+      },
+      "composite_similarity_bp": 4718,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-EN-01-T1",
+      "dialogue_id": "GPTREF-DEV-C08-EN-01",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3750
+      },
+      "composite_similarity_bp": 8208,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-EN-01-T2",
+      "dialogue_id": "GPTREF-DEV-C08-EN-01",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 870
+      },
+      "composite_similarity_bp": 7920,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-EN-01-T3",
+      "dialogue_id": "GPTREF-DEV-C08-EN-01",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3415
+      },
+      "composite_similarity_bp": 9342,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-EN-01-T4",
+      "dialogue_id": "GPTREF-DEV-C08-EN-01",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3182
+      },
+      "composite_similarity_bp": 6818,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-EN-02-T1",
+      "dialogue_id": "GPTREF-DEV-C08-EN-02",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3750
+      },
+      "composite_similarity_bp": 8208,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-EN-02-T2",
+      "dialogue_id": "GPTREF-DEV-C08-EN-02",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 870
+      },
+      "composite_similarity_bp": 7920,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-EN-02-T3",
+      "dialogue_id": "GPTREF-DEV-C08-EN-02",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3562
+      },
+      "composite_similarity_bp": 9356,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-EN-02-T4",
+      "dialogue_id": "GPTREF-DEV-C08-EN-02",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3182
+      },
+      "composite_similarity_bp": 6818,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-EN-03-T1",
+      "dialogue_id": "GPTREF-DEV-C08-EN-03",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3750
+      },
+      "composite_similarity_bp": 8208,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-EN-03-T2",
+      "dialogue_id": "GPTREF-DEV-C08-EN-03",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 870
+      },
+      "composite_similarity_bp": 7920,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-EN-03-T3",
+      "dialogue_id": "GPTREF-DEV-C08-EN-03",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3415
+      },
+      "composite_similarity_bp": 9342,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-EN-03-T4",
+      "dialogue_id": "GPTREF-DEV-C08-EN-03",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3182
+      },
+      "composite_similarity_bp": 6818,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-KO-01-T1",
+      "dialogue_id": "GPTREF-DEV-C08-KO-01",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1379
+      },
+      "composite_similarity_bp": 7971,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-KO-01-T2",
+      "dialogue_id": "GPTREF-DEV-C08-KO-01",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1429
+      },
+      "composite_similarity_bp": 9143,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-KO-01-T3",
+      "dialogue_id": "GPTREF-DEV-C08-KO-01",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3448
+      },
+      "composite_similarity_bp": 7345,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-KO-01-T4",
+      "dialogue_id": "GPTREF-DEV-C08-KO-01",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 741
+      },
+      "composite_similarity_bp": 6574,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-KO-02-T1",
+      "dialogue_id": "GPTREF-DEV-C08-KO-02",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1379
+      },
+      "composite_similarity_bp": 7971,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-KO-02-T2",
+      "dialogue_id": "GPTREF-DEV-C08-KO-02",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1429
+      },
+      "composite_similarity_bp": 9143,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-KO-02-T3",
+      "dialogue_id": "GPTREF-DEV-C08-KO-02",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3448
+      },
+      "composite_similarity_bp": 7345,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-KO-02-T4",
+      "dialogue_id": "GPTREF-DEV-C08-KO-02",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 741
+      },
+      "composite_similarity_bp": 6574,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-KO-03-T1",
+      "dialogue_id": "GPTREF-DEV-C08-KO-03",
+      "turn_index": 1,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1379
+      },
+      "composite_similarity_bp": 7971,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-KO-03-T2",
+      "dialogue_id": "GPTREF-DEV-C08-KO-03",
+      "turn_index": 2,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1429
+      },
+      "composite_similarity_bp": 9143,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-KO-03-T3",
+      "dialogue_id": "GPTREF-DEV-C08-KO-03",
+      "turn_index": 3,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3448
+      },
+      "composite_similarity_bp": 7345,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C08-KO-03-T4",
+      "dialogue_id": "GPTREF-DEV-C08-KO-03",
+      "turn_index": 4,
+      "category": "AFFECT_AND_SOCIAL_BACKCHANNEL",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 741
+      },
+      "composite_similarity_bp": 6574,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-EN-01-T1",
+      "dialogue_id": "GPTREF-DEV-C09-EN-01",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2989
+      },
+      "composite_similarity_bp": 9299,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-EN-01-T2",
+      "dialogue_id": "GPTREF-DEV-C09-EN-01",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4752
+      },
+      "composite_similarity_bp": 8309,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-EN-01-T3",
+      "dialogue_id": "GPTREF-DEV-C09-EN-01",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 3333,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2564
+      },
+      "composite_similarity_bp": 4923,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-EN-01-T4",
+      "dialogue_id": "GPTREF-DEV-C09-EN-01",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2632
+      },
+      "composite_similarity_bp": 5513,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-EN-02-T1",
+      "dialogue_id": "GPTREF-DEV-C09-EN-02",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3352
+      },
+      "composite_similarity_bp": 9335,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-EN-02-T2",
+      "dialogue_id": "GPTREF-DEV-C09-EN-02",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4466
+      },
+      "composite_similarity_bp": 8280,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-EN-02-T3",
+      "dialogue_id": "GPTREF-DEV-C09-EN-02",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 3333,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2564
+      },
+      "composite_similarity_bp": 4923,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-EN-02-T4",
+      "dialogue_id": "GPTREF-DEV-C09-EN-02",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2632
+      },
+      "composite_similarity_bp": 5513,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-EN-03-T1",
+      "dialogue_id": "GPTREF-DEV-C09-EN-03",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3503
+      },
+      "composite_similarity_bp": 9350,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-EN-03-T2",
+      "dialogue_id": "GPTREF-DEV-C09-EN-03",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4466
+      },
+      "composite_similarity_bp": 8280,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-EN-03-T3",
+      "dialogue_id": "GPTREF-DEV-C09-EN-03",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 3333,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2564
+      },
+      "composite_similarity_bp": 4923,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-EN-03-T4",
+      "dialogue_id": "GPTREF-DEV-C09-EN-03",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2632
+      },
+      "composite_similarity_bp": 5513,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-KO-01-T1",
+      "dialogue_id": "GPTREF-DEV-C09-KO-01",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3636
+      },
+      "composite_similarity_bp": 9364,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-KO-01-T2",
+      "dialogue_id": "GPTREF-DEV-C09-KO-01",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 714
+      },
+      "composite_similarity_bp": 5905,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-KO-01-T3",
+      "dialogue_id": "GPTREF-DEV-C09-KO-01",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 3333,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1538
+      },
+      "composite_similarity_bp": 4820,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-KO-01-T4",
+      "dialogue_id": "GPTREF-DEV-C09-KO-01",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 1778
+      },
+      "composite_similarity_bp": 3511,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-KO-02-T1",
+      "dialogue_id": "GPTREF-DEV-C09-KO-02",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4587
+      },
+      "composite_similarity_bp": 9459,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-KO-02-T2",
+      "dialogue_id": "GPTREF-DEV-C09-KO-02",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 645
+      },
+      "composite_similarity_bp": 5898,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-KO-02-T3",
+      "dialogue_id": "GPTREF-DEV-C09-KO-02",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 3333,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2316
+      },
+      "composite_similarity_bp": 4898,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-KO-02-T4",
+      "dialogue_id": "GPTREF-DEV-C09-KO-02",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 2292
+      },
+      "composite_similarity_bp": 3563,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-KO-03-T1",
+      "dialogue_id": "GPTREF-DEV-C09-KO-03",
+      "turn_index": 1,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 4158
+      },
+      "composite_similarity_bp": 9416,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-KO-03-T2",
+      "dialogue_id": "GPTREF-DEV-C09-KO-03",
+      "turn_index": 2,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 690
+      },
+      "composite_similarity_bp": 5902,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-KO-03-T3",
+      "dialogue_id": "GPTREF-DEV-C09-KO-03",
+      "turn_index": 3,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 3333,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2151
+      },
+      "composite_similarity_bp": 4882,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C09-KO-03-T4",
+      "dialogue_id": "GPTREF-DEV-C09-KO-03",
+      "turn_index": 4,
+      "category": "AMBIGUITY_CLARIFICATION",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 0,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 1778
+      },
+      "composite_similarity_bp": 3511,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-EN-01-T1",
+      "dialogue_id": "GPTREF-DEV-C10-EN-01",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3186
+      },
+      "composite_similarity_bp": 9319,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-EN-01-T2",
+      "dialogue_id": "GPTREF-DEV-C10-EN-01",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2951
+      },
+      "composite_similarity_bp": 7295,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-EN-01-T3",
+      "dialogue_id": "GPTREF-DEV-C10-EN-01",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 5000
+      },
+      "composite_similarity_bp": 4583,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-EN-01-T4",
+      "dialogue_id": "GPTREF-DEV-C10-EN-01",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1346
+      },
+      "composite_similarity_bp": 9135,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-EN-02-T1",
+      "dialogue_id": "GPTREF-DEV-C10-EN-02",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3390
+      },
+      "composite_similarity_bp": 9339,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-EN-02-T2",
+      "dialogue_id": "GPTREF-DEV-C10-EN-02",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2809
+      },
+      "composite_similarity_bp": 7281,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-EN-02-T3",
+      "dialogue_id": "GPTREF-DEV-C10-EN-02",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 5000
+      },
+      "composite_similarity_bp": 4583,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-EN-02-T4",
+      "dialogue_id": "GPTREF-DEV-C10-EN-02",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1346
+      },
+      "composite_similarity_bp": 9135,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-EN-03-T1",
+      "dialogue_id": "GPTREF-DEV-C10-EN-03",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3217
+      },
+      "composite_similarity_bp": 9322,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-EN-03-T2",
+      "dialogue_id": "GPTREF-DEV-C10-EN-03",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 3094
+      },
+      "composite_similarity_bp": 7309,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-EN-03-T3",
+      "dialogue_id": "GPTREF-DEV-C10-EN-03",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 5000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 5000
+      },
+      "composite_similarity_bp": 4583,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-EN-03-T4",
+      "dialogue_id": "GPTREF-DEV-C10-EN-03",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "ENGLISH",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1346
+      },
+      "composite_similarity_bp": 9135,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-KO-01-T1",
+      "dialogue_id": "GPTREF-DEV-C10-KO-01",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2581
+      },
+      "composite_similarity_bp": 9258,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-KO-01-T2",
+      "dialogue_id": "GPTREF-DEV-C10-KO-01",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 1707
+      },
+      "composite_similarity_bp": 7171,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-KO-01-T3",
+      "dialogue_id": "GPTREF-DEV-C10-KO-01",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3478
+      },
+      "composite_similarity_bp": 5015,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-KO-01-T4",
+      "dialogue_id": "GPTREF-DEV-C10-KO-01",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 0
+      },
+      "composite_similarity_bp": 9000,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-KO-02-T1",
+      "dialogue_id": "GPTREF-DEV-C10-KO-02",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2832
+      },
+      "composite_similarity_bp": 9283,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-KO-02-T2",
+      "dialogue_id": "GPTREF-DEV-C10-KO-02",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2558
+      },
+      "composite_similarity_bp": 7256,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-KO-02-T3",
+      "dialogue_id": "GPTREF-DEV-C10-KO-02",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3636
+      },
+      "composite_similarity_bp": 5031,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-KO-02-T4",
+      "dialogue_id": "GPTREF-DEV-C10-KO-02",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 0
+      },
+      "composite_similarity_bp": 9000,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-KO-03-T1",
+      "dialogue_id": "GPTREF-DEV-C10-KO-03",
+      "turn_index": 1,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2581
+      },
+      "composite_similarity_bp": 9258,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-KO-03-T2",
+      "dialogue_id": "GPTREF-DEV-C10-KO-03",
+      "turn_index": 2,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 2381
+      },
+      "composite_similarity_bp": 7238,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-KO-03-T3",
+      "dialogue_id": "GPTREF-DEV-C10-KO-03",
+      "turn_index": 3,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 6667,
+        "discourse_binding_f1_bp": 0,
+        "required_proposition_f1_bp": 6667,
+        "response_act_and_epistemic_boundary_bp": 6667,
+        "normalized_surface_similarity_bp": 3636
+      },
+      "composite_similarity_bp": 5031,
+      "intent_context_exact": false,
+      "response_act_exact": true,
+      "critical_failure_reasons": [
+        "CRITICAL_RESPONSE_BOUNDARY_MISMATCH"
+      ]
+    },
+    {
+      "response_id": "GPTREF-DEV-C10-KO-03-T4",
+      "dialogue_id": "GPTREF-DEV-C10-KO-03",
+      "turn_index": 4,
+      "category": "MIXED_LANGUAGE_NOISE_AND_FILLERS",
+      "language": "KOREAN",
+      "dimensions": {
+        "meaning_graph_f1_bp": 10000,
+        "discourse_binding_f1_bp": 10000,
+        "required_proposition_f1_bp": 10000,
+        "response_act_and_epistemic_boundary_bp": 10000,
+        "normalized_surface_similarity_bp": 0
+      },
+      "composite_similarity_bp": 9000,
+      "intent_context_exact": true,
+      "response_act_exact": true,
+      "critical_failure_reasons": []
+    }
+  ],
+  "report_sha256": "af55066c15a9b17366d4a3e29aeab13594d5d54cef7bc236523274d301308c8c"
+}

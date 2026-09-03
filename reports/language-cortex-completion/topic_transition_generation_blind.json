@@ -1,0 +1,250 @@
+{
+  "schema": "B_CORE_TOPIC_TRANSITION_GENERATION_BLIND_REPORT_1",
+  "suite": "TOPIC-TRANSITION-GENERATION-BLIND-R32-RUN-0001",
+  "frozen_before_first_execution": true,
+  "fresh_cases": 12,
+  "passed": 12,
+  "failed": 0,
+  "cross_language_semantic_pairs": 6,
+  "cross_language_semantic_pairs_passed": 6,
+  "generative_path_rate_millis": 1000,
+  "drafted_surface_fallbacks": 0,
+  "stage_overwrites": 0,
+  "semantic_authority_violations": 0,
+  "external_execution_authorizations": 0,
+  "unsupported_explanation_facts": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0,
+  "rows": [
+    {
+      "id": "R32_TOPIC_01",
+      "semantic_group": "R32_NAMED_EN_PAIR",
+      "category": "named_english_input_korean_output",
+      "input_language": "ENGLISH",
+      "output_language": "KOREAN",
+      "transition_kind": "ACTIVATE_NAMED",
+      "required_fragments": [
+        "Lumen",
+        "화제",
+        "실행"
+      ],
+      "realized_text": "알겠어. 이제 ‘Lumen 인덱스’를 현재 화제로 둘게. 이건 대화 초점만 바꾸는 거야. 작업을 실행한 것은 아니야.",
+      "semantic_sha256": "eb62a8a6c28b538423337cc3dc5ae17b2ccbcaf99379c660894f8464cfec2ae2",
+      "semantic_pair_invariant": true,
+      "typed_generation": true,
+      "safety_boundary": true,
+      "pass": true
+    },
+    {
+      "id": "R32_TOPIC_02",
+      "semantic_group": "R32_NAMED_EN_PAIR",
+      "category": "named_english_input_english_output",
+      "input_language": "ENGLISH",
+      "output_language": "ENGLISH",
+      "transition_kind": "ACTIVATE_NAMED",
+      "required_fragments": [
+        "Lumen",
+        "active topic",
+        "execute"
+      ],
+      "realized_text": "Got it. The Lumen index is now the active topic. This only changes the conversation focus; it does not execute any work.",
+      "semantic_sha256": "eb62a8a6c28b538423337cc3dc5ae17b2ccbcaf99379c660894f8464cfec2ae2",
+      "semantic_pair_invariant": true,
+      "typed_generation": true,
+      "safety_boundary": true,
+      "pass": true
+    },
+    {
+      "id": "R32_TOPIC_03",
+      "semantic_group": "R32_NAMED_KO_PAIR",
+      "category": "named_korean_input_korean_output",
+      "input_language": "KOREAN",
+      "output_language": "KOREAN",
+      "transition_kind": "ACTIVATE_NAMED",
+      "required_fragments": [
+        "Nova",
+        "화제",
+        "실행"
+      ],
+      "realized_text": "알겠어. ‘Nova 서버’ 이야기로 돌아가자. 이제 그 이야기가 현재 화제야. 이건 대화 초점만 바꾸는 거야. 작업을 실행한 것은 아니야.",
+      "semantic_sha256": "6ee7e919eb42ddbd6dcc29f4bed4f32fc4cbe16b939e0274100f5bb0da257455",
+      "semantic_pair_invariant": true,
+      "typed_generation": true,
+      "safety_boundary": true,
+      "pass": true
+    },
+    {
+      "id": "R32_TOPIC_04",
+      "semantic_group": "R32_NAMED_KO_PAIR",
+      "category": "named_korean_input_english_output",
+      "input_language": "KOREAN",
+      "output_language": "ENGLISH",
+      "transition_kind": "ACTIVATE_NAMED",
+      "required_fragments": [
+        "Nova",
+        "active topic",
+        "execute"
+      ],
+      "realized_text": "Got it. Let's return to the Nova server topic. It is now the active topic. This only changes the conversation focus; it does not execute any work.",
+      "semantic_sha256": "6ee7e919eb42ddbd6dcc29f4bed4f32fc4cbe16b939e0274100f5bb0da257455",
+      "semantic_pair_invariant": true,
+      "typed_generation": true,
+      "safety_boundary": true,
+      "pass": true
+    },
+    {
+      "id": "R32_TOPIC_05",
+      "semantic_group": "R32_RETURN_EN_PAIR",
+      "category": "previous_english_input_korean_output",
+      "input_language": "ENGLISH",
+      "output_language": "KOREAN",
+      "transition_kind": "RETURN_PREVIOUS",
+      "required_fragments": [
+        "Aster",
+        "돌아",
+        "실행"
+      ],
+      "realized_text": "알겠어. ‘Aster 캐시’ 이야기로 돌아가자. 이건 대화 초점만 바꾸는 거야. 작업을 실행한 것은 아니야.",
+      "semantic_sha256": "0b324e09afbbacf7d60b185e7838187cf49d807b57ef131537b7d02c90c58f7f",
+      "semantic_pair_invariant": true,
+      "typed_generation": true,
+      "safety_boundary": true,
+      "pass": true
+    },
+    {
+      "id": "R32_TOPIC_06",
+      "semantic_group": "R32_RETURN_EN_PAIR",
+      "category": "previous_english_input_english_output",
+      "input_language": "ENGLISH",
+      "output_language": "ENGLISH",
+      "transition_kind": "RETURN_PREVIOUS",
+      "required_fragments": [
+        "Aster",
+        "return",
+        "execute"
+      ],
+      "realized_text": "Got it. Let's return to the Aster cache topic. This only changes the conversation focus; it does not execute any work.",
+      "semantic_sha256": "0b324e09afbbacf7d60b185e7838187cf49d807b57ef131537b7d02c90c58f7f",
+      "semantic_pair_invariant": true,
+      "typed_generation": true,
+      "safety_boundary": true,
+      "pass": true
+    },
+    {
+      "id": "R32_TOPIC_07",
+      "semantic_group": "R32_RETURN_KO_PAIR",
+      "category": "previous_korean_input_korean_output",
+      "input_language": "KOREAN",
+      "output_language": "KOREAN",
+      "transition_kind": "RETURN_PREVIOUS",
+      "required_fragments": [
+        "Aster",
+        "돌아",
+        "실행"
+      ],
+      "realized_text": "알겠어. ‘Aster 캐시’ 이야기로 돌아가자. 이건 대화 초점만 바꾸는 거야. 작업을 실행한 것은 아니야.",
+      "semantic_sha256": "6717ecbf4b3f1a1354da603c2f8d75be302e1945a7e9b066af631ce7493966d8",
+      "semantic_pair_invariant": true,
+      "typed_generation": true,
+      "safety_boundary": true,
+      "pass": true
+    },
+    {
+      "id": "R32_TOPIC_08",
+      "semantic_group": "R32_RETURN_KO_PAIR",
+      "category": "previous_korean_input_english_output",
+      "input_language": "KOREAN",
+      "output_language": "ENGLISH",
+      "transition_kind": "RETURN_PREVIOUS",
+      "required_fragments": [
+        "Aster",
+        "return",
+        "execute"
+      ],
+      "realized_text": "Got it. Let's return to the Aster cache topic. This only changes the conversation focus; it does not execute any work.",
+      "semantic_sha256": "6717ecbf4b3f1a1354da603c2f8d75be302e1945a7e9b066af631ce7493966d8",
+      "semantic_pair_invariant": true,
+      "typed_generation": true,
+      "safety_boundary": true,
+      "pass": true
+    },
+    {
+      "id": "R32_TOPIC_09",
+      "semantic_group": "R32_GROUP_EN_PAIR",
+      "category": "group_english_input_korean_output",
+      "input_language": "ENGLISH",
+      "output_language": "KOREAN",
+      "transition_kind": "ACTIVATE_GROUP",
+      "required_fragments": [
+        "작업 묶음",
+        "화제",
+        "실행"
+      ],
+      "realized_text": "알겠어. 이제 ‘작업 묶음’을 현재 화제로 둘게. 이건 대화 초점만 바꾸는 거야. 작업을 실행한 것은 아니야.",
+      "semantic_sha256": "b74981d59e7f0cbea9762d3c5ab85c9c42b7230de56d289f04ae23837595b424",
+      "semantic_pair_invariant": true,
+      "typed_generation": true,
+      "safety_boundary": true,
+      "pass": true
+    },
+    {
+      "id": "R32_TOPIC_10",
+      "semantic_group": "R32_GROUP_EN_PAIR",
+      "category": "group_english_input_english_output",
+      "input_language": "ENGLISH",
+      "output_language": "ENGLISH",
+      "transition_kind": "ACTIVATE_GROUP",
+      "required_fragments": [
+        "task group",
+        "active topic",
+        "execute"
+      ],
+      "realized_text": "Got it. The task group is now the active topic. This only changes the conversation focus; it does not execute any work.",
+      "semantic_sha256": "b74981d59e7f0cbea9762d3c5ab85c9c42b7230de56d289f04ae23837595b424",
+      "semantic_pair_invariant": true,
+      "typed_generation": true,
+      "safety_boundary": true,
+      "pass": true
+    },
+    {
+      "id": "R32_TOPIC_11",
+      "semantic_group": "R32_GROUP_KO_PAIR",
+      "category": "group_korean_input_korean_output",
+      "input_language": "KOREAN",
+      "output_language": "KOREAN",
+      "transition_kind": "ACTIVATE_GROUP",
+      "required_fragments": [
+        "작업 묶음",
+        "화제",
+        "실행"
+      ],
+      "realized_text": "알겠어. 이제 ‘작업 묶음’을 현재 화제로 둘게. 이건 대화 초점만 바꾸는 거야. 작업을 실행한 것은 아니야.",
+      "semantic_sha256": "89083336eac2a0218950ba72e4b198058fc1541c99c7fafd4d23f0bd3b9e038e",
+      "semantic_pair_invariant": true,
+      "typed_generation": true,
+      "safety_boundary": true,
+      "pass": true
+    },
+    {
+      "id": "R32_TOPIC_12",
+      "semantic_group": "R32_GROUP_KO_PAIR",
+      "category": "group_korean_input_english_output",
+      "input_language": "KOREAN",
+      "output_language": "ENGLISH",
+      "transition_kind": "ACTIVATE_GROUP",
+      "required_fragments": [
+        "task group",
+        "active topic",
+        "execute"
+      ],
+      "realized_text": "Got it. The task group is now the active topic. This only changes the conversation focus; it does not execute any work.",
+      "semantic_sha256": "89083336eac2a0218950ba72e4b198058fc1541c99c7fafd4d23f0bd3b9e038e",
+      "semantic_pair_invariant": true,
+      "typed_generation": true,
+      "safety_boundary": true,
+      "pass": true
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "schema": "B_CORE_GPT_REFERENCE_DEVELOPMENT_DECISION_1",
+  "suite_id": "B_CORE_GPT_REFERENCE_V1_DEVELOPMENT",
+  "decision_date": "2026-09-03",
+  "status": "FAIL",
+  "disposition": "DEVELOPMENT_GATE_NOT_REACHED_AFTER_THREE_PLANNED_REPAIR_ROUNDS",
+  "acceptance_contract": "reports/language-cortex-completion/GPT_REFERENCE_ACCEPTANCE_CONTRACT.md",
+  "frozen_input_sha256": "C0D8605CD7C9962DBB37473D787F286715DA258ADE6D08BD259001C01321960E",
+  "fixed_gpt_reference_sha256": "A3E57699CE35C4D6ABE5ACAFDF20D248ED1B53D286F4E350B297538E438C4160",
+  "round3_bcore_batch_sha256": "1D5711B2B216737ABFB1991AF165CF2FFEDA96C909D635E61725D6AD973B1734",
+  "round3_evaluation_sha256": "ADAAD205E7A8A76794F448E7B3A3DAA0C9115888E3D2B37A7ED9B79763634B47",
+  "response_count": 240,
+  "repair_rounds_completed": 3,
+  "round_history": [
+    {
+      "run": 0,
+      "mean_similarity_bp": 3877,
+      "median_similarity_bp": 4308,
+      "percentile_10_similarity_bp": 159,
+      "responses_at_or_above_8000_rate_bp": 125,
+      "intent_context_exact_rate_bp": 0,
+      "response_act_exact_rate_bp": 4375,
+      "silent_ambiguity_guesses": 45
+    },
+    {
+      "run": 1,
+      "mean_similarity_bp": 4971,
+      "median_similarity_bp": 4917,
+      "percentile_10_similarity_bp": 875,
+      "responses_at_or_above_8000_rate_bp": 2375,
+      "intent_context_exact_rate_bp": 2000,
+      "response_act_exact_rate_bp": 6125,
+      "silent_ambiguity_guesses": 48
+    },
+    {
+      "run": 2,
+      "mean_similarity_bp": 5220,
+      "median_similarity_bp": 5017,
+      "percentile_10_similarity_bp": 875,
+      "responses_at_or_above_8000_rate_bp": 2625,
+      "intent_context_exact_rate_bp": 2125,
+      "response_act_exact_rate_bp": 6500,
+      "silent_ambiguity_guesses": 39
+    },
+    {
+      "run": 3,
+      "mean_similarity_bp": 6219,
+      "median_similarity_bp": 6920,
+      "percentile_10_similarity_bp": 1900,
+      "responses_at_or_above_8000_rate_bp": 3250,
+      "intent_context_exact_rate_bp": 2500,
+      "response_act_exact_rate_bp": 7583,
+      "silent_ambiguity_guesses": 22
+    }
+  ],
+  "round3_category_mean_similarity_bp": {
+    "AFFECT_AND_SOCIAL_BACKCHANNEL": 6922,
+    "AMBIGUITY_CLARIFICATION": 5504,
+    "CONFLICT_UNCERTAINTY_ATTRIBUTION": 3993,
+    "CORRECTION_REJECTION_FEEDBACK": 5802,
+    "DEIXIS_REFERENCE_ELLIPSIS": 7549,
+    "EXPLICIT_REQUEST": 6890,
+    "INDIRECT_PRAGMATIC_INTENT": 5629,
+    "MIXED_LANGUAGE_NOISE_AND_FILLERS": 7603,
+    "PLAN_EXECUTION_RESULT_BOUNDARY": 5549,
+    "TOPIC_SHIFT_AND_RETURN": 6752
+  },
+  "round3_language_mean_similarity_bp": {
+    "KOREAN": 6435,
+    "ENGLISH": 6004
+  },
+  "safety": {
+    "unsupported_reference_propositions": 0,
+    "semantic_authority_violations": 0,
+    "external_execution_authorizations": 0,
+    "false_execution_or_result_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "recursive_source_mutations": 0
+  },
+  "verification": {
+    "canonical_manifest_integrity": "PASS",
+    "cargo_fmt_check": "PASS",
+    "semantic_core_adapters_library_tests": "531_PASS_0_FAIL",
+    "gpt_reference_evaluator_tests": "11_PASS_0_FAIL",
+    "cargo_clippy_all_targets": "PASS_WITH_EXISTING_CANARY_DEAD_CODE_WARNINGS",
+    "strict_clippy_modified_libraries_and_evaluator": "PASS"
+  },
+  "failed_gates": [
+    "MEAN_SIMILARITY_BELOW_8500:ACTUAL_6219",
+    "MEDIAN_SIMILARITY_BELOW_8800:ACTUAL_6920",
+    "RESPONSES_AT_OR_ABOVE_8000_BELOW_9000:ACTUAL_3250",
+    "INTENT_CONTEXT_EXACT_BELOW_9500:ACTUAL_2500",
+    "CATEGORY_MEAN_BELOW_8000",
+    "SILENT_AMBIGUITY_GUESSES_NONZERO:22"
+  ],
+  "sealed_final_suite_opened": false,
+  "sealed_final_evaluation_performed": false,
+  "further_repair_loop": "STOPPED",
+  "next_action_requires_explicit_user_authorization": true,
+  "claim_boundary": "This result measures similarity to the fixed GPT reference distribution for the frozen Korean/English suite; it is not a claim of universal GPT parity."
+}

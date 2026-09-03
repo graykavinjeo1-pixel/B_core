@@ -1,0 +1,9 @@
+{
+  "schema": "B_CORE_INDEPENDENT_CHAT_PROBE_MANIFEST_1",
+  "precommit_file": "precommitted_reference.json",
+  "sha256": "b189ce5781518c2a623be4bc06d26dd803e60b8d4107a1c5e3d817d1bda6d11b",
+  "candidate_consulted_before_freeze": false,
+  "dialogue_count": 6,
+  "response_point_count": 24,
+  "frozen_date": "2026-09-03"
+}

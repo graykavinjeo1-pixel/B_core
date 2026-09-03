@@ -1,0 +1,165 @@
+{
+  "stage": "R39_TOPIC_GROUP_SUSPENSION_AND_RESTORATION",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "diagnostic": {
+    "suite": "R39-RUN-0001",
+    "initial_frozen_sha256": "ce86c204d723257e038afe98993e23b54e7f013e55487bc8f132f7c9a3fbb9a8",
+    "final_sha256": "ca8107505c26a91fe7b46e6c843e79e91eacac4f05948e0c200745dd040da6f3",
+    "frozen_before_product_changes": true,
+    "baseline_passed": 0,
+    "baseline_total": 28,
+    "repair_progression": [
+      "0/28 authoritative baseline",
+      "24/28 after typed group topic identity, revision rebinding, exact restoration, and grounded transition claims",
+      "28/28 after fail-closed unresolved-reference recency and quoted-metalinguistic reference repairs"
+    ],
+    "final_passed": 28,
+    "final_total": 28,
+    "categories": {
+      "group_topic_activation": "4/4",
+      "action_group_topic_restoration": "4/4",
+      "suspended_action_group_revision_refresh": "4/4",
+      "suspended_speaker_group_revision_refresh": "4/4",
+      "composite_group_topic_restoration": "4/4",
+      "exact_anchor_overlapping_groups": "4/4",
+      "invalid_or_quoted_topic_restore_fails_closed": "4/4"
+    },
+    "harness_corrections": [
+      "normalize a missing pre-conversation group value and an empty post-turn group array to the same empty set"
+    ]
+  },
+  "held_out": {
+    "suite": "R39-RUN-0002",
+    "initial_frozen_sha256": "669a1ff05556909286fe60631b669fba3bb107bd292e5f3987108645a633286b",
+    "final_sha256": "d5f9f86030ba1d04a73fa452e11f81ca9bb3c7de7ff791fb0e5c3b542a892055",
+    "held_out_until_after_diagnostic_pass": true,
+    "first_exposure_passed": 3,
+    "first_exposure_total": 20,
+    "first_exposure_failures": [
+      "R39_XFER_XL_01",
+      "R39_XFER_XL_02",
+      "R39_XFER_XL_03",
+      "R39_XFER_XL_04",
+      "R39_XFER_IDX_01",
+      "R39_XFER_IDX_02",
+      "R39_XFER_IDX_03",
+      "R39_XFER_IDX_04",
+      "R39_XFER_REV_01",
+      "R39_XFER_REV_02",
+      "R39_XFER_REV_03",
+      "R39_XFER_REV_04",
+      "R39_XFER_LONG_01",
+      "R39_XFER_LONG_02",
+      "R39_XFER_LONG_03",
+      "R39_XFER_LONG_04",
+      "R39_XFER_SAFE_04"
+    ],
+    "product_repairs_after_first_exposure": [
+      "map switch, resume, Korean transition and return forms to named-topic activation and previous-topic restoration",
+      "map attach, detach, Korean removal, and Korean combination forms to typed discourse-group updates",
+      "recognize deeper indexed topic history and fail closed when the requested depth is unavailable",
+      "treat Okay, noted as a neutral backchannel that does not evict suspended topics"
+    ],
+    "after_product_repair_passed": 19,
+    "after_product_repair_total": 20,
+    "harness_corrections": [
+      "select ordinal groups by introduced_turn rather than the state's recency-sorted storage order",
+      "locally allow explicit sequential row construction for Clippy without changing the oracle"
+    ],
+    "oracle_behavioral_criteria_changed": false,
+    "final_passed": 20,
+    "final_total": 20,
+    "categories": {
+      "cross_language_group_restore": "4/4",
+      "indexed_topic_history_restore": "4/4",
+      "reversible_revision_refresh": "4/4",
+      "long_horizon_group_restore": "4/4",
+      "safety_and_authority_boundary": "4/4"
+    }
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "cumulative_r1_r38_passed": 1579,
+  "cumulative_r1_r38_total": 1579,
+  "cumulative_r1_r39_passed": 1627,
+  "cumulative_r1_r39_total": 1627,
+  "verification": {
+    "metadata_discovered_adapter_canary_binaries_passed": 69,
+    "metadata_discovered_adapter_canary_binaries_total": 69,
+    "metadata_discovered_adapter_canary_cases_passed": 1634,
+    "metadata_discovered_adapter_canary_cases_total": 1634,
+    "row_based_blind_and_regression_cases": 1627,
+    "special_harness_cases": 7,
+    "adapter_unit_tests_passed": 333,
+    "adapter_unit_tests_total": 333,
+    "workspace_library_tests_passed": 856,
+    "workspace_library_tests_total": 856,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_BOUNDED_HISTORICAL_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "unit_invariants_added": 4,
+    "build_cache_cleanup": {
+      "target": "I:\\B_Core\\target",
+      "bytes_before": 23792457865,
+      "files_before": 15159,
+      "cargo_clean_reported_size": "22.2 GiB",
+      "target_exists_after": false
+    }
+  },
+  "safety": {
+    "unsupported_realization_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "topic_semantic_authority": false,
+    "topic_external_execution_authority": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "DiscourseTopicIR carries a typed anchor kind, exact group identity, live revision, membership hash, non-authority flags, and a topic hash.",
+    "TopicTransitionIR is a serialized hash-sealed record with distinct applied and unresolved forms and no semantic or execution authority.",
+    "Returning to a suspended group topic rebinds its stable group ID to the live revision and membership hash.",
+    "Group revisions refresh every matching active or suspended topic anchor without changing topic identity.",
+    "Generic group references prefer an exact active group anchor over recency and topic-key similarity, including after long interruption.",
+    "Composite and overlapping groups restore by exact identity; ambiguity, missing targets, out-of-range history, and quotation fail closed.",
+    "Grounded realization emits a discourse-topic-transition claim bound to transition, topic, and group-membership hashes."
+  ],
+  "six_axis_assessment": {
+    "grammatical_composition": "CONTROLLED_KOREAN_AND_ENGLISH_TOPIC_MANAGEMENT_FORMS_COMPILE_TO_TYPED_ACTIVATE_SWITCH_RESTORE_AND_GROUP_REVISION_OPERATIONS",
+    "discourse_and_topic_state": "TOPICS_PRESERVE_EXACT_GROUP_IDENTITY_AND_REFRESH_LIVE_REVISION_ACROSS_SUSPENSION",
+    "deixis_and_ellipsis_resolution": "GENERIC_GROUP_DEIXIS_RESOLVES_THROUGH_THE_RESTORED_ANCHOR_INSTEAD_OF_FLAT_RECENCY_OR_TOPIC_OVERLAP",
+    "speech_intent_and_pragmatics": "TOPIC_MANAGEMENT_IS_DISTINGUISHED_FROM_WORLD_ACTION_QUOTED_MENTION_AND_AMBIGUOUS_SELECTION",
+    "result_plan_distinction": "TOPIC_TRANSITIONS_ARE_NON_EXECUTING_DIALOGUE_STATE_UPDATES_NOT_ACTION_PLANS_REPORTS_OR_RESULTS",
+    "evidence_grounded_realization": "TOPIC_ACKNOWLEDGEMENTS_ARE_BOUND_TO_TRANSITION_TOPIC_AND_MEMBERSHIP_HASHES_WITH_ZERO_UNSUPPORTED_CLAIMS"
+  },
+  "language_level_assessment": {
+    "classification": "VERIFIED_STRUCTURED_SEMANTIC_DIALOGUE_ENGINE_NOT_GPT_EQUIVALENT",
+    "llm_impossibility_claim": "REFUTED_FOR_BOUNDED_NATURAL_DIALOGUE_AND_STRUCTURAL_GENERALIZATION",
+    "gpt_equivalence_claim": "NOT_ESTABLISHED",
+    "strongest_axes": [
+      "typed discourse identity and cross-turn restoration",
+      "plan report observation and verified-result separation",
+      "tamper-evident evidence-grounded realization"
+    ],
+    "largest_remaining_gap": "open-domain pragmatic and world-knowledge generalization together with varied natural realization"
+  },
+  "optimistic_remaining_work_units_after_r39": 4,
+  "next_program_order": [
+    "broader typed deixis and ellipsis over topic-anchored revised composite discourse objects",
+    "compositional speech-intent and pragmatic inference with ambiguity preservation",
+    "request report observation and verified-result provenance across complex discourse",
+    "six-axis integration final frozen blind regression and package boundary gate"
+  ],
+  "pre_existing_user_change_preserved": "crates/semantic-reasoning/src/growth_supervisor.rs",
+  "commit_performed": false,
+  "push_performed": false
+}

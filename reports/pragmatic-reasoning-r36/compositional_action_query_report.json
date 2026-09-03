@@ -1,0 +1,143 @@
+{
+  "stage": "R36_COMPOSITIONAL_ACTION_QUERY_ALGEBRA",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "diagnostic": {
+    "suite": "R36-RUN-0001",
+    "sha256": "01480607b9c7c614b51324c8b1786e82c9c490810c229c0403aa25cab44199a5",
+    "frozen_before_product_changes": true,
+    "baseline_passed": 0,
+    "baseline_total": 28,
+    "repair_progression": [
+      "0/28 authoritative baseline",
+      "25/28 after typed source-set composition, subject intersection/union, difference/complement, quantification, and action-state predicate evaluation",
+      "28/28 after general remaining-set query detection and residual-only scope handling"
+    ],
+    "final_passed": 28,
+    "final_total": 28,
+    "categories": {
+      "group_subject_intersection": "4/4",
+      "group_difference": "4/4",
+      "subject_union": "4/4",
+      "scoped_complement": "4/4",
+      "universal_state_predicate": "4/4",
+      "existential_report_predicate": "4/4",
+      "empty_or_unknown_fails_closed": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R36-TRANSFER-0001",
+    "sha256": "d981a96de6840c45386afd2ec1377b967a3ae6fa5b354fcdead11401397d4882",
+    "held_out_until_after_diagnostic_pass": true,
+    "first_exposure_passed": 17,
+    "first_exposure_total": 20,
+    "final_passed": 20,
+    "final_total": 20,
+    "oracle_changed_after_first_exposure": false,
+    "product_repair_driven_by_held_out": true,
+    "first_exposure_failures": [
+      {
+        "case": "R36X_ANY_EN_1",
+        "class": "INTERROGATIVE_REPORTED_COMPLETION_NOT_CLASSIFIED_AS_ACTION_STATE_QUERY"
+      },
+      {
+        "case": "R36X_ANY_EN_2",
+        "class": "QUANTIFIED_REPORT_QUESTION_MISCLASSIFIED_AS_NEW_COMPLETION_REPORT"
+      },
+      {
+        "case": "R36X_ANY_KO_2",
+        "class": "KOREAN_QUANTIFIED_REPORT_QUESTION_MISCLASSIFIED_AS_NEW_COMPLETION_REPORT"
+      }
+    ],
+    "general_repair": "Interrogative report predicates are classified as read-only action-state queries before completion-report extraction, preventing a question from mutating every member of a resolved group.",
+    "categories": {
+      "heldout_intersection_difference": "4/4",
+      "heldout_union_complement": "4/4",
+      "heldout_universal": "4/4",
+      "heldout_existential_report": "4/4",
+      "heldout_surface_order": "4/4"
+    }
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "cumulative_r1_r35_passed": 1435,
+  "cumulative_r1_r35_total": 1435,
+  "cumulative_r1_r36_passed": 1483,
+  "cumulative_r1_r36_total": 1483,
+  "verification": {
+    "metadata_discovered_canary_binaries_passed": 63,
+    "metadata_discovered_canary_binaries_total": 63,
+    "metadata_discovered_canary_cases_passed": 1490,
+    "metadata_discovered_canary_cases_total": 1490,
+    "adapter_unit_tests_passed": 319,
+    "adapter_unit_tests_total": 319,
+    "workspace_library_tests_passed": 842,
+    "workspace_library_tests_total": 842,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_HISTORICAL_FROZEN_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "build_cache_cleanup": {
+      "target": "I:\\B_Core\\target",
+      "bytes_before": 18811107565,
+      "files_removed": 12436,
+      "cargo_clean_reported_size": "17.5 GiB",
+      "target_exists_after": false
+    }
+  },
+  "safety": {
+    "unsupported_realization_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed_by_language_path": 0,
+    "language_reports_promoted_to_verified_execution": 0,
+    "questions_promoted_to_language_reports": 0,
+    "semantic_authority_from_action_query": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "B_CORE_ACTION_SET_QUERY_IR_1 represents the resolved action group as a typed source set and records selected, excluded, and unresolved members separately.",
+    "Intersection, union, difference, complement, all, any, and none are evaluated over ledger-bound action IDs rather than raw sentence dispatch.",
+    "The original query surface supplies grammatical operators while the independently resolved semantic surface supplies discourse bindings, preventing inserted member summaries from masquerading as user selectors.",
+    "Action predicates distinguish active plans, language-reported outcomes, and host-verified execution states.",
+    "Empty or unknown selections produce explicit ambiguity and no target action IDs.",
+    "Quantified answers add a claim-level ACTION_SET_EVALUATION record bound to the query hash and member ledger evidence.",
+    "Interrogative report predicates are read-only and cannot create completion reports or mutate the action ledger."
+  ],
+  "six_axis_assessment": {
+    "grammatical_composition": "FLAT_TYPED_ACTION_SET_ALGEBRA_COMPOSES_GROUP_SELECTION_BOOLEAN_SET_OPERATORS_QUANTIFIERS_AND_STATE_PREDICATES",
+    "discourse_and_topic_state": "USES_HASH_BOUND_PERSISTENT_GROUPS_AS_QUERY_SOURCE_SETS_WITHOUT_CHANGING_GROUP_MEMBERSHIP",
+    "deixis_and_ellipsis_resolution": "USES_TYPED_GROUP_BINDINGS_BEFORE_SET_EVALUATION_AND_FAILS_CLOSED_ON_EMPTY_OR_UNKNOWN_REFERENTS",
+    "speech_intent_and_pragmatics": "INTERROGATIVE_REPORTED_OUTCOME_IS_DISTINGUISHED_FROM_A_NEW_LANGUAGE_REPORT",
+    "result_plan_distinction": "PLAN_REPORTED_AND_VERIFIED_PREDICATES_ARE_SEPARATE_AND_QUERIED_WITHOUT_STATE_PROMOTION",
+    "evidence_grounded_realization": "QUANTIFIED_OUTPUT_HAS_QUERY_HASH_MEMBER_LEDGER_AND_STATE_EVIDENCE_WITH_ZERO_UNSUPPORTED_CLAIMS"
+  },
+  "residual_limits": [
+    "This remains bounded deterministic language engineering and does not establish GPT-level open-domain language competence.",
+    "Action-set expressions are flat; arbitrary parentheses, nested relative clauses, mixed operator precedence, and relational subqueries are not yet represented.",
+    "Subject matching remains grounded in the bounded action ledger and controlled Korean/English surface analysis.",
+    "The predicate catalog covers action plan, report, and verified execution states but not arbitrary domain properties.",
+    "Discourse group membership revision, nested composite groups, unrestricted ellipsis, and open-domain pragmatic inference remain open.",
+    "Natural realization remains less varied than a generative language model even though its quantified claims are evidence-bound."
+  ],
+  "next_program_order": [
+    "nested and mixed-precedence grammatical composition over typed action and proposition expressions",
+    "explicit discourse-group membership addition removal and composite-group identity",
+    "topic suspension restoration with nested sets and broader deixis or ellipsis",
+    "compositional speech-intent and pragmatic inference with ambiguity preservation",
+    "request report observation and verified-result provenance across complex clauses",
+    "more natural evidence-grounded realization with claim-level support checks"
+  ],
+  "pre_existing_user_change_preserved": "crates/semantic-reasoning/src/growth_supervisor.rs",
+  "commit_performed": false,
+  "push_performed": false
+}

@@ -1,0 +1,131 @@
+{
+  "stage": "R40_TOPIC_ANCHORED_DEIXIS_AND_ELLIPSIS",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "worktree_clean": false,
+  "diagnostic": {
+    "suite": "R40-RUN-0001",
+    "sha256": "5c9699fada874e8470c103fe75762aee7e17cf3ae930614feef6cd3e504ae283",
+    "frozen_before_product_changes": true,
+    "baseline_passed": 0,
+    "baseline_total": 28,
+    "repair_progression": [
+      "0/28 authoritative baseline",
+      "24/28 after exact topic/group binding, typed selection, live revision binding, and fail-closed outcomes",
+      "28/28 after predicate-surface-family and chronological speaker-ordinal repairs"
+    ],
+    "final_passed": 28,
+    "final_total": 28,
+    "categories": {
+      "anchored_action_ordinal": "4/4",
+      "anchored_predicate_role": "4/4",
+      "anchored_plural_ellipsis": "4/4",
+      "live_revision_member_selection": "4/4",
+      "anchored_speaker_ordinal": "4/4",
+      "anchored_speaker_plural": "4/4",
+      "topic_anchor_fail_closed": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R40-RUN-0002",
+    "sha256": "536e33b4dd3d076e822a59037149c56b6c9733c57480d64908b25eddf9e9c99c",
+    "held_out_until_after_diagnostic_pass": true,
+    "first_exposure_passed": 20,
+    "first_exposure_total": 20,
+    "final_passed": 20,
+    "final_total": 20,
+    "categories": {
+      "cross_language_anchor": "4/4",
+      "composite_and_revised_anchor": "4/4",
+      "long_horizon_anchor": "4/4",
+      "surface_generalization": "4/4",
+      "transfer_safety_boundary": "4/4"
+    },
+    "pre_exposure_fixture_correction": "normalized assumed conversation-prefixed Goal IDs to the public GOAL-000001-.. format before final hash freeze",
+    "behavioral_criteria_changed": false
+  },
+  "fresh_blind_tasks_passed": 48,
+  "fresh_blind_tasks_total": 48,
+  "cumulative_r1_r39_passed": 1627,
+  "cumulative_r1_r39_total": 1627,
+  "cumulative_r1_r40_passed": 1675,
+  "cumulative_r1_r40_total": 1675,
+  "verification": {
+    "metadata_discovered_adapter_canary_binaries_passed": 71,
+    "metadata_discovered_adapter_canary_binaries_total": 71,
+    "metadata_discovered_adapter_canary_cases_passed": 1682,
+    "metadata_discovered_adapter_canary_cases_total": 1682,
+    "row_based_blind_and_regression_cases": 1675,
+    "special_direct_response_cases": 7,
+    "adapter_unit_tests_passed": 339,
+    "adapter_unit_tests_total": 339,
+    "workspace_library_tests_passed": 862,
+    "workspace_library_tests_total": 862,
+    "cargo_test_workspace": "PASS",
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS_WITH_BOUNDED_HISTORICAL_HARNESS_EXCEPTIONS",
+    "cargo_clippy_command": "cargo clippy --workspace --all-targets -- -D warnings -A clippy::too_many_arguments -A clippy::manual_is_multiple_of",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "unit_invariants_added": 6,
+    "aggregation_correction": "counted multi-JSON row objects individually and parsed four conversation-cortex responses line by line; no behavioral oracle changed",
+    "build_cache_cleanup": {
+      "target": "I:\\B_Core\\target",
+      "bytes_before": 22692377302,
+      "files_before": 15161,
+      "cargo_clean_reported_size": "21.1 GiB",
+      "target_exists_after": false
+    }
+  },
+  "safety": {
+    "unsupported_realization_claims": 0,
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "reference_semantic_authority": false,
+    "reference_external_execution_authority": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "TopicAnchoredReferenceIR binds topic and group identity, live revision, membership hash, selector, full member set, selected member set, and non-authority flags in one hash-sealed record.",
+    "Ordinal action and speaker selection follows typed ledger/referent ordering rather than flat lexical recency.",
+    "Predicate-role selection uses canonical action records while retaining surface-family distinctions collapsed by the broad INVESTIGATE predicate.",
+    "Plural pronouns and argument ellipsis select the exact active action or attributed-proposition group after restoration, revision, merge, cross-language switching, or long interruption.",
+    "Stale anchors, domain mismatches, out-of-range ordinals, ambiguous singulars, missing roles, and quoted mentions fail closed without semantic or execution authority.",
+    "Successful within-topic resolution reasserts the exact existing topic object after normal goal projection without changing its topic hash.",
+    "Grounded realization cites resolution, topic, and group-membership hashes for every applied topic-anchored reference claim."
+  ],
+  "six_axis_assessment": {
+    "grammatical_composition": "ORDINAL_PREDICATE_ROLE_PLURAL_AND_ZERO_ARGUMENT_FORMS_COMPILE_TO_TYPED_TOPIC_ANCHORED_SELECTORS",
+    "discourse_and_topic_state": "EXACT_GROUP_TOPIC_IDENTITY_SURVIVES_SUSPENSION_RESTORATION_REVISION_MERGE_AND_LONG_INTERRUPTION",
+    "deixis_and_ellipsis_resolution": "ACTION_AND_ATTRIBUTED_PROPOSITION_MEMBERS_RESOLVE_BY_LIVE_TOPIC_GROUP_TYPE_ROLE_ORDER_AND_MEMBERSHIP",
+    "speech_intent_and_pragmatics": "REFERENCE_DOMAIN_MISMATCH_AND_QUOTED_METALINGUISTIC_USAGE_ARE_DISTINGUISHED_FROM_WORLD_DIRECTED_REFERENCE",
+    "result_plan_distinction": "REFERENCE_SELECTION_CARRIES_NO_EXECUTION_OR_RESULT_AUTHORITY_AND_NEW_ACTIONS_REMAIN_PLANS",
+    "evidence_grounded_realization": "REFERENCE_CLAIMS_CITE_RESOLUTION_TOPIC_AND_MEMBERSHIP_HASHES_WITH_ZERO_UNSUPPORTED_CLAIMS"
+  },
+  "language_level_assessment": {
+    "classification": "VERIFIED_STRUCTURED_SEMANTIC_DIALOGUE_ENGINE_NOT_GPT_EQUIVALENT",
+    "llm_impossibility_claim": "REFUTED_FOR_BOUNDED_STRUCTURAL_TOPIC_ANCHORED_DIALOGUE",
+    "gpt_equivalence_claim": "NOT_ESTABLISHED",
+    "strongest_axes": [
+      "exact typed discourse identity across long-horizon topic restoration",
+      "live revision-aware plural and member deixis",
+      "tamper-evident evidence-grounded realization"
+    ],
+    "largest_remaining_gap": "compositional open-domain pragmatic intent and world-knowledge generalization together with varied natural realization"
+  },
+  "optimistic_remaining_work_units_after_r40": 3,
+  "next_program_order": [
+    "compositional speech-intent and pragmatic inference with ambiguity preservation",
+    "request plan report observation and verified-result provenance across complex discourse",
+    "six-axis integration final frozen blind regression and package boundary gate"
+  ],
+  "pre_existing_user_change_preserved": "crates/semantic-reasoning/src/growth_supervisor.rs",
+  "commit_performed": false,
+  "push_performed": false
+}

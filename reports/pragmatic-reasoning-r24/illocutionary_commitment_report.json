@@ -1,0 +1,97 @@
+{
+  "stage": "R24_ILLOCUTIONARY_COMMITMENT_AND_RESULT_CLAIM_CONTROL",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "diagnostic": {
+    "suite": "R24-RUN-0001",
+    "sha256": "8d25c9c99055ba00631816c82aca9e7e7624efc963ba0d29012f2dfcebe1fc4d",
+    "frozen_before_product_changes": true,
+    "initial_passed": 0,
+    "initial_total": 24,
+    "final_passed": 24,
+    "final_total": 24,
+    "initial_category_passes": {
+      "participant_commitment_boundary": "0/4",
+      "capability_question_vs_indirect_request": "0/4",
+      "deferred_conditional_authorization": "0/4",
+      "answer_only_without_execution": "0/4",
+      "goal_withdrawal": "0/4",
+      "verified_outcome_claim_policy": "0/4"
+    }
+  },
+  "held_out": {
+    "suite": "R24-RUN-0002",
+    "frozen_sha256": "3df837d0b9b18c5e937b27e2cd35de0c2754850b1dd8701fbf6077b8be92c951",
+    "first_semantic_execution_passed": 13,
+    "first_semantic_execution_total": 16,
+    "first_failures": [
+      "two answer-only turns retained lower-level intent competition or local pronoun ambiguity",
+      "one goal-withdrawal turn retained a local that-request ambiguity"
+    ],
+    "final_passed": 16,
+    "final_total": 16,
+    "oracle_changed_after_first_semantic_execution": false,
+    "product_repair_after_held_out": true,
+    "repair_scope": "The typed answer-only and withdrawal forces now discharge only their own lower-level intent competition and local functional anaphora. No held-out sentence identity or expected output was added to product code."
+  },
+  "fresh_blind_tasks_passed": 40,
+  "fresh_blind_tasks_total": 40,
+  "cumulative_r1_r24_passed": 947,
+  "cumulative_r1_r24_total": 947,
+  "verification": {
+    "canary_binaries_passed": 39,
+    "canary_binaries_total": 39,
+    "adapter_unit_tests_passed": 278,
+    "adapter_unit_tests_total": 278,
+    "workspace_tests_passed": 802,
+    "workspace_tests_total": 802,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "unsupported_explanation_facts": 0,
+    "semantic_authority_from_language": false,
+    "external_execution_authorized_by_report_or_capability_question": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "typed participant, addressee, illocutionary force, and activation state",
+    "user self-commitment and third-party reported commitment remain non-executable",
+    "system capability questions are separated from addressee-directed indirect requests",
+    "conditional action requests remain CONDITION_PENDING and create no current goal",
+    "answer-only requests retain a safe information goal while prohibited DELETE or DEPLOY predicates remain non-authoritative",
+    "all-goal and ordinal goal withdrawal retire active goals and their event/result referents from hash-bound conversation state",
+    "verified-outcome-only policy prevents completion, success, or execution claims without typed evidence",
+    "illocutionary structure resolves bounded local functional anaphora without granting new semantic authority",
+    "Korean and English outputs are selected from typed pragmatic state with zero unsupported freeform claims"
+  ],
+  "scope_assessment": {
+    "grammatical_composition": "ADVANCED_AND_REGRESSION_VERIFIED_WITH_DISTINCT_DELETE_AND_DEPLOY_PREDICATES",
+    "discourse_and_topic_state": "ADVANCED_WITH_HASH_BOUND_ACTIVE_GOAL_LIFECYCLE_AND_RETIREMENT",
+    "deixis_and_ellipsis_resolution": "ADVANCED_WITH_LOCAL_COMMITMENT_ANAPHORA_AND_ORDINAL_GOAL_WITHDRAWAL",
+    "speech_intent_and_pragmatics": "ADVANCED_WITH_TYPED_PARTICIPANTS_FORCE_ACTIVATION_AND_AUTHORITY",
+    "result_plan_distinction": "ADVANCED_WITH_VERIFIED_OUTCOME_ONLY_REPORTING_POLICY",
+    "evidence_grounded_realization": "ADVANCED_FOR_TYPED_PRAGMATIC_ACKNOWLEDGEMENTS_BUT_STILL_BOUNDED"
+  },
+  "next_residual": [
+    "persist and later activate deferred requests only when their typed antecedent becomes verified",
+    "nested and conflicting commitments across several speakers",
+    "open-ended Korean and English morphology for indirectness, withdrawal, and evidentiality",
+    "substantive answer realization from domain facts rather than acknowledgement when capability evidence is available",
+    "long-distance implicit speech-act resolution beyond bounded local anaphora",
+    "open-vocabulary generative fluency"
+  ],
+  "commit_performed": false,
+  "push_performed": false
+}

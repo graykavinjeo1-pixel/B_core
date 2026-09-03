@@ -1,0 +1,106 @@
+{
+  "stage": "R26_TYPED_CLAUSE_GRAPH_COMPOSITION",
+  "status": "PASS",
+  "branch": "main",
+  "head": "cb8b2debad3a0e23d5597a29db9c24af3c3c3c4f",
+  "diagnostic": {
+    "suite": "R26-RUN-0001",
+    "sha256": "068f467a77ec7da1d02f9467846e4fd4a0b8f0312fd823d50b0c47c74fb57adf",
+    "authoritative_oracle_frozen_before_product_changes": true,
+    "pre_freeze_oracle_correction": "The draft expectation for Korean `검사한 뒤 수리해` was corrected before the authoritative freeze because it contradicted the sealed R23 independent-event contract.",
+    "initial_passed": 0,
+    "initial_total": 24,
+    "final_passed": 24,
+    "final_total": 24,
+    "categories": {
+      "fronted_relation_direction": "4/4",
+      "postposed_relation_direction": "4/4",
+      "korean_subordinate_direction": "4/4",
+      "shared_argument_composition": "4/4",
+      "subordinate_authority": "4/4",
+      "surface_order_invariance": "4/4"
+    }
+  },
+  "held_out": {
+    "suite": "R26-RUN-0002",
+    "frozen_sha256": "8c4f4553a7ab60854ff4de43fbe4c3bb084039e03522f63ebd86b5d902b693ea",
+    "held_out_until_after_diagnostic_repairs": true,
+    "first_semantic_execution_passed": 15,
+    "first_semantic_execution_total": 16,
+    "first_failures": [
+      "R26_TRANSFER_15: `document` after an infinitival `to` was classified as a noun, so the purpose event was absent."
+    ],
+    "final_passed": 16,
+    "final_total": 16,
+    "oracle_changed_after_first_semantic_execution": false,
+    "product_repair_after_held_out": true,
+    "repair_scope": "The ASCII nominal-context classifier now treats infinitival `to` as a verb prior. No held-out sentence identity or expected result was added to product code."
+  },
+  "fresh_blind_tasks_passed": 40,
+  "fresh_blind_tasks_total": 40,
+  "cumulative_r1_r26_passed": 1027,
+  "cumulative_r1_r26_total": 1027,
+  "verification": {
+    "canary_binaries_passed": 43,
+    "canary_binaries_total": 43,
+    "adapter_unit_tests_passed": 281,
+    "adapter_unit_tests_total": 281,
+    "workspace_tests_passed": 805,
+    "workspace_tests_total": 805,
+    "cargo_fmt_check": "PASS",
+    "cargo_clippy_all_targets_deny_warnings": "PASS",
+    "canonical_manifest": "PASS",
+    "canonical_file_count": 10,
+    "canonical_manifest_self_hash_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd",
+    "git_diff_check": "PASS",
+    "frozen_hashes_unchanged": true,
+    "forbidden_dependency_audit": "PASS"
+  },
+  "safety": {
+    "external_llm_calls": 0,
+    "local_teacher_calls": 0,
+    "network_calls": 0,
+    "python_calls_in_language_path": 0,
+    "recursive_source_mutations": 0,
+    "external_actions_executed": 0,
+    "unsupported_explanation_facts": 0,
+    "semantic_authority_from_lexical_surface": false,
+    "implementation_language": "RUST"
+  },
+  "mechanisms": [
+    "ClauseGraphIR represents clause nodes, typed relation edges, semantic direction, source spans, and clause functions independently of surface order.",
+    "English fronted and postposed condition, cause, purpose, concession, and temporal structures converge on the same directed relation types.",
+    "Bounded Korean connective morphology compiles to the same relation graph without creating language-specific semantic concepts.",
+    "Directive authority is projected only from independent main or coordinate clauses; condition, cause, purpose, concession, and temporal subordinate clauses remain non-authoritative.",
+    "Directive inheritance over coordinated event chains uses a fixed point, preserving three-step and longer commands without authorizing subordinate events.",
+    "Shared arguments propagate through coordination and sequence relations while temporal result arguments remain represented as PRIOR_RESULT.",
+    "English `but` is a coordinate contrast boundary, while `although` remains a concession subordinator.",
+    "Typed clause boundaries prevent an attribution complement from swallowing a later independent contrastive command."
+  ],
+  "scope_assessment": {
+    "grammatical_composition": "ADVANCED_WITH_TYPED_CLAUSE_GRAPH_FOR_BOUNDED_KOREAN_AND_ENGLISH_NOT_GENERAL_GRAMMAR",
+    "discourse_and_topic_state": "UNCHANGED_BOUNDED_SUPPORT_FROM_R13_R25_GENERAL_DISCOURSE_MODEL_REMAINS_OPEN",
+    "deixis_and_ellipsis_resolution": "UNCHANGED_BOUNDED_SUPPORT_GENERAL_AND_AMBIGUOUS_RESOLUTION_REMAINS_OPEN",
+    "speech_intent_and_pragmatics": "PRESERVED_BY_REGRESSION_NOT_SOLVED_GENERALLY",
+    "result_plan_distinction": "PRESERVED_TYPED_BOUNDARY_NOT_SOLVED_FOR_ALL_INTERACTIONS",
+    "evidence_grounded_realization": "PRESERVED_BY_REGRESSION_SUBSTANTIVE_OPEN_DOMAIN_REALIZATION_REMAINS_OPEN"
+  },
+  "next_program_order": [
+    "discourse and topic state over ClauseGraphIR",
+    "deixis and ellipsis resolution against typed discourse state",
+    "speech intent and pragmatic inference",
+    "execution-result versus plan distinction",
+    "evidence-grounded sentence realization"
+  ],
+  "next_residual": [
+    "nested clause graphs with more than one simultaneous subordinate relation",
+    "general Korean morphology and English open-vocabulary syntax",
+    "long-distance topic competition and multi-speaker discourse state",
+    "ambiguous reference and ellipsis with calibrated abstention",
+    "broad indirect speech-act inference without action-authority leakage",
+    "substantive evidence-backed realization with claim-level provenance",
+    "open-vocabulary GPT-level fluency"
+  ],
+  "commit_performed": false,
+  "push_performed": false
+}

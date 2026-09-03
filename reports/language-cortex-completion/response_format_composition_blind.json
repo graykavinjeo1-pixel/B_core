@@ -1,0 +1,444 @@
+{
+  "schema": "B_CORE_RESPONSE_FORMAT_COMPOSITION_BLIND_1",
+  "suite": "RESPONSE_FORMAT_COMPOSITION_BLIND",
+  "frozen_before_first_execution": true,
+  "fresh_cases": 16,
+  "passed": 16,
+  "failed": 0,
+  "directive_only_cases": 8,
+  "directive_and_task_cases": 4,
+  "cross_turn_retention_cases": 2,
+  "negative_or_conflict_cases": 4,
+  "longest_match_cases": 2,
+  "semantic_authority_violations": 0,
+  "external_execution_authorizations": 0,
+  "unsupported_explanation_facts": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0,
+  "rows": [
+    {
+      "id": "F01",
+      "input_language": "KOREAN",
+      "output_language": "KOREAN",
+      "text_sha256": "a2e4f18986b49645be15bc624e3d51c5471e370b495a5f20073d3a1bc77c7d7d",
+      "disposition": "GROUNDED",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_format": "TABLE",
+      "active_format_values": [
+        "TABLE"
+      ],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [
+        "응답"
+      ],
+      "compatibility_candidate_goal_subjects": [
+        "응답"
+      ],
+      "language_center_projected_goal_subjects": [
+        "응답"
+      ],
+      "selected_semantic_goal_subjects": [],
+      "persisted_goal_subjects": [],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F02",
+      "input_language": "KOREAN",
+      "output_language": "KOREAN",
+      "text_sha256": "5eb52bba0feba7f80a2454c5fd2c9464a7dbd39d925d62328fe59b058f1e200e",
+      "disposition": "GROUNDED",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_format": "BULLETS",
+      "active_format_values": [
+        "BULLETS"
+      ],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [],
+      "compatibility_candidate_goal_subjects": [],
+      "language_center_projected_goal_subjects": [],
+      "selected_semantic_goal_subjects": [],
+      "persisted_goal_subjects": [],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F03",
+      "input_language": "KOREAN",
+      "output_language": "KOREAN",
+      "text_sha256": "6e4dd3e63cd8cbc4f4db1ba4cfc2fee6a9d4df7a906d7cc3a0de460267c4607a",
+      "disposition": "GROUNDED",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_format": "NUMBERED",
+      "active_format_values": [
+        "NUMBERED"
+      ],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [
+        "설명은"
+      ],
+      "compatibility_candidate_goal_subjects": [
+        "번호"
+      ],
+      "language_center_projected_goal_subjects": [
+        "번호"
+      ],
+      "selected_semantic_goal_subjects": [],
+      "persisted_goal_subjects": [],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F04",
+      "input_language": "KOREAN",
+      "output_language": "KOREAN",
+      "text_sha256": "3961fb943cba87bc8919c92bebc42ba6994a3fd8e06ea1adac3220302b2eed6d",
+      "disposition": "GROUNDED",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_format": "PLAIN",
+      "active_format_values": [
+        "PLAIN"
+      ],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [],
+      "compatibility_candidate_goal_subjects": [],
+      "language_center_projected_goal_subjects": [],
+      "selected_semantic_goal_subjects": [],
+      "persisted_goal_subjects": [],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F05",
+      "input_language": "ENGLISH",
+      "output_language": "ENGLISH",
+      "text_sha256": "ec49c45ee34acc2cd7314447e66f4e5e1460684fa699fc43e455e989de49627d",
+      "disposition": "GROUNDED",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_format": "TABLE",
+      "active_format_values": [
+        "TABLE"
+      ],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [],
+      "compatibility_candidate_goal_subjects": [],
+      "language_center_projected_goal_subjects": [],
+      "selected_semantic_goal_subjects": [],
+      "persisted_goal_subjects": [],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F06",
+      "input_language": "ENGLISH",
+      "output_language": "ENGLISH",
+      "text_sha256": "19aed32ec6d77c2136cb95569776f1165e800e89497161eb9ee815e53492291a",
+      "disposition": "GROUNDED",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_format": "BULLETS",
+      "active_format_values": [
+        "BULLETS"
+      ],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [],
+      "compatibility_candidate_goal_subjects": [],
+      "language_center_projected_goal_subjects": [],
+      "selected_semantic_goal_subjects": [],
+      "persisted_goal_subjects": [],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F07",
+      "input_language": "ENGLISH",
+      "output_language": "ENGLISH",
+      "text_sha256": "d4b8b2e95e9d5aa7ca811e9971c4d66e5d9c37298b6adcaa5f86e625bd9fe290",
+      "disposition": "GROUNDED",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_format": "NUMBERED",
+      "active_format_values": [
+        "NUMBERED"
+      ],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [],
+      "compatibility_candidate_goal_subjects": [],
+      "language_center_projected_goal_subjects": [],
+      "selected_semantic_goal_subjects": [],
+      "persisted_goal_subjects": [],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F08",
+      "input_language": "ENGLISH",
+      "output_language": "ENGLISH",
+      "text_sha256": "6eb692054cc45946c694de6e8826280fd40dfd08c8855469aa8b13af1c617c40",
+      "disposition": "GROUNDED",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_format": "PLAIN",
+      "active_format_values": [
+        "PLAIN"
+      ],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [],
+      "compatibility_candidate_goal_subjects": [],
+      "language_center_projected_goal_subjects": [],
+      "selected_semantic_goal_subjects": [],
+      "persisted_goal_subjects": [],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F09",
+      "input_language": "KOREAN",
+      "output_language": "KOREAN",
+      "text_sha256": "6a4deb094b6d8091fb959f55b53886a8cb5337aa51d2deff54498a89c0dd4a52",
+      "disposition": "GROUNDED",
+      "response_act": "PLAN_PREVIEW",
+      "response_format": "TABLE",
+      "active_format_values": [
+        "TABLE"
+      ],
+      "active_length_values": [
+        "CONCISE"
+      ],
+      "native_candidate_goal_subjects": [
+        "Indigo 워커"
+      ],
+      "compatibility_candidate_goal_subjects": [
+        "indigo 워커"
+      ],
+      "language_center_projected_goal_subjects": [
+        "indigo 워커"
+      ],
+      "selected_semantic_goal_subjects": [
+        "indigo 워커"
+      ],
+      "persisted_goal_subjects": [
+        "indigo 워커"
+      ],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F10",
+      "input_language": "ENGLISH",
+      "output_language": "ENGLISH",
+      "text_sha256": "3c08498d25882b6df5ba122f8ff03baf18b97d8c94c5f85a5c9b614c0eed3e9a",
+      "disposition": "GROUNDED",
+      "response_act": "PLAN_PREVIEW",
+      "response_format": "BULLETS",
+      "active_format_values": [
+        "BULLETS"
+      ],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [
+        "Jade cache"
+      ],
+      "compatibility_candidate_goal_subjects": [
+        "jade cache"
+      ],
+      "language_center_projected_goal_subjects": [
+        "the jade cache"
+      ],
+      "selected_semantic_goal_subjects": [
+        "the jade cache"
+      ],
+      "persisted_goal_subjects": [
+        "the jade cache"
+      ],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F11",
+      "input_language": "KOREAN",
+      "output_language": "KOREAN",
+      "text_sha256": "f7845ab0fdc9d672088d95e1d4acb9bf04789163b437c1f8d58c8ee0c8eaabe6",
+      "disposition": "GROUNDED",
+      "response_act": "INFORM_ACKNOWLEDGEMENT",
+      "response_format": "PLAIN",
+      "active_format_values": [],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [],
+      "compatibility_candidate_goal_subjects": [],
+      "language_center_projected_goal_subjects": [],
+      "selected_semantic_goal_subjects": [],
+      "persisted_goal_subjects": [],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F12",
+      "input_language": "ENGLISH",
+      "output_language": "ENGLISH",
+      "text_sha256": "18343375a4b15045d012d927531503e3fdf325744b6eac32ac7b805715e851bc",
+      "disposition": "GROUNDED",
+      "response_act": "PLAN_PREVIEW",
+      "response_format": "PLAIN",
+      "active_format_values": [],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [
+        "phrase"
+      ],
+      "compatibility_candidate_goal_subjects": [
+        "phrase"
+      ],
+      "language_center_projected_goal_subjects": [
+        "phrase"
+      ],
+      "selected_semantic_goal_subjects": [
+        "phrase"
+      ],
+      "persisted_goal_subjects": [],
+      "semantic_memory_alignment": false,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F13",
+      "input_language": "KOREAN",
+      "output_language": "KOREAN",
+      "text_sha256": "c7d81272673252db4b5ae6ff1ab6ce5eeb266842c7731137a6a9cbcdb62c5c9b",
+      "disposition": "CLARIFICATION_REQUIRED",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_format": "PLAIN",
+      "active_format_values": [],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [],
+      "compatibility_candidate_goal_subjects": [],
+      "language_center_projected_goal_subjects": [],
+      "selected_semantic_goal_subjects": [],
+      "persisted_goal_subjects": [],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F14",
+      "input_language": "ENGLISH",
+      "output_language": "ENGLISH",
+      "text_sha256": "0b08cad26f8ea38678926a24b0fab6f11aa46cc0f6ab16b6f1291d259007fc8e",
+      "disposition": "CLARIFICATION_REQUIRED",
+      "response_act": "CLARIFICATION_REQUEST",
+      "response_format": "PLAIN",
+      "active_format_values": [],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [],
+      "compatibility_candidate_goal_subjects": [],
+      "language_center_projected_goal_subjects": [],
+      "selected_semantic_goal_subjects": [],
+      "persisted_goal_subjects": [],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F15",
+      "input_language": "ENGLISH",
+      "output_language": "ENGLISH",
+      "text_sha256": "76e941efd6d65120815132a07e5d62b3dd2ad869a5657541495ba568546bf15b",
+      "disposition": "GROUNDED",
+      "response_act": "PLAN_PREVIEW",
+      "response_format": "TABLE",
+      "active_format_values": [
+        "TABLE"
+      ],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [
+        "Willow queue"
+      ],
+      "compatibility_candidate_goal_subjects": [
+        "willow queue"
+      ],
+      "language_center_projected_goal_subjects": [
+        "the willow queue"
+      ],
+      "selected_semantic_goal_subjects": [
+        "the willow queue"
+      ],
+      "persisted_goal_subjects": [
+        "the willow queue"
+      ],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    },
+    {
+      "id": "F16",
+      "input_language": "KOREAN",
+      "output_language": "KOREAN",
+      "text_sha256": "76d6a598245eb76e4a8bb312b658cdb2547c51a3cd1c223a011389e49dc4218f",
+      "disposition": "GROUNDED",
+      "response_act": "PLAN_PREVIEW",
+      "response_format": "NUMBERED",
+      "active_format_values": [
+        "NUMBERED"
+      ],
+      "active_length_values": [],
+      "native_candidate_goal_subjects": [
+        "Orchid 캐시"
+      ],
+      "compatibility_candidate_goal_subjects": [
+        "orchid 캐시"
+      ],
+      "language_center_projected_goal_subjects": [
+        "orchid 캐시"
+      ],
+      "selected_semantic_goal_subjects": [
+        "orchid 캐시"
+      ],
+      "persisted_goal_subjects": [
+        "orchid 캐시"
+      ],
+      "semantic_memory_alignment": true,
+      "layout_valid": true,
+      "semantic_authority": false,
+      "external_action_executed": false,
+      "pass": true
+    }
+  ]
+}

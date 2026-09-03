@@ -1,0 +1,18 @@
+{
+  "schema": "B_CORE_R50_DIAGNOSTIC_RUN_RESULT_1",
+  "run": "R50-DIAGNOSTIC-RUN-0001",
+  "status": "FAIL",
+  "total": 12,
+  "passed": 9,
+  "failed": 3,
+  "failed_cases": {
+    "R50_04": "R43 reference consistency invariant double-counted a referent ID and its binding representation.",
+    "R50_11": "Fixture ended before the ambiguity became observable on program rebinding.",
+    "R50_12": "Fixture expected GROUNDED although a standalone acknowledgement is correctly BACKCHANNEL_ONLY."
+  },
+  "disposition": "PRESERVED; ONE PRODUCT INTEGRATION DEFECT REPAIRED; TWO FIXTURE EXPECTATIONS VERSIONED",
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

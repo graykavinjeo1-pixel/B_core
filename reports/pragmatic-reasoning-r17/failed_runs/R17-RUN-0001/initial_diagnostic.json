@@ -1,0 +1,23 @@
+{
+  "run": "R17-RUN-0001",
+  "kind": "FROZEN_DIAGNOSTIC_FIRST_EXECUTION",
+  "reported_passed": 1,
+  "reported_failed": 23,
+  "effective_passed": 0,
+  "effective_failed": 24,
+  "false_positive": {
+    "case": "AFFECT_1",
+    "original_assertion": "output contains 답답",
+    "cause": "The generic response echoed the subject token 답답 without directly realizing affect",
+    "repair": "Tightened the assertion to require 답답할 before implementation validation"
+  },
+  "observed_failure_classes": {
+    "grounded_plan_realization": "12/12 outputs discarded validated PlanIR operations",
+    "acronym_casing": "4/4 outputs lowercased user-grounded acronyms",
+    "social_focus_surface": "4/4 typed references resolved but output collapsed to an empty/generic result subject",
+    "direct_affect": "4/4 lacked a direct natural affect response; one was hidden by the weak assertion"
+  },
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "recursive_source_mutations": 0
+}

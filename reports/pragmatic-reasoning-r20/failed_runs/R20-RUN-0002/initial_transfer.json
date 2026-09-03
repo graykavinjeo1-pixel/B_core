@@ -1,0 +1,14 @@
+{
+  "run": "R20-RUN-0002",
+  "kind": "FIRST_HELD_OUT_EXECUTION",
+  "source_sha256": "9c48b97b16ebe1cb6a84f5c24c4421efac717fa0b4e1f4291660d7b89525ac3d",
+  "result": "PANIC_BEFORE_ROWS",
+  "failure": "Korean and English aliases for one topic concept produced duplicate topic IDs because identity also required equal surface text.",
+  "first_complete_run_after_identity_repair": "12/16",
+  "remaining_product_failures": [
+    "required-benefit Korean clause did not recover the work subject",
+    "English only-if evaluation did not recover the work subject"
+  ],
+  "remaining_harness_failures": 2,
+  "preserved": true
+}

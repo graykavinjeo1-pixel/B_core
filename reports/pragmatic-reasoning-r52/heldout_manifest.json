@@ -1,0 +1,35 @@
+{
+  "schema": "B_CORE_R52_HELDOUT_MANIFEST_1",
+  "suite": "R52_REFERENCE_SAFE_RESULT_ANAPHORA_HELDOUT",
+  "status": "FROZEN_BEFORE_FIRST_EXECUTION",
+  "frozen_after_diagnostic_pass": true,
+  "frozen_before_first_execution": true,
+  "diagnostic_sentences_reused": 0,
+  "case_count": 8,
+  "case_ids": [
+    "R52_H01",
+    "R52_H02",
+    "R52_H03",
+    "R52_H04",
+    "R52_H05",
+    "R52_H06",
+    "R52_H07",
+    "R52_H08"
+  ],
+  "coverage": {
+    "continuation_reference": 3,
+    "same_turn_result_reference": 2,
+    "cross_turn_result_absence": 1,
+    "quoted_result_inertness": 2,
+    "english_cases": 4,
+    "korean_cases": 3,
+    "cross_language_cases": 1
+  },
+  "transfer_source_sha256": "bd77f30233a32c517bab745df9bff61aa0302c106311d165341bd12b17ffad6d",
+  "transfer_support_sha256": "41d89e55c9aa8373affebf9c2c92d1d3fef454173129780edeb7383f185201eb",
+  "mutation_policy": {
+    "case_mutations_after_first_execution": 0,
+    "expectation_mutations_after_first_execution": 0,
+    "only_general_product_repairs_allowed": true
+  }
+}

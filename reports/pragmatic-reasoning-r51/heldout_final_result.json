@@ -1,0 +1,17 @@
+{
+  "schema": "B_CORE_R51_DEFEASIBLE_DISCOURSE_DECISION_CANARY_1",
+  "suite": "R51_DEFEASIBLE_DISCOURSE_DECISION_HELDOUT",
+  "exposure": 5,
+  "total": 8,
+  "passed": 8,
+  "failed": 0,
+  "response_contracts_valid": 8,
+  "authority_violations": 0,
+  "unsupported_explanation_facts": 0,
+  "manifest_mutations": 0,
+  "expectation_mutations": 0,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}

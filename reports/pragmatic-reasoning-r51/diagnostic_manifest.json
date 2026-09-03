@@ -1,0 +1,36 @@
+{
+  "schema": "B_CORE_R51_DIAGNOSTIC_MANIFEST_1",
+  "stage": "R51_DEFEASIBLE_DISCOURSE_DECISION_GENERALIZATION",
+  "suite": "R51_DEFEASIBLE_DISCOURSE_DECISION_DIAGNOSTIC",
+  "frozen_before_implementation": true,
+  "case_count": 12,
+  "case_ids": [
+    "R51_01",
+    "R51_02",
+    "R51_03",
+    "R51_04",
+    "R51_05",
+    "R51_06",
+    "R51_07",
+    "R51_08",
+    "R51_09",
+    "R51_10",
+    "R51_11",
+    "R51_12"
+  ],
+  "capability_axes": [
+    "proxy_vs_direct_benefit",
+    "conditional_continue_stop_policy",
+    "cross_turn_task_recovery",
+    "attributed_or_quoted_action_suppression",
+    "capability_question_to_verification_correction",
+    "implicit_problem_to_non_authoritative_repair_goal"
+  ],
+  "whole_sentence_dispatch_allowed": false,
+  "language_semantic_authority_allowed": false,
+  "language_execution_authority_allowed": false,
+  "external_llm_calls": 0,
+  "local_teacher_calls": 0,
+  "network_calls": 0,
+  "recursive_source_mutations": 0
+}
