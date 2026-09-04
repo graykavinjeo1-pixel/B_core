@@ -695,9 +695,20 @@ impl ModalSemanticAnalyzer {
         let counterfactual = conditionals
             .iter()
             .any(|item| item.kind == ConditionalKindIR::Counterfactual);
+        // A bare assumption has no conditional consequent, but still belongs
+        // to a hypothetical world. Its described event is not a live request.
+        let assumption = [
+            "suppose ",
+            "supposing ",
+            "assuming ",
+            "assume ",
+            "가정하자 ",
+        ]
+        .iter()
+        .any(|marker| normalized.starts_with(marker));
         if counterfactual {
             root_world = ModalWorldIR::Counterfactual;
-        } else if !conditionals.is_empty() {
+        } else if !conditionals.is_empty() || assumption {
             root_world = ModalWorldIR::Hypothetical;
         } else if question && !polite_request {
             root_world = ModalWorldIR::Questioned;
@@ -717,6 +728,8 @@ impl ModalSemanticAnalyzer {
             .is_some_and(|matched| matched.marker.kind == ModalOperatorKindIR::Desire)
         {
             ModalIllocutionIR::Wish
+        } else if assumption {
+            ModalIllocutionIR::ModalStatement
         } else if semantic_order.is_empty() {
             ModalIllocutionIR::Assertion
         } else {

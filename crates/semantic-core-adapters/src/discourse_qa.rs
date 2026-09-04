@@ -21,6 +21,120 @@ pub const DISCOURSE_ANSWER_SCHEMA: &str = "B_CORE_DISCOURSE_ANSWER_IR_1";
 const MAX_ANSWER_EVIDENCE: usize = 16;
 const MAX_ANSWER_CLAIMS: usize = 16;
 
+/// One question under discussion, not an answer cache. Re-expression must
+/// query the current evidence ledger; prior output is never evidence.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct AnswerFocusIR {
+    pub query: DiscourseQueryIR,
+    pub answered_turn: u64,
+}
+
+impl AnswerFocusIR {
+    pub fn validate(&self, completed_turns: u64) -> bool {
+        self.answered_turn > 0
+            && self.answered_turn <= completed_turns
+            && self.query.schema == DISCOURSE_QUERY_SCHEMA
+            && !self.query.original_text.trim().is_empty()
+            && self.query.original_text.chars().count() <= 4096
+            && self.query.topic_terms.len() <= 64
+    }
+}
+
+/// Small compositional metalanguage grammar: operation + optional reference,
+/// repetition and manner. Any content word/new topic or negation rejects the
+/// binding. This does not dispatch whole sentences or supply answer content.
+pub(crate) fn is_answer_reformulation(text: &str) -> bool {
+    let lower = text.to_lowercase();
+    let tokens = lower
+        .split(|c: char| c.is_whitespace() || matches!(c, '.' | '?' | '!' | ','))
+        .filter(|word| !word.is_empty())
+        .collect::<Vec<_>>();
+    if tokens.is_empty() || tokens.len() > 24 {
+        return false;
+    }
+    let operation = tokens.iter().any(|word| {
+        matches!(
+            *word,
+            "explain"
+                | "repeat"
+                | "rephrase"
+                | "restate"
+                | "summarize"
+                | "설명해"
+                | "설명해줘"
+                | "말해"
+                | "말해줘"
+                | "요약해"
+                | "요약해줘"
+        )
+    });
+    let backward = tokens.iter().any(|word| {
+        matches!(
+            *word,
+            "again"
+                | "that"
+                | "it"
+                | "previous"
+                | "repeat"
+                | "rephrase"
+                | "restate"
+                | "다시"
+                | "그걸"
+                | "그것을"
+                | "이전"
+                | "방금"
+                | "아까"
+        )
+    });
+    operation
+        && backward
+        && tokens.iter().all(|word| {
+            matches!(
+                *word,
+                "explain"
+                    | "repeat"
+                    | "rephrase"
+                    | "restate"
+                    | "summarize"
+                    | "again"
+                    | "that"
+                    | "it"
+                    | "previous"
+                    | "answer"
+                    | "explanation"
+                    | "the"
+                    | "your"
+                    | "please"
+                    | "briefly"
+                    | "simply"
+                    | "clearly"
+                    | "in"
+                    | "detail"
+                    | "more"
+                    | "less"
+                    | "설명해"
+                    | "설명해줘"
+                    | "말해"
+                    | "말해줘"
+                    | "요약해"
+                    | "요약해줘"
+                    | "다시"
+                    | "그걸"
+                    | "그것을"
+                    | "이전"
+                    | "방금"
+                    | "아까"
+                    | "답변을"
+                    | "설명을"
+                    | "핵심만"
+                    | "짧게"
+                    | "간단히"
+                    | "자세히"
+                    | "좀"
+            )
+        })
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum DiscourseQueryKindIR {
@@ -123,6 +237,16 @@ pub struct DiscourseAnswerClaimIR {
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct DiscourseAnswerIR {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reformulated_request: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub content_projection: Option<crate::proposition_content::ContentProjectionIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub world_reasoning: Option<crate::world_dialogue::WorldReasoningIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub world_memory_update: Option<crate::world_dialogue::WorldMemoryUpdateIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub world_clarification: Option<crate::world_dialogue::WorldClarificationIR>,
     pub schema: String,
     pub query: DiscourseQueryIR,
     pub disposition: DiscourseAnswerDispositionIR,
@@ -137,6 +261,81 @@ pub struct DiscourseAnswerIR {
 
 impl DiscourseAnswerIR {
     pub fn validate(&self) -> bool {
+        if let Some(c) = &self.world_clarification {
+            if !c.validate()
+                || self.world_memory_update.is_some()
+                || self.world_reasoning.is_some()
+                || self.content_projection.is_some()
+                || self.reformulated_request.is_some()
+                || !self.evidence.is_empty()
+                || !self.claims.is_empty()
+                || self.query.original_text != c.gap.source_text
+                || self.disposition != DiscourseAnswerDispositionIR::AmbiguousQuery
+                || !crate::generative_language::generate_world_clarification(self.language, c)
+                    .is_ok_and(|g| g.morphology.realized_text == self.realized_text)
+            {
+                return false;
+            }
+        }
+        if let Some(update) = &self.world_memory_update {
+            if !update.validate()
+                || self.world_reasoning.is_some()
+                || self.content_projection.is_some()
+                || self.reformulated_request.is_some()
+                || !self.evidence.is_empty()
+                || !self.claims.is_empty()
+                || update.source_text != self.query.original_text
+                || self.disposition != DiscourseAnswerDispositionIR::AnsweredFromDialogueRecords
+                || !crate::generative_language::generate_world_memory_update(self.language, update)
+                    .is_ok_and(|g| g.morphology.realized_text == self.realized_text)
+            {
+                return false;
+            }
+        }
+        if let Some(world) = &self.world_reasoning {
+            if !world.validate()
+                || self.content_projection.is_some()
+                || self.reformulated_request.is_some()
+                || !self.evidence.is_empty()
+                || !self.claims.is_empty()
+                || self.disposition != world.answer_disposition()
+                || !world.matches_question(&self.query.original_text)
+                || !crate::generative_language::generate_world_decision(self.language, world)
+                    .is_ok_and(|g| g.morphology.realized_text == self.realized_text)
+            {
+                return false;
+            }
+        }
+        if self
+            .reformulated_request
+            .as_ref()
+            .is_some_and(|text| !is_answer_reformulation(text))
+        {
+            return false;
+        }
+        if let Some(projection) = &self.content_projection {
+            if !projection.validate()
+                || !self.evidence.iter().any(|evidence| {
+                    evidence.belief_id == projection.belief_id
+                        && evidence.source_actor == projection.source_actor
+                        && evidence.proposition_surface == projection.source_proposition
+                })
+            {
+                return false;
+            }
+            if crate::proposition_content::requested_content_slot(&self.query.original_text)
+                != Some(projection.binding.slot)
+                || self.claims.len() != 1
+                || !self.claims.iter().any(|claim| {
+                    claim.kind == AnswerClaimKindIR::SourceAttributedContent
+                        && claim.subject == projection.source_actor
+                        && claim.value == projection.binding.value
+                        && claim.evidence_belief_ids == [projection.belief_id.clone()]
+                })
+            {
+                return false;
+            }
+        }
         if self.schema != DISCOURSE_ANSWER_SCHEMA
             || self.query.schema != DISCOURSE_QUERY_SCHEMA
             || self.evidence.len() > MAX_ANSWER_EVIDENCE
@@ -191,6 +390,76 @@ impl DiscourseAnswerIR {
 pub struct DiscourseQaEngine;
 
 impl DiscourseQaEngine {
+    /// A missing answer is a typed gap, not an explanation plan. Keep this
+    /// distinct from a successful answer in evaluation and downstream APIs.
+    pub fn unanswered(&self, text: &str, language: LanguageCodeIR) -> DiscourseAnswerIR {
+        DiscourseAnswerIR {
+            reformulated_request: None,
+            content_projection: None,
+            world_reasoning: None,
+            world_memory_update: None,
+            world_clarification: None,
+            schema: DISCOURSE_ANSWER_SCHEMA.to_string(),
+            query: DiscourseQueryIR {
+                schema: DISCOURSE_QUERY_SCHEMA.to_string(),
+                original_text: text.to_string(),
+                kind: DiscourseQueryKindIR::SourceContent,
+                requested_source: None,
+                requested_attitudes: vec![],
+                topic_terms: vec![],
+                temporal_scope: QueryTemporalScopeIR::Current,
+                presuppositions: vec![],
+                confidence_millis: 800,
+            },
+            disposition: DiscourseAnswerDispositionIR::NoMatchingRecord,
+            evidence: vec![],
+            claims: vec![DiscourseAnswerClaimIR {
+                claim_id: "ANSWER-GAP".to_string(),
+                kind: AnswerClaimKindIR::NoMatchingDialogueRecord,
+                subject: "requested information".to_string(),
+                value: "not available in dialogue evidence".to_string(),
+                evidence_belief_ids: vec![],
+            }],
+            language,
+            realized_text: match language {
+                LanguageCodeIR::Korean => "현재 근거로는 그 질문에 답할 수 없어.",
+                _ => "The available evidence does not answer that question.",
+            }
+            .to_string(),
+            dialogue_truth_established: false,
+            external_execution_authorized: false,
+            unsupported_claims: 0,
+        }
+    }
+
+    pub(crate) fn reformulate(
+        &self,
+        text: &str,
+        state: Option<&ConversationStateIR>,
+        language: LanguageCodeIR,
+    ) -> Option<DiscourseAnswerIR> {
+        if !is_answer_reformulation(text) {
+            return None;
+        }
+        let state = state?;
+        let focus = state.answer_focus.as_ref()?;
+        if !focus.validate(state.completed_turns)
+            || state.completed_turns.saturating_sub(focus.answered_turn) > 3
+        {
+            return None;
+        }
+        let mut answer = self
+            .answer(&focus.query.original_text, Some(state), language)
+            .unwrap_or_else(|| self.unanswered(&focus.query.original_text, language));
+        // A knowledge gap retains the question's topic, not the wording of the
+        // feedback. Source/evidence records themselves are always freshly read.
+        if answer.disposition == DiscourseAnswerDispositionIR::NoMatchingRecord {
+            answer.query.topic_terms = focus.query.topic_terms.clone();
+        }
+        answer.reformulated_request = Some(text.to_string());
+        Some(answer)
+    }
+
     pub fn parse(
         &self,
         text: &str,
@@ -296,7 +565,18 @@ impl DiscourseQaEngine {
         state: Option<&ConversationStateIR>,
         language: LanguageCodeIR,
     ) -> Option<DiscourseAnswerIR> {
-        let query = self.parse(text, state)?;
+        let parsed_query = self.parse(text, state);
+        if !parsed_query.as_ref().is_some_and(|query| {
+            matches!(
+                query.kind,
+                DiscourseQueryKindIR::SourceContent | DiscourseQueryKindIR::PropositionSources
+            )
+        }) {
+            if let Some(answer) = self.answer_content(text, state, language) {
+                return Some(answer);
+            }
+        }
+        let query = parsed_query?;
         let mut matching = state.map_or_else(Vec::new, |state| matching_records(&query, state));
         matching.sort_by(|left, right| {
             right
@@ -309,10 +589,30 @@ impl DiscourseQaEngine {
             .iter()
             .map(|record| evidence_from_record(record))
             .collect::<Vec<_>>();
+        // Missing causal knowledge is not evidence of a faulty user premise.
+        // Preserve presupposition checks when modal/negative records actually
+        // conflict with that premise; otherwise report the missing answer.
+        if query.kind == DiscourseQueryKindIR::PresuppositionCheck
+            && crate::proposition_content::requested_content_slot(text)
+                == Some(crate::proposition_content::ContentSlotIR::Cause)
+            && (evidence.is_empty()
+                || matching.iter().all(|record| {
+                    record.signature.modal_world == ModalWorldIR::Actual
+                        && record.proposition_polarity
+                            == crate::attribution::AttributedPropositionPolarityIR::Positive
+                }))
+        {
+            return Some(self.unanswered(text, language));
+        }
         let (disposition, mut claims) = answer_claims(&query, &evidence);
         claims.truncate(MAX_ANSWER_CLAIMS);
         let realized_text = realize_answer(language, &query, disposition, &evidence);
         let answer = DiscourseAnswerIR {
+            reformulated_request: None,
+            content_projection: None,
+            world_reasoning: None,
+            world_memory_update: None,
+            world_clarification: None,
             schema: DISCOURSE_ANSWER_SCHEMA.to_string(),
             query,
             disposition,
@@ -325,6 +625,90 @@ impl DiscourseQaEngine {
             unsupported_claims: 0,
         };
         debug_assert!(answer.validate());
+        Some(answer)
+    }
+
+    fn answer_content(
+        &self,
+        text: &str,
+        state: Option<&ConversationStateIR>,
+        language: LanguageCodeIR,
+    ) -> Option<DiscourseAnswerIR> {
+        use crate::proposition_content::{requested_content_slot, ContentProjectionIR};
+        let slot = requested_content_slot(text)?;
+        let state = state?;
+        let mut query = self.unanswered(text, language).query;
+        query.topic_terms = query_topic_terms(&text.to_lowercase(), None);
+        let mut records = matching_records(&query, state);
+        let query_frames = crate::compositional_semantics::CompositionalSemanticAnalyzer
+            .analyze(text)
+            .frames;
+        let predicates = query_frames
+            .iter()
+            .filter(|frame| {
+                !matches!(
+                    frame.intent_hint,
+                    dockable_semantic_core::PlanIntentIR::Explain
+                        | dockable_semantic_core::PlanIntentIR::Communicate
+                )
+            })
+            .map(|frame| frame.canonical_predicate.as_str())
+            .collect::<BTreeSet<_>>();
+        if query.topic_terms.is_empty() {
+            let latest = records.iter().map(|record| record.introduced_turn).max();
+            records.retain(|record| Some(record.introduced_turn) == latest);
+        }
+        // Possible/counterfactual worlds cannot answer a question about actuality.
+        records.retain(|record| {
+            record.signature.modal_world == ModalWorldIR::Actual
+                && record.proposition_polarity
+                    == crate::attribution::AttributedPropositionPolarityIR::Positive
+                && record.status == BeliefRecordStatusIR::Active
+        });
+        let mut projections = Vec::new();
+        for record in &records {
+            if !record.content.validate_source(&record.proposition_surface) {
+                continue;
+            }
+            for binding in record
+                .content
+                .bindings
+                .iter()
+                .filter(|binding| binding.slot == slot)
+            {
+                if binding.predicate.as_deref().is_some_and(|predicate| {
+                    !predicates.is_empty() && !predicates.contains(predicate)
+                }) {
+                    continue;
+                }
+                projections.push(ContentProjectionIR {
+                    belief_id: record.belief_id.clone(),
+                    source_actor: record.source_actor.clone(),
+                    source_proposition: record.proposition_surface.clone(),
+                    binding: binding.clone(),
+                });
+            }
+        }
+        if projections.len() != 1 {
+            return None;
+        }
+        let projection = projections.remove(0);
+        let record = records
+            .iter()
+            .find(|record| record.belief_id == projection.belief_id)?;
+        let mut answer = self.unanswered(text, language);
+        answer.query = query;
+        answer.disposition = DiscourseAnswerDispositionIR::AnsweredFromDialogueRecords;
+        answer.evidence = vec![evidence_from_record(record)];
+        answer.claims = vec![claim(
+            1,
+            AnswerClaimKindIR::SourceAttributedContent,
+            &projection.source_actor,
+            &projection.binding.value,
+            vec![projection.belief_id.clone()],
+        )];
+        answer.realized_text = projection.binding.value.clone();
+        answer.content_projection = Some(projection);
         Some(answer)
     }
 }
@@ -721,6 +1105,18 @@ fn is_query_function_term(term: &str) -> bool {
 }
 
 const QUERY_STOP_WORDS: &[&str] = &[
+    "one",
+    "뭘",
+    "이유만",
+    "이유",
+    "원인",
+    "그",
+    "설명해",
+    "설명",
+    "explain",
+    "reason",
+    "cause",
+    "only",
     "what",
     "which",
     "who",
@@ -971,6 +1367,13 @@ fn actuality_question(text: &str) -> bool {
 }
 
 fn generic_certainty_question(text: &str) -> bool {
+    if text.split_whitespace().next() == Some("which")
+        && text
+            .split(|c: char| !c.is_alphanumeric())
+            .any(|word| word == "true")
+    {
+        return true;
+    }
     contains_any(
         text,
         &[
@@ -1263,6 +1666,8 @@ mod tests {
             conversation_id: "QA-TEST".to_string(),
             completed_turns: 0,
             active_subject: None,
+            answer_focus: None,
+            dialogue_world: Default::default(),
             active_referents: Vec::new(),
             active_topics: Vec::new(),
             discourse_focus: Default::default(),

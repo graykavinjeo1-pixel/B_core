@@ -35,8 +35,14 @@ use crate::temporal::{
     TemporalAnswerDispositionIR, TemporalAnswerIR, TemporalQueryKindIR, TemporalRelationKindIR,
 };
 
+#[path = "world_realization.rs"]
+mod world_realization;
+pub(crate) use world_realization::generate_world_clarification;
+pub(crate) use world_realization::generate_world_decision;
+pub(crate) use world_realization::generate_world_memory_update;
+
 pub const GENERATION_MEANING_SCHEMA: &str = "B_CORE_GENERATION_MEANING_IR_1";
-pub const GENERATIVE_LANGUAGE_SCHEMA: &str = "B_CORE_GENERATIVE_LANGUAGE_IR_1";
+pub const GENERATIVE_LANGUAGE_SCHEMA: &str = "B_CORE_GENERATIVE_LANGUAGE_IR_2";
 
 // The bounded dialogue-relation engine can return up to 48 typed evidence
 // edges (8 paths × 6 hops). Each edge is preserved as an event plus two
@@ -163,6 +169,7 @@ pub enum GenerationEmotionIR {
     Neutral,
     Warm,
     Concerned,
+    Playful,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -463,6 +470,9 @@ pub enum ExpressionPartOfSpeechIR {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ExpressionMorphologyClassIR {
+    KoreanHadaLocative,
+    KoreanHadaAccusative,
+    EnglishRegularRelation,
     KoreanHada,
     KoreanCopula,
     KoreanInvariable,
@@ -654,6 +664,7 @@ pub struct GenerationVerificationIR {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct GenerativeLanguageIR {
     pub schema: String,
+    pub context: GenerationContextIR,
     pub meaning: GenerationMeaningGraphIR,
     pub speech_intent: SpeechIntentGraphIR,
     pub discourse_plan: GenerationDiscoursePlanIR,
@@ -669,6 +680,47 @@ pub struct GenerativeLanguageIR {
 }
 
 impl GenerativeLanguageIR {
+    /// Re-realize the same semantic/syntactic graph under an affective policy.
+    /// No fact, speech intent, polarity, scope or source reference is writable
+    /// through this interface. Called before the response is committed.
+    pub(crate) fn condition_realization(
+        &mut self,
+        policy: &crate::affective_field::AffectiveRealizationPolicyIR,
+    ) {
+        if policy.formal {
+            self.context.register = LanguageRegisterIR::Formal;
+        }
+        self.context.urgency_millis = policy.urgency_millis;
+        if policy.warmth_millis > 150 {
+            self.context.emotion = GenerationEmotionIR::Warm;
+        }
+        // A light social marker is a grammar choice, not a claim about the
+        // user's feelings. Never attach it to answers, refusals or task plans.
+        if policy.playfulness_millis > 150
+            && policy.urgency_millis <= 150
+            && policy.brevity_millis <= 150
+            && self.context.register != LanguageRegisterIR::Formal
+            && playful_social_anchor(&self.meaning).is_some()
+        {
+            self.context.emotion = GenerationEmotionIR::Playful;
+        } else if self.context.emotion == GenerationEmotionIR::Playful {
+            self.context.emotion = GenerationEmotionIR::Neutral;
+        }
+        self.morphology = realize_morphology(
+            &self.meaning,
+            &self.context,
+            &self.syntax_plan,
+            &self.expression_selection,
+        );
+        self.verification = verify_generation(
+            &self.meaning,
+            &self.expression_selection,
+            &self.syntax_plan,
+            &self.morphology,
+        );
+        self.generation_sha256 = generative_language_sha256(self);
+    }
+
     pub fn validate(&self) -> bool {
         self.schema == GENERATIVE_LANGUAGE_SCHEMA
             && self.meaning.validate()
@@ -677,6 +729,13 @@ impl GenerativeLanguageIR {
             && self.expression_selection.source_semantic_sha256 == self.meaning.semantic_sha256
             && self.syntax_plan.source_semantic_sha256 == self.meaning.semantic_sha256
             && self.morphology.source_semantic_sha256 == self.meaning.semantic_sha256
+            && self.morphology
+                == realize_morphology(
+                    &self.meaning,
+                    &self.context,
+                    &self.syntax_plan,
+                    &self.expression_selection,
+                )
             && self.morphology.realized_text.chars().count() <= MAX_REALIZED_CHARS
             && self.verification.faithful
             && self.verification.unsupported_surface_tokens == 0
@@ -744,6 +803,7 @@ impl GenerativeLanguageCortex {
         );
         let mut generated = GenerativeLanguageIR {
             schema: GENERATIVE_LANGUAGE_SCHEMA.to_string(),
+            context: request.context,
             meaning: request.meaning,
             speech_intent,
             discourse_plan,
@@ -814,6 +874,8 @@ fn derive_speech_intent(
                 "C_DIALOGUE_ANSWER_AMBIGUOUS" => GenerationSpeechIntentIR::Ask,
                 "C_TEMPORAL_ANSWER_AMBIGUOUS" => GenerationSpeechIntentIR::Ask,
                 "C_COPULA" => GenerationSpeechIntentIR::Inform,
+                "C_WORLD_CLAUSE_ASK" | "C_WORLD_CLAUSE_REFERENCE" => GenerationSpeechIntentIR::Ask,
+                "C_WORLD_CLAUSE_REMEMBER" => GenerationSpeechIntentIR::Acknowledge,
                 _ => context.default_speech_intent,
             };
             SpeechIntentNodeIR {
@@ -1090,6 +1152,28 @@ fn syntax_order(language: LanguageCodeIR, role: SyntaxConstituentRoleIR) -> usiz
     }
 }
 
+fn playful_social_anchor(meaning: &GenerationMeaningGraphIR) -> Option<&GenerationMeaningNodeIR> {
+    // A social clause inside an otherwise serious message is not sufficient.
+    if meaning.nodes.iter().any(|node| {
+        node.kind == GenerationMeaningNodeKindIR::Event
+            && !matches!(
+                node.concept_id.as_str(),
+                "C_DIALOGUE_GREETING_REPLY"
+                    | "C_DIALOGUE_GRATITUDE_REPLY"
+                    | "C_DIALOGUE_OFFER_HELP"
+                    | "C_DIALOGUE_INVITE_NEED"
+            )
+    }) {
+        return None;
+    }
+    meaning.nodes.iter().find(|node| {
+        matches!(
+            node.concept_id.as_str(),
+            "C_DIALOGUE_GREETING_REPLY" | "C_DIALOGUE_GRATITUDE_REPLY"
+        )
+    })
+}
+
 fn realize_morphology(
     meaning: &GenerationMeaningGraphIR,
     context: &GenerationContextIR,
@@ -1110,13 +1194,88 @@ fn realize_morphology(
         })
         .collect::<BTreeMap<_, _>>();
     let mut tokens = Vec::new();
-    for clause in &syntax.clauses {
+    if context.emotion == GenerationEmotionIR::Playful
+        && context.register != LanguageRegisterIR::Formal
+        && context.urgency_millis <= 150
+    {
+        if let Some(node) = playful_social_anchor(meaning) {
+            push_grammar_token(
+                &mut tokens,
+                if context.language == LanguageCodeIR::Korean {
+                    "ㅎㅎ"
+                } else {
+                    "Heh,"
+                },
+                "GRAMMAR_SOCIAL_PLAYFUL_MARKER",
+                &node.node_id,
+            );
+        }
+    }
+    for (clause_index, clause) in syntax.clauses.iter().enumerate() {
         let clause_tokens = match context.language {
             LanguageCodeIR::Korean => realize_korean_clause(clause, context, &selected),
             _ => realize_english_clause(clause, context, &selected),
         };
         let mut clause_tokens = clause_tokens;
-        if context.language == LanguageCodeIR::English {
+        // Korean zero subjects are licensed by a unique discourse referent,
+        // not by deleting answer text. Keep an auditable zero-width grammar
+        // token so the semantic subject remains in the generation trace.
+        if context.language == LanguageCodeIR::Korean {
+            if let (Some(predicate), Some(subject)) = (
+                constituent_selection(clause, SyntaxConstituentRoleIR::Predicate, &selected),
+                constituent_selection(clause, SyntaxConstituentRoleIR::Theme, &selected),
+            ) {
+                let mode = &predicate.expression.concept_id;
+                let self_report = mode == "C_WORLD_CLAUSE_REMEMBER"
+                    && subject.expression.concept_id == "C_ENTITY___user__";
+                let shared = matches!(
+                    mode.as_str(),
+                    "C_WORLD_CLAUSE_DERIVED" | "C_WORLD_CLAUSE_CONCLUSION"
+                ) && clause_index > 0
+                    && syntax.clauses.get(clause_index - 1).is_some_and(|prior| {
+                        constituent_selection(prior, SyntaxConstituentRoleIR::Goal, &selected)
+                            .is_none()
+                            && constituent_selection(
+                                prior,
+                                SyntaxConstituentRoleIR::Predicate,
+                                &selected,
+                            )
+                            .is_some_and(|p| p.expression.concept_id.starts_with("C_WORLD_CLAUSE_"))
+                            && constituent_selection(
+                                prior,
+                                SyntaxConstituentRoleIR::Theme,
+                                &selected,
+                            )
+                            .is_some_and(|p| {
+                                p.expression.concept_id == subject.expression.concept_id
+                            })
+                    });
+                if self_report || shared {
+                    for token in &mut clause_tokens {
+                        if token.source_meaning_node_ids == [subject.meaning_node_id.clone()]
+                            && token.expression_id.as_deref()
+                                == Some(subject.expression.expression_id.as_str())
+                        {
+                            token.surface.clear();
+                            token.expression_id = None;
+                            token.grammar_rule_id = Some(
+                                if self_report {
+                                    "KO.ZERO_SUBJECT.SPEAKER_REPORT"
+                                } else {
+                                    "KO.ZERO_SUBJECT.SHARED_REFERENT"
+                                }
+                                .into(),
+                            );
+                        }
+                    }
+                }
+            }
+        }
+        if context.language == LanguageCodeIR::English
+            && !tokens
+                .last()
+                .is_some_and(|token| token.surface.ends_with(','))
+        {
             if let Some(first) = clause_tokens.first_mut() {
                 first.surface = uppercase_first(&first.surface);
             }
@@ -1153,6 +1312,16 @@ fn realize_korean_clause(
     let Some(predicate) = predicate else {
         return output;
     };
+    if predicate.expression.concept_id == "C_CONTENT_PROJECTION" {
+        return realize_content_projection(clause, context, selected, predicate);
+    }
+    if predicate
+        .expression
+        .concept_id
+        .starts_with("C_WORLD_CLAUSE_")
+    {
+        return world_realization::realize_world_clause(clause, context, selected, predicate);
+    }
     if predicate.expression.part_of_speech == ExpressionPartOfSpeechIR::Interjection {
         let punctuation = if predicate.expression.concept_id == "C_DIALOGUE_GREETING_REPLY" {
             "!"
@@ -2020,12 +2189,16 @@ fn realize_korean_clause(
                         .to_string(),
                 );
             }
-            "C_DIALOGUE_ANSWER_NO_MATCH" => push_expression_token(
+            "C_DIALOGUE_ANSWER_NO_MATCH" => {
+                if let Some(theme) = theme {
+                    push_expression_token(&mut output, theme, format!("‘{}’에 관해서는", theme.expression.lexical_root));
+                }
+                push_expression_token(
                 &mut output,
                 predicate,
                 "조건에 맞는 대화 기록을 찾지 못했어. 없는 출처나 내용을 추측해서 채우지 않을게."
                     .to_string(),
-            ),
+            ) },
             "C_DIALOGUE_ANSWER_AMBIGUOUS" => push_expression_token(
                 &mut output,
                 predicate,
@@ -2969,7 +3142,7 @@ fn realize_korean_clause(
 
 fn realize_english_clause(
     clause: &SyntaxClauseIR,
-    _context: &GenerationContextIR,
+    context: &GenerationContextIR,
     selected: &BTreeMap<(&str, &str), &ExpressionSelectionIR>,
 ) -> Vec<MorphologicalTokenIR> {
     let mut output = Vec::new();
@@ -2985,6 +3158,16 @@ fn realize_english_clause(
     let Some(predicate) = predicate else {
         return output;
     };
+    if predicate.expression.concept_id == "C_CONTENT_PROJECTION" {
+        return realize_content_projection(clause, context, selected, predicate);
+    }
+    if predicate
+        .expression
+        .concept_id
+        .starts_with("C_WORLD_CLAUSE_")
+    {
+        return world_realization::realize_world_clause(clause, context, selected, predicate);
+    }
     if predicate.expression.part_of_speech == ExpressionPartOfSpeechIR::Interjection {
         let punctuation = if predicate.expression.concept_id == "C_DIALOGUE_GREETING_REPLY" {
             "!"
@@ -4526,12 +4709,14 @@ fn realize_english_clause(
                         .to_string(),
                 );
             }
-            "C_DIALOGUE_ANSWER_NO_MATCH" => push_expression_token(
-                &mut output,
-                predicate,
-                "I found no matching dialogue record. I will not invent a source or proposition to fill the gap."
-                    .to_string(),
-            ),
+            "C_DIALOGUE_ANSWER_NO_MATCH" => {
+                if let Some(theme) = theme {
+                    push_grammar_token(&mut output, "Regarding", "EN.ANSWER_GAP.TOPIC", &clause.event_node_id);
+                    push_expression_token(&mut output, theme, format!("‘{}’,", theme.expression.lexical_root));
+                }
+                push_expression_token(&mut output, predicate,
+                    "I found no matching dialogue record. I will not invent a source or proposition to fill the gap.".to_string());
+            },
             "C_DIALOGUE_ANSWER_AMBIGUOUS" => push_expression_token(
                 &mut output,
                 predicate,
@@ -5035,6 +5220,9 @@ fn push_grammar_token(
 fn join_morphological_tokens(tokens: &[MorphologicalTokenIR], language: LanguageCodeIR) -> String {
     let mut text = String::new();
     for token in tokens {
+        if token.surface.is_empty() {
+            continue;
+        }
         if !text.is_empty() && !token.attach_left {
             text.push(' ');
         }
@@ -9763,6 +9951,198 @@ pub(crate) fn generate_definition_grounding_from_knowledge(
     })
 }
 
+fn generate_content_projection(
+    language: LanguageCodeIR,
+    projection: &crate::proposition_content::ContentProjectionIR,
+) -> Result<GenerativeLanguageIR, String> {
+    use crate::proposition_content::ContentSlotIR;
+    if !projection.validate() {
+        return Err("INVALID_CONTENT_PROJECTION".into());
+    }
+    let korean = language == LanguageCodeIR::Korean;
+    let slot = match (korean, projection.binding.slot) {
+        (true, ContentSlotIR::Cause) => "말한 이유",
+        (false, ContentSlotIR::Cause) => "stated reason",
+        (true, ContentSlotIR::Agent) => "행위자",
+        (false, ContentSlotIR::Agent) => "actor",
+        (true, ContentSlotIR::Theme) => "대상",
+        (false, ContentSlotIR::Theme) => "object",
+        (true, ContentSlotIR::Definition) => "정의",
+        (false, ContentSlotIR::Definition) => "definition",
+        (true, ContentSlotIR::Summary) => "요점",
+        (false, ContentSlotIR::Summary) => "summary",
+        (true, ContentSlotIR::Manner) => "방식",
+        (false, ContentSlotIR::Manner) => "method",
+    };
+    let actor = if projection.source_actor == "DIALOGUE_USER" {
+        if korean {
+            "네 말"
+        } else {
+            "your account"
+        }
+    } else {
+        &projection.source_actor
+    };
+    let grounding = vec![
+        format!("DIALOGUE_BELIEF_ID:{}", projection.belief_id),
+        projection.binding.grammar_evidence.clone(),
+    ];
+    let mut store = ExpressionNodeStore::bilingual_builtin();
+    let mut nodes = Vec::new();
+    for (id, surface, kind, pos) in [
+        (
+            "C_CONTENT_PROJECTION",
+            if korean { "이다" } else { "is" },
+            GenerationMeaningNodeKindIR::Event,
+            ExpressionPartOfSpeechIR::Verb,
+        ),
+        (
+            "C_CONTENT_VALUE",
+            projection.binding.value.as_str(),
+            GenerationMeaningNodeKindIR::Entity,
+            ExpressionPartOfSpeechIR::Noun,
+        ),
+        (
+            "C_CONTENT_SLOT",
+            slot,
+            GenerationMeaningNodeKindIR::Entity,
+            ExpressionPartOfSpeechIR::Noun,
+        ),
+        (
+            "C_CONTENT_SOURCE",
+            actor,
+            GenerationMeaningNodeKindIR::Entity,
+            ExpressionPartOfSpeechIR::Noun,
+        ),
+    ] {
+        store.attach_alias(
+            &format!("EXPR.CONTENT.{id}"),
+            language,
+            id,
+            surface,
+            pos,
+            "RUNTIME_REFERENT_SURFACE:CONTENT_PROJECTION",
+        )?;
+        nodes.push(GenerationMeaningNodeIR {
+            node_id: id.to_string(),
+            concept_id: id.to_string(),
+            kind,
+            grounding_refs: grounding.clone(),
+        });
+    }
+    let meaning = GenerationMeaningGraphIR::new(
+        nodes,
+        vec![
+            meaning_edge(
+                "VALUE",
+                "C_CONTENT_PROJECTION",
+                "C_CONTENT_VALUE",
+                GenerationMeaningRelationIR::Property,
+            ),
+            meaning_edge(
+                "SLOT",
+                "C_CONTENT_PROJECTION",
+                "C_CONTENT_SLOT",
+                GenerationMeaningRelationIR::Theme,
+            ),
+            meaning_edge(
+                "SOURCE",
+                "C_CONTENT_PROJECTION",
+                "C_CONTENT_SOURCE",
+                GenerationMeaningRelationIR::Goal,
+            ),
+        ],
+    );
+    GenerativeLanguageCortex.generate(GenerativeLanguageRequestIR {
+        meaning,
+        context: GenerationContextIR {
+            language,
+            register: LanguageRegisterIR::Informal,
+            tense: GenerationTenseIR::Present,
+            emotion: GenerationEmotionIR::Neutral,
+            urgency_millis: 0,
+            default_speech_intent: GenerationSpeechIntentIR::Inform,
+        },
+        expressions: &store,
+    })
+}
+
+fn realize_content_projection(
+    clause: &SyntaxClauseIR,
+    context: &GenerationContextIR,
+    selected: &BTreeMap<(&str, &str), &ExpressionSelectionIR>,
+    predicate: &ExpressionSelectionIR,
+) -> Vec<MorphologicalTokenIR> {
+    let mut output = Vec::new();
+    let Some(source) = constituent_selection(clause, SyntaxConstituentRoleIR::Goal, selected)
+    else {
+        return output;
+    };
+    let Some(slot) = constituent_selection(clause, SyntaxConstituentRoleIR::Theme, selected) else {
+        return output;
+    };
+    let Some(value) = constituent_selection(clause, SyntaxConstituentRoleIR::Property, selected)
+    else {
+        return output;
+    };
+    if context.language == LanguageCodeIR::Korean {
+        push_expression_token(
+            &mut output,
+            source,
+            format!("{}에 따르면,", source.expression.lexical_root),
+        );
+        push_expression_token(
+            &mut output,
+            slot,
+            format!(
+                "{}{}",
+                slot.expression.lexical_root,
+                korean_particle(&slot.expression.lexical_root, "은", "는")
+            ),
+        );
+        push_expression_token(
+            &mut output,
+            value,
+            format!("‘{}’", value.expression.lexical_root),
+        );
+        let ending = if context.register == LanguageRegisterIR::Formal {
+            "입니다."
+        } else {
+            "이야."
+        };
+        push_expression_token(&mut output, predicate, ending.to_string());
+        if let Some(token) = output.last_mut() {
+            token.attach_left = true;
+        }
+    } else {
+        push_grammar_token(
+            &mut output,
+            "According to",
+            "EN.ATTRIBUTED_CONTENT",
+            &clause.event_node_id,
+        );
+        push_expression_token(
+            &mut output,
+            source,
+            format!("{},", source.expression.lexical_root),
+        );
+        push_grammar_token(
+            &mut output,
+            "the",
+            "EN.DEFINITE_SLOT",
+            &clause.event_node_id,
+        );
+        push_expression_token(&mut output, slot, slot.expression.lexical_root.clone());
+        push_expression_token(&mut output, predicate, "is".into());
+        push_expression_token(
+            &mut output,
+            value,
+            format!("‘{}’.", value.expression.lexical_root),
+        );
+    }
+    output
+}
+
 pub(crate) fn generate_discourse_answer_from_knowledge(
     language: LanguageCodeIR,
     answer: &DiscourseAnswerIR,
@@ -9770,6 +10150,18 @@ pub(crate) fn generate_discourse_answer_from_knowledge(
 ) -> Result<GenerativeLanguageIR, String> {
     if !answer.validate() {
         return Err("INVALID_DISCOURSE_ANSWER_GENERATION_SOURCE".to_string());
+    }
+    if let Some(world) = &answer.world_reasoning {
+        return generate_world_decision(language, world);
+    }
+    if let Some(c) = &answer.world_clarification {
+        return generate_world_clarification(language, c);
+    }
+    if let Some(update) = &answer.world_memory_update {
+        return generate_world_memory_update(language, update);
+    }
+    if let Some(projection) = &answer.content_projection {
+        return generate_content_projection(language, projection);
     }
     let language = if language == LanguageCodeIR::Korean {
         LanguageCodeIR::Korean
@@ -9902,6 +10294,30 @@ pub(crate) fn generate_discourse_answer_from_knowledge(
             &terminal_id,
             GenerationMeaningRelationIR::Sequence,
         ));
+    }
+    if answer.disposition == DiscourseAnswerDispositionIR::NoMatchingRecord
+        && !answer.query.topic_terms.is_empty()
+    {
+        nodes.push(GenerationMeaningNodeIR {
+            node_id: "R_GAP_TOPIC".into(),
+            concept_id: "C_RUNTIME_GAP_TOPIC".into(),
+            kind: GenerationMeaningNodeKindIR::Entity,
+            grounding_refs: base_refs.clone(),
+        });
+        edges.push(meaning_edge(
+            "GAP_TOPIC",
+            &terminal_id,
+            "R_GAP_TOPIC",
+            GenerationMeaningRelationIR::Theme,
+        ));
+        expressions.attach_alias(
+            "EXPR.GAP.TOPIC",
+            language,
+            "C_RUNTIME_GAP_TOPIC",
+            &answer.query.topic_terms.join(" "),
+            ExpressionPartOfSpeechIR::Noun,
+            "RUNTIME_REFERENT_SURFACE:REQUEST_TOPIC",
+        )?;
     }
     if answer.disposition == DiscourseAnswerDispositionIR::PresuppositionUnverified {
         let premise = answer

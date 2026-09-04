@@ -1,6 +1,7 @@
 //! Adapters are deliberately outside `dockable-semantic-core`.
 
 pub mod action_state;
+pub mod affective_field;
 pub mod attribution;
 pub mod clause_graph;
 pub mod cognitive;
@@ -27,6 +28,7 @@ pub mod language;
 pub mod language_center;
 pub mod language_cortex_integration;
 pub mod language_knowledge;
+pub mod lexical_knowledge_pack;
 pub mod lexical_memory;
 pub mod long_term_repair;
 mod long_term_repair_catalog;
@@ -40,6 +42,7 @@ pub mod pragmatic_intent;
 pub mod pragmatic_memory;
 pub mod pragmatics;
 pub mod professional_document;
+pub mod proposition_content;
 pub mod raw_mechanism_induction;
 pub mod reference_resolution_graph;
 pub mod semantic_roles;
@@ -48,6 +51,8 @@ pub mod temporal;
 pub mod topic_context;
 pub mod typed_coreference;
 pub mod utterance_intent;
+pub mod world_dialogue;
+pub mod world_vocabulary;
 
 pub use action_state::{
     action_evidence_audit_sha256, action_evidence_receipt_sha256,
@@ -350,3 +355,4 @@ pub use utterance_intent::{
     UtteranceSignalKindIR, UtteranceSurfaceFormIR, MAX_UTTERANCE_INTENT_CANDIDATES,
     MAX_UTTERANCE_INTENT_SIGNALS, UTTERANCE_INTENT_GRAPH_SCHEMA,
 };
+pub mod conversation_contract;

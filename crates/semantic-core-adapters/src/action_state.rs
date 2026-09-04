@@ -911,9 +911,11 @@ impl ActionStateAnalyzer {
         let query_requested = is_action_state_query(&normalized)
             || is_action_set_selection_query(&query_surface.trim().to_lowercase());
         let untrusted_evidence_claim = is_untrusted_evidence_claim(&normalized);
-        let reported_status = (!query_requested && !untrusted_evidence_claim)
-            .then(|| reported_status(&normalized))
-            .flatten();
+        let reported_status = (!query_requested
+            && !untrusted_evidence_claim
+            && !crate::conversation_contract::is_interrogative(query_surface))
+        .then(|| reported_status(&normalized))
+        .flatten();
         if !query_requested && !untrusted_evidence_claim && reported_status.is_none() {
             return ActionStateAnalysisIR::default();
         }
@@ -2206,6 +2208,15 @@ fn reported_status(text: &str) -> Option<ActionReportedStatusIR> {
 }
 
 fn is_action_state_query(text: &str) -> bool {
+    if matches!(
+        crate::proposition_content::requested_content_slot(text),
+        Some(
+            crate::proposition_content::ContentSlotIR::Cause
+                | crate::proposition_content::ContentSlotIR::Agent
+        )
+    ) {
+        return false;
+    }
     let state_noun = contains_any(
         text,
         &[

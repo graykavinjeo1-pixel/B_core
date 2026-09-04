@@ -87,6 +87,18 @@ pub struct PragmaticMemory {
 }
 
 impl PragmaticMemory {
+    pub(crate) fn restore_turn_state(
+        &mut self,
+        conversation_id: &str,
+        state: Option<PragmaticMemoryStateIR>,
+    ) {
+        if let Some(state) = state {
+            self.states.insert(conversation_id.to_string(), state);
+        } else {
+            self.states.remove(conversation_id);
+        }
+    }
+
     pub fn state(&self, conversation_id: &str) -> Option<&PragmaticMemoryStateIR> {
         self.states.get(conversation_id)
     }

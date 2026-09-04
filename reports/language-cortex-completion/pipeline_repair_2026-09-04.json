@@ -1,0 +1,1997 @@
+{
+  "schema": "B_CORE_BOUNDED_LANGUAGE_PIPELINE_REPAIR_REPORT_1",
+  "date": "2026-09-04",
+  "status": "BOUNDED_IMPLEMENTATION_VERIFIED_GENERAL_DIALOGUE_INCOMPLETE",
+  "source_base_commit": "ff0a25feba08f05e29a0e2100dde4351d2f349ef",
+  "branch": "main",
+  "commit_performed": false,
+  "push_performed": false,
+  "worktree_clean": false,
+  "canonical_manifest": {
+    "verified": true,
+    "files": 10,
+    "sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "runtime_language": "Rust",
+  "external_llm_dependency_added": false,
+  "implementation": {
+    "information_and_execution_contracts_separate": true,
+    "request_semantics_retained_without_plan": true,
+    "question_predicates_cannot_be_outcome_reports": true,
+    "reported_content_slots": [
+      "AGENT",
+      "THEME",
+      "CAUSE",
+      "DEFINITION"
+    ],
+    "cause_support": "Explicit because/때문에; ambiguous -서 is not assumed causal.",
+    "source_attribution_is_not_world_truth": true,
+    "affect_axes": 11,
+    "affect_values": "signed fixed-point [-1000,1000]",
+    "cue_evidence_limit": 32,
+    "cue_token_limit": 512,
+    "previous_turn_decay": "3/4",
+    "confidence_is_calibrated": false,
+    "affect_can_change_meaning_or_execution_authority": false,
+    "affect_realization_coverage": {
+      "formal_register": "implemented and tested",
+      "warmth_and_urgency": "generation context conditioning; not all grammar constructions use these fields",
+      "playfulness_and_brevity": "policy values only, full surface realization incomplete",
+      "response_interval": "supported by field observation API, not supplied by current conversation request API"
+    },
+    "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_19",
+    "generation_schema": "B_CORE_GENERATIVE_LANGUAGE_IR_2"
+  },
+  "tests": {
+    "root_workspace_lib": {
+      "passed": 1147,
+      "failed": 0,
+      "per_crate_counts": [
+        29,
+        19,
+        603,
+        481,
+        14,
+        1
+      ],
+      "command": "cargo test --locked --offline --workspace --lib -- --test-threads=1"
+    },
+    "portable_workspace_lib": {
+      "passed": 632,
+      "failed": 0,
+      "per_crate_counts": [
+        29,
+        603
+      ],
+      "duplicate_of_shared_source_tests": true
+    },
+    "root_and_portable_fmt_check": "PASS",
+    "root_and_portable_clippy": {
+      "status": "PASS",
+      "command": "cargo clippy --locked --offline -p semantic-core-adapters --lib --bin b-core-cognitive-api -- -D warnings",
+      "note": "Windows incremental hard-link fallback warning is environmental; lint passed."
+    },
+    "root_cli_build": "PASS",
+    "typed_route_matrix": {
+      "categories": 17,
+      "binary_dimensions": 5,
+      "cells": 544,
+      "candidate_orders": 2,
+      "status": "PASS",
+      "contained_in_adapter_unit_tests": true,
+      "exhaustive_natural_language": false
+    },
+    "real_api_category_smoke": {
+      "categories": 17,
+      "turns": 27,
+      "structural_pass": true,
+      "semantic_completion_not_implied": true
+    },
+    "expectation_migrations": "Explanation-as-PlanPreview assertions now require answer/gap while retaining subject, negation, reference and lifecycle checks. Evaluator unique lifecycle target test updated because explanation no longer introduces a competing executable goal.",
+    "blind_evaluation": false
+  },
+  "observations": {
+    "baseline": {
+      "conversations": 9,
+      "requested_turns": 28,
+      "returned_turns": 28,
+      "successful_api_responses": 28,
+      "process_failures": 0,
+      "answer_only_turns": 21,
+      "answer_only_plan_preview_violations": 0,
+      "source_attributed_answers": 4,
+      "knowledge_gaps": 13,
+      "clarification_responses": 1,
+      "output_act_counts": {
+        "DISCOURSE_ANSWER": 18,
+        "INFORM_ACKNOWLEDGEMENT": 6,
+        "CLARIFICATION_REQUEST": 1,
+        "PLAN_PREVIEW": 1,
+        "PLAN_RESULT_STATUS": 1,
+        "RESULT_ABSENCE": 1
+      }
+    },
+    "categories": {
+      "conversations": 17,
+      "requested_turns": 27,
+      "returned_turns": 27,
+      "successful_api_responses": 27,
+      "process_failures": 0,
+      "answer_only_turns": 6,
+      "answer_only_plan_preview_violations": 0,
+      "source_attributed_answers": 4,
+      "knowledge_gaps": 1,
+      "clarification_responses": 2,
+      "output_act_counts": {
+        "INFORM_ACKNOWLEDGEMENT": 9,
+        "DISCOURSE_ANSWER": 5,
+        "PLAN_PREVIEW": 6,
+        "INTERACTION_BOUNDARY": 1,
+        "CONDITIONAL_GUARD": 1,
+        "PLAN_RESULT_STATUS": 1,
+        "CLARIFICATION_REQUEST": 2,
+        "AFFECT_SUPPORT": 1,
+        "SOCIAL_BACKCHANNEL": 1
+      }
+    }
+  },
+  "remaining_gaps": [
+    {
+      "boundary": "General knowledge to answer content",
+      "evidence_cases": [
+        "EXPLAIN_KO",
+        "EXPLAIN_EN"
+      ],
+      "finding": "Cache definition/usefulness requests still return knowledge gaps. Safe abstention is not a correct explanation."
+    },
+    {
+      "boundary": "Ambiguous connective to causal relation",
+      "evidence_cases": [
+        "REASON_KO"
+      ],
+      "finding": "Korean -서 is not disambiguated between sequence and cause; the supplied causal explanation is not recovered."
+    },
+    {
+      "boundary": "Answer reformulation and elliptical reference",
+      "evidence_cases": [
+        "REEXPLAIN"
+      ],
+      "finding": "Topic survives first reformulation but the last follow-up still requests clarification."
+    },
+    {
+      "boundary": "Prior system decision to explanation",
+      "evidence_cases": [
+        "CONFLICT_EN"
+      ],
+      "finding": "The system represents competing reports but cannot explain its previous inability to choose."
+    },
+    {
+      "boundary": "Pragmatic response realization",
+      "evidence_cases": [
+        "agreement",
+        "disagreement",
+        "fragment"
+      ],
+      "finding": "Generic assertion acknowledgement is structurally valid but not adequate pragmatic understanding."
+    },
+    {
+      "boundary": "Topic transition understanding",
+      "evidence_cases": [
+        "topic_transition"
+      ],
+      "finding": "Explicit new topic can still be treated as an underspecified request."
+    },
+    {
+      "boundary": "General semantic content selection",
+      "finding": "Bounded topic/token matching and role parsing do not establish unrestricted multi-event or paraphrase understanding."
+    }
+  ],
+  "no_claims": [
+    "GPT-level general comprehension",
+    "100% conversation completion",
+    "all linguistic cases exhausted",
+    "calibrated emotion recognition",
+    "new semantic concepts learned from aliases"
+  ],
+  "package_source_parity": [
+    {
+      "file": "crates/semantic-core-adapters/src/action_state.rs",
+      "sha256": "4eb1b07742ba3e6798972294c2f8ae11e964dd652210648af79ffb7cdbc844fa",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/affective_field.rs",
+      "sha256": "2c434d995762bf358bef5cb1bf26f756996ff13f8a9e75b9330e7ebe638a8e14",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/cognitive.rs",
+      "sha256": "22b1f6ca078f73b87ef14d59e63fc0f8063d95961ba1812e19eedbd15008b1cd",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/conversation_contract.rs",
+      "sha256": "1460a8b647f4b2317f605c19b04acf95751b4f067196984c7432a765332654c0",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/conversation.rs",
+      "sha256": "443be6d90be3b630a51458ed6cd00c9d5462ae36474c35628bdccf86b3d77d71",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/discourse_qa.rs",
+      "sha256": "e4e4c361e07f0645bab2aaf9be7a97885483b1bd0e748963d5322860b95a482c",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/epistemic.rs",
+      "sha256": "f2c628c5fb900cc8844f54b858e2a41cc86572222a605115e6e7b00341254636",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/generative_language.rs",
+      "sha256": "8b600787c685dd3d39ac77543c74ece8ee608b2a77d4ea64120c2631451837ad",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/grounded_realization.rs",
+      "sha256": "d33a95742e1b0f8fd4dd7f35695952a557e6fb4fd5a35429c67c463223cb3dec",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/lib.rs",
+      "sha256": "3de0626aefcbb4ad0da4531452ff704a34ac78d5bc2edae54406676670206817",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/modality.rs",
+      "sha256": "19ac120c6e080dd6d8b7664edea72e60631276c32230a8bed8d8c4d8197bae99",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/natural_realization.rs",
+      "sha256": "977c0a7d5be5b55a8cfd953071038d621d44b16d0c42fd49538026a2547c7852",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/pipeline_route_tests.rs",
+      "sha256": "5e501200a7db77be58896f69977dfb8caad3f2f3e2f45716422f797155ba60c4",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/plan_result_boundary.rs",
+      "sha256": "e83ce31c13896cb6c0a0075edb2bc00cde21ccb0db536c37d3e5a27f978b4036",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/pragmatic_memory.rs",
+      "sha256": "0cef9e018ec12742ad1aa07953b32b9ea38618a82de7547d6e37df6cdd9c60ff",
+      "mirror_equal": true
+    },
+    {
+      "file": "crates/semantic-core-adapters/src/proposition_content.rs",
+      "sha256": "acb249a2882b0de142a1843527dcc206d0ef41d52e0a1241b2f18d63aba44bd0",
+      "mirror_equal": true
+    }
+  ],
+  "preserved_unrelated_files": [
+    "pakage/crates/semantic-core-adapters/src/knowledge_work.rs",
+    "pakage/crates/semantic-core-adapters/src/long_term_repair.rs"
+  ],
+  "baseline_diagnostic": {
+    "cases": [
+      {
+        "case": "EXPLAIN_KO",
+        "exit_code": 0,
+        "requested": 3,
+        "responses": 3,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "EXPLAIN_EN",
+        "exit_code": 0,
+        "requested": 3,
+        "responses": 3,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "REASON_KO",
+        "exit_code": 0,
+        "requested": 3,
+        "responses": 3,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "REPORT_EN",
+        "exit_code": 0,
+        "requested": 3,
+        "responses": 3,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "CORRECTION",
+        "exit_code": 0,
+        "requested": 3,
+        "responses": 3,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "REEXPLAIN",
+        "exit_code": 0,
+        "requested": 3,
+        "responses": 3,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "KNOWN_FACT_KO",
+        "exit_code": 0,
+        "requested": 3,
+        "responses": 3,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "CONFLICT_EN",
+        "exit_code": 0,
+        "requested": 4,
+        "responses": 4,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "PLAN_CONTROL",
+        "exit_code": 0,
+        "requested": 3,
+        "responses": 3,
+        "stderr_head": "",
+        "violations": []
+      }
+    ],
+    "rows": [
+      {
+        "case": "EXPLAIN_KO",
+        "turn": 1,
+        "input": "캐시가 뭔지 설명해.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "‘캐시’에 관해서는 조건에 맞는 대화 기록을 찾지 못했어. 없는 출처나 내용을 추측해서 채우지 않을게.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "캐시가 뭔지 설명해.",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": [
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "EXPLAIN_KO",
+        "turn": 2,
+        "input": "왜 필요한데?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "‘캐시’에 관해서는 조건에 맞는 대화 기록을 찾지 못했어. 없는 출처나 내용을 추측해서 채우지 않을게.",
+        "plan_intent": null,
+        "native_mode": "CLARIFICATION",
+        "native_response_goal": "ASK_CLARIFICATION",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "왜 필요한데?",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "EXPLAIN_KO",
+        "turn": 3,
+        "input": "계획 말고 지금 설명해.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "‘캐시’에 관해서는 조건에 맞는 대화 기록을 찾지 못했어. 없는 출처나 내용을 추측해서 채우지 않을게.",
+        "plan_intent": null,
+        "native_mode": "CLARIFICATION",
+        "native_response_goal": "ASK_CLARIFICATION",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "계획 말고 지금 설명해.",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": [
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "EXPLAIN_EN",
+        "turn": 1,
+        "input": "Explain what a cache is.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "Regarding ‘cache’, I found no matching dialogue record. I will not invent a source or proposition to fill the gap.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "explain what a cache is.",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": [
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "EXPLAIN_EN",
+        "turn": 2,
+        "input": "Why is it useful?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "Regarding ‘cache’, I found no matching dialogue record. I will not invent a source or proposition to fill the gap.",
+        "plan_intent": null,
+        "native_mode": "SOURCE_CERTAINTY_QUERY",
+        "native_response_goal": "ANSWER_VERIFIED_RESULT",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "why is it useful?",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "EXPLAIN_EN",
+        "turn": 3,
+        "input": "Do not tell me your plan. Answer the question.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "Regarding ‘cache’, I found no matching dialogue record. I will not invent a source or proposition to fill the gap.",
+        "plan_intent": null,
+        "native_mode": "SOURCE_CERTAINTY_QUERY",
+        "native_response_goal": "ANSWER_VERIFIED_RESULT",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "do not tell me your plan. answer the question.",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": [
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "REASON_KO",
+        "turn": 1,
+        "input": "서버가 멈춰서 요청이 실패했어.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "알겠어. 너는 “서버가 멈춰서 요청이 실패했어. ”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "서버가 멈춰서 요청이 실패했어.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "REASON_KO",
+        "turn": 2,
+        "input": "왜 실패했어?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "‘실패’에 관해서는 조건에 맞는 대화 기록을 찾지 못했어. 없는 출처나 내용을 추측해서 채우지 않을게.",
+        "plan_intent": null,
+        "native_mode": "EVIDENCE_RESULT_QUERY",
+        "native_response_goal": "ANSWER_VERIFIED_RESULT",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "왜 실패했어?",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "REASON_KO",
+        "turn": 3,
+        "input": "그 이유만 말해.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "‘실패’에 관해서는 조건에 맞는 대화 기록을 찾지 못했어. 없는 출처나 내용을 추측해서 채우지 않을게.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "그 이유만 말해.",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": [
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "REPORT_EN",
+        "turn": 1,
+        "input": "Mina says the Lumen cache is stale because the worker stopped.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “Mina says the Lumen cache is stale because the worker stopped. ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "mina says the lumen cache is stale because the worker stopped.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "REPORT_EN",
+        "turn": 2,
+        "input": "Why is the Lumen cache stale?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "According to mina, the stated reason is ‘the worker stopped’.",
+        "plan_intent": null,
+        "native_mode": "SOURCE_CERTAINTY_QUERY",
+        "native_response_goal": "ANSWER_VERIFIED_RESULT",
+        "qa": "ANSWERED_FROM_DIALOGUE_RECORDS",
+        "relation_qa": null,
+        "resolved": "why is the lumen cache stale?",
+        "content": {
+          "slot": "CAUSE",
+          "value": "the worker stopped",
+          "predicate": null,
+          "grammar_evidence": "CAUSAL_COMPLEMENT:because"
+        },
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "REPORT_EN",
+        "turn": 3,
+        "input": "Who said that?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "The dialogue record stores ‘the lumen cache is stale because the worker stopped’ as mina's statement. This is a source-attributed dialogue record, not an established fact.",
+        "plan_intent": null,
+        "native_mode": "SOURCE_CERTAINTY_QUERY",
+        "native_response_goal": "ANSWER_VERIFIED_RESULT",
+        "qa": "ANSWERED_FROM_DIALOGUE_RECORDS",
+        "relation_qa": null,
+        "resolved": "who said that?",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "CORRECTION",
+        "turn": 1,
+        "input": "The Helix parser has kept failing since deployment. We cannot leave it like this.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "알겠어. 너는 “The Helix parser has kept failing since deployment. We cannot leave it like this. ”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "the helix parser has kept failing since deployment. we cannot leave helix like this.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "CORRECTION",
+        "turn": 2,
+        "input": "아니, 고치지는 말고 왜 실패하는지만 설명해.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "‘helix’에 관해서는 조건에 맞는 대화 기록을 찾지 못했어. 없는 출처나 내용을 추측해서 채우지 않을게.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "아니, 고치지는 말고 왜 실패하는지만 설명해.",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": [
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "CORRECTION",
+        "turn": 3,
+        "input": "계획 말고 지금 설명해.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "‘helix’에 관해서는 조건에 맞는 대화 기록을 찾지 못했어. 없는 출처나 내용을 추측해서 채우지 않을게.",
+        "plan_intent": null,
+        "native_mode": "CLARIFICATION",
+        "native_response_goal": "ASK_CLARIFICATION",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "계획 말고 지금 설명해.",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": [
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "REEXPLAIN",
+        "turn": 1,
+        "input": "Explain how the Cedar scheduler decides priority.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "‘Cedar scheduler’에 관해서는 조건에 맞는 대화 기록을 찾지 못했어. 없는 출처나 내용을 추측해서 채우지 않을게.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "explain how the cedar scheduler decides priority.",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": [
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "REEXPLAIN",
+        "turn": 2,
+        "input": "설명이 너무 길어. 핵심만 다시 설명해.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "설명이 너무 길었네. 설명을 핵심만 짧게 조정할게. ‘Cedar scheduler’에 관해서는 조건에 맞는 대화 기록을 찾지 못했어. 없는 출처나 내용을 추측해서 채우지 않을게.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "설명이 너무 길어. 핵심만 다시 설명해.",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": [
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "REEXPLAIN",
+        "turn": 3,
+        "input": "그래서 실제 설명이 뭐야?",
+        "ok": true,
+        "error": null,
+        "act": "CLARIFICATION_REQUEST",
+        "output": "‘그래서 실제 설명이 뭐야? ’가 어느 대상을 가리키는지 알려줘. 대상을 하나만 지정해줘.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "그래서 실제 설명이 뭐야?",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "KNOWN_FACT_KO",
+        "turn": 1,
+        "input": "민수가 보고서를 수정했어.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "알겠어. 너는 “민수가 보고서를 수정했어. ”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "민수가 보고서를 수정했어.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "KNOWN_FACT_KO",
+        "turn": 2,
+        "input": "누가 수정했어?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "네 말에 따르면, 행위자는 ‘민수’이야.",
+        "plan_intent": null,
+        "native_mode": "CLARIFICATION",
+        "native_response_goal": "ASK_CLARIFICATION",
+        "qa": "ANSWERED_FROM_DIALOGUE_RECORDS",
+        "relation_qa": null,
+        "resolved": "누가 수정했어?",
+        "content": {
+          "slot": "AGENT",
+          "value": "민수",
+          "predicate": "REPAIR",
+          "grammar_evidence": "ROLE:Agent:가"
+        },
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "KNOWN_FACT_KO",
+        "turn": 3,
+        "input": "뭘 수정했어?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "네 말에 따르면, 대상은 ‘보고서’이야.",
+        "plan_intent": null,
+        "native_mode": "CLARIFICATION",
+        "native_response_goal": "ASK_CLARIFICATION",
+        "qa": "ANSWERED_FROM_DIALOGUE_RECORDS",
+        "relation_qa": null,
+        "resolved": "뭘 수정했어?",
+        "content": {
+          "slot": "THEME",
+          "value": "보고서",
+          "predicate": "REPAIR",
+          "grammar_evidence": "ROLE:Theme:를"
+        },
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "CONFLICT_EN",
+        "turn": 1,
+        "input": "Mina says the Lotus cache is stale.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “Mina says the Lotus cache is stale. ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "mina says the lotus cache is stale.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "CONFLICT_EN",
+        "turn": 2,
+        "input": "Joon says the Lotus cache is not stale.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “Joon says the Lotus cache is not stale. ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "joon says the lotus cache is not stale.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "CONFLICT_EN",
+        "turn": 3,
+        "input": "Which one is true?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "The dialogue record stores ‘the lotus cache is not stale’ as joon's statement. The dialogue record stores ‘the lotus cache is stale’ as mina's statement. This is a source-attributed dialogue record, not an established fact.",
+        "plan_intent": null,
+        "native_mode": "SOURCE_CERTAINTY_QUERY",
+        "native_response_goal": "ANSWER_VERIFIED_RESULT",
+        "qa": "DIALOGUE_TRUTH_NOT_ESTABLISHED",
+        "relation_qa": null,
+        "resolved": "which one is true?",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "CONFLICT_EN",
+        "turn": 4,
+        "input": "Why can't you decide?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "Regarding ‘why can't you decide’, I found no matching dialogue record. I will not invent a source or proposition to fill the gap.",
+        "plan_intent": null,
+        "native_mode": "SOURCE_CERTAINTY_QUERY",
+        "native_response_goal": "ANSWER_VERIFIED_RESULT",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "why can't you decide?",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "PLAN_CONTROL",
+        "turn": 1,
+        "input": "Inspect the Aster cache.",
+        "ok": true,
+        "error": null,
+        "act": "PLAN_PREVIEW",
+        "output": "Got it. First, I will check the current state of the Aster cache. I will narrow the cause of the Aster cache. I will verify the result. This work is still planned. This work is not executed.",
+        "plan_intent": "INVESTIGATE",
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "inspect the aster cache.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": true,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": []
+        },
+        "action_records": 1
+      },
+      {
+        "case": "PLAN_CONTROL",
+        "turn": 2,
+        "input": "Has it been executed?",
+        "ok": true,
+        "error": null,
+        "act": "PLAN_RESULT_STATUS",
+        "output": "The Aster cache is still only a plan. No execution result is recorded for the Aster cache, so it has not been verified as executed.",
+        "plan_intent": null,
+        "native_mode": "VERIFICATION_STATUS_QUERY",
+        "native_response_goal": "ANSWER_VERIFIED_RESULT",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "has cache been executed?",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 1
+      },
+      {
+        "case": "PLAN_CONTROL",
+        "turn": 3,
+        "input": "What is the result?",
+        "ok": true,
+        "error": null,
+        "act": "RESULT_ABSENCE",
+        "output": "No execution result is recorded yet for the Aster cache. The Aster cache is still only a plan.",
+        "plan_intent": null,
+        "native_mode": "EVIDENCE_RESULT_QUERY",
+        "native_response_goal": "ANSWER_VERIFIED_RESULT",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "what is the result?",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 1
+      }
+    ]
+  },
+  "category_diagnostic": {
+    "cases": [
+      {
+        "case": "question",
+        "exit_code": 0,
+        "requested": 2,
+        "responses": 2,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "explanation",
+        "exit_code": 0,
+        "requested": 2,
+        "responses": 2,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "command",
+        "exit_code": 0,
+        "requested": 1,
+        "responses": 1,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "correction",
+        "exit_code": 0,
+        "requested": 2,
+        "responses": 2,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "cancellation",
+        "exit_code": 0,
+        "requested": 2,
+        "responses": 2,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "disagreement",
+        "exit_code": 0,
+        "requested": 2,
+        "responses": 2,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "agreement",
+        "exit_code": 0,
+        "requested": 2,
+        "responses": 2,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "condition",
+        "exit_code": 0,
+        "requested": 1,
+        "responses": 1,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "hypothesis",
+        "exit_code": 0,
+        "requested": 1,
+        "responses": 1,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "past_result",
+        "exit_code": 0,
+        "requested": 2,
+        "responses": 2,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "followup",
+        "exit_code": 0,
+        "requested": 3,
+        "responses": 3,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "topic_transition",
+        "exit_code": 0,
+        "requested": 2,
+        "responses": 2,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "affect",
+        "exit_code": 0,
+        "requested": 1,
+        "responses": 1,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "social",
+        "exit_code": 0,
+        "requested": 1,
+        "responses": 1,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "ambiguous_reference",
+        "exit_code": 0,
+        "requested": 1,
+        "responses": 1,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "multiple_goals",
+        "exit_code": 0,
+        "requested": 1,
+        "responses": 1,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "fragment",
+        "exit_code": 0,
+        "requested": 1,
+        "responses": 1,
+        "stderr_head": "",
+        "violations": []
+      }
+    ],
+    "rows": [
+      {
+        "case": "question",
+        "turn": 1,
+        "input": "민수가 보고서를 수정했어.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “민수가 보고서를 수정했어. ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "민수가 보고서를 수정했어.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "question",
+        "turn": 2,
+        "input": "누가 수정했어?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "According to your account, the actor is ‘민수’.",
+        "plan_intent": null,
+        "native_mode": "CLARIFICATION",
+        "native_response_goal": "ASK_CLARIFICATION",
+        "qa": "ANSWERED_FROM_DIALOGUE_RECORDS",
+        "relation_qa": null,
+        "resolved": "누가 수정했어?",
+        "content": {
+          "slot": "AGENT",
+          "value": "민수",
+          "predicate": "REPAIR",
+          "grammar_evidence": "ROLE:Agent:가"
+        },
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "explanation",
+        "turn": 1,
+        "input": "Mina says the cache failed because the disk filled.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “Mina says the cache failed because the disk filled. ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "mina says the cache failed because the disk filled.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "explanation",
+        "turn": 2,
+        "input": "Why did the cache fail?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "According to mina, the stated reason is ‘the disk filled’.",
+        "plan_intent": null,
+        "native_mode": "SOURCE_CERTAINTY_QUERY",
+        "native_response_goal": "ANSWER_VERIFIED_RESULT",
+        "qa": "ANSWERED_FROM_DIALOGUE_RECORDS",
+        "relation_qa": null,
+        "resolved": "why did the cache fail?",
+        "content": {
+          "slot": "CAUSE",
+          "value": "the disk filled",
+          "predicate": null,
+          "grammar_evidence": "CAUSAL_COMPLEMENT:because"
+        },
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "command",
+        "turn": 1,
+        "input": "Inspect the Aster cache.",
+        "ok": true,
+        "error": null,
+        "act": "PLAN_PREVIEW",
+        "output": "Got it. First, I will check the current state of the Aster cache. I will narrow the cause of the Aster cache. I will verify the result. This work is still planned. This work is not executed.",
+        "plan_intent": "INVESTIGATE",
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "inspect the aster cache.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": true,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": []
+        },
+        "action_records": 1
+      },
+      {
+        "case": "correction",
+        "turn": 1,
+        "input": "Inspect the Aster cache.",
+        "ok": true,
+        "error": null,
+        "act": "PLAN_PREVIEW",
+        "output": "Got it. First, I will check the current state of the Aster cache. I will narrow the cause of the Aster cache. I will verify the result. This work is still planned. This work is not executed.",
+        "plan_intent": "INVESTIGATE",
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "inspect the aster cache.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": true,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": []
+        },
+        "action_records": 1
+      },
+      {
+        "case": "correction",
+        "turn": 2,
+        "input": "No, do not inspect it; explain why it failed.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "Regarding ‘Aster cache’, I found no matching dialogue record. I will not invent a source or proposition to fill the gap.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "no, do not inspect it; explain why it failed.",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": true,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": [
+            "ANSWER_CONTENT_REQUIRED",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 1
+      },
+      {
+        "case": "cancellation",
+        "turn": 1,
+        "input": "Run the build.",
+        "ok": true,
+        "error": null,
+        "act": "PLAN_PREVIEW",
+        "output": "Got it. First, I will check the current state of the build. I will perform the build. I will verify the result. This work is still planned. This work is not executed.",
+        "plan_intent": "EXECUTE",
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "run the build.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": true,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": []
+        },
+        "action_records": 1
+      },
+      {
+        "case": "cancellation",
+        "turn": 2,
+        "input": "Cancel it.",
+        "ok": true,
+        "error": null,
+        "act": "INTERACTION_BOUNDARY",
+        "output": "I applied the withdrawal to 1 active task(s). The retired work is no longer an active goal. This interpretation does not authorize a new execution or establish an outcome as fact.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "cancel build.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": []
+        },
+        "action_records": 1
+      },
+      {
+        "case": "disagreement",
+        "turn": 1,
+        "input": "Mina says the cache is stale.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “Mina says the cache is stale. ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "mina says the cache is stale.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "disagreement",
+        "turn": 2,
+        "input": "I disagree.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “I disagree. ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "i disagree.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "agreement",
+        "turn": 1,
+        "input": "Mina says the cache is stale.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “Mina says the cache is stale. ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "mina says the cache is stale.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "agreement",
+        "turn": 2,
+        "input": "I agree.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “I agree. ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "i agree.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "condition",
+        "turn": 1,
+        "input": "If the tests pass, deploy the bundle.",
+        "ok": true,
+        "error": null,
+        "act": "CONDITIONAL_GUARD",
+        "output": "The condition ‘the tests pass’ is not yet established by dialogue evidence. Therefore, ‘deploy the bundle. ’ is not active. Observing the result alone cannot establish the condition or authorize execution.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "if the tests pass, deploy the bundle.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "hypothesis",
+        "turn": 1,
+        "input": "Suppose the cache failed.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “Suppose the cache failed. ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "suppose the cache failed.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "past_result",
+        "turn": 1,
+        "input": "Inspect the Aster cache.",
+        "ok": true,
+        "error": null,
+        "act": "PLAN_PREVIEW",
+        "output": "Got it. First, I will check the current state of the Aster cache. I will narrow the cause of the Aster cache. I will verify the result. This work is still planned. This work is not executed.",
+        "plan_intent": "INVESTIGATE",
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "inspect the aster cache.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": true,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": []
+        },
+        "action_records": 1
+      },
+      {
+        "case": "past_result",
+        "turn": 2,
+        "input": "Has it been executed?",
+        "ok": true,
+        "error": null,
+        "act": "PLAN_RESULT_STATUS",
+        "output": "The Aster cache is still only a plan. No execution result is recorded for the Aster cache, so it has not been verified as executed.",
+        "plan_intent": null,
+        "native_mode": "VERIFICATION_STATUS_QUERY",
+        "native_response_goal": "ANSWER_VERIFIED_RESULT",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "has cache been executed?",
+        "content": null,
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 1
+      },
+      {
+        "case": "followup",
+        "turn": 1,
+        "input": "민수가 보고서를 수정했어.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “민수가 보고서를 수정했어. ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "민수가 보고서를 수정했어.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "followup",
+        "turn": 2,
+        "input": "누가 수정했어?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "According to your account, the actor is ‘민수’.",
+        "plan_intent": null,
+        "native_mode": "CLARIFICATION",
+        "native_response_goal": "ASK_CLARIFICATION",
+        "qa": "ANSWERED_FROM_DIALOGUE_RECORDS",
+        "relation_qa": null,
+        "resolved": "누가 수정했어?",
+        "content": {
+          "slot": "AGENT",
+          "value": "민수",
+          "predicate": "REPAIR",
+          "grammar_evidence": "ROLE:Agent:가"
+        },
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "followup",
+        "turn": 3,
+        "input": "뭘 수정했어?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "According to your account, the object is ‘보고서’.",
+        "plan_intent": null,
+        "native_mode": "CLARIFICATION",
+        "native_response_goal": "ASK_CLARIFICATION",
+        "qa": "ANSWERED_FROM_DIALOGUE_RECORDS",
+        "relation_qa": null,
+        "resolved": "뭘 수정했어?",
+        "content": {
+          "slot": "THEME",
+          "value": "보고서",
+          "predicate": "REPAIR",
+          "grammar_evidence": "ROLE:Theme:를"
+        },
+        "contract": {
+          "information_requested": true,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": true,
+          "assertion_only": false,
+          "evidence": [
+            "INTERROGATIVE_SCOPE",
+            "QUESTION_IS_NOT_AN_OUTCOME_REPORT"
+          ]
+        },
+        "action_records": 0
+      },
+      {
+        "case": "topic_transition",
+        "turn": 1,
+        "input": "Inspect the Aster cache.",
+        "ok": true,
+        "error": null,
+        "act": "PLAN_PREVIEW",
+        "output": "Got it. First, I will check the current state of the Aster cache. I will narrow the cause of the Aster cache. I will verify the result. This work is still planned. This work is not executed.",
+        "plan_intent": "INVESTIGATE",
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "inspect the aster cache.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": true,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": []
+        },
+        "action_records": 1
+      },
+      {
+        "case": "topic_transition",
+        "turn": 2,
+        "input": "Let's talk about the Beryl queue.",
+        "ok": true,
+        "error": null,
+        "act": "CLARIFICATION_REQUEST",
+        "output": "Could you add a little more detail about what you want?",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "let's talk about the beryl queue.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": []
+        },
+        "action_records": 1
+      },
+      {
+        "case": "affect",
+        "turn": 1,
+        "input": "답답해.",
+        "ok": true,
+        "error": null,
+        "act": "AFFECT_SUPPORT",
+        "output": "That is frustrating. We can check the most recent failure.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "답답해.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "social",
+        "turn": 1,
+        "input": "고마워.",
+        "ok": true,
+        "error": null,
+        "act": "SOCIAL_BACKCHANNEL",
+        "output": "You're welcome. Tell me if you need anything else.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "ambiguous_reference",
+        "turn": 1,
+        "input": "Inspect it.",
+        "ok": true,
+        "error": null,
+        "act": "CLARIFICATION_REQUEST",
+        "output": "Which target does ‘it’ refer to? Please name one target.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "inspect it.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": true,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": []
+        },
+        "action_records": 0
+      },
+      {
+        "case": "multiple_goals",
+        "turn": 1,
+        "input": "Inspect the Aster cache, then repair the Beryl queue.",
+        "ok": true,
+        "error": null,
+        "act": "PLAN_PREVIEW",
+        "output": "Got it. First, I will check the current state of the Aster cache. I will narrow the cause of the Aster cache. I will verify the result. This work is still planned. This work is not executed. Got it. First, I will check the current state of the Beryl queue. I will repair the Beryl queue. I will verify the result. This work is still planned. This work is not executed. No execution result is recorded for this plan, so it has not been verified as executed.",
+        "plan_intent": "INVESTIGATE",
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "inspect the aster cache, then repair the beryl queue.",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": true,
+          "question_surface": false,
+          "assertion_only": false,
+          "evidence": []
+        },
+        "action_records": 2
+      },
+      {
+        "case": "fragment",
+        "turn": 1,
+        "input": "음... 저기...",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “음. . . 저기. . . ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "저기...",
+        "content": null,
+        "contract": {
+          "information_requested": false,
+          "explanation_requested": false,
+          "independent_action_requested": false,
+          "question_surface": false,
+          "assertion_only": true,
+          "evidence": []
+        },
+        "action_records": 0
+      }
+    ]
+  }
+}

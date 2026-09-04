@@ -61,7 +61,7 @@ use crate::typed_coreference::{
 
 pub const CONVERSATION_TURN_REQUEST_SCHEMA: &str = "B_CORE_CONVERSATION_TURN_REQUEST_1";
 pub const CONVERSATION_FRONTEND_SCHEMA: &str = "B_CORE_CONVERSATION_FRONTEND_3";
-pub const CONVERSATION_STATE_SCHEMA: &str = "B_CORE_CONVERSATION_STATE_28";
+pub const CONVERSATION_STATE_SCHEMA: &str = "B_CORE_CONVERSATION_STATE_32";
 pub const DIALOGUE_DIRECTIVE_LEDGER_SCHEMA: &str = "B_CORE_DIALOGUE_DIRECTIVE_LEDGER_IR_1";
 pub const DISCOURSE_PROGRAM_SCHEMA: &str = "B_CORE_DISCOURSE_PROGRAM_IR_4";
 pub const DISCOURSE_PROGRAM_GUARD_SCHEMA: &str = "B_CORE_DISCOURSE_PROGRAM_GUARD_IR_3";
@@ -1930,6 +1930,10 @@ impl DiscourseGroupUpdateIR {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ConversationStateIR {
     pub schema: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub answer_focus: Option<crate::discourse_qa::AnswerFocusIR>,
+    #[serde(default)]
+    pub dialogue_world: crate::world_dialogue::DialogueWorldIR,
     pub conversation_id: String,
     pub completed_turns: u64,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2653,8 +2657,79 @@ pub struct ConversationMemory {
 }
 
 impl ConversationMemory {
+    /// Explicit host registration, separate from natural-language dialogue.
+    /// Validate a clone first: failure cannot create a session or advance a turn.
+    pub fn update_world_vocabulary(
+        &mut self,
+        conversation_id: &str,
+        update: &crate::world_vocabulary::WorldVocabularyUpdateIR,
+    ) -> Result<ConversationStateIR, String> {
+        if conversation_id.trim().is_empty() || conversation_id.len() > 128 {
+            return Err("INVALID_CONVERSATION_ID".into());
+        }
+        let mut state = self
+            .states
+            .get(conversation_id)
+            .cloned()
+            .unwrap_or_else(|| empty_state(conversation_id));
+        state.dialogue_world.vocabulary = state.dialogue_world.vocabulary.updated(update)?;
+        state.state_sha256 = state_hash(&state).map_err(|_| "INVALID_STATE_HASH")?;
+        validate_conversation_state(&state).map_err(|_| "INVALID_VOCABULARY_STATE")?;
+        self.states.insert(conversation_id.into(), state.clone());
+        Ok(state)
+    }
+
+    pub(crate) fn restore_turn_state(
+        &mut self,
+        conversation_id: &str,
+        state: Option<ConversationStateIR>,
+    ) {
+        if let Some(state) = state {
+            self.states.insert(conversation_id.to_string(), state);
+        } else {
+            self.states.remove(conversation_id);
+        }
+    }
+
     pub fn state(&self, conversation_id: &str) -> Option<&ConversationStateIR> {
         self.states.get(conversation_id)
+    }
+
+    pub(crate) fn commit_answer_focus(
+        &mut self,
+        conversation_id: &str,
+        focus: Option<crate::discourse_qa::AnswerFocusIR>,
+    ) -> Result<ConversationStateIR, ConversationFrontendError> {
+        let state = self
+            .states
+            .get_mut(conversation_id)
+            .ok_or(ConversationFrontendError::InvalidState)?;
+        if focus
+            .as_ref()
+            .is_some_and(|focus| !focus.validate(state.completed_turns))
+        {
+            return Err(ConversationFrontendError::InvalidState);
+        }
+        state.answer_focus = focus;
+        state.state_sha256 = state_hash(state)?;
+        Ok(state.clone())
+    }
+
+    pub(crate) fn commit_dialogue_world(
+        &mut self,
+        conversation_id: &str,
+        world: crate::world_dialogue::DialogueWorldIR,
+    ) -> Result<ConversationStateIR, ConversationFrontendError> {
+        let state = self
+            .states
+            .get_mut(conversation_id)
+            .ok_or(ConversationFrontendError::InvalidState)?;
+        if !world.validate(state.completed_turns) {
+            return Err(ConversationFrontendError::InvalidState);
+        }
+        state.dialogue_world = world;
+        state.state_sha256 = state_hash(state)?;
+        Ok(state.clone())
     }
 
     /// Commits already-grounded dialogue constraints through one bounded
@@ -5442,7 +5517,9 @@ fn valid_local_nominal(surface: &str) -> bool {
     !surface.is_empty()
         && ![
             "it", "that", "this", "and", "but", "although", "analyze", "repair", "inspect",
-            "check", "the", "a", "an",
+            "check", "the", "a", "an", "why", "who", "whom", "whose", "what", "which", "where",
+            "when", "how", "is", "are", "was", "were", "has", "have", "did", "does", "do", "can",
+            "could", "would", "should",
         ]
         .contains(&surface.to_lowercase().as_str())
 }
@@ -7692,6 +7769,8 @@ fn empty_state(conversation_id: &str) -> ConversationStateIR {
         conversation_id: conversation_id.to_string(),
         completed_turns: 0,
         active_subject: None,
+        answer_focus: None,
+        dialogue_world: Default::default(),
         active_referents: Vec::new(),
         active_topics: Vec::new(),
         discourse_focus: DiscourseFocusStateIR::default(),
@@ -7749,7 +7828,12 @@ fn state_hash(state: &ConversationStateIR) -> Result<String, ConversationFronten
         &state.dialogue_directive_ledger,
         &state.last_guard_evaluations,
         state.preferred_language,
-        (&state.pending_question, &state.topic_pending_questions),
+        (
+            &state.pending_question,
+            &state.topic_pending_questions,
+            &state.answer_focus,
+            &state.dialogue_world,
+        ),
         state.unresolved_reference_count,
     ))
     .map_err(|_| ConversationFrontendError::InvalidState)?;
@@ -7910,6 +7994,11 @@ pub fn validate_conversation_state(
         .map(|commitment| commitment.evidence_ids.len())
         .sum::<usize>();
     if state.schema != CONVERSATION_STATE_SCHEMA
+        || !state.dialogue_world.validate(state.completed_turns)
+        || state
+            .answer_focus
+            .as_ref()
+            .is_some_and(|focus| !focus.validate(state.completed_turns))
         || state.conversation_id.trim().is_empty()
         || state.active_referents.len() > MAX_ACTIVE_REFERENTS
         || unique_referents.len() != state.active_referents.len()

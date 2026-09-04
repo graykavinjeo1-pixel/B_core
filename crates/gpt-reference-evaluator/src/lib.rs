@@ -2929,20 +2929,25 @@ mod tests {
             "R-RESULT-2",
             "Explain why the Alder cache is slow.",
         ))
-        .expect("second discourse goal");
+        .expect("information request, not a second executable goal");
         let query = request(3, "R-RESULT-3", "Is it already finished?");
         let response = api
             .process_conversation_turn(&query)
             .expect("lifecycle query");
+        assert_eq!(response.conversation_state.active_goals.len(), 1);
+        assert_eq!(
+            response.conversation_state.active_goals[0].canonical_predicate,
+            "INVESTIGATE"
+        );
         let candidate = extract_candidate_from_b_core(&BCoreResponseTurnIR {
             response_id: query.request_id.clone(),
             request: query,
             response,
         })
         .expect("canonical projection");
-        assert!(candidate
-            .discourse_bindings
-            .contains(&"REFERENCE:RESULT:GOAL:INVESTIGATE".to_string()));
+        // Explanation no longer creates a competing action. With one lifecycle
+        // target, the reference is entailed rather than duplicated as a binding.
+        assert!(candidate.discourse_bindings.is_empty());
         assert!(candidate
             .discourse_bindings
             .iter()

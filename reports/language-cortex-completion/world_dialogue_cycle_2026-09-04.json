@@ -1,0 +1,287 @@
+{
+  "report_id": "WORLD_DIALOGUE_CYCLE_2026-09-04",
+  "status": "PASS_WITH_DECLARED_SCOPE_LIMITS",
+  "disposition": "BOUNDED_WORLD_MEMORY_CORE_DELIBERATION_AND_ATOMIC_REALIZATION_IMPLEMENTED",
+  "repository": "I:/B_Core",
+  "branch": "main",
+  "base_commit": "ff0a25feba08f05e29a0e2100dde4351d2f349ef",
+  "commit_created": false,
+  "push_performed": false,
+  "worktree_clean": false,
+  "canonical_integrity": {
+    "before": "PASS",
+    "after": "PASS",
+    "files": 10,
+    "manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "architecture": {
+    "pipeline": [
+      "complete-source grounding",
+      "typed conversation-local premise/conditional memory",
+      "goal-directed working-set retrieval",
+      "existing core support/refutation/conflict searches",
+      "decision and optional missing-premise question",
+      "atomic expression nodes, clause syntax and morphology",
+      "replay and response boundary validation"
+    ],
+    "core_engine": "dockable_semantic_core::DeliberationEngine",
+    "new_reasoning_engine": false,
+    "core_search_adapter": "dual-rail support/refutation atoms; separate information-acquisition request; no original-goal echo questions",
+    "memory_owner": "ConversationMemory",
+    "world_source": "USER_SUPPLIED_PREMISES_NOT_VERIFIED_REALITY",
+    "semantic_decision_precedes_language": true,
+    "input_languages": [
+      "Korean",
+      "English"
+    ],
+    "shared_state_concepts": 8,
+    "premise_capacity": 64,
+    "implication_capacity": 64,
+    "working_set_atom_capacity": 64,
+    "max_conjunctive_prerequisites": 4,
+    "search_depth": 16,
+    "beam_width": 32,
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_30",
+    "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+    "requires_migration_or_new_session": true,
+    "new_automatic_disk_persistence": false,
+    "external_execution_authorized": false,
+    "newly_promoted_concepts": 0,
+    "promoted_payload_mutations": 0,
+    "runtime_llm_calls_in_new_path": 0,
+    "runtime_recursive_source_mutations": 0
+  },
+  "verification": {
+    "root_workspace_lib_tests": {
+      "passed": 1166,
+      "failed": 0,
+      "per_crate": {
+        "dockable_semantic_core": 29,
+        "gpt_reference_evaluator": 19,
+        "semantic_core_adapters": 622,
+        "semantic_reasoning": 481,
+        "synapse_core": 14,
+        "synapse_recursive_core": 1
+      }
+    },
+    "package_workspace_lib_tests": {
+      "passed": 651,
+      "failed": 0
+    },
+    "new_test_functions": 14,
+    "structural_combinations": 48,
+    "structural_matrix_language_realizations": 96,
+    "independently_blinded_or_general_accuracy_benchmark": false,
+    "tests": [
+      "novel entity combinations",
+      "multi-step conjunction",
+      "missing evidence is not false",
+      "opposing proofs and direct-versus-derived conflicts",
+      "intermediate proposition conflicts",
+      "explicit correction",
+      "hypothetical nonmutation",
+      "bilingual decision equality",
+      "partial parse and pronoun rejection",
+      "public conversation path",
+      "resource-bound deferral",
+      "expression and semantic ablations",
+      "irrelevant-memory independence and cycles",
+      "yes/no queried-premise binding, provenance replay, snapshot roundtrip, topic invalidation and no echo questions"
+    ],
+    "cargo_fmt_check": {
+      "root": "PASS",
+      "package": "PASS"
+    },
+    "cargo_clippy_lib_and_cli_deny_warnings": {
+      "root": "PASS",
+      "package": "PASS"
+    },
+    "cargo_cli_build": "PASS",
+    "canonical_manifest_check": "PASS",
+    "optional_research_python_pytest_hooks": "NOT_EXERCISED: pytest unavailable; existing Rust tests return early for those hooks",
+    "environment_warning": "Windows incremental hard-link fallback copied files; not a Rust source lint",
+    "tooling_note": "An intermediate verification command duplicated --quiet; corrected invocations completed successfully."
+  },
+  "portable_package": {
+    "path": "I:/B_Core/pakage",
+    "runtime_source_parity_files": 18,
+    "unrelated_package_edits_preserved": {
+      "knowledge_work.rs": "f72b32650ee77334f2a9130c38d03d6c6f4941ba5e720f91cc051b608f25e4fe",
+      "long_term_repair.rs": "853df4feb16f9d7e326af8bbd90f466f34031c966698700fd15fd445e4a1c9ad"
+    }
+  },
+  "source_sha256": {
+    "world_dialogue.rs": "5aabbad9e51bce139979dd85f37dd6adf195f2e7c536f8683b0a1c749351cd07",
+    "world_realization.rs": "b29e483610bf3246d8320cfec9a53bea74b9b1efdb9ac8ab408b156e9f1bee87",
+    "cognitive.rs": "50642362b09650e7749dc4edd66ed536892a8ac49d1cd952971986c3106fa204"
+  },
+  "cli_diagnostic": {
+    "stderr": "",
+    "turns": 14,
+    "rows": [
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 1,
+        "verdict": "MEMORY_UPDATED",
+        "conversation": "WORLD-CLI-KO",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "alpha가 가동 상태이면 beta는 안전 상태다.",
+        "proof_steps": 0,
+        "output": "조건 관계로 기억했어: alpha는 가동 상태이면, beta는 안전 상태야."
+      },
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 2,
+        "verdict": "UNKNOWN",
+        "conversation": "WORLD-CLI-KO",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "beta는 안전 상태인가?",
+        "proof_steps": 0,
+        "output": "현재 전제만으로는, beta는 안전 상태인지 판단할 수 없어. 판단에 필요한데, alpha는 가동 상태인가요?"
+      },
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 3,
+        "verdict": "SUPPORTED",
+        "conversation": "WORLD-CLI-KO",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "응",
+        "proof_steps": 1,
+        "output": "주어진 전제로 판단하면, beta는 안전 상태야."
+      },
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 4,
+        "verdict": "SUPPORTED",
+        "conversation": "WORLD-CLI-KO",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "왜?",
+        "proof_steps": 1,
+        "output": "말해 준 전제로는, alpha는 가동 상태야. 이 조건 관계를 적용하면, beta는 안전 상태야. 주어진 전제로 판단하면, beta는 안전 상태야."
+      },
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 5,
+        "verdict": "MEMORY_UPDATED",
+        "conversation": "WORLD-CLI-KO",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "정정: alpha는 가동 상태가 아니다.",
+        "proof_steps": 0,
+        "output": "말한 전제로 기억했어: alpha는 가동 상태가 아니야."
+      },
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 6,
+        "verdict": "UNKNOWN",
+        "conversation": "WORLD-CLI-KO",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "beta는 안전 상태인가?",
+        "proof_steps": 0,
+        "output": "현재 전제만으로는, beta는 안전 상태인지 판단할 수 없어."
+      },
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 1,
+        "verdict": "MEMORY_UPDATED",
+        "conversation": "WORLD-CLI-CONFLICT",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "gamma is safe.",
+        "proof_steps": 0,
+        "output": "Recorded as your premise: gamma is safe."
+      },
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 2,
+        "verdict": "MEMORY_UPDATED",
+        "conversation": "WORLD-CLI-CONFLICT",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "delta is active.",
+        "proof_steps": 0,
+        "output": "Recorded as your premise: delta is active."
+      },
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 3,
+        "verdict": "MEMORY_UPDATED",
+        "conversation": "WORLD-CLI-CONFLICT",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "If delta is active, then gamma is not safe.",
+        "proof_steps": 0,
+        "output": "Recorded as a conditional premise: if delta is active, then gamma is not safe."
+      },
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 4,
+        "verdict": "CONFLICT",
+        "conversation": "WORLD-CLI-CONFLICT",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "Is gamma safe?",
+        "proof_steps": 0,
+        "output": "The supplied premises conflict about whether gamma is safe."
+      },
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 1,
+        "verdict": "MEMORY_UPDATED",
+        "conversation": "WORLD-CLI-HYPOTHETICAL",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "alpha is not active.",
+        "proof_steps": 0,
+        "output": "Recorded as your premise: alpha is not active."
+      },
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 2,
+        "verdict": "MEMORY_UPDATED",
+        "conversation": "WORLD-CLI-HYPOTHETICAL",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "If alpha is active, then beta is safe.",
+        "proof_steps": 0,
+        "output": "Recorded as a conditional premise: if alpha is active, then beta is safe."
+      },
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 3,
+        "verdict": "SUPPORTED",
+        "conversation": "WORLD-CLI-HYPOTHETICAL",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "Suppose alpha is active. Is beta safe?",
+        "proof_steps": 1,
+        "output": "Under that hypothetical assumption, beta is safe."
+      },
+      {
+        "response_act": "DISCOURSE_ANSWER",
+        "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_20",
+        "turn": 4,
+        "verdict": "UNKNOWN",
+        "conversation": "WORLD-CLI-HYPOTHETICAL",
+        "state_schema": "B_CORE_CONVERSATION_STATE_30",
+        "input": "Is beta safe?",
+        "proof_steps": 0,
+        "output": "The current premises do not determine whether beta is safe."
+      }
+    ],
+    "passed": true
+  },
+  "limitations": [
+    "Functional cognitive-cycle analogy, not a reproduction of human cognition.",
+    "Bounded copular states and supplied conditional implications, not unrestricted Korean/English or broad knowledge acquisition.",
+    "No new vision/sensor observation or autonomous causal-law discovery.",
+    "Unrecognized language and other response families retain legacy paths; not all hard-coded responses have been removed.",
+    "Memory is conversation-local and serializable; no new cross-session automatic persistence.",
+    "General conversational naturalness and GPT-relative quality are not established by structural tests."
+  ]
+}

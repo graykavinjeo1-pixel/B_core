@@ -72,6 +72,8 @@ impl BeliefRecordStatusIR {
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct BeliefRecordIR {
+    #[serde(default)]
+    pub content: crate::proposition_content::PropositionContentIR,
     pub belief_id: String,
     pub origin_referent_id: String,
     pub source_actor: String,
@@ -254,6 +256,9 @@ impl EpistemicLedgerIR {
                 }
             }
             self.records.push(BeliefRecordIR {
+                content: crate::proposition_content::PropositionContentIR::compile(
+                    &observation.proposition_surface,
+                ),
                 belief_id: belief_id.clone(),
                 origin_referent_id: observation.origin_referent_id.clone(),
                 source_actor: observation.source_actor.clone(),

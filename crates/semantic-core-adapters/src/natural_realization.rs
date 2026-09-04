@@ -97,6 +97,7 @@ pub enum NaturalResponseActIR {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum NaturalResponseSourceIR {
+    InformationAnswer,
     NativeAnswer,
     DialogueDirective,
     ConditionalGuard,
@@ -128,6 +129,7 @@ pub enum NaturalResponseSourceIR {
 impl NaturalResponseSourceIR {
     fn precedence(self) -> u16 {
         match self {
+            Self::InformationAnswer => 245,
             Self::NativeAnswer => 240,
             Self::DialogueDirective => 235,
             Self::ConditionalGuard => 230,
@@ -812,6 +814,7 @@ pub(crate) enum ContinuationGateRealizationSourceIR<'a> {
 
 #[derive(Clone, Copy)]
 pub(crate) struct NaturalRealizationSources<'a> {
+    pub affective_policy: &'a crate::affective_field::AffectiveRealizationPolicyIR,
     pub response_arbitration: &'a NaturalResponseArbitrationIR,
     pub language: LanguageCodeIR,
     pub raw_input: &'a str,
@@ -858,7 +861,17 @@ struct ResponseMoveTraceRangeIR {
 fn compose_response_plan(sources: &NaturalRealizationSources<'_>) -> NaturalResponsePlanIR {
     let response_length_directive = active_response_length_directive(sources);
     let directive_ref = response_length_directive
-        .map(|directive| format!("DIALOGUE_DIRECTIVE:{}", directive.directive_id));
+        .map(|directive| format!("DIALOGUE_DIRECTIVE:{}", directive.directive_id))
+        .or_else(|| {
+            (sources.affective_policy.brevity_millis > 150)
+                .then(|| "AFFECTIVE_POLICY:BOUNDED_AUXILIARY_MOVES".to_string())
+        });
+    // Explicit length instructions win over inferred tone. Concision removes
+    // optional discourse moves before generation, never required answer facts.
+    let concise = response_length_directive
+        .map_or(sources.affective_policy.brevity_millis > 150, |directive| {
+            directive.value_key == "CONCISE"
+        });
     let mut plan = compose_response_plan_from_signals(
         sources.response_arbitration.selected_act,
         sources.user_feedback.is_some(),
@@ -866,7 +879,7 @@ fn compose_response_plan(sources: &NaturalRealizationSources<'_>) -> NaturalResp
         sources
             .topic_transition
             .is_some_and(|transition| transition.applied),
-        response_length_directive.is_some_and(|directive| directive.value_key == "CONCISE"),
+        concise,
         directive_ref.as_deref(),
     );
     if let Some(directive) = active_response_format_directive(sources) {
@@ -1413,6 +1426,24 @@ pub(crate) fn build_natural_realization(
         trace_end: generation_traces.len(),
     });
     move_texts.push((primary_act, primary_text));
+    // Affect enters once, at realization, after all semantic obligations and
+    // trace ranges have been fixed. Reconstruct surfaces from the same graphs;
+    // never edit a completed answer string or feed tone back into reasoning.
+    for trace in &mut generation_traces {
+        trace.condition_realization(sources.affective_policy);
+    }
+    move_texts = move_trace_ranges
+        .iter()
+        .map(|range| {
+            let act = response_plan.moves[range.move_index].response_act;
+            let surface = generation_traces[range.trace_start..range.trace_end]
+                .iter()
+                .map(|trace| trace.morphology.realized_text.as_str())
+                .collect::<Vec<_>>()
+                .join(" ");
+            (act, surface)
+        })
+        .collect();
     let mut source_refs = sources
         .source_refs
         .iter()

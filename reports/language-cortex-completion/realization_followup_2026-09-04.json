@@ -1,0 +1,400 @@
+{
+  "schema": "B_CORE_REALIZATION_FOLLOWUP_ENGINEERING_REPORT_1",
+  "date": "2026-09-04",
+  "status": "BOUNDED_REPAIR_VERIFIED_GENERAL_DIALOGUE_INCOMPLETE",
+  "source_base_commit": "ff0a25feba08f05e29a0e2100dde4351d2f349ef",
+  "branch": "main",
+  "commit_created": false,
+  "push_performed": false,
+  "language_runtime": "Rust",
+  "scope": [
+    "Bounded social playfulness reaches morphology without semantic changes",
+    "Affective brevity selects optional discourse moves before generation; explicit directives take precedence",
+    "Question focus re-queries current evidence for bounded re-expression, never caches answers",
+    "Morphology is regenerated during validation to reject forged grammar tokens"
+  ],
+  "non_goals": [
+    "General human-level conversation",
+    "General emotion inference or humor generation",
+    "Arbitrary follow-up reasoning or summarization",
+    "New semantic concept generation",
+    "Autonomous source improvement"
+  ],
+  "canonical": {
+    "verified": true,
+    "file_count": 10,
+    "manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "tests": {
+    "root_workspace_lib": {
+      "command": "cargo test --locked --offline --workspace --lib -- --test-threads=1 --quiet",
+      "exit_code": 0,
+      "passed": 1152,
+      "per_crate": {
+        "dockable_semantic_core": 29,
+        "gpt_reference_evaluator": 19,
+        "semantic_core_adapters": 608,
+        "semantic_reasoning": 481,
+        "synapse_core": 14,
+        "synapse_recursive_core": 1
+      }
+    },
+    "package_workspace_lib": {
+      "command": "cargo test --locked --offline --workspace --lib -- --test-threads=1 --quiet",
+      "exit_code": 0,
+      "passed": 637,
+      "per_crate": {
+        "dockable_semantic_core": 29,
+        "semantic_core_adapters": 608
+      }
+    },
+    "root_and_package_fmt_check": "PASS",
+    "root_and_package_adapter_lib_cli_clippy_deny_warnings": "PASS",
+    "root_cli_build": "PASS",
+    "new_regression_tests": 5,
+    "existing_regression_contract_migrations": [
+      {
+        "test": "affect_and_request_are_composed_without_losing_the_primary_goal",
+        "initial_failure": "Expected optional affect move unconditionally despite inferred brevity",
+        "change": "Explicit detailed directive added to fixture; original complete composition assertions retained"
+      },
+      {
+        "test": "response_constraint_survives_cross_language_turn_through_one_ledger",
+        "initial_failure": "Unconstrained baseline already concise because of frustration",
+        "change": "Detailed directive makes contrast explicit and verifies user instruction overrides affect estimate"
+      }
+    ],
+    "initial_full_run": {
+      "adapter_passed": 606,
+      "adapter_failed": 2,
+      "preserved_failure_classification": "TEST_POLICY_ASSUMPTIONS_CHANGED",
+      "not_hidden": true
+    },
+    "new_assertions": [
+      "source/claim/slot preservation under KO/EN re-expression",
+      "evidence deletion removes answer",
+      "expired/missing focus rejects reuse",
+      "new topic, negation, quotes, mixed actions reject meta binding",
+      "neutral/playful/urgent social realization keeps meaning and intent",
+      "factual answer does not acquire playful marker",
+      "all primary generation graphs preserved under brevity",
+      "invented morphology with recomputed hash fails validation"
+    ],
+    "finite_route_states": 544,
+    "finite_route_states_are_nl_accuracy": false,
+    "environment_limits": [
+      "Windows incremental hard-link cache fell back to copying",
+      "Existing research tests emitted pytest-unavailable probes; optional Python-dependent paths remain unverified. Rust test passes do not establish those integrations."
+    ]
+  },
+  "diagnostic_summary": {
+    "conversations": 6,
+    "turns": 15,
+    "all_api_calls_valid": true,
+    "all_processes_exit_zero": true,
+    "answered_from_dialogue_records": 5,
+    "knowledge_gaps": 3,
+    "plan_previews": 0,
+    "blind": false,
+    "gaps_are_not_correct_answers": true
+  },
+  "diagnostic": {
+    "rows": [
+      {
+        "case": "REFORM_SOCIAL_KO",
+        "turn": 1,
+        "input": "민수가 보고서를 수정했어.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "알겠어. 너는 “민수가 보고서를 수정했어. ”를 말했어. 말한 내용을 기억할게. 말한 내용은 확인된 사실은 아니야. 사실로 확인하려면 별도 증거가 필요해.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "민수가 보고서를 수정했어."
+      },
+      {
+        "case": "REFORM_SOCIAL_KO",
+        "turn": 2,
+        "input": "누가 수정했어?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "네 말에 따르면, 행위자는 ‘민수’이야.",
+        "plan_intent": null,
+        "native_mode": "CLARIFICATION",
+        "native_response_goal": "ASK_CLARIFICATION",
+        "qa": "ANSWERED_FROM_DIALOGUE_RECORDS",
+        "relation_qa": null,
+        "resolved": "누가 수정했어?"
+      },
+      {
+        "case": "REFORM_SOCIAL_KO",
+        "turn": 3,
+        "input": "고마워",
+        "ok": true,
+        "error": null,
+        "act": "SOCIAL_BACKCHANNEL",
+        "output": "천만에. 더 필요한 게 있으면 말해줘.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": ""
+      },
+      {
+        "case": "REFORM_SOCIAL_KO",
+        "turn": 4,
+        "input": "핵심만 다시 설명해.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "네 말에 따르면, 행위자는 ‘민수’이야.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": "ANSWERED_FROM_DIALOGUE_RECORDS",
+        "relation_qa": null,
+        "resolved": "핵심만 다시 설명해."
+      },
+      {
+        "case": "REFORM_SOCIAL_EN",
+        "turn": 1,
+        "input": "Mina said that Lumen failed because DeltaWorker stopped.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “Mina said that Lumen failed because DeltaWorker stopped. ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "mina said that lumen failed because deltaworker stopped."
+      },
+      {
+        "case": "REFORM_SOCIAL_EN",
+        "turn": 2,
+        "input": "Why did Lumen fail?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "According to mina, the stated reason is ‘deltaworker stopped’.",
+        "plan_intent": null,
+        "native_mode": "SOURCE_CERTAINTY_QUERY",
+        "native_response_goal": "ANSWER_VERIFIED_RESULT",
+        "qa": "ANSWERED_FROM_DIALOGUE_RECORDS",
+        "relation_qa": null,
+        "resolved": "why did lumen fail?"
+      },
+      {
+        "case": "REFORM_SOCIAL_EN",
+        "turn": 3,
+        "input": "thanks",
+        "ok": true,
+        "error": null,
+        "act": "SOCIAL_BACKCHANNEL",
+        "output": "You're welcome. Tell me if you need anything else.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": ""
+      },
+      {
+        "case": "REFORM_SOCIAL_EN",
+        "turn": 4,
+        "input": "Explain that again briefly.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "According to mina, the stated reason is ‘deltaworker stopped’.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": "ANSWERED_FROM_DIALOGUE_RECORDS",
+        "relation_qa": null,
+        "resolved": "explain that again briefly."
+      },
+      {
+        "case": "NEW_TOPIC",
+        "turn": 1,
+        "input": "Mina said that Lumen failed because DeltaWorker stopped.",
+        "ok": true,
+        "error": null,
+        "act": "INFORM_ACKNOWLEDGEMENT",
+        "output": "Got it. You said “Mina said that Lumen failed because DeltaWorker stopped. ”. I will remember the statement. The statement is not a confirmed fact. We would need separate evidence before it became an established fact.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": "mina said that lumen failed because deltaworker stopped."
+      },
+      {
+        "case": "NEW_TOPIC",
+        "turn": 2,
+        "input": "Why did Lumen fail?",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "According to mina, the stated reason is ‘deltaworker stopped’.",
+        "plan_intent": null,
+        "native_mode": "SOURCE_CERTAINTY_QUERY",
+        "native_response_goal": "ANSWER_VERIFIED_RESULT",
+        "qa": "ANSWERED_FROM_DIALOGUE_RECORDS",
+        "relation_qa": null,
+        "resolved": "why did lumen fail?"
+      },
+      {
+        "case": "NEW_TOPIC",
+        "turn": 3,
+        "input": "Explain Beryl again.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "Regarding ‘Beryl’, I found no matching dialogue record. I will not invent a source or proposition to fill the gap.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "explain beryl again."
+      },
+      {
+        "case": "UNKNOWN_REEXPLAIN",
+        "turn": 1,
+        "input": "Explain what a cache is.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "Regarding ‘cache’, I found no matching dialogue record. I will not invent a source or proposition to fill the gap.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "explain what a cache is."
+      },
+      {
+        "case": "UNKNOWN_REEXPLAIN",
+        "turn": 2,
+        "input": "Explain that again briefly.",
+        "ok": true,
+        "error": null,
+        "act": "DISCOURSE_ANSWER",
+        "output": "Regarding ‘cache’, I found no matching dialogue record. I will not invent a source or proposition to fill the gap.",
+        "plan_intent": null,
+        "native_mode": "PLAN",
+        "native_response_goal": "PLAN_ACTIONS",
+        "qa": "NO_MATCHING_RECORD",
+        "relation_qa": null,
+        "resolved": "explain that again briefly."
+      },
+      {
+        "case": "PLAY_KO",
+        "turn": 1,
+        "input": "ㅋㅋ 고마워",
+        "ok": true,
+        "error": null,
+        "act": "SOCIAL_BACKCHANNEL",
+        "output": "ㅎㅎ 천만에. 더 필요한 게 있으면 말해줘.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": ""
+      },
+      {
+        "case": "PLAY_EN",
+        "turn": 1,
+        "input": "haha thanks",
+        "ok": true,
+        "error": null,
+        "act": "SOCIAL_BACKCHANNEL",
+        "output": "Heh, You're welcome. Tell me if you need anything else.",
+        "plan_intent": null,
+        "native_mode": "ACKNOWLEDGEMENT",
+        "native_response_goal": "ACKNOWLEDGE",
+        "qa": null,
+        "relation_qa": null,
+        "resolved": ""
+      }
+    ],
+    "cases": [
+      {
+        "case": "REFORM_SOCIAL_KO",
+        "exit_code": 0,
+        "requested": 4,
+        "responses": 4,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "REFORM_SOCIAL_EN",
+        "exit_code": 0,
+        "requested": 4,
+        "responses": 4,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "NEW_TOPIC",
+        "exit_code": 0,
+        "requested": 3,
+        "responses": 3,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "UNKNOWN_REEXPLAIN",
+        "exit_code": 0,
+        "requested": 2,
+        "responses": 2,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "PLAY_KO",
+        "exit_code": 0,
+        "requested": 1,
+        "responses": 1,
+        "stderr_head": "",
+        "violations": []
+      },
+      {
+        "case": "PLAY_EN",
+        "exit_code": 0,
+        "requested": 1,
+        "responses": 1,
+        "stderr_head": "",
+        "violations": []
+      }
+    ]
+  },
+  "deployment": {
+    "package_source_sync_files": 16,
+    "source_hash_mismatches": 0,
+    "unrelated_package_knowledge_work_and_long_term_repair_edits_preserved": true,
+    "conversation_state_schema": "B_CORE_CONVERSATION_STATE_29",
+    "conversation_response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_19",
+    "generation_schema": "B_CORE_GENERATIVE_LANGUAGE_IR_2",
+    "new_generation_emotion_enum": "PLAYFUL",
+    "requires_rebuild": true,
+    "persisted_state": "Migrate schema/hash explicitly or start new conversation; no automatic migration",
+    "rollback": "No deployment, commit, push, canonical mutation or semantic state mutation performed. Preserve earlier dirty-tree work if reverting this repair."
+  },
+  "remaining_limits": [
+    "Small inspectable cue vocabulary; no calibrated emotion diagnosis",
+    "Playfulness is limited to a social grammar marker, not general natural style",
+    "Some output is still mechanical, including quoted Korean copula and English marker capitalization",
+    "Source-bound content retains existing normalization/case limitations",
+    "General definitions may still be unavailable",
+    "Arbitrary explanation-of-prior-decision, ambiguous ellipsis and complex topic switches are not solved"
+  ]
+}

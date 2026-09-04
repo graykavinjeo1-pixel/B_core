@@ -1,0 +1,842 @@
+{
+  "schema": "B_CORE_WORLD_CONVERSATION_PLANNING_RECEIPT_1",
+  "date": "2026-09-04",
+  "status": "PASS_BOUNDED_ENGINEERING_EXTENSION_NOT_GENERAL_FREE_CONVERSATION",
+  "scope": "Context-bound world-dialogue, missing-reference clarification, semantic answer-slot completion and typed utterance planning before lexical/syntactic realization.",
+  "general_free_conversation_complete": false,
+  "human_cognition_reproduced": false,
+  "all_legacy_sentence_paths_removed": false,
+  "repository": "I:/B_Core",
+  "portable_mirror": "I:/B_Core/pakage",
+  "branch": "main",
+  "base_commit": "ff0a25feba08f05e29a0e2100dde4351d2f349ef",
+  "commit_created": false,
+  "push_performed": false,
+  "worktree_clean": false,
+  "service_deployed": false,
+  "acceptance": {
+    "frozen_source_context_for_ellipsis": "PASS",
+    "question_focus_uses_actual_core_diagnostic": "PASS",
+    "semantic_reply_resumes_original_reasoning": "PASS",
+    "ambiguous_reference_asks_before_binding": "PASS",
+    "short_reference_choice_bound_to_original_question": "PASS",
+    "correction_retracts_old_evidence": "PASS",
+    "source_report_not_treated_as_real_world_cause": "PASS",
+    "core_receipt_drives_typed_utterance_moves": "PASS",
+    "duplicate_conclusion_suppressed_in_plan": "PASS",
+    "korean_zero_subject_is_traced_grammar_not_output_rewrite": "PASS",
+    "speaker_identity_in_subject_object_and_clarification": "PASS",
+    "source_context_and_utterance_plan_tamper_rejected": "PASS",
+    "context_ablation_blocks_fragments": "PASS",
+    "no_action_records_from_information_dialogue": "PASS",
+    "canonical_documents_unchanged": "PASS"
+  },
+  "architecture": {
+    "memory_owner": "ConversationMemory",
+    "world_reasoner": "dockable_semantic_core::DeliberationEngine",
+    "discourse_context": "WorldDiscourseIR; focused proposition and source turn, not factual evidence.",
+    "input_binding": "WorldInputGroundingIR; source, lexical revision, pre-turn context, prior query and optional original reference gap.",
+    "reference_gap": "Two candidates from the focused proposition; explicit choice completes original interpretation.",
+    "output_plan": "WorldUtterancePlanIR with typed propositions, move purposes and evidence refs; full core replay checks it.",
+    "generation": "Meaning graph -> speech intent -> discourse plan -> lexical selection -> syntax -> morphology -> verification.",
+    "state_schema": "B_CORE_CONVERSATION_STATE_32",
+    "response_schema": "B_CORE_CONVERSATION_TURN_RESPONSE_22",
+    "state_migration": "New session or explicit migration required; no automatic old-state migration.",
+    "runtime_and_new_tests": "Rust",
+    "added_runtime_llm_dependency": false,
+    "autonomous_concept_discovery_claimed": false,
+    "promoted_semantic_catalog_mutated": false,
+    "recursive_self_modification_enabled": false,
+    "supplied_personal_state_contracts": 3,
+    "supplied_personal_states": [
+      "W_USER_900001:tired/피곤",
+      "W_USER_900002:free/한가",
+      "W_USER_900003:frustrated/답답"
+    ]
+  },
+  "limits": [
+    "Controlled present-tense grammar and small lexicon; not unrestricted paraphrase, morphology or knowledge.",
+    "Focus-based omitted subjects do not solve speaker/addressee ambiguity or general pragmatic intent.",
+    "Then?/그럼? currently requery focus rather than infer an advice request; literal repetition remains visible in the CLI transcript.",
+    "Three personal-state predicates are supplied lexical/boolean primitives, not inferred emotions or acquired real-world laws.",
+    "World premises are attributed user reports, not verified reality or sensor perception.",
+    "Reference clarification is bounded to two focused referents, not arbitrary discourse negotiation.",
+    "Source replay proves interpretation consistency, not external source authenticity or a complete independent historical reconstruction.",
+    "Small discourse-marker and grammar rules remain hand-authored; older unrelated response families still exist.",
+    "Development regression/route PASS is not a naturalness score, blind benchmark or GPT-equivalence claim."
+  ],
+  "verification": {
+    "new_test_functions": 6,
+    "total_world_dialogue_test_functions": 27,
+    "new_context_matrix_cases": 16,
+    "new_context_matrix_definition": "8 existing property identities x Korean/English, with subject retargeting and context ablation.",
+    "root_workspace_lib": {
+      "command": "cargo test --locked --offline --quiet --workspace --lib",
+      "passed": 1179,
+      "failed": 0,
+      "by_crate": {
+        "dockable-semantic-core": 29,
+        "gpt-reference-evaluator": 19,
+        "semantic-core-adapters": 635,
+        "semantic-reasoning": 481,
+        "synapse-core": 14,
+        "synapse-recursive-core": 1
+      }
+    },
+    "portable_workspace_lib": {
+      "command": "cargo test --locked --offline --quiet --workspace --lib",
+      "passed": 664,
+      "failed": 0,
+      "by_crate": {
+        "dockable-semantic-core": 29,
+        "semantic-core-adapters": 635
+      }
+    },
+    "root_format": "PASS",
+    "portable_format": "PASS",
+    "root_clippy": "PASS",
+    "portable_clippy": "PASS",
+    "format_command": "cargo fmt --all -- --check",
+    "clippy_command": "cargo clippy --locked --offline -p semantic-core-adapters --lib --bin b-core-cognitive-api -- -D warnings",
+    "optional_python_research_hooks": "Not exercised: pytest missing; legacy Rust tests return early. New runtime/tests are Rust.",
+    "build_warning": "Windows incremental-cache hard links unavailable; fallback to copying.",
+    "measurement_warning": "Developer structural tests and CLI route checks, not a held-out conversational quality estimate.",
+    "cli_build": "PASS"
+  },
+  "canonical_integrity": {
+    "status": "PASS",
+    "canonical_files": 10,
+    "manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "integrity": {
+    "branch": "main",
+    "base_commit": "ff0a25feba08f05e29a0e2100dde4351d2f349ef",
+    "runtime_hashes": [
+      {
+        "sha256": "4eb1b07742ba3e6798972294c2f8ae11e964dd652210648af79ffb7cdbc844fa",
+        "mirror_identical": true,
+        "file": "action_state.rs"
+      },
+      {
+        "sha256": "2c434d995762bf358bef5cb1bf26f756996ff13f8a9e75b9330e7ebe638a8e14",
+        "mirror_identical": true,
+        "file": "affective_field.rs"
+      },
+      {
+        "sha256": "7d07192c82550933f485812588385b1b39f5b053745f91f517adbe94ccef2e91",
+        "mirror_identical": true,
+        "file": "cognitive.rs"
+      },
+      {
+        "sha256": "894898b339cc392edb85766b65ef266da0aa566f32456098c3ce89ff12def2e2",
+        "mirror_identical": true,
+        "file": "conversation.rs"
+      },
+      {
+        "sha256": "b34aaef90692cc8dc26dd58b4744c8a8523d4a39247617e22710875dc78ef65a",
+        "mirror_identical": true,
+        "file": "conversation_contract.rs"
+      },
+      {
+        "sha256": "3374b84470da340d8f7cf7c92842812cf622f47402ad3c93627abba1d5c356e8",
+        "mirror_identical": true,
+        "file": "discourse_qa.rs"
+      },
+      {
+        "sha256": "f2c628c5fb900cc8844f54b858e2a41cc86572222a605115e6e7b00341254636",
+        "mirror_identical": true,
+        "file": "epistemic.rs"
+      },
+      {
+        "sha256": "4bbf4a2dd84566d792760c1b29f853994b81d6a119309f330a5e28b321d1e09e",
+        "mirror_identical": true,
+        "file": "generative_language.rs"
+      },
+      {
+        "sha256": "bb49b97cf9373dbdb9702e9fad1b66236afc0117a0a0f9894f25c44ff39a3827",
+        "mirror_identical": true,
+        "file": "grounded_realization.rs"
+      },
+      {
+        "sha256": "905b836b4da5c2f14d8c4f4cb75ab752781f1cb743c8e2b3fab6f045c88cbc80",
+        "mirror_identical": true,
+        "file": "lib.rs"
+      },
+      {
+        "sha256": "19ac120c6e080dd6d8b7664edea72e60631276c32230a8bed8d8c4d8197bae99",
+        "mirror_identical": true,
+        "file": "modality.rs"
+      },
+      {
+        "sha256": "7f2c2daa4673cb060007d90fed63d2f55c7df511e0e598a4d09340a97e4fe7f4",
+        "mirror_identical": true,
+        "file": "natural_realization.rs"
+      },
+      {
+        "sha256": "db4e6b29520df8d635f49a3ed7bb58749de340225474781ac92dadaea979e78b",
+        "mirror_identical": true,
+        "file": "pipeline_route_tests.rs"
+      },
+      {
+        "sha256": "e83ce31c13896cb6c0a0075edb2bc00cde21ccb0db536c37d3e5a27f978b4036",
+        "mirror_identical": true,
+        "file": "plan_result_boundary.rs"
+      },
+      {
+        "sha256": "0cef9e018ec12742ad1aa07953b32b9ea38618a82de7547d6e37df6cdd9c60ff",
+        "mirror_identical": true,
+        "file": "pragmatic_memory.rs"
+      },
+      {
+        "sha256": "acb249a2882b0de142a1843527dcc206d0ef41d52e0a1241b2f18d63aba44bd0",
+        "mirror_identical": true,
+        "file": "proposition_content.rs"
+      },
+      {
+        "sha256": "02e84350450b060af38277c4c8dc65890d12cea6e57ebced5539dc3112c73112",
+        "mirror_identical": true,
+        "file": "world_dialogue.rs"
+      },
+      {
+        "sha256": "2f9dd9c0a97110d58d404e2e6b84ee4fcbc7b15701d03afea025fa8a3d09bfd3",
+        "mirror_identical": true,
+        "file": "world_realization.rs"
+      },
+      {
+        "sha256": "e26ad7baba6d6fc32d5dc1efa518d59f9841a32c61c683948bf7d9615b63cdd0",
+        "mirror_identical": true,
+        "file": "world_vocabulary.rs"
+      }
+    ],
+    "preserved_package_only": [
+      {
+        "file": "knowledge_work.rs",
+        "sha256": "f72b32650ee77334f2a9130c38d03d6c6f4941ba5e720f91cc051b608f25e4fe"
+      },
+      {
+        "file": "long_term_repair.rs",
+        "sha256": "853df4feb16f9d7e326af8bbd90f466f34031c966698700fd15fd445e4a1c9ad"
+      }
+    ],
+    "documentation_hashes": [
+      {
+        "sha256": "2e3ee47e2f84f87f04a61e6e6239b835108ef12bd46a08425584ae068fbe8388",
+        "mirror_identical": true,
+        "file": "LANGUAGE_PIPELINE_REPAIR.md"
+      },
+      {
+        "sha256": "cdd6b710f256f1014b4fcde5bc5c1f21c111596d41fcc2cb3571d43c8722ac99",
+        "mirror_identical": true,
+        "file": "WORLD_DIALOGUE_CYCLE.md"
+      },
+      {
+        "sha256": "38722deffc84e775db63229d259b3aaad62728faae99fa5d23045af5e7444648",
+        "mirror_identical": true,
+        "file": "WORLD_PREDICATE_REGISTRATION.md"
+      },
+      {
+        "sha256": "70459dc4081526047bb0c811d5b1757eea9408bedebc4841f9085d0c4cd85b08",
+        "mirror_identical": true,
+        "file": "WORLD_CONVERSATION_PLANNING.md"
+      }
+    ]
+  },
+  "cli": {
+    "status": "PASS",
+    "commands": 50,
+    "conversation_turns": 46,
+    "registrations": 4,
+    "stderr": "",
+    "rows": [
+      {
+        "turn": 1,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "PERSONAL",
+        "output": "알겠어, 피곤하구나.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "음, 나 피곤해."
+      },
+      {
+        "turn": 2,
+        "proof_steps": 0,
+        "verdict": "SUPPORTED",
+        "utterance_moves": 1,
+        "family": "PERSONAL",
+        "output": "말해 준 내용만으로는, 네가 피곤한 이유는 아직 모르겠어.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "왜?"
+      },
+      {
+        "turn": 3,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "PERSONAL",
+        "output": "알겠어, 피곤하지 않아.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "아니, 피곤하지 않아."
+      },
+      {
+        "turn": 4,
+        "proof_steps": 0,
+        "verdict": "SUPPORTED",
+        "utterance_moves": 1,
+        "family": "PERSONAL",
+        "output": "말해 준 내용만으로는, 네가 피곤하지 않은 이유는 아직 모르겠어.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "왜?"
+      },
+      {
+        "turn": 5,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "PERSONAL",
+        "output": "알겠어, 답답하구나.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "나 답답해."
+      },
+      {
+        "turn": 6,
+        "proof_steps": 0,
+        "verdict": "SUPPORTED",
+        "utterance_moves": 1,
+        "family": "PERSONAL",
+        "output": "말해 준 내용대로라면, 너는 답답해.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "그럼?"
+      },
+      {
+        "turn": 1,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "SLOT",
+        "output": "알겠어, lamp는 가동 상태이면, gate는 열림 상태야.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "lamp가 가동 상태이면 gate는 열림 상태다."
+      },
+      {
+        "turn": 2,
+        "proof_steps": 0,
+        "verdict": "UNKNOWN",
+        "utterance_moves": 2,
+        "family": "SLOT",
+        "output": "아직은, gate는 열림 상태인지 판단할 수 없어. 그러면, lamp는 가동 상태인가요?",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "gate는 열림 상태인가?"
+      },
+      {
+        "turn": 3,
+        "proof_steps": 1,
+        "verdict": "SUPPORTED",
+        "utterance_moves": 1,
+        "family": "SLOT",
+        "output": "말해 준 내용대로라면, gate는 열림 상태야.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "가동 상태야."
+      },
+      {
+        "turn": 4,
+        "proof_steps": 1,
+        "verdict": "SUPPORTED",
+        "utterance_moves": 2,
+        "family": "SLOT",
+        "output": "말해 준 내용에서는, lamp는 가동 상태야. 그 조건에 따르면, gate는 열림 상태야.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "왜?"
+      },
+      {
+        "turn": 5,
+        "proof_steps": 0,
+        "verdict": "SOCIAL",
+        "utterance_moves": 0,
+        "family": "SLOT",
+        "output": "천만에. 더 필요한 게 있으면 말해줘.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "고마워!"
+      },
+      {
+        "turn": 6,
+        "proof_steps": 0,
+        "verdict": "UNKNOWN",
+        "utterance_moves": 1,
+        "family": "SLOT",
+        "output": "아직은, 다른문은 열림 상태인지 판단할 수 없어.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "다른문은?"
+      },
+      {
+        "turn": 7,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "SLOT",
+        "output": "알겠어, lamp는 가동 상태가 아니야.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "아니, lamp는 가동 상태가 아니야."
+      },
+      {
+        "turn": 8,
+        "proof_steps": 0,
+        "verdict": "UNKNOWN",
+        "utterance_moves": 1,
+        "family": "SLOT",
+        "output": "아직은, gate는 열림 상태인지 판단할 수 없어.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "gate는 열림 상태인가?"
+      },
+      {
+        "operation": "register",
+        "language": "KOREAN"
+      },
+      {
+        "turn": 1,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "REFERENCE",
+        "output": "알겠어, alpha는 beta에 의존하구나.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "alpha는 beta에 의존한다."
+      },
+      {
+        "turn": 2,
+        "proof_steps": 0,
+        "verdict": "CLARIFICATION",
+        "utterance_moves": 0,
+        "family": "REFERENCE",
+        "output": "alpha를 말하는 거야, 아니면 beta를 말하는 거야?",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "그것은 안전 상태인가?"
+      },
+      {
+        "turn": 3,
+        "proof_steps": 0,
+        "verdict": "UNKNOWN",
+        "utterance_moves": 1,
+        "family": "REFERENCE",
+        "output": "아직은, beta는 안전 상태인지 판단할 수 없어.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "beta야"
+      },
+      {
+        "turn": 4,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "REFERENCE",
+        "output": "알겠어, beta는 안전 상태구나.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "그것은 안전 상태다."
+      },
+      {
+        "turn": 5,
+        "proof_steps": 0,
+        "verdict": "SUPPORTED",
+        "utterance_moves": 1,
+        "family": "REFERENCE",
+        "output": "말해 준 내용만으로는, beta가 안전 상태인 이유는 아직 모르겠어.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "왜?"
+      },
+      {
+        "operation": "register",
+        "language": "KOREAN"
+      },
+      {
+        "turn": 1,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "SPEAKER",
+        "output": "알겠어, beta에 의존하구나.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "나는 beta에 의존해."
+      },
+      {
+        "turn": 2,
+        "proof_steps": 0,
+        "verdict": "CLARIFICATION",
+        "utterance_moves": 0,
+        "family": "SPEAKER",
+        "output": "너를 말하는 거야, 아니면 beta를 말하는 거야?",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "그것은 안전 상태인가?"
+      },
+      {
+        "turn": 3,
+        "proof_steps": 0,
+        "verdict": "UNKNOWN",
+        "utterance_moves": 1,
+        "family": "SPEAKER",
+        "output": "아직은, 너는 안전 상태인지 판단할 수 없어.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "나야"
+      },
+      {
+        "turn": 4,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "SPEAKER",
+        "output": "알겠어, alpha는 너에 의존하구나.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "KOREAN",
+        "input": "alpha는 나에 의존해."
+      },
+      {
+        "turn": 1,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "PERSONAL",
+        "output": "Got it, you are tired.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "Well, I am tired."
+      },
+      {
+        "turn": 2,
+        "proof_steps": 0,
+        "verdict": "SUPPORTED",
+        "utterance_moves": 1,
+        "family": "PERSONAL",
+        "output": "From what you've told me, I don't know why you are tired.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "Why?"
+      },
+      {
+        "turn": 3,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "PERSONAL",
+        "output": "Got it, you are not tired.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "No, not tired."
+      },
+      {
+        "turn": 4,
+        "proof_steps": 0,
+        "verdict": "SUPPORTED",
+        "utterance_moves": 1,
+        "family": "PERSONAL",
+        "output": "From what you've told me, I don't know why you are not tired.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "Why?"
+      },
+      {
+        "turn": 5,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "PERSONAL",
+        "output": "Got it, you are frustrated.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "I am frustrated."
+      },
+      {
+        "turn": 6,
+        "proof_steps": 0,
+        "verdict": "SUPPORTED",
+        "utterance_moves": 1,
+        "family": "PERSONAL",
+        "output": "From what you told me, you are frustrated.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "Then?"
+      },
+      {
+        "turn": 1,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "SLOT",
+        "output": "Got it: if lamp is active, then gate is open.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "If lamp is active, then gate is open."
+      },
+      {
+        "turn": 2,
+        "proof_steps": 0,
+        "verdict": "UNKNOWN",
+        "utterance_moves": 2,
+        "family": "SLOT",
+        "output": "I don't know yet whether gate is open. Then, is lamp active?",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "Is gate open?"
+      },
+      {
+        "turn": 3,
+        "proof_steps": 1,
+        "verdict": "SUPPORTED",
+        "utterance_moves": 1,
+        "family": "SLOT",
+        "output": "From what you told me, gate is open.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "Active."
+      },
+      {
+        "turn": 4,
+        "proof_steps": 1,
+        "verdict": "SUPPORTED",
+        "utterance_moves": 2,
+        "family": "SLOT",
+        "output": "You said lamp is active. By that condition, gate is open.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "Why?"
+      },
+      {
+        "turn": 5,
+        "proof_steps": 0,
+        "verdict": "SOCIAL",
+        "utterance_moves": 0,
+        "family": "SLOT",
+        "output": "You're welcome. Tell me if you need anything else.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "Thanks!"
+      },
+      {
+        "turn": 6,
+        "proof_steps": 0,
+        "verdict": "UNKNOWN",
+        "utterance_moves": 1,
+        "family": "SLOT",
+        "output": "I don't know yet whether sidegate is open.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "What about sidegate?"
+      },
+      {
+        "turn": 7,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "SLOT",
+        "output": "Got it, lamp is not active.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "No, lamp is not active."
+      },
+      {
+        "turn": 8,
+        "proof_steps": 0,
+        "verdict": "UNKNOWN",
+        "utterance_moves": 1,
+        "family": "SLOT",
+        "output": "I don't know yet whether gate is open.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "Is gate open?"
+      },
+      {
+        "operation": "register",
+        "language": "ENGLISH"
+      },
+      {
+        "turn": 1,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "REFERENCE",
+        "output": "Got it, alpha depends on beta.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "alpha depends on beta."
+      },
+      {
+        "turn": 2,
+        "proof_steps": 0,
+        "verdict": "CLARIFICATION",
+        "utterance_moves": 0,
+        "family": "REFERENCE",
+        "output": "Do you mean alpha or beta?",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "Is it safe?"
+      },
+      {
+        "turn": 3,
+        "proof_steps": 0,
+        "verdict": "UNKNOWN",
+        "utterance_moves": 1,
+        "family": "REFERENCE",
+        "output": "I don't know yet whether beta is safe.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "beta"
+      },
+      {
+        "turn": 4,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "REFERENCE",
+        "output": "Got it, beta is safe.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "It is safe."
+      },
+      {
+        "turn": 5,
+        "proof_steps": 0,
+        "verdict": "SUPPORTED",
+        "utterance_moves": 1,
+        "family": "REFERENCE",
+        "output": "From what you've told me, I don't know why beta is safe.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "Why?"
+      },
+      {
+        "operation": "register",
+        "language": "ENGLISH"
+      },
+      {
+        "turn": 1,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "SPEAKER",
+        "output": "Got it, you depend on beta.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "I depend on beta."
+      },
+      {
+        "turn": 2,
+        "proof_steps": 0,
+        "verdict": "CLARIFICATION",
+        "utterance_moves": 0,
+        "family": "SPEAKER",
+        "output": "Do you mean you or beta?",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "Is it safe?"
+      },
+      {
+        "turn": 3,
+        "proof_steps": 0,
+        "verdict": "UNKNOWN",
+        "utterance_moves": 1,
+        "family": "SPEAKER",
+        "output": "I don't know yet whether you are safe.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "me"
+      },
+      {
+        "turn": 4,
+        "proof_steps": 0,
+        "verdict": "MEMORY",
+        "utterance_moves": 0,
+        "family": "SPEAKER",
+        "output": "Got it, alpha depends on you.",
+        "operation": "turn",
+        "action_records": 0,
+        "language": "ENGLISH",
+        "input": "alpha depends on me."
+      }
+    ],
+    "executable_sha256": "9e1472f5eff5a2ff730808857e4fc01e3cdbad03492ad6c3d048fbe4a1a9a920"
+  },
+  "residual_naturalness_findings": [
+    {
+      "input_sequence": [
+        "나 답답해.",
+        "그럼?"
+      ],
+      "observed": "말해 준 내용대로라면, 너는 답답해.",
+      "assessment": "Correct focus identity but literal repetition; does not infer a request for help/advice."
+    },
+    {
+      "context": "Speaker as animate object of a Korean locative relation",
+      "observed": "alpha는 너에 의존하구나.",
+      "assessment": "Identity correct; animate dative 너에게 would be more natural. Current grammar has only the supplied locative frame."
+    },
+    {
+      "context": "Clarifying a pronoun between the speaker and beta",
+      "observed": "Do you mean you or beta?",
+      "assessment": "Reference choice is operational but English reflexive yourself would be more natural."
+    }
+  ]
+}

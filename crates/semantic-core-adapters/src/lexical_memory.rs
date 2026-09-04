@@ -124,6 +124,25 @@ pub struct ActivatedSenseIR {
     pub activation_millis: u32,
     pub activation_reasons: Vec<String>,
 }
+impl ActivatedSenseIR {
+    pub fn is_definition_only(&self) -> bool {
+        self.semantic_tags
+            .iter()
+            .any(|tag| tag == "LEXICAL_DEFINITION_ONLY")
+    }
+}
+
+fn budget_activations(activated: &mut Vec<ActivatedSenseIR>) {
+    activated.sort_by(|left, right| {
+        // Lexical familiarity must not evict a semantic routing candidate.
+        left.is_definition_only()
+            .cmp(&right.is_definition_only())
+            .then_with(|| right.activation_millis.cmp(&left.activation_millis))
+            .then_with(|| left.lexeme_id.cmp(&right.lexeme_id))
+            .then_with(|| left.sense_id.cmp(&right.sense_id))
+    });
+    activated.truncate(64);
+}
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct LexicalOutcomeIR {
@@ -170,6 +189,9 @@ pub enum LexicalMemoryError {
 #[derive(Debug, Clone)]
 pub struct LexicalMemory {
     entries: BTreeMap<String, (LexemeIR, LexemeUsageIR)>,
+    form_index: BTreeMap<String, BTreeSet<String>>,
+    sense_index: BTreeMap<String, (String, usize)>,
+    max_form_bytes: usize,
     sequence: u64,
 }
 
@@ -177,6 +199,9 @@ impl Default for LexicalMemory {
     fn default() -> Self {
         let mut memory = Self {
             entries: BTreeMap::new(),
+            form_index: BTreeMap::new(),
+            sense_index: BTreeMap::new(),
+            max_form_bytes: 0,
             sequence: 0,
         };
         for lexeme in builtin_lexemes() {
@@ -189,6 +214,40 @@ impl Default for LexicalMemory {
 impl LexicalMemory {
     pub fn inject(&mut self, lexeme: LexemeIR) -> Result<bool, LexicalMemoryError> {
         validate_lexeme(&lexeme)?;
+        if lexeme.lexeme_id.starts_with("NIKL.") {
+            let entry_id = lexeme.lexeme_id.split('.').nth(2).unwrap_or_default();
+            let pair = crate::lexical_knowledge_pack::builtin_pack()
+                .entry(entry_id)
+                .ok_or(LexicalMemoryError::IdentityConflict)?
+                .working_lexemes()
+                .into_iter()
+                .filter(|candidate| candidate.senses[0].sense_id == lexeme.senses[0].sense_id)
+                .collect::<Vec<_>>();
+            // Preflight BOTH facets before changing either; the source supplies
+            // translations, and Korean/English share one sense identity.
+            for candidate in &pair {
+                validate_lexeme(candidate)?;
+                if self
+                    .entries
+                    .get(&candidate.lexeme_id)
+                    .is_some_and(|(old, _)| old != candidate)
+                {
+                    return Err(LexicalMemoryError::IdentityConflict);
+                }
+            }
+            let mut inserted = false;
+            for candidate in pair {
+                if !self.entries.contains_key(&candidate.lexeme_id) {
+                    self.index_lexeme(&candidate);
+                    self.entries.insert(
+                        candidate.lexeme_id.clone(),
+                        (candidate, LexemeUsageIR::default()),
+                    );
+                    inserted = true;
+                }
+            }
+            return Ok(inserted);
+        }
         if let Some((existing, _)) = self.entries.get(&lexeme.lexeme_id) {
             return if existing == &lexeme {
                 Ok(false)
@@ -196,6 +255,7 @@ impl LexicalMemory {
                 Err(LexicalMemoryError::IdentityConflict)
             };
         }
+        self.index_lexeme(&lexeme);
         self.entries
             .insert(lexeme.lexeme_id.clone(), (lexeme, LexemeUsageIR::default()));
         Ok(true)
@@ -204,6 +264,82 @@ impl LexicalMemory {
     /// Activates meanings from surface form, context, collocation, frequency and
     /// verified-use history. Encounter frequency is a prior, never sole authority.
     pub fn activate(&mut self, text: &str, context_tags: &[String]) -> Vec<ActivatedSenseIR> {
+        self.activate_with_pack(text, context_tags, true)
+    }
+
+    fn index_lexeme(&mut self, lexeme: &LexemeIR) {
+        for form in std::iter::once(&lexeme.lemma).chain(&lexeme.inflected_forms) {
+            let form = normalize(form);
+            self.max_form_bytes = self.max_form_bytes.max(form.len());
+            self.form_index
+                .entry(form)
+                .or_default()
+                .insert(lexeme.lexeme_id.clone());
+        }
+        for (i, sense) in lexeme.senses.iter().enumerate() {
+            let target = self
+                .sense_index
+                .entry(sense.sense_id.clone())
+                .or_insert((lexeme.lexeme_id.clone(), i));
+            if lexeme.lexeme_id > target.0 {
+                *target = (lexeme.lexeme_id.clone(), i);
+            }
+        }
+    }
+
+    fn indexed_candidates(&self, text: &str) -> BTreeSet<String> {
+        let boundaries = text
+            .char_indices()
+            .map(|(i, _)| i)
+            .chain([text.len()])
+            .collect::<Vec<_>>();
+        let mut ids = BTreeSet::new();
+        for (i, start) in boundaries.iter().enumerate() {
+            for end in boundaries.iter().skip(i + 1) {
+                if end - start > self.max_form_bytes {
+                    break;
+                }
+                if let Some(found) = self.form_index.get(&text[*start..*end]) {
+                    ids.extend(found.iter().cloned());
+                }
+            }
+        }
+        ids
+    }
+
+    fn activate_with_pack(
+        &mut self,
+        text: &str,
+        context_tags: &[String],
+        enable_pack: bool,
+    ) -> Vec<ActivatedSenseIR> {
+        let mut pack_matches = BTreeMap::<String, (String, String)>::new();
+        if enable_pack {
+            let lookup = crate::lexical_knowledge_pack::builtin_pack().lookup(text);
+            for matched in lookup.matches {
+                let english = matched.morphology.grammar_rule == "SOURCE_ENGLISH_EQUIVALENT";
+                for lexeme in matched.entry.working_lexemes() {
+                    let selected = matched
+                        .concept_ids
+                        .contains(&lexeme.senses[0].canonical_concept);
+                    let same_language = (lexeme.language == LanguageCodeIR::English) == english;
+                    let id = lexeme.lexeme_id.clone();
+                    // Both language facets enter working memory atomically from the
+                    // same immutable source sense, never from an invented translation.
+                    self.inject(lexeme)
+                        .expect("validated source-linked lexical entry");
+                    if selected && same_language {
+                        pack_matches.insert(
+                            id,
+                            (
+                                matched.matched_form.clone(),
+                                matched.morphology.grammar_rule.clone(),
+                            ),
+                        );
+                    }
+                }
+            }
+        }
         self.sequence = self.sequence.saturating_add(1);
         let normalized = normalize(text);
         let context = context_tags
@@ -211,12 +347,22 @@ impl LexicalMemory {
             .map(|value| normalize(value))
             .collect::<BTreeSet<_>>();
         let mut activated = Vec::new();
-        for (lexeme_id, (lexeme, usage)) in &mut self.entries {
-            let matched_form = std::iter::once(&lexeme.lemma)
-                .chain(&lexeme.inflected_forms)
-                .filter(|form| surface_matches(&normalized, form, lexeme.language))
-                .max_by_key(|form| form.chars().count())
-                .cloned();
+        let mut candidates = self.indexed_candidates(&normalized);
+        candidates.extend(pack_matches.keys().cloned());
+        for lexeme_id in candidates {
+            let Some((lexeme, usage)) = self.entries.get_mut(&lexeme_id) else {
+                continue;
+            };
+            let matched_form = pack_matches
+                .get(&lexeme_id)
+                .map(|(form, _)| form.clone())
+                .or_else(|| {
+                    std::iter::once(&lexeme.lemma)
+                        .chain(&lexeme.inflected_forms)
+                        .filter(|form| surface_matches(&normalized, form, lexeme.language))
+                        .max_by_key(|form| form.chars().count())
+                        .cloned()
+                });
             let Some(matched_form) = matched_form else {
                 continue;
             };
@@ -227,6 +373,13 @@ impl LexicalMemory {
                 sense_usage.activation_count = sense_usage.activation_count.saturating_add(1);
                 sense_usage.last_observed_sequence = self.sequence;
                 let mut reasons = vec!["surface_form".to_string()];
+                if let Some((_, rule)) = pack_matches.get(&lexeme_id) {
+                    reasons.push(format!(
+                        "source_lexicon:{}",
+                        crate::lexical_knowledge_pack::PACK_SHA256
+                    ));
+                    reasons.push(format!("morphology:{rule}"));
+                }
                 let selector_overlap = sense
                     .context_selectors
                     .iter()
@@ -299,28 +452,11 @@ impl LexicalMemory {
             }
         }
         activated = self.spread_semantic_relations(activated);
-        activated.sort_by(|left, right| {
-            right
-                .activation_millis
-                .cmp(&left.activation_millis)
-                .then_with(|| left.lexeme_id.cmp(&right.lexeme_id))
-                .then_with(|| left.sense_id.cmp(&right.sense_id))
-        });
-        activated.truncate(64);
+        budget_activations(&mut activated);
         activated
     }
 
     fn spread_semantic_relations(&self, direct: Vec<ActivatedSenseIR>) -> Vec<ActivatedSenseIR> {
-        let sense_index = self
-            .entries
-            .iter()
-            .flat_map(|(lexeme_id, (lexeme, _))| {
-                lexeme
-                    .senses
-                    .iter()
-                    .map(move |sense| (sense.sense_id.clone(), (lexeme_id, sense)))
-            })
-            .collect::<BTreeMap<_, _>>();
         let mut best = direct
             .iter()
             .cloned()
@@ -343,11 +479,12 @@ impl LexicalMemory {
                 continue;
             };
             for relation in &source_sense.relations {
-                let Some((target_lexeme_id, target_sense)) =
-                    sense_index.get(&relation.target_sense_id)
+                let Some((target_lexeme_id, target_sense_index)) =
+                    self.sense_index.get(&relation.target_sense_id)
                 else {
                     continue;
                 };
+                let target_sense = &self.entries[target_lexeme_id].0.senses[*target_sense_index];
                 let factor = relation_factor(relation.relation);
                 let activation_millis = source.activation_millis.saturating_mul(factor) / 100;
                 let candidate = ActivatedSenseIR {
@@ -449,7 +586,25 @@ impl LexicalMemory {
                 return Err(LexicalMemoryError::SnapshotConflict);
             }
         }
+        for (lexeme, _) in candidate.values() {
+            if lexeme.lexeme_id.starts_with("NIKL.") {
+                let counterpart = if lexeme.language == LanguageCodeIR::Korean {
+                    lexeme.lexeme_id.replacen("NIKL.ko.", "NIKL.en.", 1)
+                } else {
+                    lexeme.lexeme_id.replacen("NIKL.en.", "NIKL.ko.", 1)
+                };
+                if !candidate.contains_key(&counterpart) {
+                    return Err(LexicalMemoryError::SnapshotConflict);
+                }
+            }
+        }
         self.entries = candidate;
+        self.form_index.clear();
+        self.sense_index.clear();
+        self.max_form_bytes = 0;
+        for (lexeme, _) in self.entries.values().cloned().collect::<Vec<_>>() {
+            self.index_lexeme(&lexeme);
+        }
         self.sequence = snapshot.sequence;
         Ok(())
     }
@@ -489,6 +644,21 @@ fn validate_lexeme(lexeme: &LexemeIR) -> Result<(), LexicalMemoryError> {
     }
     if !valid_id(&lexeme.lexeme_id) {
         return Err(LexicalMemoryError::InvalidIdentity);
+    }
+    if lexeme.lexeme_id.starts_with("NIKL.") {
+        let parts = lexeme.lexeme_id.split('.').collect::<Vec<_>>();
+        let canonical = parts
+            .get(2)
+            .and_then(|id| crate::lexical_knowledge_pack::builtin_pack().entry(id))
+            .is_some_and(|entry| {
+                entry
+                    .working_lexemes()
+                    .iter()
+                    .any(|candidate| candidate == lexeme)
+            });
+        if !canonical {
+            return Err(LexicalMemoryError::IdentityConflict);
+        }
     }
     if lexeme.lemma.trim().is_empty()
         || lexeme.lemma.len() > 256
@@ -940,6 +1110,111 @@ fn builtin_lexemes() -> Vec<LexemeIR> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn bilingual_pack_ablation_and_atomic_english_attachment() {
+        let mut without = LexicalMemory::default();
+        let baseline = without.activate_with_pack("먹었어 계약서를", &[], false);
+        assert!(!baseline.iter().any(|a| a.lexeme_id.starts_with("NIKL.")));
+        let mut with = LexicalMemory::default();
+        let activations = with.activate("먹었어 계약서를", &[]);
+        assert!(activations.iter().any(|a| a
+            .activation_reasons
+            .iter()
+            .any(|r| r == "morphology:KO_PRINCIPAL_FORM_PAST_ENDING")));
+        let snapshot = with.snapshot();
+        let mut saturated = vec![
+            activations
+                .iter()
+                .find(|a| a.is_definition_only())
+                .unwrap()
+                .clone();
+            128
+        ];
+        for item in &mut saturated {
+            item.activation_millis = 4000;
+        }
+        let mut routing = saturated[0].clone();
+        routing.lexeme_id = "SEMANTIC-ROUTE".into();
+        routing.semantic_tags.clear();
+        routing.activation_millis = 0;
+        saturated.push(routing);
+        budget_activations(&mut saturated);
+        assert_eq!(saturated.len(), 64);
+        assert_eq!(saturated[0].lexeme_id, "SEMANTIC-ROUTE");
+        for record in snapshot
+            .entries
+            .iter()
+            .filter(|e| e.lexeme.lexeme_id.starts_with("NIKL.ko."))
+        {
+            let english_id = record.lexeme.lexeme_id.replacen("NIKL.ko.", "NIKL.en.", 1);
+            let english = snapshot
+                .entries
+                .iter()
+                .find(|e| e.lexeme.lexeme_id == english_id)
+                .unwrap();
+            assert_eq!(
+                record.lexeme.senses[0].canonical_concept,
+                english.lexeme.senses[0].canonical_concept
+            );
+        }
+        let mut restored = LexicalMemory::default();
+        restored.import_snapshot(&snapshot).unwrap();
+        assert_eq!(
+            restored.activate("먹었어", &[]),
+            with.activate("먹었어", &[])
+        );
+        let mut forged = snapshot
+            .entries
+            .iter()
+            .find(|e| e.lexeme.lexeme_id.starts_with("NIKL."))
+            .unwrap()
+            .lexeme
+            .clone();
+        forged.senses[0].intent_hint = Some(PlanIntentIR::Create);
+        assert_eq!(
+            restored.inject(forged),
+            Err(LexicalMemoryError::IdentityConflict)
+        );
+        let korean = snapshot
+            .entries
+            .iter()
+            .find(|e| e.lexeme.lexeme_id.starts_with("NIKL.ko."))
+            .unwrap()
+            .lexeme
+            .clone();
+        let english_id = korean.lexeme_id.replacen("NIKL.ko.", "NIKL.en.", 1);
+        let mut direct = LexicalMemory::default();
+        assert!(direct.inject(korean.clone()).unwrap());
+        assert!(direct
+            .snapshot()
+            .entries
+            .iter()
+            .any(|e| e.lexeme.lexeme_id == english_id));
+        assert!(!direct.inject(korean).unwrap());
+        let before = direct.snapshot();
+        let mut incomplete = before.clone();
+        incomplete
+            .entries
+            .retain(|e| e.lexeme.lexeme_id != english_id);
+        assert_eq!(
+            direct.import_snapshot(&incomplete),
+            Err(LexicalMemoryError::SnapshotConflict)
+        );
+        assert_eq!(direct.snapshot(), before);
+    }
+
+    #[test]
+    fn every_pack_facet_satisfies_working_memory_contract() {
+        let pack = crate::lexical_knowledge_pack::builtin_pack();
+        // Validate all paired facets without retaining a redundant full dictionary
+        // in mutable memory. Real encounters materialize only the touched senses.
+        for id in pack.entry_ids() {
+            for lexeme in pack.entry(id).unwrap().working_lexemes() {
+                validate_lexeme(&lexeme).unwrap_or_else(|e| panic!("{}: {e:?}", lexeme.lexeme_id));
+            }
+        }
+    }
 
     #[test]
     fn context_disambiguation_and_frequency_are_bounded_priors() {

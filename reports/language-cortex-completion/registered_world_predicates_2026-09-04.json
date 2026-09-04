@@ -1,0 +1,415 @@
+{
+  "schema": "B_CORE_REGISTERED_WORLD_PREDICATES_RECEIPT_1",
+  "date": "2026-09-04",
+  "status": "PASS_BOUNDED_ENGINEERING_EXTENSION",
+  "scope": "Supplied unary/binary boolean predicates, separate versioned lexical grammar, existing core deliberation, public conversation integration.",
+  "general_human_language_understanding_complete": false,
+  "autonomous_concept_discovery_claimed": false,
+  "all_legacy_sentence_paths_removed": false,
+  "repository": "I:/B_Core",
+  "portable_mirror": "I:/B_Core/pakage",
+  "branch": "main",
+  "base_commit": "ff0a25feba08f05e29a0e2100dde4351d2f349ef",
+  "commit_created": false,
+  "push_performed": false,
+  "worktree_clean": false,
+  "service_deployed": false,
+  "acceptance": {
+    "registered_predicates_without_source_edits": "PASS",
+    "ordered_binary_arguments_not_symmetric": "PASS",
+    "same_core_search_not_text_to_answer": "PASS",
+    "multilingual_shared_identity": "PASS",
+    "alias_rename_and_removal_preserve_semantic_contracts_and_old_source_grounding": "PASS",
+    "unnamed_predicate_direct_reasoning": "PASS",
+    "lexical_word_without_semantic_contract_cannot_reason": "PASS",
+    "source_revision_tamper_rejected": "PASS",
+    "question_reply_binding_survives_lexical_change": "PASS",
+    "registration_and_missing_output_lexeme_failures_atomic": "PASS",
+    "lexical_collision_and_builtin_shadowing_rejected": "PASS",
+    "capacity_failure_without_silent_eviction": "PASS"
+  },
+  "architecture": {
+    "predicate_contract": "Opaque W_USER_ ID and arity only; boolean supplied-world semantics; no implicit symmetry, transitivity, execution or empirical truth.",
+    "lexical_authority": "Lexical roots and morphology reside outside predicate contracts. Each stored source episode references its grounding revision.",
+    "memory_owner": "ConversationMemory",
+    "deliberator": "dockable_semantic_core::DeliberationEngine",
+    "routing": "Existing world-dialogue ownership; vocabulary is not a competing router.",
+    "api": "UPDATE_WORLD_VOCABULARY then PROCESS_CONVERSATION_TURN",
+    "schema_state": "B_CORE_CONVERSATION_STATE_31",
+    "schema_response": "B_CORE_CONVERSATION_TURN_RESPONSE_21",
+    "saved_state_migration": "Explicit migration or new session required.",
+    "recursive_self_modification_enabled": false,
+    "new_runtime_model_dependency": false,
+    "promoted_semantic_catalog_mutated": false
+  },
+  "limits": {
+    "predicates": 128,
+    "aliases_per_revision": 128,
+    "lexical_snapshots": 32,
+    "premises": 64,
+    "implications": 64,
+    "conjunctive_antecedents": 4,
+    "entities": "single bounded identifiers",
+    "grammar": "present copular, regular English relation verbs, Korean nominal hada relations",
+    "quantified_variable_rules": false,
+    "automatic_definition_learning": false,
+    "unrestricted_language_coverage": false
+  },
+  "verification": {
+    "new_test_functions": 7,
+    "total_world_dialogue_test_functions": 21,
+    "registered_relation_matrix_cases": 16,
+    "registered_relation_matrix_realizations": 32,
+    "generated_opaque_root_cases": 12,
+    "root_workspace_lib": {
+      "command": "cargo test --locked --offline --quiet --workspace --lib",
+      "passed": 1173,
+      "failed": 0,
+      "by_crate": {
+        "dockable-semantic-core": 29,
+        "gpt-reference-evaluator": 19,
+        "semantic-core-adapters": 629,
+        "semantic-reasoning": 481,
+        "synapse-core": 14,
+        "synapse-recursive-core": 1
+      }
+    },
+    "portable_workspace_lib": {
+      "command": "cargo test --locked --offline --quiet --workspace --lib",
+      "passed": 658,
+      "failed": 0
+    },
+    "root_format": "PASS",
+    "portable_format": "PASS",
+    "format_command": "cargo fmt --all -- --check",
+    "root_clippy": "PASS",
+    "portable_clippy": "PASS",
+    "clippy_command": "cargo clippy --locked --offline -p semantic-core-adapters --lib --bin b-core-cognitive-api -- -D warnings",
+    "cli_build": "PASS",
+    "measurement_warning": "Development structural and regression tests, not a blinded benchmark or percentage of general language intelligence.",
+    "optional_python_research_hooks": "Not exercised: pytest missing; legacy Rust tests return early. New runtime/tests are Rust.",
+    "build_warning": "Windows incremental cache hard-link fallback to copy; no Clippy source diagnostic remained."
+  },
+  "canonical_integrity": {
+    "status": "PASS",
+    "canonical_files": 10,
+    "manifest_sha256": "56363e77b86f59bf067ca3a559197092708c475993e412be5b60b05d993146bd"
+  },
+  "integrity": {
+    "branch": "main",
+    "base_commit": "ff0a25feba08f05e29a0e2100dde4351d2f349ef",
+    "runtime_hashes": [
+      {
+        "file": "action_state.rs",
+        "sha256": "4eb1b07742ba3e6798972294c2f8ae11e964dd652210648af79ffb7cdbc844fa",
+        "mirror_identical": true
+      },
+      {
+        "file": "affective_field.rs",
+        "sha256": "2c434d995762bf358bef5cb1bf26f756996ff13f8a9e75b9330e7ebe638a8e14",
+        "mirror_identical": true
+      },
+      {
+        "file": "cognitive.rs",
+        "sha256": "59cecc75681edc3743447578095e82ecdaa4c3208d26fb11459ee395be001a5f",
+        "mirror_identical": true
+      },
+      {
+        "file": "conversation.rs",
+        "sha256": "7829ef4b5ae481b0adb9d13c2d3cc4d793196561060648bc784a73b272e6b312",
+        "mirror_identical": true
+      },
+      {
+        "file": "conversation_contract.rs",
+        "sha256": "b34aaef90692cc8dc26dd58b4744c8a8523d4a39247617e22710875dc78ef65a",
+        "mirror_identical": true
+      },
+      {
+        "file": "discourse_qa.rs",
+        "sha256": "1397323bb4322407dc0ba82dac5287ada6302fbdca531750dad7067192ce5e01",
+        "mirror_identical": true
+      },
+      {
+        "file": "epistemic.rs",
+        "sha256": "f2c628c5fb900cc8844f54b858e2a41cc86572222a605115e6e7b00341254636",
+        "mirror_identical": true
+      },
+      {
+        "file": "generative_language.rs",
+        "sha256": "a112766479eef0ad40d310a93c2214b522237c6dfa18885a962304290dee7f43",
+        "mirror_identical": true
+      },
+      {
+        "file": "grounded_realization.rs",
+        "sha256": "d0dc770b7950cae6cec49a290a03caceedcd5d1bc037abd21e58b0db43758ac5",
+        "mirror_identical": true
+      },
+      {
+        "file": "lib.rs",
+        "sha256": "905b836b4da5c2f14d8c4f4cb75ab752781f1cb743c8e2b3fab6f045c88cbc80",
+        "mirror_identical": true
+      },
+      {
+        "file": "modality.rs",
+        "sha256": "19ac120c6e080dd6d8b7664edea72e60631276c32230a8bed8d8c4d8197bae99",
+        "mirror_identical": true
+      },
+      {
+        "file": "natural_realization.rs",
+        "sha256": "7f2c2daa4673cb060007d90fed63d2f55c7df511e0e598a4d09340a97e4fe7f4",
+        "mirror_identical": true
+      },
+      {
+        "file": "pipeline_route_tests.rs",
+        "sha256": "db4e6b29520df8d635f49a3ed7bb58749de340225474781ac92dadaea979e78b",
+        "mirror_identical": true
+      },
+      {
+        "file": "plan_result_boundary.rs",
+        "sha256": "e83ce31c13896cb6c0a0075edb2bc00cde21ccb0db536c37d3e5a27f978b4036",
+        "mirror_identical": true
+      },
+      {
+        "file": "pragmatic_memory.rs",
+        "sha256": "0cef9e018ec12742ad1aa07953b32b9ea38618a82de7547d6e37df6cdd9c60ff",
+        "mirror_identical": true
+      },
+      {
+        "file": "proposition_content.rs",
+        "sha256": "acb249a2882b0de142a1843527dcc206d0ef41d52e0a1241b2f18d63aba44bd0",
+        "mirror_identical": true
+      },
+      {
+        "file": "world_dialogue.rs",
+        "sha256": "05ada9dfd0e94dd58c59528f9c31c965b2bafa4420a73a9617f153bcd1d92271",
+        "mirror_identical": true
+      },
+      {
+        "file": "world_realization.rs",
+        "sha256": "e306dec8f1a25cbc169cfca3857dfaf971d05868f9110289eea2e553550f44b4",
+        "mirror_identical": true
+      },
+      {
+        "file": "world_vocabulary.rs",
+        "sha256": "2d89a18481a84a9262f1e2779a9eead5a9b56fed31bac5f74fb9ce7f833251c4",
+        "mirror_identical": true
+      }
+    ],
+    "preserved_package_only": [
+      {
+        "file": "knowledge_work.rs",
+        "sha256": "f72b32650ee77334f2a9130c38d03d6c6f4941ba5e720f91cc051b608f25e4fe"
+      },
+      {
+        "file": "long_term_repair.rs",
+        "sha256": "853df4feb16f9d7e326af8bbd90f466f34031c966698700fd15fd445e4a1c9ad"
+      }
+    ],
+    "documentation_hashes": [
+      {
+        "file": "WORLD_DIALOGUE_CYCLE.md",
+        "sha256": "332452ba48356533c6734525122a1c291b86a8726cb3ee9eae506943f0e49472"
+      },
+      {
+        "file": "WORLD_PREDICATE_REGISTRATION.md",
+        "sha256": "fe5c8e61fd2a13f7e05d94fd4e0ebded1fefdf541b8573cd3f73d77354b86579"
+      }
+    ]
+  },
+  "cli": {
+    "status": "PASS",
+    "commands": 20,
+    "conversation_turns": 16,
+    "registrations": 2,
+    "alias_renames": 2,
+    "semantic_contracts_unchanged": true,
+    "executable_sha256": "a4ecdb1e7c7b6beca08f29e678d7fdf95fd5f57f43dee9b1483c7f1bfbf521b2",
+    "stderr": "",
+    "rows": [
+      {
+        "language": "ENGLISH",
+        "operation": "register",
+        "revision": 1,
+        "completed_turns": 0
+      },
+      {
+        "action_records": 0,
+        "turn": 1,
+        "language": "ENGLISH",
+        "input": "If alpha is veku, then alpha relies on beta.",
+        "verdict": "MEMORY",
+        "operation": "turn",
+        "output": "Recorded as a conditional premise: if alpha is veku, then alpha relies on beta.",
+        "proof_steps": 0
+      },
+      {
+        "action_records": 0,
+        "turn": 2,
+        "language": "ENGLISH",
+        "input": "If alpha relies on beta, then gamma is safe.",
+        "verdict": "MEMORY",
+        "operation": "turn",
+        "output": "Recorded as a conditional premise: if alpha relies on beta, then gamma is safe.",
+        "proof_steps": 0
+      },
+      {
+        "action_records": 0,
+        "turn": 3,
+        "language": "ENGLISH",
+        "input": "Is gamma safe?",
+        "verdict": "UNKNOWN",
+        "operation": "turn",
+        "output": "The current premises do not determine whether gamma is safe. To resolve this, is alpha veku?",
+        "proof_steps": 0
+      },
+      {
+        "action_records": 0,
+        "turn": 4,
+        "language": "ENGLISH",
+        "input": "Yes.",
+        "verdict": "SUPPORTED",
+        "operation": "turn",
+        "output": "Under the supplied premises, gamma is safe.",
+        "proof_steps": 2
+      },
+      {
+        "action_records": 0,
+        "turn": 5,
+        "language": "ENGLISH",
+        "input": "Why?",
+        "verdict": "SUPPORTED",
+        "operation": "turn",
+        "output": "According to your premise, alpha is veku. Applying the supplied implication, alpha relies on beta. Applying the supplied implication, gamma is safe. Under the supplied premises, gamma is safe.",
+        "proof_steps": 2
+      },
+      {
+        "language": "ENGLISH",
+        "operation": "rename",
+        "revision": 2,
+        "completed_turns": 5
+      },
+      {
+        "action_records": 0,
+        "turn": 6,
+        "language": "ENGLISH",
+        "input": "Is alpha paru?",
+        "verdict": "SUPPORTED",
+        "operation": "turn",
+        "output": "Under the supplied premises, alpha is paru.",
+        "proof_steps": 0
+      },
+      {
+        "action_records": 0,
+        "turn": 7,
+        "language": "ENGLISH",
+        "input": "Actually, alpha is not paru.",
+        "verdict": "MEMORY",
+        "operation": "turn",
+        "output": "Recorded as your premise: alpha is not paru.",
+        "proof_steps": 0
+      },
+      {
+        "action_records": 0,
+        "turn": 8,
+        "language": "ENGLISH",
+        "input": "Is gamma safe?",
+        "verdict": "UNKNOWN",
+        "operation": "turn",
+        "output": "The current premises do not determine whether gamma is safe.",
+        "proof_steps": 0
+      },
+      {
+        "language": "KOREAN",
+        "operation": "register",
+        "revision": 1,
+        "completed_turns": 0
+      },
+      {
+        "action_records": 0,
+        "turn": 1,
+        "language": "KOREAN",
+        "input": "alpha는 베쿠이면 alpha는 beta에 의존한다.",
+        "verdict": "MEMORY",
+        "operation": "turn",
+        "output": "조건 관계로 기억했어: alpha는 베쿠이면, alpha는 beta에 의존해.",
+        "proof_steps": 0
+      },
+      {
+        "action_records": 0,
+        "turn": 2,
+        "language": "KOREAN",
+        "input": "alpha는 beta에 의존하면 gamma는 안전 상태다.",
+        "verdict": "MEMORY",
+        "operation": "turn",
+        "output": "조건 관계로 기억했어: alpha는 beta에 의존하면, gamma는 안전 상태야.",
+        "proof_steps": 0
+      },
+      {
+        "action_records": 0,
+        "turn": 3,
+        "language": "KOREAN",
+        "input": "gamma는 안전 상태인가?",
+        "verdict": "UNKNOWN",
+        "operation": "turn",
+        "output": "현재 전제만으로는, gamma는 안전 상태인지 판단할 수 없어. 판단에 필요한데, alpha는 베쿠인가요?",
+        "proof_steps": 0
+      },
+      {
+        "action_records": 0,
+        "turn": 4,
+        "language": "KOREAN",
+        "input": "응",
+        "verdict": "SUPPORTED",
+        "operation": "turn",
+        "output": "주어진 전제로 판단하면, gamma는 안전 상태야.",
+        "proof_steps": 2
+      },
+      {
+        "action_records": 0,
+        "turn": 5,
+        "language": "KOREAN",
+        "input": "왜?",
+        "verdict": "SUPPORTED",
+        "operation": "turn",
+        "output": "말해 준 전제로는, alpha는 베쿠야. 이 조건 관계를 적용하면, alpha는 beta에 의존해. 이 조건 관계를 적용하면, gamma는 안전 상태야. 주어진 전제로 판단하면, gamma는 안전 상태야.",
+        "proof_steps": 2
+      },
+      {
+        "language": "KOREAN",
+        "operation": "rename",
+        "revision": 2,
+        "completed_turns": 5
+      },
+      {
+        "action_records": 0,
+        "turn": 6,
+        "language": "KOREAN",
+        "input": "alpha는 파루인가?",
+        "verdict": "SUPPORTED",
+        "operation": "turn",
+        "output": "주어진 전제로 판단하면, alpha는 파루야.",
+        "proof_steps": 0
+      },
+      {
+        "action_records": 0,
+        "turn": 7,
+        "language": "KOREAN",
+        "input": "정정: alpha는 파루가 아니야.",
+        "verdict": "MEMORY",
+        "operation": "turn",
+        "output": "말한 전제로 기억했어: alpha는 파루가 아니야.",
+        "proof_steps": 0
+      },
+      {
+        "action_records": 0,
+        "turn": 8,
+        "language": "KOREAN",
+        "input": "gamma는 안전 상태인가?",
+        "verdict": "UNKNOWN",
+        "operation": "turn",
+        "output": "현재 전제만으로는, gamma는 안전 상태인지 판단할 수 없어.",
+        "proof_steps": 0
+      }
+    ]
+  }
+}

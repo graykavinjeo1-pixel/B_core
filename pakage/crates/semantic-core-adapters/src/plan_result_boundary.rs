@@ -482,6 +482,7 @@ pub fn classify_plan_result_query_focus(text: &str) -> PlanResultQueryFocusIR {
             "일어난",
             "진행 상태",
             "execution",
+            "executed",
             "actually run",
             "ran",
             "happened",

@@ -592,6 +592,48 @@ fn action_plan_claim(record: &ActionStateRecordIR, index: usize) -> GroundedClai
 }
 
 fn discourse_claims(answer: &DiscourseAnswerIR, turn_index: u64) -> Vec<GroundedClaimIR> {
+    if let Some(c) = &answer.world_clarification {
+        return vec![claim(
+            0,
+            GroundedClaimKindIR::DialogueRelation,
+            serde_json::to_string(&c.gap).expect("reference gap serializes"),
+            ClaimEpistemicStatusIR::Unknown,
+            ClaimSupportStatusIR::StructurallyGrounded,
+            vec![format!("WORLD_REFERENCE_GAP:{}", c.gap.source_sha256)],
+            vec![turn_index],
+        )];
+    }
+    if let Some(world) = &answer.world_reasoning {
+        let concluded = world.decision.conclusion.is_some();
+        return vec![claim(
+            0,
+            GroundedClaimKindIR::DialogueRelation,
+            serde_json::to_string(&world.decision).expect("typed world decision serializes"),
+            if concluded {
+                ClaimEpistemicStatusIR::Derived
+            } else {
+                ClaimEpistemicStatusIR::Unknown
+            },
+            if concluded {
+                ClaimSupportStatusIR::DerivedFromDialogueRecords
+            } else {
+                ClaimSupportStatusIR::StructurallyGrounded
+            },
+            vec![format!("WORLD_DECISION:{}", world.semantic_decision_sha256)],
+            vec![turn_index],
+        )];
+    }
+    if let Some(update) = &answer.world_memory_update {
+        return vec![claim(
+            0,
+            GroundedClaimKindIR::AttributedDialogueRecord,
+            format!("typed premise/conditional recorded at turn {}", update.turn),
+            ClaimEpistemicStatusIR::Reported,
+            ClaimSupportStatusIR::ReportedOnly,
+            vec![format!("WORLD_MEMORY_TURN:{}", update.turn)],
+            vec![turn_index],
+        )];
+    }
     if answer.claims.is_empty() {
         return vec![claim(
             0,
@@ -849,6 +891,11 @@ mod tests {
     #[test]
     fn unsupported_presupposition_is_explicit_absence_not_empty_derived_evidence() {
         let answer = DiscourseAnswerIR {
+            reformulated_request: None,
+            content_projection: None,
+            world_reasoning: None,
+            world_memory_update: None,
+            world_clarification: None,
             schema: crate::discourse_qa::DISCOURSE_ANSWER_SCHEMA.to_string(),
             query: crate::discourse_qa::DiscourseQueryIR {
                 schema: crate::discourse_qa::DISCOURSE_QUERY_SCHEMA.to_string(),
