@@ -14393,6 +14393,7 @@ fn temporal_event_label(source: &str, time_surface: &str) -> String {
     // event label (for example, `회의 시간이 오후 3시야` after a change to 4시).
     if remaining == source {
         remaining = remove_korean_clock_span(source).unwrap_or_else(|| source.to_string());
+        remaining = remove_korean_calendar_anchor(&remaining);
     }
     remaining = remaining
         .trim()
@@ -14470,6 +14471,28 @@ fn remove_korean_clock_span(source: &str) -> Option<String> {
         return Some(format!("{}{}", &source[..start], &source[end..]));
     }
     None
+}
+
+fn remove_korean_calendar_anchor(source: &str) -> String {
+    let mut remaining = source.to_string();
+    for anchor in ["그제", "어제", "오늘", "내일", "모레", "지난주", "다음주"] {
+        if let Some(position) = remaining.find(anchor) {
+            let end = position + anchor.len();
+            let bounded = remaining[..position]
+                .chars()
+                .next_back()
+                .is_none_or(char::is_whitespace)
+                && remaining[end..]
+                    .chars()
+                    .next()
+                    .is_none_or(char::is_whitespace);
+            if bounded {
+                remaining.replace_range(position..end, "");
+                break;
+            }
+        }
+    }
+    remaining.split_whitespace().collect::<Vec<_>>().join(" ")
 }
 
 pub(crate) fn dialogue_attribution_surface(
@@ -14817,6 +14840,10 @@ mod tests {
                 "오늘 오후 5시까지"
             ),
             "회의 자료"
+        );
+        assert_eq!(
+            temporal_event_label("내일 오전 9시에 병원 예약이 있어.", "내일 오전 10시"),
+            "병원 예약"
         );
         assert_eq!(
             temporal_event_label("The backup completed yesterday.", "yesterday"),
