@@ -172,6 +172,37 @@ pub struct DecisionInquiryIR {
     pub resumption: Option<Box<crate::world_dialogue::ActionBenefitResumptionIR>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub clarification_reply: Option<Box<DecisionClarificationReplyIR>>,
+    /// User-supplied decision conditions are dialogue evidence, not asserted
+    /// world state.  They remain bound to the unanswered question so a later
+    /// choice can use the same stated criteria without promoting them to facts.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub context_evidence: Vec<DecisionContextEvidenceIR>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DecisionContextEvidenceIR {
+    pub source_text: String,
+    pub source_sha256: String,
+    pub original_question_source: String,
+    pub question_source_sha256: String,
+    pub question_turn: u64,
+    pub turn: u64,
+    pub input_kind: DecisionInputIR,
+}
+
+impl DecisionContextEvidenceIR {
+    fn validate_for(&self, inquiry: &DecisionInquiryIR) -> bool {
+        self.question_turn > 0
+            && self.turn > self.question_turn
+            && self.turn - self.question_turn <= 3
+            && self.input_kind == inquiry.missing_input
+            && self.question_source_sha256 == decision_source_sha256(&self.original_question_source)
+            && self.source_sha256 == decision_source_sha256(&self.source_text)
+            && !self.source_text.trim().is_empty()
+            && self.source_text.chars().count() <= 2048
+            && !self.source_text.contains(['?', '？', '"', '“', '”', '‘', '’', '`', '\n', ';'])
+            && decision_inquiry(&self.source_text).is_none()
+    }
 }
 
 /// A response to an emitted information request, not an observation of the
@@ -196,6 +227,38 @@ pub struct DecisionInquiryOriginIR {
 
 impl DecisionInquiryIR {
     pub fn validate(&self) -> bool {
+        if self.context_evidence.len() > 3
+            || !self
+                .context_evidence
+                .iter()
+                .all(|evidence| evidence.validate_for(self))
+            || !self
+                .context_evidence
+                .windows(2)
+                .all(|pair| pair[0].turn < pair[1].turn)
+        {
+            return false;
+        }
+        if let Some(last_context) = self.context_evidence.last() {
+            let Some(original) = decision_inquiry(&last_context.original_question_source) else {
+                return false;
+            };
+            let is_condition_reply = self.source_text == last_context.source_text;
+            let is_continued_question = decision_inquiry(&self.source_text).is_some_and(|next| {
+                next.continues_context
+                    && next.missing_input == original.missing_input
+                    && next.proposed_action == original.proposed_action
+            });
+            return (is_condition_reply || is_continued_question)
+                && self.missing_input == original.missing_input
+                && (is_condition_reply || self.continues_context)
+                && self.proposed_action == original.proposed_action
+                && self.explanation_of.is_none()
+                && self.assessment.is_none()
+                && self.knowledge_gap.is_none()
+                && self.resumption.is_none()
+                && self.clarification_reply.is_none();
+        }
         if let Some(reply) = &self.clarification_reply {
             use crate::world_dialogue::WorldClarificationFollowupKindIR as K;
             let Some(original) = decision_inquiry(&reply.original_source) else {
@@ -319,7 +382,78 @@ impl DecisionInquiryIR {
                 })
                 && self.continues_context;
         }
-        decision_inquiry(&self.source_text).as_ref() == Some(self)
+        let Some(mut original) = decision_inquiry(&self.source_text) else {
+            return false;
+        };
+        original.context_evidence = self.context_evidence.clone();
+        original == *self
+    }
+
+    /// Bind a declarative response to the current decision question without
+    /// treating it as an observation, a completed event, or an action grant.
+    pub(crate) fn with_context_evidence(
+        source: &str,
+        prior: &Self,
+        question_turn: u64,
+        turn: u64,
+    ) -> Option<Self> {
+        if !prior.validate()
+            || question_turn == 0
+            || turn <= question_turn
+            || turn - question_turn > 3
+            || prior.resumption.is_some()
+            || prior.clarification_reply.is_some()
+            || source.trim().is_empty()
+            || source.split_whitespace().count() < 2
+            || decision_inquiry(source).is_some()
+            || source.contains(['?', '？', '"', '“', '”', '‘', '’', '`', '\n', ';'])
+        {
+            return None;
+        }
+        let original_question_source = prior
+            .context_evidence
+            .last()
+            .map(|evidence| evidence.original_question_source.clone())
+            .unwrap_or_else(|| prior.source_text.clone());
+        let mut result = prior.clone();
+        result.source_text = source.to_string();
+        result.context_evidence.push(DecisionContextEvidenceIR {
+            source_text: source.to_string(),
+            source_sha256: decision_source_sha256(source),
+            original_question_source: original_question_source.clone(),
+            question_source_sha256: decision_source_sha256(&original_question_source),
+            question_turn,
+            turn,
+            input_kind: prior.missing_input,
+        });
+        result.validate().then_some(result)
+    }
+
+    /// Carries previously supplied decision conditions into a deictic follow-up
+    /// question.  The follow-up must itself parse as a continuation of the
+    /// same typed decision input; no condition is promoted to world knowledge.
+    pub(crate) fn continue_with_context(
+        source: &str,
+        prior: &Self,
+        turn: u64,
+    ) -> Option<Self> {
+        if !prior.validate() || prior.context_evidence.is_empty() {
+            return None;
+        }
+        let mut next = decision_inquiry(source)?;
+        if !next.continues_context
+            || next.missing_input != prior.missing_input
+            || next.proposed_action != prior.proposed_action
+            || turn == 0
+        {
+            return None;
+        }
+        let last = prior.context_evidence.last()?;
+        if turn <= last.turn || turn - last.turn > 3 {
+            return None;
+        }
+        next.context_evidence = prior.context_evidence.clone();
+        next.validate().then_some(next)
     }
 
     pub(crate) fn explain_from(
@@ -367,6 +501,7 @@ impl DecisionInquiryIR {
             knowledge_gap: prior.knowledge_gap.clone(),
             resumption: prior.resumption.clone(),
             clarification_reply: None,
+            context_evidence: Vec::new(),
         })
     }
 
@@ -615,6 +750,7 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
                 knowledge_gap: None,
                 resumption: None,
                 clarification_reply: None,
+                context_evidence: Vec::new(),
             });
         }
     }
@@ -623,7 +759,10 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
             *w,
             "언제" | "어떻게" | "뭘" | "뭐" | "무엇을" | "어느" | "어떤"
         )
-    });
+    }).or_else(|| words.iter().copied().find(|word|
+        ["어디가", "어디를", "어디에", "어디서", "어디로"]
+            .iter()
+            .any(|form| word == form)));
     let mut ko_deliberative = ["까", "까요", "지", "죠"]
         .iter()
         .any(|ending| text.ends_with(ending))
@@ -688,6 +827,7 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
         knowledge_gap: None,
         resumption: None,
         clarification_reply: None,
+        context_evidence: Vec::new(),
     })
 }
 
@@ -1805,6 +1945,10 @@ fn hash_bytes(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
 }
 
+fn decision_source_sha256(source: &str) -> String {
+    hash_bytes(source.as_bytes())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1887,6 +2031,45 @@ mod tests {
             graph.selected().map(|candidate| candidate.expected_response),
             Some(ExpectedResponseKindIR::DecisionSupport)
         );
+    }
+
+    #[test]
+    fn decision_context_evidence_is_source_bound_and_non_question() {
+        let inquiry = decision_inquiry("점심 메뉴를 추천해 주세요.").expect("inquiry");
+        let context = DecisionInquiryIR::with_context_evidence(
+            "매운 음식은 못 먹고 조용한 곳을 좋아해요.",
+            &inquiry,
+            1,
+            2,
+        )
+        .expect("context");
+        assert!(context.validate());
+        assert_eq!(context.context_evidence.len(), 1);
+        let mut tampered = context;
+        tampered.context_evidence[0].source_text = "다른 조건이에요.".into();
+        assert!(!tampered.validate());
+    }
+
+    #[test]
+    fn deictic_preference_question_carries_source_bound_context_forward() {
+        let initial = decision_inquiry("점심 메뉴를 추천해 주세요.").expect("inquiry");
+        let context = DecisionInquiryIR::with_context_evidence(
+            "매운 음식은 못 먹고 조용한 곳을 좋아해요.",
+            &initial,
+            1,
+            2,
+        )
+        .expect("context");
+        let continued = DecisionInquiryIR::continue_with_context(
+            "그럼 어디가 좋을까요?",
+            &context,
+            3,
+        )
+        .expect("continued question");
+        assert!(continued.validate());
+        assert!(continued.continues_context);
+        assert_eq!(continued.context_evidence, context.context_evidence);
+        assert_eq!(continued.source_text, "그럼 어디가 좋을까요?");
     }
 
     #[test]

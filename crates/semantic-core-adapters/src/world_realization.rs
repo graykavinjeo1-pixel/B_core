@@ -26,6 +26,17 @@ pub(crate) fn generate_decision_inquiry(
     {
         return generate_optional_clarification_response(settings, reply);
     }
+    // A declarative reply can supply the requested decision context even
+    // though it is not another question.  Acknowledge only that this
+    // source-bound context will govern the still-open decision; do not turn
+    // it into an asserted world fact or fabricate a recommendation.
+    if !inquiry.context_evidence.is_empty()
+        && inquiry.explanation_of.is_none()
+        && inquiry.knowledge_gap.is_none()
+        && inquiry.resumption.is_none()
+    {
+        return generate_decision_context_received(settings);
+    }
     if inquiry.explanation_of.is_none() {
         if let Some((gap, query)) = inquiry.knowledge_gap.as_ref().and_then(|g| {
             g.state_question(inquiry.proposed_action.as_ref()?, inquiry.continues_context)
@@ -224,6 +235,68 @@ pub(crate) fn generate_decision_inquiry(
             } else {
                 GenerationSpeechIntentIR::Ask
             },
+        },
+        expressions: &store,
+    })
+}
+
+fn generate_decision_context_received(
+    settings: GenerationSettings,
+) -> Result<GenerativeLanguageIR, String> {
+    let language = settings.language;
+    let korean = language == LanguageCodeIR::Korean;
+    let mut store = ExpressionNodeStore::default();
+    store.attach_alias(
+        "EXPR.DECISION.CONTEXT",
+        language,
+        "C_DECISION_CONTEXT_EVIDENCE",
+        if korean {
+            "말씀해 주신 조건"
+        } else {
+            "the conditions you provided"
+        },
+        ExpressionPartOfSpeechIR::Noun,
+        "RUNTIME_REFERENT_SURFACE:DECISION_CONTEXT_EVIDENCE",
+    )?;
+    store.attach_alias(
+        "EXPR.DECISION.CONTEXT.BIND",
+        language,
+        "C_WORLD_CLAUSE_DECISION_CONTEXT_BOUND",
+        if korean { "기준으로 보다" } else { "use as a basis" },
+        ExpressionPartOfSpeechIR::Verb,
+        "RUNTIME_REFERENT_SURFACE:DECISION_CONTEXT_BINDING",
+    )?;
+    let nodes = vec![
+        GenerationMeaningNodeIR {
+            node_id: "D".into(),
+            concept_id: "C_WORLD_CLAUSE_DECISION_CONTEXT_BOUND".into(),
+            kind: GenerationMeaningNodeKindIR::Event,
+            grounding_refs: vec!["DECISION_CONTEXT:SOURCE_BOUND".into()],
+        },
+        GenerationMeaningNodeIR {
+            node_id: "I".into(),
+            concept_id: "C_DECISION_CONTEXT_EVIDENCE".into(),
+            kind: GenerationMeaningNodeKindIR::Entity,
+            grounding_refs: vec!["DECISION_CONTEXT:SOURCE_BOUND".into()],
+        },
+    ];
+    settings.generate(GenerativeLanguageRequestIR {
+        meaning: GenerationMeaningGraphIR::new(
+            nodes,
+            vec![meaning_edge(
+                "DI",
+                "D",
+                "I",
+                GenerationMeaningRelationIR::Theme,
+            )],
+        ),
+        context: GenerationContextIR {
+            language,
+            register: LanguageRegisterIR::Informal,
+            tense: GenerationTenseIR::Present,
+            emotion: GenerationEmotionIR::Neutral,
+            urgency_millis: 0,
+            default_speech_intent: GenerationSpeechIntentIR::Inform,
         },
         expressions: &store,
     })
@@ -1272,6 +1345,36 @@ pub(super) fn realize_world_clause(
                 &clause.event_node_id,
             );
             push_expression_token(&mut output, subject, format!("{root}?"));
+        }
+        return output;
+    }
+    if predicate.expression.concept_id == "C_WORLD_CLAUSE_DECISION_CONTEXT_BOUND" {
+        if context.language == LanguageCodeIR::Korean {
+            push_expression_token(
+                &mut output,
+                subject,
+                world_korean_object(&subject.expression.lexical_root),
+            );
+            push_grammar_token(
+                &mut output,
+                "기준으로 이어서 보겠습니다.",
+                "KO.DECISION.CONTEXT.BOUND",
+                &clause.event_node_id,
+            );
+        } else {
+            push_grammar_token(
+                &mut output,
+                "I will use",
+                "EN.DECISION.CONTEXT.BOUND",
+                &clause.event_node_id,
+            );
+            push_expression_token(&mut output, subject, subject.expression.lexical_root.clone());
+            push_grammar_token(
+                &mut output,
+                "as the basis for the decision.",
+                "EN.DECISION.CONTEXT.BOUND",
+                &clause.event_node_id,
+            );
         }
         return output;
     }

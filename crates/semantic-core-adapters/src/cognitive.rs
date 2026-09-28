@@ -481,11 +481,22 @@ impl ConversationTurnResponseIR {
                     && inquiry.knowledge_gap.as_ref().is_none_or(|g| g.matches_world(&self.conversation_state.dialogue_world)
                         && g.evaluated_turn == inquiry.evaluation_turn(request.turn_index))
                     && inquiry.source_text == request.raw_text
-                    && (self.conversation_contract.answer_only() || inquiry.clarification_reply.is_some() || inquiry.resumption.as_ref().is_some_and(|r| self.conversation_contract.assertion_only || r.update.is_bound_boolean_answer()))
+                    // A declarative condition may answer the open decision
+                    // question without itself being another question.  Its
+                    // source-bound evidence keeps the original question and
+                    // the present turn coupled, so it can own this response
+                    // without turning the condition into a world fact.
+                    && (self.conversation_contract.answer_only()
+                        || !inquiry.context_evidence.is_empty()
+                        || inquiry.clarification_reply.is_some()
+                        || inquiry.resumption.as_ref().is_some_and(|r| self.conversation_contract.assertion_only || r.update.is_bound_boolean_answer()))
                     && (self.pragmatic_interpretation.pragmatic_intent_graph.selected_utterance_intent()
                         .is_some_and(|i| i.expected_response == crate::utterance_intent::ExpectedResponseKindIR::DecisionSupport)
                         || inquiry.resumption.as_ref().is_some_and(|r| r.update.turn == request.turn_index && r.update.source_text == request.raw_text)
                         || inquiry.clarification_reply.as_ref().is_some_and(|r| r.turn == request.turn_index)
+                        || inquiry.context_evidence.last().is_some_and(|context|
+                            context.turn == request.turn_index
+                                && context.source_text == request.raw_text)
                         || inquiry.explanation_of.as_ref().is_some_and(|o|
                             o.asked_turn < request.turn_index && request.turn_index - o.asked_turn <= 3))
                     && self.conversation_state.answer_focus.as_ref().is_some_and(|f|
@@ -2194,6 +2205,47 @@ impl CognitiveApi {
                     )
                 })
             });
+        // Keep a declarative answer to a live decision question as
+        // source-bound decision context. It is not a world observation and it
+        // cannot authorize an action; it only preserves the user's criteria
+        // for the same question under discussion.
+        let decision_context_reply = self
+            .conversation_memory
+            .state(&request.conversation_id)
+            .and_then(|state| {
+                state
+                    .answer_focus
+                    .as_ref()
+                    .filter(|focus| focus.validate(state.completed_turns))
+                    .and_then(|focus| {
+                        focus.decision_inquiry.as_ref().and_then(|prior| {
+                            crate::utterance_intent::DecisionInquiryIR::with_context_evidence(
+                                &request.raw_text,
+                                prior,
+                                focus.answered_turn,
+                                request.turn_index,
+                            )
+                        })
+                    })
+            });
+        let continued_decision_context = self
+            .conversation_memory
+            .state(&request.conversation_id)
+            .and_then(|state| {
+                state
+                    .answer_focus
+                    .as_ref()
+                    .filter(|focus| focus.validate(state.completed_turns))
+                    .and_then(|focus| {
+                        focus.decision_inquiry.as_ref().and_then(|prior| {
+                            crate::utterance_intent::DecisionInquiryIR::continue_with_context(
+                                &request.raw_text,
+                                prior,
+                                request.turn_index,
+                            )
+                        })
+                    })
+            });
         let mut prepared_world = if inquiry_explanation.is_none()
             && !normalization.ambiguous_input
             && !crate::discourse_qa::non_actual_world_question(&request.raw_text)
@@ -3783,6 +3835,8 @@ impl CognitiveApi {
         let decision_inquiry = inquiry_explanation
             .clone()
             .or(resumed_inquiry.clone())
+            .or(decision_context_reply.clone())
+            .or(continued_decision_context.clone())
             .or_else(|| {
                 pragmatic_interpretation
                     .pragmatic_intent_graph
@@ -3814,7 +3868,11 @@ impl CognitiveApi {
         } else if let Some(query) = prepared_world
             .query
             .as_ref()
-            .filter(|_| inquiry_explanation.is_none() && resumed_inquiry.is_none())
+            .filter(|_| {
+                inquiry_explanation.is_none()
+                    && resumed_inquiry.is_none()
+                    && decision_context_reply.is_none()
+            })
         {
             crate::world_dialogue::deliberate_world(&prepared_world.memory, query)
                 .and_then(|world| world.into_answer(&request.raw_text, output_language))
@@ -3823,6 +3881,7 @@ impl CognitiveApi {
         } else if prepared_world.recognized
             && inquiry_explanation.is_none()
             && resumed_inquiry.is_none()
+            && decision_context_reply.is_none()
         {
             Some(
                 crate::world_dialogue::WorldMemoryUpdateIR {
@@ -11610,6 +11669,73 @@ mod tests {
         );
         assert!(!response.output.text.contains("제3자의 향후 약속"));
         assert_eq!(response.output.unsupported_freeform_claims, 0);
+    }
+
+    #[test]
+    fn decision_condition_reply_stays_bound_to_the_open_decision_question() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let initial = conversation_request(
+            "CHAT-DECISION-CONTEXT",
+            1,
+            "점심 메뉴를 추천해 주세요.",
+        );
+        let first = api
+            .process_conversation_turn(&initial)
+            .expect("initial decision question");
+        assert!(first
+            .conversation_state
+            .answer_focus
+            .as_ref()
+            .and_then(|focus| focus.decision_inquiry.as_ref())
+            .is_some());
+
+        let context = conversation_request(
+            "CHAT-DECISION-CONTEXT",
+            2,
+            "매운 음식은 못 먹고 조용한 곳을 좋아해요.",
+        );
+        let second = api
+            .process_conversation_turn(&context)
+            .expect("decision context reply");
+        assert!(second.validate_against(&context));
+        let inquiry = second
+            .conversation_state
+            .answer_focus
+            .as_ref()
+            .and_then(|focus| focus.decision_inquiry.as_ref())
+            .expect("decision focus retained");
+        assert_eq!(inquiry.context_evidence.len(), 1);
+        assert_eq!(
+            inquiry.context_evidence[0].source_text,
+            "매운 음식은 못 먹고 조용한 곳을 좋아해요."
+        );
+        assert!(second.output.text.contains("기준으로 이어서 보겠"));
+        assert!(second
+            .pragmatic_interpretation
+            .illocutionary_commitments
+            .primary_force()
+            .is_none());
+        assert_eq!(second.output.unsupported_freeform_claims, 0);
+
+        let followup = conversation_request(
+            "CHAT-DECISION-CONTEXT",
+            3,
+            "그럼 어디가 좋을까요?",
+        );
+        let third = api
+            .process_conversation_turn(&followup)
+            .expect("deictic decision follow-up");
+        assert!(third.validate_against(&followup));
+        let continued = third
+            .conversation_state
+            .answer_focus
+            .as_ref()
+            .and_then(|focus| focus.decision_inquiry.as_ref())
+            .expect("decision context retained");
+        assert_eq!(continued.context_evidence.len(), 1);
+        assert_eq!(continued.source_text, "그럼 어디가 좋을까요?");
+        assert!(!third.output.text.contains("조건은 아직 모르"));
+        assert_eq!(third.output.unsupported_freeform_claims, 0);
     }
 
     #[test]
