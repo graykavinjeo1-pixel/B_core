@@ -11592,6 +11592,27 @@ mod tests {
     }
 
     #[test]
+    fn attributed_preference_with_a_separate_wish_does_not_take_the_commitment_boundary() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let source = "상대는 매운 음식을 못 먹고 조용한 곳을 좋아한다고 들었어요. 점심은 너무 무겁지 않았으면 좋겠어요.";
+        let request = conversation_request("CHAT-ATTRIBUTED-PREFERENCE", 1, source);
+        let response = api
+            .process_conversation_turn(&request)
+            .expect("attributed preference response");
+
+        assert!(response.validate_against(&request));
+        assert_ne!(
+            response
+                .pragmatic_interpretation
+                .illocutionary_commitments
+                .primary_force(),
+            Some(crate::pragmatics::IllocutionaryForceIR::ReportedCommitment)
+        );
+        assert!(!response.output.text.contains("제3자의 향후 약속"));
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
+    }
+
+    #[test]
     fn feedback_correction_preserves_contextual_explanation_goal() {
         let mut api = CognitiveApi::new_embedded().unwrap();
         let setup = api

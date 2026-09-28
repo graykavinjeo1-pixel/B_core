@@ -1781,6 +1781,30 @@ fn infer_illocutionary_commitments(
             )
             || (text.contains("수 있어") && !system_subject));
     let capability_question = question && system_subject && !indirect_request;
+    // Attribution alone is not a reported commitment.  An attributed state or
+    // preference is often relevant context for a later choice, while a
+    // third-party future commitment must remain a non-executable report.  The
+    // prospective marker therefore has to occur inside the attributed
+    // proposition itself; a separate wish elsewhere in the same turn (for
+    // example, "... 들었어요. ... 좋겠어요") cannot lend it that force.
+    let attributed_future_commitment = analysis
+        .attribution_graph
+        .attributions
+        .iter()
+        .filter_map(|attribution| {
+            analysis
+                .attribution_graph
+                .propositions
+                .iter()
+                .find(|proposition| proposition.proposition_id == attribution.proposition_id)
+        })
+        .any(|proposition| {
+            let proposition = proposition.normalized_text.to_lowercase();
+            contains_any(
+                &proposition,
+                &["겠", "할 거", "will ", "would ", "going to"],
+            )
+        });
     let reported_commitment = (contains_any(
         &text,
         &[
@@ -1792,7 +1816,7 @@ fn infer_illocutionary_commitments(
             " said ",
             " reported ",
         ],
-    ) || !analysis.attribution_graph.attributions.is_empty())
+    ) || attributed_future_commitment)
         && contains_any(&text, &["겠", "할 거", "will ", "would ", "going to"]);
     let self_commitment = !reported_commitment
         && !contains_first_person_revision_preface(&text)
@@ -4043,6 +4067,27 @@ mod tests {
 
     fn interpret(text: &str) -> PragmaticInterpretationIR {
         PragmaticReasoner.interpret(text, &PragmaticContextIR::default())
+    }
+
+    #[test]
+    fn attributed_preference_is_not_promoted_by_an_unrelated_wish() {
+        let result = interpret(
+            "상대는 매운 음식을 못 먹고 조용한 곳을 좋아한다고 들었어요. 점심은 너무 무겁지 않았으면 좋겠어요.",
+        );
+        assert!(result.compositional_analysis.attribution_graph.attributions.len() == 1);
+        assert_ne!(
+            result.illocutionary_commitments.primary_force(),
+            Some(IllocutionaryForceIR::ReportedCommitment)
+        );
+    }
+
+    #[test]
+    fn attributed_future_commitment_still_has_a_reported_commitment_boundary() {
+        let result = interpret("민수가 내일 배포하겠다고 했어요.");
+        assert_eq!(
+            result.illocutionary_commitments.primary_force(),
+            Some(IllocutionaryForceIR::ReportedCommitment)
+        );
     }
 
     #[test]
