@@ -20,6 +20,7 @@ pub const MAX_UTTERANCE_INTENT_CANDIDATES: usize = 8;
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum DecisionInputIR {
     DesiredOutcome,
+    Priority,
     Deadline,
     Constraints,
     Preference,
@@ -1006,7 +1007,7 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
     let korean_wh = words.iter().copied().find(|w| {
         matches!(
             *w,
-            "언제" | "어떻게" | "뭘" | "뭐" | "무엇을" | "어느" | "어떤"
+            "언제" | "어떻게" | "뭘" | "뭐" | "무엇을" | "무엇부터" | "어느" | "어떤"
         )
     }).or_else(|| words.iter().copied().find(|word|
         ["어디가", "어디를", "어디에", "어디서", "어디로"]
@@ -1058,6 +1059,8 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
     let missing_input = match wh {
         Some("언제" | "when") => DecisionInputIR::Deadline,
         Some("어떻게" | "how") => DecisionInputIR::Constraints,
+        Some("무엇부터") => DecisionInputIR::Priority,
+        Some("what") if text.contains(" first") => DecisionInputIR::Priority,
         Some(_) if text.contains("하는") || text.ends_with(" do") => {
             DecisionInputIR::DesiredOutcome
         }
@@ -2231,7 +2234,7 @@ pub(crate) fn decision_prior_context(source: &str, turn: u64) -> Option<Decision
         && !text.contains(['?', '？', '"', '“', '”', '‘', '’', '`', '\n', ';'])
         && text.chars().count() <= 512
         && decision_inquiry(text).is_none()
-        && (["원해", "원하고", "원한다고", "싶어", "싶고", "좋겠어", "중요해", "피하고", "선호해", "선호한다고", "좋아한다고"]
+        && (decision_preference_markers()
             .iter()
             .any(|marker| lower.contains(marker))
             || korean_parallel_option_description(text)))
@@ -2240,6 +2243,44 @@ pub(crate) fn decision_prior_context(source: &str, turn: u64) -> Option<Decision
             source_sha256: decision_source_sha256(text),
             turn,
         })
+}
+
+fn decision_preference_markers() -> &'static [&'static str] {
+    // This is a bounded dialogue-local recognition of a stated criterion,
+    // including an avoidance. It is never a claim that an offered option
+    // satisfies or violates that criterion.
+    &[
+        "원해",
+        "원하고",
+        "원한다고",
+        "싶어",
+        "싶고",
+        "싶지 않아",
+        "원하지 않아",
+        "좋겠어",
+        "중요해",
+        "피하고",
+        "선호해",
+        "선호한다고",
+        "좋아한다고",
+    ]
+}
+
+/// A choice can be grounded only when a user-stated criterion is connected to
+/// an attribute explicitly supplied for one offered option. If the criterion
+/// is present but that connection is absent, ask for the missing option
+/// evidence rather than asking the user to repeat their preference.
+pub(crate) fn decision_choice_needs_option_evidence(inquiry: &DecisionInquiryIR) -> bool {
+    inquiry.choice_selection.is_none()
+        && decision_choice_options(&inquiry.source_text).is_some()
+        && decision_context_sources(inquiry)
+            .iter()
+            .any(|source| {
+                let lower = source.to_lowercase();
+                decision_preference_markers()
+                    .iter()
+                    .any(|marker| lower.contains(marker))
+            })
 }
 
 /// Retain a short user-supplied contrast such as `샐러드는 가볍고 제육덮밥은
@@ -2601,6 +2642,8 @@ mod tests {
             ("언제 시작할까?", DecisionInputIR::Deadline),
             ("Then, when should I start?", DecisionInputIR::Deadline),
             ("지금 뭘 하는 게 좋을까?", DecisionInputIR::DesiredOutcome),
+            ("지금 무엇부터 하면 좋을까?", DecisionInputIR::Priority),
+            ("What should I do first?", DecisionInputIR::Priority),
             ("What should I do?", DecisionInputIR::DesiredOutcome),
             ("그럼 어떻게 하지?", DecisionInputIR::Constraints),
             ("How should we proceed?", DecisionInputIR::Constraints),
@@ -2768,6 +2811,22 @@ mod tests {
         );
         assert_eq!(selection.matching_features, vec!["조용한"]);
         assert!(selection.option_evidence.is_none());
+    }
+
+    #[test]
+    fn choice_with_a_stated_criterion_but_no_option_attribute_requests_evidence() {
+        let prior = decision_prior_context("멀리 이동하고 싶지 않아.", 1)
+            .expect("explicit avoidance retained as decision context");
+        let inquiry = decision_inquiry("집 근처 식당과 강 건너 맛집 중 어디가 좋을까?")
+            .expect("choice inquiry")
+            .with_prior_context(&[prior], 2)
+            .expect("source-bound context");
+        assert!(inquiry.choice_selection.is_none());
+        assert!(decision_choice_needs_option_evidence(&inquiry));
+
+        let no_context = decision_inquiry("집 근처 식당과 강 건너 맛집 중 어디가 좋을까?")
+            .expect("choice inquiry without criterion");
+        assert!(!decision_choice_needs_option_evidence(&no_context));
     }
 
     #[test]

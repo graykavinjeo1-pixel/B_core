@@ -11874,6 +11874,29 @@ mod tests {
     }
 
     #[test]
+    fn choice_with_known_preference_and_unknown_option_properties_asks_for_evidence() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let preference = conversation_request(
+            "CHAT-OPTION-EVIDENCE-GAP",
+            1,
+            "퇴근 뒤에는 너무 지쳐서 멀리 이동하고 싶지 않아.",
+        );
+        api.process_conversation_turn(&preference)
+            .expect("preference turn");
+        let choice = conversation_request(
+            "CHAT-OPTION-EVIDENCE-GAP",
+            2,
+            "집 근처 식당과 강 건너 맛집 중 어디가 좋을까?",
+        );
+        let response = api
+            .process_conversation_turn(&choice)
+            .expect("choice should return a typed evidence gap");
+        assert!(response.validate_against(&choice));
+        assert_eq!(response.output.text, "각 선택지의 조건 정보를 알려줄래?");
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
+    }
+
+    #[test]
     fn postposed_decision_context_is_not_downgraded_to_acknowledgement() {
         let mut api = CognitiveApi::new_embedded().unwrap();
         let request = conversation_request(

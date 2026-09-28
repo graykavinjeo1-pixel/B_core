@@ -29,6 +29,7 @@ pub(crate) fn generate_decision_inquiry(
     if let Some(selection) = &inquiry.choice_selection {
         return generate_decision_choice_selection(settings, selection);
     }
+    let option_evidence_gap = crate::utterance_intent::decision_choice_needs_option_evidence(inquiry);
     // A declarative reply can supply the requested decision context even
     // though it is not another question.  Acknowledge only that this
     // source-bound context will govern the still-open decision; do not turn
@@ -57,7 +58,12 @@ pub(crate) fn generate_decision_inquiry(
             G::Actor | G::CurrentState | G::ConflictingState | G::RecentState
         )
     });
-    let (ko, en) = if let Some(reason) = gap {
+    let (ko, en) = if option_evidence_gap {
+        (
+            "각 선택지의 조건 정보",
+            "information about each option's conditions",
+        )
+    } else if let Some(reason) = gap {
         match reason {
             G::Actor => ("누가 행동할지", "who would act"),
             G::CurrentState => ("지금 어떤 상태인지", "what the current state is"),
@@ -91,6 +97,7 @@ pub(crate) fn generate_decision_inquiry(
     } else {
         match inquiry.missing_input {
             DecisionInputIR::DesiredOutcome => ("원하는 결과", "desired outcome"),
+            DecisionInputIR::Priority => ("우선순위를 정할 기준", "a priority criterion"),
             DecisionInputIR::Deadline => ("기한", "deadline"),
             DecisionInputIR::Constraints => ("제약 조건", "constraints"),
             DecisionInputIR::Preference => ("선호하는 조건", "preferences"),
@@ -143,10 +150,14 @@ pub(crate) fn generate_decision_inquiry(
         ),
         (
             "I",
-            gap.map_or_else(
-                || format!("C_DECISION_INPUT_{:?}", inquiry.missing_input),
-                |g| format!("C_DECISION_KNOWLEDGE_GAP_{g:?}"),
-            ),
+            if option_evidence_gap {
+                "C_DECISION_OPTION_EVIDENCE".to_string()
+            } else {
+                gap.map_or_else(
+                    || format!("C_DECISION_INPUT_{:?}", inquiry.missing_input),
+                    |g| format!("C_DECISION_KNOWLEDGE_GAP_{g:?}"),
+                )
+            },
             if korean { ko } else { en },
             GenerationMeaningNodeKindIR::Entity,
             ExpressionPartOfSpeechIR::Noun,
@@ -164,10 +175,14 @@ pub(crate) fn generate_decision_inquiry(
             node_id: id.into(),
             concept_id: concept,
             kind,
-            grounding_refs: vec![gap.map_or_else(
-                || format!("DECISION_INPUT:{:?}", inquiry.missing_input),
-                |g| format!("REPLAYED_DECISION_GAP:{g:?}"),
-            )],
+            grounding_refs: vec![if option_evidence_gap {
+                "DECISION_OPTION_EVIDENCE_GAP:SOURCE_BOUND".to_string()
+            } else {
+                gap.map_or_else(
+                    || format!("DECISION_INPUT:{:?}", inquiry.missing_input),
+                    |g| format!("REPLAYED_DECISION_GAP:{g:?}"),
+                )
+            }],
         });
     }
     let mut edges = vec![meaning_edge(
