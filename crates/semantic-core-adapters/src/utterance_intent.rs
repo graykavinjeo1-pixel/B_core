@@ -2310,26 +2310,52 @@ pub(crate) fn decision_choice_needs_option_evidence(inquiry: &DecisionInquiryIR)
             })
 }
 
+/// An inline sentence is not automatically a usable decision criterion just
+/// because it shares a turn with a question.  Keep an ordinary situation
+/// introduction separate from an explicit preference, avoidance, or
+/// source-described option contrast.
+pub(crate) fn decision_has_actionable_context(inquiry: &DecisionInquiryIR) -> bool {
+    !inquiry.context_evidence.is_empty()
+        || inquiry.inline_context.iter().any(|context| {
+            let lower = context.source_text.to_lowercase();
+            decision_preference_markers()
+                .iter()
+                .any(|marker| lower.contains(marker))
+                || korean_parallel_option_description(&context.source_text)
+        })
+}
+
 /// Retain a short user-supplied contrast such as `샐러드는 가볍고 제육덮밥은
 /// 든든해.` long enough to answer a later choice. The source is not world
 /// knowledge: it becomes usable only when a later question offers the same
 /// option surface and its directly attached descriptor matches a stated
 /// criterion.
 fn korean_parallel_option_description(text: &str) -> bool {
-    let topic_count = text
+    let tokens = text
         .split_whitespace()
         .map(|token| token.trim_matches(['.', '!', '。', ',', ':']))
-        .filter(|token| {
-            token.chars().count() >= 2
-                && token.chars().all(is_korean_syllable)
-                && ["은", "는", "이", "가"].iter().any(|ending| token.ends_with(ending))
+        .collect::<Vec<_>>();
+    let is_topic = |token: &str| {
+        token.chars().count() >= 2
+            && token.chars().all(is_korean_syllable)
+            && ["은", "는", "이", "가"].iter().any(|ending| token.ends_with(ending))
+    };
+    // Count only topic-marked candidates that introduce their own nearby
+    // descriptor.  This prevents an adnominal verb such as `만나는` plus an
+    // ordinary subject from being mistaken for a two-option contrast.
+    tokens
+        .iter()
+        .enumerate()
+        .filter(|(_, token)| is_topic(token))
+        .filter(|(index, _)| {
+            tokens[index + 1..]
+                .iter()
+                .take_while(|next| !is_topic(next))
+                .take(3)
+                .any(|next| is_korean_feature_surface(next))
         })
-        .count();
-    topic_count >= 2
-        && text
-            .split_whitespace()
-            .map(|token| token.trim_matches(['.', '!', '。', ',', ':']))
-            .any(is_korean_feature_surface)
+        .count()
+        >= 2
 }
 
 /// Extract a source-local two-to-four-way Korean choice frame.  This is only
@@ -2841,6 +2867,21 @@ mod tests {
         .expect("declarative criterion before the choice");
         assert_eq!(retained.source_text, "점심은 가볍게 먹고 싶어");
         assert!(retained.validate());
+    }
+
+    #[test]
+    fn decision_context_distinguishes_an_introduction_from_a_stated_criterion() {
+        let introduction = decision_inquiry(
+            "오늘 저녁에 처음 만나는 분과 소개팅이 있어. 어떤 준비를 하면 좋을까?",
+        )
+        .expect("decision inquiry");
+        assert!(!decision_has_actionable_context(&introduction));
+
+        let criterion = decision_inquiry(
+            "오늘 저녁에 처음 만나는 분과 소개팅이 있어. 상대는 조용한 곳을 선호해. 어디가 좋을까?",
+        )
+        .expect("decision inquiry");
+        assert!(decision_has_actionable_context(&criterion));
     }
 
     #[test]
