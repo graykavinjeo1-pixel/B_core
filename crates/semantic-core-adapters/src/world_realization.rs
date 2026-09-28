@@ -26,6 +26,9 @@ pub(crate) fn generate_decision_inquiry(
     {
         return generate_optional_clarification_response(settings, reply);
     }
+    if let Some(selection) = &inquiry.choice_selection {
+        return generate_decision_choice_selection(settings, selection);
+    }
     // A declarative reply can supply the requested decision context even
     // though it is not another question.  Acknowledge only that this
     // source-bound context will govern the still-open decision; do not turn
@@ -287,6 +290,85 @@ fn generate_decision_context_received(
                 "DI",
                 "D",
                 "I",
+                GenerationMeaningRelationIR::Theme,
+            )],
+        ),
+        context: GenerationContextIR {
+            language,
+            register: LanguageRegisterIR::Informal,
+            tense: GenerationTenseIR::Present,
+            emotion: GenerationEmotionIR::Neutral,
+            urgency_millis: 0,
+            default_speech_intent: GenerationSpeechIntentIR::Inform,
+        },
+        expressions: &store,
+    })
+}
+
+/// Realize a selection that has already passed the source-bound choice
+/// contract. The selected text is a quoted user option, not a newly asserted
+/// property of that option.
+fn generate_decision_choice_selection(
+    settings: GenerationSettings,
+    selection: &crate::utterance_intent::DecisionChoiceSelectionIR,
+) -> Result<GenerativeLanguageIR, String> {
+    let language = settings.language;
+    let korean = language == LanguageCodeIR::Korean;
+    let selected = selection
+        .options
+        .get(selection.selected_option_index)
+        .ok_or("INVALID_DECISION_CHOICE_SELECTION")?;
+    let mut store = ExpressionNodeStore::default();
+    store.attach_alias(
+        "EXPR.DECISION.CHOICE",
+        language,
+        "C_DECISION_CHOICE_SELECTED",
+        &selected.source_text,
+        ExpressionPartOfSpeechIR::Noun,
+        "RUNTIME_REFERENT_SURFACE:DECISION_CHOICE_OPTION",
+    )?;
+    store.attach_alias(
+        "EXPR.DECISION.CHOICE.FIT",
+        language,
+        "C_WORLD_CLAUSE_DECISION_CHOICE",
+        if korean { "맞다" } else { "fit" },
+        ExpressionPartOfSpeechIR::Verb,
+        "RUNTIME_REFERENT_SURFACE:DECISION_CHOICE_SELECTION",
+    )?;
+    let nodes = vec![
+        GenerationMeaningNodeIR {
+            node_id: "D".into(),
+            concept_id: "C_WORLD_CLAUSE_DECISION_CHOICE".into(),
+            kind: GenerationMeaningNodeKindIR::Event,
+            grounding_refs: vec![format!(
+                "DECISION_QUESTION_SHA256:{}",
+                selection.question_source_sha256
+            )],
+        },
+        GenerationMeaningNodeIR {
+            node_id: "O".into(),
+            concept_id: "C_DECISION_CHOICE_SELECTED".into(),
+            kind: GenerationMeaningNodeKindIR::Entity,
+            grounding_refs: std::iter::once(format!(
+                "DECISION_OPTION_SHA256:{}",
+                selected.source_sha256
+            ))
+            .chain(
+                selection
+                    .matching_features
+                    .iter()
+                    .map(|feature| format!("DECISION_MATCHED_FEATURE:{feature}")),
+            )
+            .collect(),
+        },
+    ];
+    settings.generate(GenerativeLanguageRequestIR {
+        meaning: GenerationMeaningGraphIR::new(
+            nodes,
+            vec![meaning_edge(
+                "DO",
+                "D",
+                "O",
                 GenerationMeaningRelationIR::Theme,
             )],
         ),
@@ -1373,6 +1455,46 @@ pub(super) fn realize_world_clause(
                 &mut output,
                 "as the basis for the decision.",
                 "EN.DECISION.CONTEXT.BOUND",
+                &clause.event_node_id,
+            );
+        }
+        return output;
+    }
+    if predicate.expression.concept_id == "C_WORLD_CLAUSE_DECISION_CHOICE" {
+        if context.language == LanguageCodeIR::Korean {
+            push_grammar_token(
+                &mut output,
+                "제시된 조건에는",
+                "KO.DECISION.CHOICE.CONTEXT",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                subject,
+                subject.expression.lexical_root.clone(),
+            );
+            push_grammar_token(
+                &mut output,
+                "쪽이 더 맞습니다.",
+                "KO.DECISION.CHOICE.RESULT",
+                &clause.event_node_id,
+            );
+        } else {
+            push_grammar_token(
+                &mut output,
+                "Given the stated conditions,",
+                "EN.DECISION.CHOICE.CONTEXT",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                subject,
+                subject.expression.lexical_root.clone(),
+            );
+            push_grammar_token(
+                &mut output,
+                "is the better fit.",
+                "EN.DECISION.CHOICE.RESULT",
                 &clause.event_node_id,
             );
         }

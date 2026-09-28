@@ -11758,7 +11758,12 @@ mod tests {
             .and_then(|answer| answer.decision_inquiry.as_ref())
             .expect("decision inquiry");
         assert_eq!(inquiry.inline_context.len(), 1);
-        assert!(response.output.text.contains("기준으로 이어서 보겠"));
+        let selection = inquiry.choice_selection.as_ref().expect("source-bound selection");
+        assert_eq!(
+            selection.options[selection.selected_option_index].source_text,
+            "조용한 식당"
+        );
+        assert!(response.output.text.contains("조용한 식당 쪽이 더 맞"));
         assert_eq!(response.output.unsupported_freeform_claims, 0);
     }
 

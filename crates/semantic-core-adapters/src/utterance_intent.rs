@@ -182,6 +182,11 @@ pub struct DecisionInquiryIR {
     /// observation or a surface template.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub inline_context: Vec<DecisionInlineContextIR>,
+    /// A source-bound choice conclusion.  It exists only when one offered
+    /// alternative has a uniquely supported structural feature match with the
+    /// retained decision context.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub choice_selection: Option<DecisionChoiceSelectionIR>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -227,6 +232,62 @@ impl DecisionInlineContextIR {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DecisionChoiceOptionIR {
+    pub source_text: String,
+    pub source_sha256: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DecisionChoiceSelectionIR {
+    pub question_source: String,
+    pub question_source_sha256: String,
+    pub options: Vec<DecisionChoiceOptionIR>,
+    pub selected_option_index: usize,
+    pub matching_features: Vec<String>,
+}
+
+impl DecisionChoiceSelectionIR {
+    fn validate_for(&self, inquiry: &DecisionInquiryIR) -> bool {
+        let question_source = inquiry
+            .context_evidence
+            .last()
+            .map(|context| context.original_question_source.as_str())
+            .unwrap_or(inquiry.source_text.as_str());
+        self.question_source == question_source
+            && self.question_source_sha256 == decision_source_sha256(question_source)
+            && (2..=4).contains(&self.options.len())
+            && self.selected_option_index < self.options.len()
+            && self.options.iter().all(|option| {
+                !option.source_text.trim().is_empty()
+                    && option.source_text.chars().count() <= 256
+                    && option.source_sha256 == decision_source_sha256(&option.source_text)
+                    && self.question_source.contains(&option.source_text)
+            })
+            && self.options.iter().enumerate().all(|(index, option)| {
+                self.options[..index]
+                    .iter()
+                    .all(|prior| prior.source_sha256 != option.source_sha256)
+            })
+            && !self.matching_features.is_empty()
+            && self.matching_features.len() <= 4
+            && self.matching_features.iter().all(|feature| {
+                feature.chars().count() >= 2
+                    && feature.chars().count() <= 32
+                    && self.options[self.selected_option_index]
+                        .source_text
+                        .contains(feature)
+            })
+            && self.matching_features.windows(2).all(|pair| pair[0] < pair[1])
+            && decision_choice_selection(
+                question_source,
+                &decision_context_sources(inquiry),
+            )
+            .as_ref()
+                == Some(self)
+    }
+}
+
 /// A response to an emitted information request, not an observation of the
 /// world. Retains a flat question origin; followups never extend its lifetime.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -261,6 +322,10 @@ impl DecisionInquiryIR {
                 .any(|(index, context)| self.inline_context[..index]
                     .iter()
                     .any(|prior| prior.source_sha256 == context.source_sha256))
+            || !self
+                .choice_selection
+                .as_ref()
+                .is_none_or(|selection| selection.validate_for(self))
             || self.context_evidence.len() > 3
             || !self
                 .context_evidence
@@ -288,6 +353,8 @@ impl DecisionInquiryIR {
                 && (is_condition_reply || self.continues_context)
                 && self.proposed_action == original.proposed_action
                 && self.inline_context == original.inline_context
+                && self.choice_selection.as_ref().is_none_or(|selection|
+                    selection.question_source == last_context.original_question_source)
                 && self.explanation_of.is_none()
                 && self.assessment.is_none()
                 && self.knowledge_gap.is_none()
@@ -422,6 +489,7 @@ impl DecisionInquiryIR {
         };
         original.context_evidence = self.context_evidence.clone();
         original.inline_context = self.inline_context.clone();
+        original.choice_selection = self.choice_selection.clone();
         original == *self
     }
 
@@ -462,6 +530,13 @@ impl DecisionInquiryIR {
             turn,
             input_kind: prior.missing_input,
         });
+        // A choice is resolved only from a feature stated in the source-bound
+        // decision context and a feature literally present in one option of
+        // the original question. No option property is inferred here.
+        result.choice_selection = decision_choice_selection(
+            &original_question_source,
+            &decision_context_sources(&result),
+        );
         result.validate().then_some(result)
     }
 
@@ -490,6 +565,10 @@ impl DecisionInquiryIR {
         }
         next.context_evidence = prior.context_evidence.clone();
         next.inline_context = prior.inline_context.clone();
+        next.choice_selection = decision_choice_selection(
+            &last.original_question_source,
+            &decision_context_sources(&next),
+        );
         next.validate().then_some(next)
     }
 
@@ -540,6 +619,7 @@ impl DecisionInquiryIR {
             clarification_reply: None,
             context_evidence: Vec::new(),
             inline_context: Vec::new(),
+            choice_selection: None,
         })
     }
 
@@ -766,6 +846,10 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
                 })
                 .collect();
             inquiry.source_text = source.to_string();
+            inquiry.choice_selection = decision_choice_selection(
+                source,
+                &decision_context_sources(&inquiry),
+            );
             return Some(inquiry);
         }
     }
@@ -822,6 +906,7 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
                 clarification_reply: None,
                 context_evidence: Vec::new(),
                 inline_context: Vec::new(),
+                choice_selection: None,
             });
         }
     }
@@ -900,6 +985,7 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
         clarification_reply: None,
         context_evidence: Vec::new(),
         inline_context: Vec::new(),
+        choice_selection: None,
     })
 }
 
@@ -2021,6 +2107,116 @@ fn decision_source_sha256(source: &str) -> String {
     hash_bytes(source.as_bytes())
 }
 
+fn decision_context_sources(inquiry: &DecisionInquiryIR) -> Vec<&str> {
+    inquiry
+        .inline_context
+        .iter()
+        .map(|context| context.source_text.as_str())
+        .chain(
+            inquiry
+                .context_evidence
+                .iter()
+                .map(|context| context.source_text.as_str()),
+        )
+        .collect()
+}
+
+/// Extract a source-local two-to-four-way Korean choice frame.  This is only
+/// a bounded grammatical adapter: it does not infer unmentioned properties or
+/// bring external knowledge about any candidate into the decision.
+fn decision_choice_options(question_source: &str) -> Option<Vec<String>> {
+    let question = question_source
+        .split(['.', '!', '?', '。', '？'])
+        .map(str::trim)
+        .find(|unit| unit.contains(" 중"))?;
+    let before_middle = question.split_once(" 중")?.0.trim();
+    let alternatives = before_middle
+        .rsplit_once("에서 ")
+        .map(|(_, value)| value)
+        .or_else(|| before_middle.rsplit_once("으로 ").map(|(_, value)| value))
+        .unwrap_or(before_middle)
+        .trim();
+    let options = if alternatives.contains(" 또는 ") {
+        alternatives.split(" 또는 ").collect::<Vec<_>>()
+    } else if alternatives.contains("과 ") {
+        alternatives.split("과 ").collect::<Vec<_>>()
+    } else if alternatives.contains("와 ") {
+        alternatives.split("와 ").collect::<Vec<_>>()
+    } else {
+        return None;
+    };
+    let options = options
+        .into_iter()
+        .map(str::trim)
+        .filter(|option| !option.is_empty() && option.chars().count() <= 128)
+        .map(str::to_string)
+        .collect::<Vec<_>>();
+    ((2..=4).contains(&options.len())
+        && options.windows(2).all(|pair| pair[0] != pair[1]))
+        .then_some(options)
+}
+
+fn choice_feature_tokens(surface: &str) -> std::collections::BTreeSet<String> {
+    surface
+        .split(|character: char| character.is_whitespace() || matches!(character, ',' | ':' | '(' | ')'))
+        .map(|token| token.trim_matches(['.', '!', '?', '？', '。', '"', '\'', '“', '”']))
+        .filter(|token| token.chars().count() >= 2 && token.chars().count() <= 32)
+        .filter(|token| {
+            ["한", "은", "운", "는", "적인"]
+                .iter()
+                .any(|ending| token.ends_with(ending))
+        })
+        .map(str::to_string)
+        .collect()
+}
+
+fn decision_choice_selection(
+    question_source: &str,
+    contexts: &[&str],
+) -> Option<DecisionChoiceSelectionIR> {
+    let options = decision_choice_options(question_source)?;
+    let context_features = contexts
+        .iter()
+        .flat_map(|context| choice_feature_tokens(context))
+        .collect::<std::collections::BTreeSet<_>>();
+    if context_features.is_empty() {
+        return None;
+    }
+    let scored = options
+        .iter()
+        .map(|option| {
+            let matching_features = choice_feature_tokens(option)
+                .intersection(&context_features)
+                .cloned()
+                .collect::<Vec<_>>();
+            (matching_features.len(), matching_features)
+        })
+        .collect::<Vec<_>>();
+    let highest = scored.iter().map(|(score, _)| *score).max()?;
+    let selected = scored
+        .iter()
+        .enumerate()
+        .filter(|(_, (score, _))| *score == highest)
+        .collect::<Vec<_>>();
+    if highest == 0 || selected.len() != 1 {
+        return None;
+    }
+    let (selected_option_index, (_, matching_features)) = selected[0];
+    Some(DecisionChoiceSelectionIR {
+        question_source: question_source.to_string(),
+        question_source_sha256: decision_source_sha256(question_source),
+        options: options
+            .into_iter()
+            .map(|source_text| DecisionChoiceOptionIR {
+                source_sha256: decision_source_sha256(&source_text),
+                source_text,
+            })
+            .collect(),
+        selected_option_index,
+        matching_features: matching_features.clone(),
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -2113,6 +2309,23 @@ mod tests {
         assert_eq!(inquiry.missing_input, DecisionInputIR::Preference);
         assert_eq!(inquiry.inline_context.len(), 1);
         assert_eq!(inquiry.inline_context[0].source_text, "상대는 조용한 곳을 선호해요");
+        let selection = inquiry.choice_selection.as_ref().expect("matched choice");
+        assert_eq!(
+            selection.options[selection.selected_option_index].source_text,
+            "조용한 식당"
+        );
+        assert_eq!(selection.matching_features, vec!["조용한"]);
+        assert!(inquiry.validate());
+    }
+
+    #[test]
+    fn decision_choice_requires_a_literal_candidate_feature_match() {
+        let inquiry = decision_inquiry(
+            "메밀국수 또는 샤브샤브 중 어디가 좋을까요? 상대는 매운 음식을 못 먹어요.",
+        )
+        .expect("one bounded decision unit");
+        assert_eq!(inquiry.inline_context.len(), 1);
+        assert!(inquiry.choice_selection.is_none());
         assert!(inquiry.validate());
     }
 
