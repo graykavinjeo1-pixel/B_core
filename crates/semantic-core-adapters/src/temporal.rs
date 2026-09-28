@@ -26,6 +26,7 @@ pub enum TemporalExpressionKindIR {
     RelativeDay,
     RelativeWeek,
     ClockTime,
+    Composite,
     Past,
     Present,
     Future,
@@ -1077,6 +1078,8 @@ fn temporal_question(text: &str) -> bool {
             || text.starts_with("did ")
             || text.contains("언제")
             || text.contains("무슨 일이")
+            || text.contains("몇 시")
+            || text.contains("몇시")
             || text.contains("먼저")
             || text.contains("전에")
             || text.contains("후에"))
@@ -1110,6 +1113,18 @@ fn when_question_target(text: &str) -> Option<String> {
         let before = trim_event_surface(&text[..position]);
         let after = trim_event_surface(text[position + "언제".len()..].trim_end_matches('?'));
         return Some(if before.is_empty() { after } else { before });
+    }
+    // Korean everyday time questions commonly use `몇 시` rather than
+    // `언제`.  The target still has to be stated before the clock question;
+    // a bare `몇 시야?` must not silently bind to whichever event happened
+    // most recently.
+    for marker in ["몇 시", "몇시"] {
+        if let Some(position) = text.find(marker) {
+            let target = trim_event_surface(&text[..position]);
+            if !target.is_empty() {
+                return Some(target);
+            }
+        }
     }
     None
 }
@@ -1171,6 +1186,69 @@ fn event_like(text: &str) -> bool {
     ]
     .iter()
     .any(|marker| text.contains(marker))
+        // A scheduled event can be stated with a nominal Korean copula
+        // rather than an event verb: `회의 시간이 오후 4시야`, `내일 오후
+        // 2시에 치과 예약이 있어`.  This is deliberately gated by both a
+        // recoverable time expression and an event-bearing nominal phrase;
+        // it does not turn a bare clock reading such as `오늘은 4시야` into
+        // an event record.
+        || korean_nominal_time_event(text)
+}
+
+fn korean_nominal_time_event(text: &str) -> bool {
+    let Some(time) = extract_time(text) else {
+        return false;
+    };
+    if !matches!(
+        time.kind,
+        TemporalExpressionKindIR::ClockTime
+            | TemporalExpressionKindIR::CalendarDate
+            | TemporalExpressionKindIR::RelativeDay
+            | TemporalExpressionKindIR::RelativeWeek
+            | TemporalExpressionKindIR::Composite
+    ) {
+        return false;
+    }
+    let lower = text.trim_end_matches(['.', '!', '?']).trim();
+    if ![
+        "야", "이야", "예요", "이에요", "입니다", "였어", "였어요", "있어", "있어요",
+        "있습니다",
+    ]
+    .iter()
+    .any(|ending| lower.ends_with(ending))
+    {
+        return false;
+    }
+    // Require a non-temporal Korean nominal to remain after known time words
+    // and particles are removed.  This is a grammar condition, not a list of
+    // calendar-event nouns, so unseen event names use the same path.
+    let non_temporal = lower
+        .split_whitespace()
+        .filter(|token| {
+            let normalized = normalize_temporal_term(token).unwrap_or_default();
+            !normalized.is_empty()
+                && !TEMPORAL_STOP_WORDS.contains(&normalized.as_str())
+                && !korean_clock_fragment(&normalized)
+        })
+        .collect::<Vec<_>>();
+    non_temporal.iter().any(|token| {
+        token.chars().any(|ch| ('가'..='힣').contains(&ch))
+    })
+}
+
+fn korean_clock_fragment(token: &str) -> bool {
+    let token = token
+        .trim_end_matches("이에요")
+        .trim_end_matches("예요")
+        .trim_end_matches("이야")
+        .trim_end_matches("야")
+        .trim_end_matches("입니다")
+        .trim_end_matches("있어요")
+        .trim_end_matches("있어");
+    ["오전", "오후", "시", "분"]
+        .contains(&token)
+        || (token.chars().any(|ch| ch.is_ascii_digit())
+            && (token.ends_with('시') || token.ends_with('분')))
 }
 
 fn event_key(text: &str) -> String {
@@ -1282,7 +1360,7 @@ const TEMPORAL_STOP_WORDS: &[&str] = &[
 ];
 
 fn extract_time(text: &str) -> Option<TemporalExpressionIR> {
-    for (surface, value, kind, offset) in [
+    let date_or_relative = [
         (
             "day before yesterday",
             "DAY_OFFSET:-2",
@@ -1367,45 +1445,53 @@ fn extract_time(text: &str) -> Option<TemporalExpressionIR> {
             TemporalExpressionKindIR::RelativeWeek,
             None,
         ),
-    ] {
-        if text.contains(surface) {
-            return Some(TemporalExpressionIR {
+    ]
+    .iter()
+    .find(|(surface, _, _, _)| text.contains(*surface))
+    .map(|(surface, value, kind, offset)| TemporalExpressionIR {
                 surface: surface.to_string(),
                 normalized_value: value.to_string(),
-                kind,
-                relative_day_offset: offset,
+                kind: *kind,
+                relative_day_offset: *offset,
                 confidence_millis: 980,
-            });
-        }
-    }
-    if let Some(date) = iso_date(text) {
-        return Some(TemporalExpressionIR {
+            })
+    .or_else(|| {
+        iso_date(text).map(|date| TemporalExpressionIR {
             surface: date.clone(),
             normalized_value: date,
             kind: TemporalExpressionKindIR::CalendarDate,
             relative_day_offset: None,
             confidence_millis: 1_000,
-        });
-    }
-    if let Some((surface, normalized)) = korean_date(text) {
-        return Some(TemporalExpressionIR {
+        })
+    })
+    .or_else(|| {
+        korean_date(text).map(|(surface, normalized)| TemporalExpressionIR {
             surface,
             normalized_value: normalized,
             kind: TemporalExpressionKindIR::CalendarDate,
             relative_day_offset: None,
             confidence_millis: 980,
-        });
-    }
-    if let Some((surface, normalized)) = clock_time(text) {
-        return Some(TemporalExpressionIR {
+        })
+    });
+    let clock = clock_time(text).map(|(surface, normalized)| TemporalExpressionIR {
             surface,
             normalized_value: normalized,
             kind: TemporalExpressionKindIR::ClockTime,
             relative_day_offset: None,
             confidence_millis: 930,
         });
+    match (date_or_relative, clock) {
+        (Some(date), Some(clock)) => Some(TemporalExpressionIR {
+            surface: format!("{} {}", date.surface, clock.surface),
+            normalized_value: format!("{};{}", date.normalized_value, clock.normalized_value),
+            kind: TemporalExpressionKindIR::Composite,
+            relative_day_offset: date.relative_day_offset,
+            confidence_millis: date.confidence_millis.min(clock.confidence_millis),
+        }),
+        (Some(date), None) => Some(date),
+        (None, Some(clock)) => Some(clock),
+        (None, None) => None,
     }
-    None
 }
 
 fn iso_date(text: &str) -> Option<String> {
@@ -1461,9 +1547,20 @@ fn clock_time(text: &str) -> Option<(String, String)> {
             if let Some(hour_end) = rest.find('시') {
                 let hour = rest[..hour_end].trim().parse::<u32>().ok()?;
                 let normalized_hour = if hour == 12 { add } else { hour + add };
+                let after_hour = &rest[hour_end + '시'.len_utf8()..];
+                let minute = after_hour
+                    .find('분')
+                    .and_then(|minute_end| after_hour[..minute_end].trim().parse::<u32>().ok())
+                    .filter(|minute| *minute < 60)
+                    .unwrap_or(0);
+                let surface = if minute == 0 {
+                    format!("{marker} {hour}시")
+                } else {
+                    format!("{marker} {hour}시 {minute}분")
+                };
                 return Some((
-                    format!("{marker} {hour}시"),
-                    format!("TIME:{normalized_hour:02}:00"),
+                    surface,
+                    format!("TIME:{normalized_hour:02}:{minute:02}"),
                 ));
             }
         }
@@ -1564,6 +1661,52 @@ mod tests {
                 .map(|time| time.normalized_value.as_str()),
             Some("DAY_OFFSET:+2")
         );
+    }
+
+    #[test]
+    fn korean_nominal_schedule_time_is_a_typed_event_and_answers_clock_question() {
+        let mut graph = TemporalGraphIR::default();
+        graph.apply_turn(&TemporalSemanticAnalyzer.analyze_turn(
+            "회의 시간이 오후 4시야.",
+            1,
+            None,
+        ));
+        assert_eq!(graph.events.len(), 1);
+        assert_eq!(
+            graph.events[0]
+                .event_time
+                .as_ref()
+                .map(|time| time.normalized_value.as_str()),
+            Some("TIME:16:00")
+        );
+        let answer = TemporalQaEngine
+            .answer("회의는 몇 시야?", Some(&graph), LanguageCodeIR::Korean)
+            .expect("recognized Korean clock question");
+        assert_eq!(
+            answer.disposition,
+            TemporalAnswerDispositionIR::AnsweredFromTemporalGraph
+        );
+        assert_eq!(answer.event_evidence.len(), 1);
+    }
+
+    #[test]
+    fn combined_relative_day_and_clock_preserves_both_temporal_components() {
+        let analysis = TemporalSemanticAnalyzer.analyze_turn(
+            "내일 오후 2시에 치과 예약이 있어.",
+            1,
+            None,
+        );
+        assert_eq!(analysis.events.len(), 1);
+        let time = analysis.events[0].event_time.as_ref().expect("event time");
+        assert_eq!(time.kind, TemporalExpressionKindIR::Composite);
+        assert_eq!(time.surface, "내일 오후 2시");
+        assert_eq!(time.normalized_value, "DAY_OFFSET:+1;TIME:14:00");
+    }
+
+    #[test]
+    fn bare_clock_reading_does_not_invent_a_temporal_event() {
+        let analysis = TemporalSemanticAnalyzer.analyze_turn("오늘은 오후 4시야.", 1, None);
+        assert!(analysis.events.is_empty());
     }
 
     #[test]

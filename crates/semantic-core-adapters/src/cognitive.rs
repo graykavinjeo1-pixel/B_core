@@ -13233,7 +13233,8 @@ mod tests {
         assert!(!trace.semantic_authority);
         assert!(!trace.language_can_execute);
         assert_eq!(trace.verification.unsupported_claims, 0);
-        assert!(response.output.text.contains("DAY_OFFSET:-1"));
+        assert!(response.output.text.contains("yesterday"));
+        assert!(!response.output.text.contains("DAY_OFFSET:-1"));
     }
 
     #[test]
@@ -13330,6 +13331,50 @@ mod tests {
             .event_evidence
             .iter()
             .any(|event| event.surface.contains("백업")));
+    }
+
+    #[test]
+    fn korean_nominal_schedule_time_roundtrips_through_conversation_memory() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let statement = api
+            .process_conversation_turn(&conversation_request(
+                "CHAT-TEMPORAL-KOREAN-NOMINAL",
+                1,
+                "회의 시간이 오후 4시야.",
+            ))
+            .expect("Korean nominal schedule statement");
+        assert_eq!(statement.conversation_state.temporal_graph.events.len(), 1);
+        assert_eq!(
+            statement.conversation_state.temporal_graph.events[0]
+                .event_time
+                .as_ref()
+                .map(|time| time.normalized_value.as_str()),
+            Some("TIME:16:00")
+        );
+        let response = api
+            .process_conversation_turn(&conversation_request(
+                "CHAT-TEMPORAL-KOREAN-NOMINAL",
+                2,
+                "회의는 몇 시야?",
+            ))
+            .expect("Korean nominal schedule answer");
+        let answer = response.temporal_answer.expect("typed temporal answer");
+        assert_eq!(
+            answer.disposition,
+            crate::temporal::TemporalAnswerDispositionIR::AnsweredFromTemporalGraph
+        );
+        assert_eq!(answer.event_evidence.len(), 1);
+        assert_eq!(
+            answer.event_evidence[0]
+                .event_time
+                .as_ref()
+                .map(|time| time.normalized_value.as_str()),
+            Some("TIME:16:00")
+        );
+        assert!(response.output.text.contains("회의"));
+        assert!(response.output.text.contains("오후 4시"));
+        assert!(!response.output.text.contains("TIME:16:00"));
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
     }
 
     #[test]

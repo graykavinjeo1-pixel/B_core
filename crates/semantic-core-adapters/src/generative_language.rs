@@ -3176,25 +3176,30 @@ fn realize_korean_clause(
             "C_TEMPORAL_ANSWER_TIME" => {
                 push_grammar_token(
                     &mut output,
-                    "대화 사건 기록:",
+                    "대화에서 말한 기준으로,",
                     "KO.TEMPORAL_ANSWER.TIME.CONTEXT",
                     &clause.event_node_id,
                 );
                 if let Some(theme) = theme {
+                    let particle = korean_particle(&theme.expression.lexical_root, "은", "는");
                     push_expression_token(
                         &mut output,
                         theme,
-                        korean_labeled_quote("사건", &theme.expression.lexical_root),
+                        format!("‘{}’{particle}", theme.expression.lexical_root),
                     );
                 }
                 if let Some(property) = property {
+                    let suffix = crate::korean_copula::positive_suffix(
+                        crate::korean_copula::KoreanCopulaFormIR::InformalStatement,
+                        crate::korean_nominal::surface_coda(&property.expression.lexical_root)
+                            .unwrap_or(false),
+                    );
                     push_expression_token(
                         &mut output,
                         property,
-                        korean_labeled_quote("기록 시각", &property.expression.lexical_root),
+                        format!("{}{}.", property.expression.lexical_root, suffix),
                     );
                 }
-                push_expression_token(&mut output, predicate, "이렇게 남아 있어.".to_string());
             }
             "C_TEMPORAL_ANSWER_EVENT" => {
                 push_grammar_token(
@@ -3292,8 +3297,7 @@ fn realize_korean_clause(
             "C_TEMPORAL_ANSWER_EVIDENCE_BOUNDARY" => push_expression_token(
                 &mut output,
                 predicate,
-                "이 시간 답변은 대화 기록에 근거한 것이고, 실제 세계에서 독립 검증된 사실은 아니야."
-                    .to_string(),
+                "이건 대화에서 말해 준 정보에 따른 답이야.".to_string(),
             ),
             "C_TEMPORAL_ANSWER_TRANSITIVE_BOUNDARY" => {
                 push_grammar_token(
@@ -14154,7 +14158,7 @@ pub(crate) fn generate_temporal_answer_from_knowledge(
                 &format!("EXPR.{language:?}.TEMPORAL_EVENT.{ordinal:03}"),
                 language,
                 &event_concept,
-                event.surface.trim(),
+                &temporal_event_label(&event.surface, &time.surface),
                 ExpressionPartOfSpeechIR::Noun,
                 "RUNTIME_REFERENT_SURFACE:TEMPORAL_EVENT",
             )?;
@@ -14162,7 +14166,12 @@ pub(crate) fn generate_temporal_answer_from_knowledge(
                 &format!("EXPR.{language:?}.TEMPORAL_TIME.{ordinal:03}"),
                 language,
                 &time_concept,
-                &format!("{} ({})", time.surface.trim(), time.normalized_value),
+                // The normalized value is provenance for the typed meaning
+                // graph, not a user-facing Korean expression.  Surface time
+                // text is preserved from the source-bound temporal record;
+                // exposing `TIME:16:00` or `DAY_OFFSET:+1` here leaks an
+                // internal representation into ordinary conversation.
+                time.surface.trim(),
                 ExpressionPartOfSpeechIR::Noun,
                 "RUNTIME_REFERENT_SURFACE:TEMPORAL_TIME",
             )?;
@@ -14352,6 +14361,55 @@ pub(crate) fn generate_temporal_answer_from_knowledge(
         },
         expressions: &expressions,
     })
+}
+
+/// Recover the event-bearing nominal from a source-bound Korean nominal-time
+/// assertion.  The original source remains in the temporal record and its
+/// hash/provenance; this only avoids reciting a whole assertion as the noun in
+/// a follow-up answer.  Verbal event surfaces stay untouched because their
+/// predicate is part of the event identity.
+fn temporal_event_label(source: &str, time_surface: &str) -> String {
+    let source = source
+        .trim()
+        .trim_end_matches(['.', '!', '?'])
+        .trim();
+    let nominal_ending = [
+        "야", "이야", "예요", "이에요", "입니다", "였어", "였어요", "있어", "있어요",
+        "있습니다",
+    ]
+    .iter()
+    .find(|ending| source.ends_with(**ending));
+    let Some(ending) = nominal_ending else {
+        return source.to_string();
+    };
+    let existence_predicate = ending.starts_with('있');
+    let mut remaining = source.replacen(time_surface, "", 1);
+    remaining = remaining
+        .trim()
+        .trim_end_matches(ending)
+        .trim()
+        .to_string();
+    for prefix in ["에 ", "에는 ", "에서 "] {
+        if let Some(rest) = remaining.strip_prefix(prefix) {
+            remaining = rest.trim().to_string();
+            break;
+        }
+    }
+    for suffix in ["이 있어", "가 있어", " 시간이", " 시간은", " 시간"] {
+        if let Some(stem) = remaining.strip_suffix(suffix) {
+            remaining = stem.trim().to_string();
+            break;
+        }
+    }
+    if existence_predicate {
+        remaining = remaining
+            .strip_suffix('이')
+            .or_else(|| remaining.strip_suffix('가'))
+            .unwrap_or(&remaining)
+            .trim()
+            .to_string();
+    }
+    (!remaining.is_empty()).then_some(remaining).unwrap_or_else(|| source.to_string())
 }
 
 pub(crate) fn dialogue_attribution_surface(
@@ -14674,6 +14732,22 @@ fn meaning_edge(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn temporal_event_label_keeps_the_event_nominal_not_its_time_assertion() {
+        assert_eq!(
+            temporal_event_label("회의 시간이 오후 4시야.", "오후 4시"),
+            "회의"
+        );
+        assert_eq!(
+            temporal_event_label("내일 오후 2시 45분에 치과 예약이 있어.", "내일 오후 2시 45분"),
+            "치과 예약"
+        );
+        assert_eq!(
+            temporal_event_label("The backup completed yesterday.", "yesterday"),
+            "The backup completed yesterday"
+        );
+    }
 
     #[test]
     fn parallel_content_scope_requires_same_belief_event_speaker_and_sequence() {
