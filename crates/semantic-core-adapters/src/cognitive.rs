@@ -11897,6 +11897,61 @@ mod tests {
     }
 
     #[test]
+    fn inline_choice_criterion_without_option_properties_asks_for_evidence() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let request = conversation_request(
+            "CHAT-INLINE-OPTION-EVIDENCE-GAP",
+            1,
+            "점심을 너무 많이 먹으면 오후에 졸리고, 너무 자극적인 음식은 피하고 싶어. 샐러드와 비빔밥 중에 골라 줄래?",
+        );
+        let response = api
+            .process_conversation_turn(&request)
+            .expect("inline choice should ask for option evidence");
+        assert!(response.validate_against(&request));
+        assert_eq!(response.output.text, "각 선택지의 조건 정보를 알려줄래?");
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
+    }
+
+    #[test]
+    fn same_turn_criterion_survives_option_evidence_before_a_later_choice() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        for (turn, text) in [
+            (
+                1,
+                "점심은 가볍게 먹고 싶어. 샐러드와 비빔밥 중에 골라 줄래?",
+            ),
+            (2, "샐러드는 가볍고 비빔밥은 든든해."),
+        ] {
+            let request = conversation_request("CHAT-INLINE-CRITERION-RETAINED", turn, text);
+            let response = api.process_conversation_turn(&request)
+                .expect("criterion or option evidence");
+            assert_eq!(
+                response.conversation_state.decision_prior_context.len(),
+                turn as usize,
+                "{response:#?}"
+            );
+        }
+        let choice = conversation_request(
+            "CHAT-INLINE-CRITERION-RETAINED",
+            3,
+            "그럼 샐러드와 비빔밥 중 어느 쪽이 더 나을까?",
+        );
+        let response = api
+            .process_conversation_turn(&choice)
+            .expect("later source-bound choice");
+        assert!(response.validate_against(&choice));
+        let selection = response
+            .discourse_answer
+            .as_ref()
+            .and_then(|answer| answer.decision_inquiry.as_ref())
+            .and_then(|inquiry| inquiry.choice_selection.as_ref())
+            .expect("a source-bound selection");
+        assert_eq!(selection.options[selection.selected_option_index].source_text, "샐러드");
+        assert!(selection.option_evidence.is_some());
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
+    }
+
+    #[test]
     fn postposed_decision_context_is_not_downgraded_to_acknowledgement() {
         let mut api = CognitiveApi::new_embedded().unwrap();
         let request = conversation_request(

@@ -1047,6 +1047,18 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
     let recommendation_imperative = ["추천해줘", "추천해 줘", "추천해주세요", "추천해 주세요"]
         .iter()
         .any(|ending| text.ends_with(ending))
+        // A bounded `A와 B 중` frame supplies the alternatives, while these
+        // ordinary request endings supply the decision act.  This is a
+        // grammatical route for a user-authored choice, not a food-, date-,
+        // or task-specific recommendation rule.
+        || (decision_choice_options(source).is_some()
+            && [
+                "골라", "골라줘", "골라 줘", "골라줄래", "골라 줄래", "골라주세요",
+                "골라 주세요", "선택해줘", "선택해 줘", "선택해줄래", "선택해 줄래",
+                "선택해주세요", "선택해 주세요",
+            ]
+            .iter()
+            .any(|ending| text.ends_with(ending)))
         || text.starts_with("recommend ")
         || text.starts_with("please recommend ");
     // Permission-shaped deliberatives are requests for help choosing a course,
@@ -2228,7 +2240,22 @@ fn decision_context_sources(inquiry: &DecisionInquiryIR) -> Vec<&str> {
 /// records the original utterance only; it neither classifies a food, person,
 /// or action nor asserts that any candidate satisfies the stated criterion.
 pub(crate) fn decision_prior_context(source: &str, turn: u64) -> Option<DecisionPriorContextIR> {
-    let text = source.trim();
+    let source = source.trim();
+    // A user can state a decision criterion before asking the same turn's
+    // bounded choice.  Preserve only the declarative prefix: the question
+    // itself remains a request, never context evidence.  This lets a later
+    // source-provided option description bind to the original criterion
+    // without retaining a question as if it were a fact.
+    let text = if source.contains(['?', '？']) {
+        source
+            .split(['?', '？'])
+            .next()
+            .and_then(|before_question| before_question.rsplit_once(['.', '!', '。']))
+            .map(|(declarative_prefix, _)| declarative_prefix.trim())
+            .filter(|prefix| !prefix.is_empty())?
+    } else {
+        source
+    };
     let lower = text.to_lowercase();
     (turn > 0
         && !text.contains(['?', '？', '"', '“', '”', '‘', '’', '`', '\n', ';'])
@@ -2319,6 +2346,14 @@ fn decision_choice_options(question_source: &str) -> Option<Vec<String>> {
         .map(|(_, value)| value)
         .or_else(|| before_middle.rsplit_once("으로 ").map(|(_, value)| value))
         .unwrap_or(before_middle)
+        .trim();
+    // A discourse connector introduces a follow-up question but is not part
+    // of its first offered option.  Remove only a bounded sentence-initial
+    // connector before binding source-provided option evidence.
+    let alternatives = ["그럼 ", "그러면 ", "then, ", "then ", "so, ", "so "]
+        .iter()
+        .find_map(|prefix| alternatives.strip_prefix(prefix))
+        .unwrap_or(alternatives)
         .trim();
     // The conjunctions compose, so normalize each bounded coordination
     // separator before splitting. This keeps a three-way A, B 또는 C question
@@ -2648,6 +2683,10 @@ mod tests {
             ("그럼 어떻게 하지?", DecisionInputIR::Constraints),
             ("How should we proceed?", DecisionInputIR::Constraints),
             ("하나만 추천해줘.", DecisionInputIR::Preference),
+            (
+                "샐러드와 비빔밥 중에 골라 줄래?",
+                DecisionInputIR::Preference,
+            ),
             ("Please recommend a book.", DecisionInputIR::Preference),
             ("식사 뒤에 카페를 제안해도 될까요?", DecisionInputIR::Preference),
         ] {
@@ -2791,6 +2830,17 @@ mod tests {
         )
         .is_some());
         assert!(decision_prior_context("샐러드가 좋아.", 2).is_none());
+    }
+
+    #[test]
+    fn decision_criterion_before_a_same_turn_choice_is_retained_without_the_question() {
+        let retained = decision_prior_context(
+            "점심은 가볍게 먹고 싶어. 샐러드와 비빔밥 중에 골라 줄래?",
+            1,
+        )
+        .expect("declarative criterion before the choice");
+        assert_eq!(retained.source_text, "점심은 가볍게 먹고 싶어");
+        assert!(retained.validate());
     }
 
     #[test]

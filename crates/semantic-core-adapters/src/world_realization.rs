@@ -34,7 +34,8 @@ pub(crate) fn generate_decision_inquiry(
     // though it is not another question.  Acknowledge only that this
     // source-bound context will govern the still-open decision; do not turn
     // it into an asserted world fact or fabricate a recommendation.
-    if (!inquiry.context_evidence.is_empty() || !inquiry.inline_context.is_empty())
+    if !option_evidence_gap
+        && (!inquiry.context_evidence.is_empty() || !inquiry.inline_context.is_empty())
         && inquiry.explanation_of.is_none()
         && inquiry.knowledge_gap.is_none()
         && inquiry.resumption.is_none()
