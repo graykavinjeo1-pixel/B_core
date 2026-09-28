@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::compositional_semantics::PredicateFrameIR;
 
-pub const ATTRIBUTION_GRAPH_SCHEMA: &str = "B_CORE_ATTRIBUTION_GRAPH_IR_1";
+pub const ATTRIBUTION_GRAPH_SCHEMA: &str = "B_CORE_ATTRIBUTION_GRAPH_IR_4";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -24,6 +24,8 @@ pub enum DiscourseActorKindIR {
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct DiscourseActorIR {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub korean_nominal_forms: Vec<crate::korean_nominal::KoreanNominalFormIR>,
     pub actor_id: String,
     pub kind: DiscourseActorKindIR,
     pub surface: String,
@@ -192,6 +194,10 @@ impl AttributionGraphIR {
                 !actor.actor_id.trim().is_empty()
                     && !actor.surface.trim().is_empty()
                     && !actor.normalized_label.trim().is_empty()
+                    && crate::korean_nominal::validate_forms(
+                        &actor.korean_nominal_forms,
+                        &actor.surface,
+                    )
             })
             && self.propositions.iter().all(|proposition| {
                 !proposition.proposition_id.trim().is_empty()
@@ -353,6 +359,7 @@ struct AttributionMention {
 #[derive(Debug)]
 struct PendingAttribution {
     actor_surface: String,
+    actor_start: usize,
     actor_kind: DiscourseActorKindIR,
     evidence_source: Option<(String, DiscourseActorKindIR)>,
     proposition: AttributedPropositionIR,
@@ -366,7 +373,18 @@ struct PendingAttribution {
 
 impl AttributionAnalyzer {
     pub fn analyze(&self, text: &str, frames: &[PredicateFrameIR]) -> AttributionGraphIR {
+        self.analyze_with_observation(text, frames, text)
+    }
+
+    pub(crate) fn analyze_with_observation(
+        &self,
+        text: &str,
+        frames: &[PredicateFrameIR],
+        observed_text: &str,
+    ) -> AttributionGraphIR {
         let normalized = text.to_lowercase();
+        let observed = observed_text.to_lowercase();
+        let observed_spans = ObservedSpanEnvelope::new(&normalized, &observed);
         let mentions = attribution_mentions(&normalized);
         let mut pending = mentions
             .iter()
@@ -386,12 +404,53 @@ impl AttributionAnalyzer {
         }
 
         for (index, item) in pending.iter_mut().enumerate() {
+            // Grammar uses normalized bytes; presentation comes from the exact
+            // selected source span, never from title-casing an inferred name.
+            if let Some(surface) = original_surface(
+                text,
+                &normalized,
+                item.actor_start,
+                item.actor_start + item.actor_surface.len(),
+            ) {
+                item.actor_surface = surface.to_string();
+            }
             item.proposition.proposition_id = format!("PROP-{:02}", index + 1);
         }
         let mut actors = Vec::<DiscourseActorIR>::new();
         let mut attributions = Vec::new();
         for (index, item) in pending.iter().enumerate() {
             let actor_id = add_actor(&mut actors, &item.actor_surface, item.actor_kind);
+            let normalized_end = item.actor_start + item.actor_surface.to_lowercase().len();
+            if let Some(particle) = normalized
+                .get(normalized_end..)
+                .and_then(|s| s.chars().next())
+            {
+                let end = normalized_end + particle.len_utf8();
+                let boundary = normalized.get(end..).is_some_and(|s| {
+                    s.chars()
+                        .next()
+                        .is_none_or(|c| c.is_whitespace() || c.is_ascii_punctuation())
+                });
+                if boundary && observed_spans.contains(item.actor_start, end) {
+                    if let Some(form) = original_surface(text, &normalized, item.actor_start, end)
+                        .and_then(|form| {
+                            crate::korean_nominal::KoreanNominalFormIR::observe(
+                                &item.actor_surface,
+                                form,
+                            )
+                        })
+                    {
+                        let actor = actors
+                            .iter_mut()
+                            .find(|a| a.actor_id == actor_id)
+                            .expect("inserted actor");
+                        crate::korean_nominal::merge_forms(
+                            &mut actor.korean_nominal_forms,
+                            &[form],
+                        );
+                    }
+                }
+            }
             let evidence_source_actor_id = item
                 .evidence_source
                 .as_ref()
@@ -531,7 +590,7 @@ fn pending_from_mention(
         .iter()
         .skip(index + 1)
         .any(|candidate| candidate.start < clause_end);
-    let (actor_surface, actor_kind, actor_end) = if korean {
+    let (actor_surface, actor_kind, actor_end, actor_start) = if korean {
         extract_korean_actor(
             text,
             clause_start,
@@ -599,6 +658,7 @@ fn pending_from_mention(
         attribution_semantics(mention.attitude, negative_attribution);
     Some(PendingAttribution {
         actor_surface,
+        actor_start,
         actor_kind,
         evidence_source,
         proposition: AttributedPropositionIR {
@@ -681,6 +741,7 @@ fn synthetic_source_attribution(
         .map_or(content_start, |offset| content_start + offset);
     PendingAttribution {
         actor_surface: source.to_string(),
+        actor_start: text[..content_start].rfind(source).unwrap_or(content_start),
         actor_kind: kind,
         evidence_source: None,
         proposition: AttributedPropositionIR {
@@ -707,7 +768,27 @@ fn extract_english_actor(
     text: &str,
     start: usize,
     end: usize,
-) -> Option<(String, DiscourseActorKindIR, usize)> {
+) -> Option<(String, DiscourseActorKindIR, usize, usize)> {
+    // The shared finite-matrix grammar has already separated the subject from
+    // auxiliaries and modifiers. Do not turn that whole prefix into a named
+    // actor when the attribution lexicon recognizes its cognition predicate.
+    if let Some(statement) = crate::grammatical_scope::embedded_information_statement(text)
+        .filter(|statement| statement.grammar_rule == "EN_COGNITION_INTERROGATIVE_ARGUMENT")
+    {
+        let subject = text[..statement.content_start_byte]
+            .split_whitespace()
+            .next()?;
+        let subject_start = text.len() - text.trim_start().len();
+        let subject_end = subject_start + subject.len();
+        if start <= subject_start && subject_end <= end {
+            let kind = if matches!(subject.to_lowercase().as_str(), "i" | "we") {
+                DiscourseActorKindIR::DialogueSpeaker
+            } else {
+                DiscourseActorKindIR::NamedEntity
+            };
+            return Some((subject.to_string(), kind, subject_end, subject_start));
+        }
+    }
     let segment = text.get(start..end)?.trim();
     let segment = [", but ", "; but ", ", however ", "; however "]
         .iter()
@@ -755,7 +836,7 @@ fn extract_english_actor(
     } else {
         DiscourseActorKindIR::NamedEntity
     };
-    Some((surface, kind, actor_end))
+    Some((surface, kind, actor_end, start + local))
 }
 
 fn korean_report_coordinator(form: &str) -> bool {
@@ -860,7 +941,7 @@ fn extract_korean_actor(
     start: usize,
     end: usize,
     outermost: bool,
-) -> Option<(String, DiscourseActorKindIR, usize)> {
+) -> Option<(String, DiscourseActorKindIR, usize, usize)> {
     let raw_segment = text.get(start..end)?;
     let segment = strip_korean_discourse_repair_prefixes(raw_segment);
     let tokens = segment
@@ -889,7 +970,7 @@ fn extract_korean_actor(
     } else {
         DiscourseActorKindIR::NamedEntity
     };
-    Some((selected.1.to_string(), kind, actor_end))
+    Some((selected.1.to_string(), kind, actor_end, start + local))
 }
 
 fn strip_korean_discourse_repair_prefixes(mut segment: &str) -> &str {
@@ -915,7 +996,16 @@ fn korean_complement_end(text: &str, start: usize, end: usize) -> usize {
     let segment = text.get(start..end).unwrap_or_default();
     for suffix in ["는다고", "이라고", "다고", "라고", "라며"] {
         if let Some(position) = segment.rfind(suffix) {
-            return start + position;
+            // Declarative quotation adds -고 to a finite -다/-는다 clause.
+            // Keep that source finite form; removing all of -다고 discarded
+            // the predicate ending before semantic compilation saw it.
+            return start
+                + position
+                + if matches!(suffix, "다고" | "는다고") {
+                    suffix.len() - '고'.len_utf8()
+                } else {
+                    0
+                };
         }
     }
     end
@@ -1121,6 +1211,69 @@ fn is_quoted_surface(text: &str) -> bool {
         .any(|character| matches!(character, '"' | '\'' | '‘' | '’' | '“' | '”'))
 }
 
+/// A rewritten middle span is an interpretation, not an observation. Trust
+/// only identical prefix/suffix spans in their original order. This linear
+/// check does not search for a matching word elsewhere in the utterance.
+struct ObservedSpanEnvelope {
+    length: usize,
+    prefix_end: usize,
+    suffix_start: usize,
+}
+
+impl ObservedSpanEnvelope {
+    fn new(interpreted: &str, observed: &str) -> Self {
+        let prefix_end = interpreted
+            .bytes()
+            .zip(observed.bytes())
+            .take_while(|(a, b)| a == b)
+            .count();
+        let suffix = interpreted
+            .bytes()
+            .rev()
+            .zip(observed.bytes().rev())
+            .take_while(|(a, b)| a == b)
+            .count();
+        Self {
+            length: interpreted.len(),
+            prefix_end,
+            suffix_start: interpreted.len().saturating_sub(suffix),
+        }
+    }
+
+    fn contains(&self, start: usize, end: usize) -> bool {
+        start < end && end <= self.length && (end <= self.prefix_end || start >= self.suffix_start)
+    }
+}
+
+/// Map complete lowercase character boundaries back to the observed spelling.
+/// Unicode case conversion may change byte length or expand one character.
+/// An interior expansion boundary is not an original-text span.
+pub(crate) fn original_surface<'a>(
+    original: &'a str,
+    normalized: &str,
+    start: usize,
+    end: usize,
+) -> Option<&'a str> {
+    let mut normalized_offset = 0;
+    let mut original_start = None;
+    let mut original_end = None;
+    for (offset, character) in original.char_indices() {
+        if normalized_offset == start {
+            original_start = Some(offset);
+        }
+        if normalized_offset == end {
+            original_end = Some(offset);
+            break;
+        }
+        normalized_offset += character.to_lowercase().map(char::len_utf8).sum::<usize>();
+    }
+    if normalized_offset == end && original_end.is_none() {
+        original_end = Some(original.len());
+    }
+    let surface = original.get(original_start?..original_end?)?;
+    (surface.to_lowercase() == normalized.get(start..end)?).then_some(surface)
+}
+
 fn add_actor(
     actors: &mut Vec<DiscourseActorIR>,
     surface: &str,
@@ -1140,6 +1293,7 @@ fn add_actor(
     }
     let actor_id = format!("ACTOR-{:02}", actors.len() + 1);
     actors.push(DiscourseActorIR {
+        korean_nominal_forms: Vec::new(),
         actor_id: actor_id.clone(),
         kind,
         surface: surface.trim().to_string(),
@@ -1172,6 +1326,80 @@ mod tests {
     use super::*;
     use crate::compositional_semantics::CompositionalSemanticAnalyzer;
 
+    #[test]
+    fn inferred_actor_forms_are_not_observations_but_unchanged_actor_spans_are() {
+        let interpreted = "Qx가 학생이 피곤하다고 말했다. Rv가 학생이 행복하다고 말했다.";
+        let observed = "그가 학생이 피곤하다고 말했다. Rv가 학생이 행복하다고 말했다.";
+        let graph = AttributionAnalyzer.analyze_with_observation(interpreted, &[], observed);
+        assert!(graph.validate());
+        assert!(graph
+            .actors
+            .iter()
+            .find(|a| a.surface == "Qx")
+            .unwrap()
+            .korean_nominal_forms
+            .is_empty());
+        assert_eq!(
+            graph
+                .actors
+                .iter()
+                .find(|a| a.surface == "Rv")
+                .unwrap()
+                .korean_nominal_forms
+                .len(),
+            1
+        );
+
+        let prefix = AttributionAnalyzer.analyze_with_observation(
+            "Qx이 학생이 행복하다고 말했다.",
+            &[],
+            "Qx이 그가 행복하다고 말했다.",
+        );
+        assert_eq!(
+            prefix.actors[0].korean_nominal_forms[0].observed_form,
+            "Qx이"
+        );
+
+        let changed_case = AttributionAnalyzer.analyze_with_observation(
+            "Qx가 학생이 행복하다고 말했다.",
+            &[],
+            "Qx이 학생이 행복하다고 말했다.",
+        );
+        assert!(changed_case.actors[0].korean_nominal_forms.is_empty());
+    }
+
+    #[test]
+    fn source_spelling_is_observed_not_reconstructed_from_identity() {
+        for (text, surface, identity) in [
+            ("McKay said the visitor is tired.", "McKay", "mckay"),
+            ("UNESCO reported the visitor is tired.", "UNESCO", "unesco"),
+            ("İpek said the visitor is tired.", "İpek", "i\u{307}pek"),
+            ("According to eBay, the visitor is tired.", "eBay", "ebay"),
+            ("McKay가 학생이 피곤하다고 말했다.", "McKay", "mckay"),
+        ] {
+            let graph = CompositionalSemanticAnalyzer
+                .analyze(text)
+                .attribution_graph;
+            assert!(graph.validate(), "{text}");
+            assert_eq!(graph.actors.len(), 1, "{text}");
+            assert_eq!(graph.actors[0].surface, surface, "{text}");
+            assert_eq!(graph.actors[0].normalized_label, identity, "{text}");
+        }
+        let graph = analyze("Alice said the visitor is tired. BOB said the visitor is tired.");
+        assert_eq!(graph.actors[0].surface, "Alice");
+        assert_eq!(graph.actors[1].surface, "BOB");
+    }
+
+    #[test]
+    fn original_spans_respect_unicode_expansions() {
+        let source = "İpek McKay";
+        let lower = source.to_lowercase();
+        assert_eq!(original_surface(source, &lower, 0, 6), Some("İpek"));
+        assert_eq!(original_surface(source, &lower, 7, 12), Some("McKay"));
+        assert_eq!(original_surface(source, &lower, 0, 1), None);
+        assert_eq!(original_surface(source, &lower, 1, 6), None);
+    }
+
     fn analyze(text: &str) -> AttributionGraphIR {
         let composition = CompositionalSemanticAnalyzer.analyze(text);
         AttributionAnalyzer.analyze(text, &composition.frames)
@@ -1182,7 +1410,12 @@ mod tests {
         let graph = analyze("민수는 서버가 멈췄다고 말했다.");
         assert!(graph.validate());
         assert_eq!(graph.actors[0].normalized_label, "민수");
-        assert_eq!(graph.propositions[0].normalized_text, "서버가 멈췄");
+        assert_eq!(graph.propositions[0].normalized_text, "서버가 멈췄다");
+        assert_eq!(
+            &"민수는 서버가 멈췄다고 말했다."
+                [graph.propositions[0].source_start_byte..graph.propositions[0].source_end_byte],
+            "서버가 멈췄다"
+        );
         assert_eq!(
             graph.attributions[0].epistemic_status,
             EpistemicStatusIR::Reported
@@ -1244,6 +1477,28 @@ mod tests {
         assert_eq!(graph.actors.len(), 1);
         assert_eq!(graph.actors[0].normalized_label, "nora");
         assert_eq!(graph.propositions[0].normalized_text, "the build succeeded");
+    }
+
+    #[test]
+    fn cognition_matrix_modifiers_do_not_become_actor_names() {
+        for (source, subject) in [
+            ("I never knew where it disappeared.", "i"),
+            ("We already knew who changed it.", "we"),
+        ] {
+            let graph = analyze(source);
+            assert!(graph.validate());
+            assert_eq!(graph.actors.len(), 1, "{source}: {graph:?}");
+            assert_eq!(graph.actors[0].normalized_label, subject);
+            assert_eq!(graph.actors[0].kind, DiscourseActorKindIR::DialogueSpeaker);
+        }
+        // Present 'know' is not an attribution trigger in the existing lexicon.
+        // Check its subject boundary directly, without pretending the complete
+        // attribution path acquired a new lexical capability in this repair.
+        let source = "I still know why it failed.";
+        let actor = extract_english_actor(source, 0, source.find("know").unwrap()).unwrap();
+        assert_eq!(actor.0, "I");
+        assert_eq!(actor.1, DiscourseActorKindIR::DialogueSpeaker);
+        assert!(analyze(source).actors.is_empty());
     }
 
     #[test]

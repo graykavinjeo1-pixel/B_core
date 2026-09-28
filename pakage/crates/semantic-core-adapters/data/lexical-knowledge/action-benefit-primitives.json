@@ -1,0 +1,10 @@
+[
+  {
+    "id": "ABP_0001",
+    "authorship": "SUPPLIED_ENGINEERING_PRIMITIVE_NOT_AUTONOMOUS_DISCOVERY",
+    "state_property": {"REGISTERED": "W_USER_900001"},
+    "state_value": true,
+    "possible_effect_id": "POTENTIAL_BENEFIT_0001",
+    "source_ref": "NIKL:71280:1:definition-purpose-not-guaranteed-outcome"
+  }
+]

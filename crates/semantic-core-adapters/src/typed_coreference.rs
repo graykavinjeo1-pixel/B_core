@@ -39,6 +39,7 @@ pub enum TypedMentionRoleIR {
     Recipient,
     Source,
     Destination,
+    Target,
     Instrument,
     Location,
     Result,
@@ -47,6 +48,8 @@ pub enum TypedMentionRoleIR {
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct TypedEntityReferentIR {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub korean_nominal_forms: Vec<crate::korean_nominal::KoreanNominalFormIR>,
     pub entity_id: String,
     pub canonical_surface: String,
     pub normalized_label: String,
@@ -61,6 +64,10 @@ pub struct TypedEntityReferentIR {
 impl TypedEntityReferentIR {
     pub fn validate(&self, completed_turns: u64) -> bool {
         !self.entity_id.trim().is_empty()
+            && crate::korean_nominal::validate_forms(
+                &self.korean_nominal_forms,
+                &self.canonical_surface,
+            )
             && !self.canonical_surface.trim().is_empty()
             && !self.normalized_label.trim().is_empty()
             && self.introduced_turn > 0
@@ -134,9 +141,16 @@ pub fn merge_typed_mentions(
                 .entry(normalized)
                 .and_modify(|mention| {
                     mention.roles.insert(TypedMentionRoleIR::AttributionSource);
+                    crate::korean_nominal::merge_forms(
+                        &mut mention.korean_nominal_forms,
+                        &actor.korean_nominal_forms,
+                    );
                 })
                 .or_insert_with(|| {
-                    Mention::new(surface, kind, TypedMentionRoleIR::AttributionSource)
+                    let mut mention =
+                        Mention::new(surface, kind, TypedMentionRoleIR::AttributionSource);
+                    mention.korean_nominal_forms = actor.korean_nominal_forms.clone();
+                    mention
                 });
         }
     }
@@ -174,13 +188,66 @@ pub fn merge_typed_mentions(
         }
     }
 
+    apply_mentions(referents, turn, mentions);
+}
+
+/// Descriptive memory has a wider lexical inventory than action planning.
+/// Project existing event roles into the same referent store, without granting
+/// them execution or truth authority, or reparsing their source as commands.
+pub(crate) fn merge_event_mentions<'a>(
+    referents: &mut Vec<TypedEntityReferentIR>,
+    turn: u64,
+    events: impl Iterator<Item = &'a crate::proposition_content::DescribedEventIR>,
+) {
+    use crate::proposition_content::ContentSlotIR;
+    let mut mentions = BTreeMap::<String, Mention>::new();
+    for event in events {
+        for (slot, value) in &event.roles {
+            let role = match slot {
+                ContentSlotIR::Agent => TypedMentionRoleIR::Agent,
+                ContentSlotIR::Theme => TypedMentionRoleIR::Theme,
+                ContentSlotIR::Recipient => TypedMentionRoleIR::Recipient,
+                ContentSlotIR::Source => TypedMentionRoleIR::Source,
+                ContentSlotIR::Location => TypedMentionRoleIR::Location,
+                _ => continue,
+            };
+            let surface = clean_surface(value);
+            let normalized = normalize_label(&surface);
+            if invalid_mention(&surface, &normalized) {
+                continue;
+            }
+            let kind = infer_kind(&surface, role == TypedMentionRoleIR::Agent, None);
+            mentions
+                .entry(normalized)
+                .and_modify(|m| {
+                    m.roles.insert(role);
+                })
+                .or_insert_with(|| Mention::new(surface, kind, role));
+        }
+    }
+    apply_mentions(referents, turn, mentions);
+}
+
+fn apply_mentions(
+    referents: &mut Vec<TypedEntityReferentIR>,
+    turn: u64,
+    mentions: BTreeMap<String, Mention>,
+) {
     for (normalized, mention) in mentions {
         if let Some(existing) = referents
             .iter_mut()
             .find(|referent| referent.normalized_label == normalized)
         {
+            // Multiple projections of one turn are one mention, not evidence
+            // of repeated observation or increased discourse salience.
+            if existing.last_mentioned_turn != turn {
+                existing.mention_count = existing.mention_count.saturating_add(1);
+            }
             existing.last_mentioned_turn = turn;
-            existing.mention_count = existing.mention_count.saturating_add(1);
+            crate::korean_nominal::merge_forms(
+                &mut existing.korean_nominal_forms,
+                &mention.korean_nominal_forms,
+            );
             if existing.kind == TypedEntityKindIR::Unknown
                 && mention.kind != TypedEntityKindIR::Unknown
             {
@@ -201,6 +268,7 @@ pub fn merge_typed_mentions(
             .count()
             + 1;
         referents.push(TypedEntityReferentIR {
+            korean_nominal_forms: mention.korean_nominal_forms,
             entity_id: format!("TREF-{turn:06}-{suffix:02}"),
             canonical_surface: mention.surface,
             normalized_label: normalized,
@@ -265,6 +333,7 @@ pub fn resolve_typed_coreference(
         &referent.canonical_surface,
         pattern.realization,
         pattern.marker,
+        &referent.korean_nominal_forms,
     );
     TypedCoreferenceResolution {
         resolved_text: replace_first_case_insensitive(text, pattern.marker, &replacement),
@@ -311,6 +380,7 @@ fn is_local_process_object(text: &str, marker: &str) -> bool {
 }
 
 struct Mention {
+    korean_nominal_forms: Vec<crate::korean_nominal::KoreanNominalFormIR>,
     surface: String,
     kind: TypedEntityKindIR,
     roles: BTreeSet<TypedMentionRoleIR>,
@@ -320,6 +390,7 @@ impl Mention {
     fn new(surface: String, kind: TypedEntityKindIR, role: TypedMentionRoleIR) -> Self {
         Self {
             surface,
+            korean_nominal_forms: Vec::new(),
             kind,
             roles: BTreeSet::from([role]),
         }
@@ -521,7 +592,16 @@ fn replace_first_case_insensitive(text: &str, marker: &str, replacement: &str) -
     format!("{}{}{}", &text[..start], replacement, &text[end..])
 }
 
-fn realize(surface: &str, form: Realization, marker: &str) -> String {
+fn realize(
+    surface: &str,
+    form: Realization,
+    marker: &str,
+    nominal_forms: &[crate::korean_nominal::KoreanNominalFormIR],
+) -> String {
+    // This string is the legacy semantic-parser bridge, not observed speech.
+    // Unknown coda retains its case marker convention but cannot teach a new
+    // pronunciation witness downstream. Actual output uses expression evidence.
+    let coda = crate::korean_nominal::final_coda(surface, nominal_forms).unwrap_or(false);
     match form {
         Realization::Plain => surface.to_string(),
         Realization::EnglishPossessive => {
@@ -530,8 +610,8 @@ fn realize(surface: &str, form: Realization, marker: &str) -> String {
                 marker.split_whitespace().next_back().unwrap_or("claim")
             )
         }
-        Realization::KoreanSubject => format!("{surface}{}", subject_particle(surface)),
-        Realization::KoreanObject => format!("{surface}{}", object_particle(surface)),
+        Realization::KoreanSubject => format!("{surface}{}", if coda { "이" } else { "가" }),
+        Realization::KoreanObject => format!("{surface}{}", if coda { "을" } else { "를" }),
         Realization::KoreanPossessive => {
             format!(
                 "{surface}의 {}",
@@ -571,22 +651,49 @@ fn invalid_mention(surface: &str, normalized: &str) -> bool {
         || matches!(normalized, "user" | "dialogue_speaker" | "사용자")
 }
 
-fn is_pronominal(label: &str) -> bool {
-    matches!(
-        label,
-        "she"
-            | "he"
-            | "her"
-            | "him"
-            | "his"
-            | "it"
-            | "they"
-            | "them"
-            | "그"
-            | "그녀"
-            | "그것"
-            | "그들"
-    )
+pub(crate) fn is_pronominal(label: &str) -> bool {
+    crate::proposition_content::speaker_or_addressee_reference(label)
+        || crate::conversation::is_reference_surface(label)
+        || crate::conversation::is_plural_reference_surface(label)
+        || crate::proposition_content::contracted_pronoun_topic(label).is_some()
+        || matches!(
+            label,
+            "she"
+                | "he"
+                | "her"
+                | "him"
+                | "his"
+                | "it"
+                | "they"
+                | "them"
+                | "그"
+                | "그녀"
+                | "그것"
+                | "그들"
+        )
+        || dictionary_pronominal_form(label)
+}
+
+/// Reuse source-attested POS and productive nominal morphology. A substring
+/// match, incomplete lookup or homographic non-pronoun reading is not enough to
+/// reject a nominal mention. This records no antecedent and creates no concept.
+fn dictionary_pronominal_form(label: &str) -> bool {
+    if label.chars().count() > 64
+        || label.chars().any(char::is_whitespace)
+        || !label.chars().any(|c| ('가'..='힣').contains(&c))
+    {
+        return false;
+    }
+    let lookup = crate::lexical_knowledge_pack::builtin_pack().lookup(label);
+    if lookup.truncated {
+        return false;
+    }
+    let exact = lookup
+        .matches
+        .iter()
+        .filter(|m| m.matched_form == label)
+        .collect::<Vec<_>>();
+    !exact.is_empty() && exact.iter().all(|m| m.entry.pos == "대명사")
 }
 
 fn infer_kind(surface: &str, actor_like: bool, concept_hint: Option<&str>) -> TypedEntityKindIR {
@@ -676,6 +783,7 @@ fn mention_role(role: SemanticRoleKindIR) -> TypedMentionRoleIR {
         SemanticRoleKindIR::Recipient => TypedMentionRoleIR::Recipient,
         SemanticRoleKindIR::Source => TypedMentionRoleIR::Source,
         SemanticRoleKindIR::Destination => TypedMentionRoleIR::Destination,
+        SemanticRoleKindIR::Target => TypedMentionRoleIR::Target,
         SemanticRoleKindIR::Instrument => TypedMentionRoleIR::Instrument,
         SemanticRoleKindIR::Location => TypedMentionRoleIR::Location,
         SemanticRoleKindIR::Result | SemanticRoleKindIR::PriorResult => TypedMentionRoleIR::Result,
@@ -687,33 +795,77 @@ fn contains_any(text: &str, markers: &[&str]) -> bool {
     markers.iter().any(|marker| text.contains(marker))
 }
 
-fn has_final_consonant(value: &str) -> bool {
-    value.chars().next_back().is_some_and(|character| {
-        let code = u32::from(character);
-        (0xac00..=0xd7a3).contains(&code) && (code - 0xac00) % 28 != 0
-    })
-}
-
-fn object_particle(value: &str) -> &'static str {
-    if has_final_consonant(value) {
-        "을"
-    } else {
-        "를"
-    }
-}
-
-fn subject_particle(value: &str) -> &'static str {
-    if has_final_consonant(value) {
-        "이"
-    } else {
-        "가"
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::compositional_semantics::CompositionalSemanticAnalyzer;
+
+    #[test]
+    fn participant_pronouns_are_not_named_entity_memories() {
+        for surface in ["I", "We", "You", "나", "저", "내", "제", "너", "우리"] {
+            assert!(
+                invalid_mention(surface, &normalize_label(surface)),
+                "{surface}"
+            );
+        }
+        for surface in ["Mira", "Weaver", "우리은행"] {
+            assert!(
+                !invalid_mention(surface, &normalize_label(surface)),
+                "{surface}"
+            );
+        }
+    }
+
+    #[test]
+    fn reference_morphology_is_not_a_new_nominal_identity() {
+        for label in [
+            "그걸",
+            "그것을",
+            "그게",
+            "그거에",
+            "그것들",
+            "그건",
+            "이건",
+            "그곳은",
+            "이것에게",
+            "저것으로",
+        ] {
+            assert!(is_pronominal(label), "{label}");
+        }
+        for label in ["파일", "이것저것", "그림", "그것상사", "우리은행", "Weaver"]
+        {
+            assert!(!is_pronominal(label), "{label}");
+        }
+    }
+
+    #[test]
+    fn reference_case_realization_consumes_nominal_memory() {
+        for (name, form, subject, object) in [
+            ("HanSol", "HanSol이", "HanSol이", "HanSol을"),
+            ("Qv", "Qv는", "Qv가", "Qv를"),
+        ] {
+            let analysis =
+                CompositionalSemanticAnalyzer.analyze(&format!("{form} 학생이 행복하다고 말했다."));
+            let mut entities = Vec::new();
+            merge_typed_mentions(&mut entities, 1, None, Some(&analysis.attribution_graph));
+            let resolved =
+                resolve_typed_coreference(&entities, 1, "그가 학생이 피곤하다고 말했다.");
+            assert_eq!(
+                resolved.resolved_text,
+                format!("{subject} 학생이 피곤하다고 말했다.")
+            );
+            assert_eq!(
+                realize(
+                    name,
+                    Realization::KoreanObject,
+                    "그 서비스를",
+                    &entities[0].korean_nominal_forms
+                ),
+                object
+            );
+            assert_eq!(resolved.entity_ids, vec![entities[0].entity_id.clone()]);
+        }
+    }
 
     #[test]
     fn attribution_actor_survives_incompatible_distractors() {
@@ -726,7 +878,7 @@ mod tests {
             Some(&analysis.attribution_graph),
         );
         let resolution = resolve_typed_coreference(&entities, 9, "She corrected the report");
-        assert_eq!(resolution.resolved_text, "avery corrected the report");
+        assert_eq!(resolution.resolved_text, "Avery corrected the report");
         assert_eq!(
             resolution.binding_kind,
             Some(TypedCoreferenceBindingKind::Entity)
@@ -759,6 +911,7 @@ mod tests {
     #[test]
     fn quoted_pronoun_is_not_bound() {
         let mut entities = vec![TypedEntityReferentIR {
+            korean_nominal_forms: Vec::new(),
             entity_id: "TREF-000001-01".to_string(),
             canonical_surface: "Avery".to_string(),
             normalized_label: "avery".to_string(),
@@ -778,6 +931,7 @@ mod tests {
     #[test]
     fn korean_particle_suffix_is_allowed_but_embedded_pronoun_is_not() {
         let entities = vec![TypedEntityReferentIR {
+            korean_nominal_forms: Vec::new(),
             entity_id: "TREF-000001-01".to_string(),
             canonical_surface: "가람".to_string(),
             normalized_label: "가람".to_string(),

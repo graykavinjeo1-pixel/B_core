@@ -42,6 +42,7 @@ pub use mechanism_memory::{
 pub use planning::{
     semantic_plan_bundle_sha256, semantic_plan_goal_sha256, PlanGoalIR, PlanIR, PlanIntentIR,
     PlanOperationIR, PlanStepIR, PlanningError, SemanticEventPlanBindingIR, SemanticPlanArgumentIR,
+    SemanticPlanGenerationTimingIR,
     SemanticPlanBundleIR, SemanticPlanEventIR, SemanticPlanGoalIR, SemanticPlanProjectionIR,
     SemanticPlanRelationIR, SemanticPlanRelationKindIR, SemanticPlanRoleIR, PLAN_GOAL_SCHEMA,
     PLAN_SCHEMA, SEMANTIC_PLAN_BUNDLE_SCHEMA, SEMANTIC_PLAN_GOAL_SCHEMA,

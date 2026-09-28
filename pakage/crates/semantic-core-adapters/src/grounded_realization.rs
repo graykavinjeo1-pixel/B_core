@@ -213,7 +213,13 @@ pub(crate) fn build_evidence_grounded_realization(
     } else if let Some(answer) = source.dialogue_relation_answer {
         dialogue_relation_claims(answer, source.turn_index)
     } else if let Some(answer) = source.discourse_answer {
-        discourse_claims(answer, source.turn_index)
+        let mut claims = discourse_claims(answer, source.turn_index);
+        if let Some(plan) = source.plan {
+            let mut planned = plan_claim(plan, source.turn_index);
+            planned.claim_id = format!("CLAIM-{:02}", claims.len());
+            claims.push(planned);
+        }
+        claims
     } else if let Some(plan) = source.plan {
         vec![plan_claim(plan, source.turn_index)]
     } else {
@@ -344,6 +350,23 @@ fn action_claims(
     ledger: &ActionStateLedgerIR,
     turn_index: u64,
 ) -> Vec<GroundedClaimIR> {
+    if let Some(question) = &analysis.execution_capability_question {
+        return vec![claim(
+            0,
+            GroundedClaimKindIR::InteractionState,
+            format!(
+                "conversation API has no direct external executor; queried action {} on {}",
+                question.canonical_predicate, question.subject
+            ),
+            ClaimEpistemicStatusIR::Interaction,
+            ClaimSupportStatusIR::StructurallyGrounded,
+            vec![
+                crate::action_state::CONVERSATION_EXECUTION_POLICY_REF.to_string(),
+                question.source_text_sha256.clone(),
+            ],
+            vec![turn_index],
+        )];
+    }
     let mut claims = Vec::new();
     let mut records = analysis
         .target_action_ids
@@ -592,6 +615,17 @@ fn action_plan_claim(record: &ActionStateRecordIR, index: usize) -> GroundedClai
 }
 
 fn discourse_claims(answer: &DiscourseAnswerIR, turn_index: u64) -> Vec<GroundedClaimIR> {
+    if let Some(inquiry) = &answer.decision_inquiry {
+        return vec![claim(
+            0,
+            GroundedClaimKindIR::DialogueRelation,
+            serde_json::to_string(inquiry).expect("decision inquiry serializes"),
+            ClaimEpistemicStatusIR::Unknown,
+            ClaimSupportStatusIR::StructurallyGrounded,
+            vec![format!("DECISION_INPUT:{:?}", inquiry.missing_input)],
+            vec![turn_index],
+        )];
+    }
     if let Some(c) = &answer.world_clarification {
         return vec![claim(
             0,
@@ -891,11 +925,22 @@ mod tests {
     #[test]
     fn unsupported_presupposition_is_explicit_absence_not_empty_derived_evidence() {
         let answer = DiscourseAnswerIR {
+            plan_method: None,
+            described_query: None,
+            korean_nominal_forms: Vec::new(),
+            reference_gap: None,
+            response_constraint_conflict: None,
+            question_request: None,
+            content_request: None,
+            contextual_target: None,
+            response_parts: vec![],
+            event_summary: None,
             reformulated_request: None,
             content_projection: None,
             world_reasoning: None,
             world_memory_update: None,
             world_clarification: None,
+            decision_inquiry: None,
             schema: crate::discourse_qa::DISCOURSE_ANSWER_SCHEMA.to_string(),
             query: crate::discourse_qa::DiscourseQueryIR {
                 schema: crate::discourse_qa::DISCOURSE_QUERY_SCHEMA.to_string(),

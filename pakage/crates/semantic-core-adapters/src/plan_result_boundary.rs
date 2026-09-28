@@ -15,7 +15,7 @@ use crate::action_state::{
 };
 use crate::language_knowledge::LanguageCodeIR;
 
-pub const PLAN_RESULT_BOUNDARY_SCHEMA: &str = "B_CORE_PLAN_RESULT_BOUNDARY_IR_2";
+pub const PLAN_RESULT_BOUNDARY_SCHEMA: &str = "B_CORE_PLAN_RESULT_BOUNDARY_IR_3";
 pub const ACTION_LIFECYCLE_SNAPSHOT_SCHEMA: &str = "B_CORE_ACTION_LIFECYCLE_SNAPSHOT_IR_1";
 const MAX_LIFECYCLE_SNAPSHOTS: usize = 32;
 const MAX_SELECTED_ACTIONS: usize = 32;
@@ -32,6 +32,7 @@ pub enum PlanResultQueryFocusIR {
     PlanVersusResult,
     ReportedVersusResult,
     ExecutionVersusPlan,
+    UnverifiedEventPremise,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -282,7 +283,13 @@ pub fn build_plan_result_boundary(
     analysis: &ActionStateAnalysisIR,
     ledger: &ActionStateLedgerIR,
 ) -> PlanResultBoundaryIR {
-    let query_focus = classify_plan_result_query_focus(source_text);
+    let query_focus = if !analysis.event_question_content_slots.is_empty() {
+        PlanResultQueryFocusIR::UnverifiedEventPremise
+    } else if !analysis.event_question_frame_ids.is_empty() {
+        PlanResultQueryFocusIR::ExecutionVersusPlan
+    } else {
+        classify_plan_result_query_focus(source_text)
+    };
     let snapshots = ledger
         .records
         .iter()
@@ -295,7 +302,7 @@ pub fn build_plan_result_boundary(
         .collect::<BTreeSet<_>>();
     let mut selected_action_ids = if query_focus == PlanResultQueryFocusIR::None {
         Vec::new()
-    } else if selects_action_set(source_text) {
+    } else if analysis.event_question_frame_ids.is_empty() && selects_action_set(source_text) {
         snapshots
             .iter()
             .map(|snapshot| snapshot.action_id.clone())
@@ -308,7 +315,10 @@ pub fn build_plan_result_boundary(
             .cloned()
             .collect::<Vec<_>>()
     };
-    if query_focus != PlanResultQueryFocusIR::None && selected_action_ids.is_empty() {
+    if query_focus != PlanResultQueryFocusIR::None
+        && selected_action_ids.is_empty()
+        && analysis.event_question_frame_ids.is_empty()
+    {
         if let Some(record) = ledger.current_record() {
             selected_action_ids.push(record.action_id.clone());
         }

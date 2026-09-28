@@ -990,15 +990,20 @@ fn extract_with_command(
 }
 
 fn extract_image(path: &Path) -> Result<(String, String), (EvidenceStatusIR, &'static str)> {
-    match extract_paddle_ocr(path) {
+    #[cfg(feature = "python-paddle-ocr")]
+    if let Ok(result) = extract_paddle_ocr(path) {
+        if !result.0.trim().is_empty() {
+            return Ok(result);
+        }
+    }
+
+    match extract_with_command("tesseract", path, &["stdout", "-l", "kor+eng"]) {
         Ok(result) if !result.0.trim().is_empty() => Ok(result),
-        _ => match extract_with_command("tesseract", path, &["stdout", "-l", "kor+eng"]) {
-            Ok(result) if !result.0.trim().is_empty() => Ok(result),
-            _ => extract_windows_ocr(path),
-        },
+        _ => extract_windows_ocr(path),
     }
 }
 
+#[cfg(feature = "python-paddle-ocr")]
 fn extract_paddle_ocr(path: &Path) -> Result<(String, String), (EvidenceStatusIR, &'static str)> {
     const SCRIPT: &str = r#"import json, sys
 try:

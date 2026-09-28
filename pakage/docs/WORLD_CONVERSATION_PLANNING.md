@@ -97,8 +97,11 @@ The execution receipt is
   every old hard-coded sentence in the repository.
 - Canonical concepts, research stages and self-improvement quarantine are
   unchanged. No LLM/teacher dependency or automatic source modification added.
-- State schema is `B_CORE_CONVERSATION_STATE_32`; response schema is
-  `B_CORE_CONVERSATION_TURN_RESPONSE_22`. Consumers must accept the new optional
+- State schema is `B_CORE_CONVERSATION_STATE_35`; response schema is
+  `B_CORE_CONVERSATION_TURN_RESPONSE_26`. See [event references](EVENT_REFERENCE_UNDERSTANDING.md),
+  [described events](DESCRIBED_EVENT_UNDERSTANDING.md)
+  and [utterance understanding](UTTERANCE_UNDERSTANDING.md)
+  for the current correction/intent boundary. Consumers must accept the new optional
   clarification payload and nested discourse/grounding/utterance-plan fields.
   Start a new session or explicitly migrate old saved state; no silent migration.
 - Source is mirrored in `pakage`. Binaries/services are not automatically

@@ -14,7 +14,209 @@ use crate::semantic_roles::{
     QuantifierKindIR, SemanticNodeIR, SemanticNodeKindIR, SemanticRoleGraphIR,
 };
 
-pub const GRAMMATICAL_SCOPE_GRAPH_SCHEMA: &str = "B_CORE_GRAMMATICAL_SCOPE_GRAPH_IR_1";
+pub const GRAMMATICAL_SCOPE_GRAPH_SCHEMA: &str = "B_CORE_GRAMMATICAL_SCOPE_GRAPH_IR_2";
+
+/// Syntactic ownership, not an assertion that the embedded event happened or
+/// that the speaker's knowledge is verified. Consumers must not turn the WH
+/// argument into an independent question or an execution request.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct EmbeddedInformationStatementIR {
+    pub content: String,
+    pub content_start_byte: usize,
+    pub content_end_byte: usize,
+    pub matrix: String,
+    pub grammar_rule: &'static str,
+}
+
+pub fn embedded_information_statement(source: &str) -> Option<EmbeddedInformationStatementIR> {
+    if source.chars().count() > 2048
+        || source.contains(['?', '？', '"', '“', '”', '‘', '’', '`', '\n', ';', ','])
+    {
+        return None;
+    }
+    let trimmed = source.trim().trim_end_matches(['.', '!']).trim();
+    let normalized = trimmed.to_lowercase();
+    if normalized.contains(['.', '!']) {
+        return None;
+    }
+    let words = normalized.split_whitespace().collect::<Vec<_>>();
+    if !(3..=48).contains(&words.len())
+        || words
+            .iter()
+            .any(|w| matches!(*w, "and" | "but" | "then" | "그리고" | "하지만" | "그래서"))
+    {
+        return None;
+    }
+    // Keep original-source byte coordinates even when case folding expands a
+    // character. These spans bind lexical events without rewriting the input.
+    let mut cursor = source.len() - source.trim_start().len();
+    let spans = trimmed
+        .split_whitespace()
+        .map(|word| {
+            let start = cursor + source[cursor..].find(word).expect("source token");
+            cursor = start + word.len();
+            (start, cursor)
+        })
+        .collect::<Vec<_>>();
+    let english_wh = |w: &str| {
+        matches!(
+            w,
+            "why" | "who" | "what" | "where" | "when" | "how" | "whether" | "which"
+        )
+    };
+    // Subject + finite cognition predicate + interrogative complement. The
+    // subject/auxiliary order, not a WH keyword anywhere in the turn, owns force.
+    if matches!(words[0], "i" | "we" | "you" | "he" | "she" | "they" | "it") {
+        for wh in 2..words.len().saturating_sub(1) {
+            if !english_wh(words[wh])
+                || !matches!(
+                    words[wh - 1],
+                    "know"
+                        | "knows"
+                        | "knew"
+                        | "remember"
+                        | "remembers"
+                        | "remembered"
+                        | "understand"
+                        | "understands"
+                        | "understood"
+                )
+            {
+                continue;
+            }
+            if !words[1..wh - 1].iter().all(|w| {
+                matches!(
+                    *w,
+                    "do" | "does"
+                        | "did"
+                        | "don't"
+                        | "doesn't"
+                        | "didn't"
+                        | "not"
+                        | "still"
+                        | "already"
+                        | "really"
+                        | "quite"
+                        | "yet"
+                        | "never"
+                )
+            }) {
+                continue;
+            }
+            return Some(EmbeddedInformationStatementIR {
+                content: words[wh..].join(" "),
+                content_start_byte: spans[wh].0,
+                content_end_byte: spans[spans.len() - 1].1,
+                matrix: words[..wh].join(" "),
+                grammar_rule: "EN_COGNITION_INTERROGATIVE_ARGUMENT",
+            });
+        }
+    }
+    // A WH clause can itself be a nominal subject: what happened / is unclear.
+    // Direct 'what is unclear?' and inverted questions do not have this shape.
+    if english_wh(words[0]) {
+        for copula in 2..words.len().saturating_sub(1) {
+            if !matches!(words[copula], "is" | "was" | "remains") {
+                continue;
+            }
+            let tail = &words[copula + 1..];
+            if !matches!(
+                tail.last().copied(),
+                Some("known" | "unknown" | "clear" | "unclear" | "obvious")
+            ) || !tail[..tail.len() - 1]
+                .iter()
+                .all(|w| matches!(*w, "still" | "not" | "yet" | "entirely" | "quite"))
+            {
+                continue;
+            }
+            return Some(EmbeddedInformationStatementIR {
+                content: words[..copula].join(" "),
+                content_start_byte: spans[0].0,
+                content_end_byte: spans[copula - 1].1,
+                matrix: words[copula..].join(" "),
+                grammar_rule: "EN_INFORMATION_CLAUSE_AS_SUBJECT",
+            });
+        }
+    }
+    let first_person = |w: &str| matches!(w, "나는" | "난" | "저는" | "전" | "우리는" | "우린");
+    let start = usize::from(first_person(words[0]));
+    let wh = words[start..].iter().position(|w| {
+        matches!(
+            *w,
+            "왜" | "누가"
+                | "누구"
+                | "언제"
+                | "어디"
+                | "어디로"
+                | "어디서"
+                | "어떻게"
+                | "무엇"
+                | "무엇을"
+                | "뭐"
+                | "얼마나"
+        )
+    })? + start;
+    if !words[start..wh].iter().all(|w| {
+        ["은", "는", "이", "가", "을", "를", "에", "에서"]
+            .iter()
+            .any(|s| w.ends_with(s))
+    }) {
+        return None;
+    }
+    let boundary = (wh..words.len() - 1).find(|&i| korean_information_complement(words[i]))?;
+    if !words[boundary + 1..words.len() - 1].iter().all(|w| {
+        matches!(
+            *w,
+            "아직" | "잘" | "정확히" | "이미" | "대충" | "전혀" | "안" | "못"
+        ) || first_person(w)
+    }) {
+        return None;
+    }
+    let last = words[words.len() - 1];
+    let lexical = crate::lexical_knowledge_pack::builtin_pack().lookup(last);
+    if lexical.truncated {
+        return None;
+    }
+    let cognition = lexical.matches.iter().any(|m| {
+        m.matched_form == last
+            && match m.entry.lemma.as_str() {
+                "알다" | "모르다" => true,
+                // Bare 'remember!' is ambiguous without a subject. Do not silently
+                // erase that directive reading merely because it has a WH argument.
+                "기억하다" | "이해하다" => {
+                    start != 0
+                        || ["한다", "합니다", "했다", "했습니다"]
+                            .iter()
+                            .any(|s| last.ends_with(s))
+                }
+                _ => false,
+            }
+    });
+    cognition.then(|| EmbeddedInformationStatementIR {
+        content: words[start..=boundary].join(" "),
+        content_start_byte: spans[start].0,
+        content_end_byte: spans[boundary].1,
+        matrix: words[boundary + 1..].join(" "),
+        grammar_rule: "KO_INTERROGATIVE_ARGUMENT_UNDER_COGNITION",
+    })
+}
+
+fn korean_information_complement(word: &str) -> bool {
+    let bare = ["는", "도", "를"]
+        .iter()
+        .find_map(|suffix| {
+            word.strip_suffix(suffix)
+                .filter(|stem| stem.ends_with('지'))
+        })
+        .unwrap_or(word);
+    let Some(stem) = bare.strip_suffix('지') else {
+        return false;
+    };
+    stem.ends_with(['는', '은', '을'])
+        || stem.chars().last().is_some_and(|c| {
+            ('가'..='힣').contains(&c) && matches!((u32::from(c) - u32::from('가')) % 28, 4 | 8)
+        })
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -37,6 +239,7 @@ pub enum GrammaticalScopeEdgeKindIR {
     Governs,
     Restricts,
     Member,
+    ContentComplement,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -263,6 +466,30 @@ impl GrammaticalScopeAnalyzer {
         }
 
         let mut quantifier_nodes = BTreeMap::<String, Vec<(QuantifierKindIR, String)>>::new();
+        for relation in &role_graph.event_relations {
+            if relation.relation != crate::semantic_roles::EventRelationKindIR::ContentComplement {
+                continue;
+            }
+            let frame_for = |id: &str| {
+                role_graph
+                    .nodes
+                    .iter()
+                    .find(|n| n.node_id == id)
+                    .and_then(|n| n.source_frame_id.as_deref())
+            };
+            if let (Some(matrix), Some(content)) = (
+                frame_for(&relation.source_event_node_id),
+                frame_for(&relation.target_event_node_id),
+            ) {
+                builder.add_edge(
+                    &format!("SCOPE-EVENT-{matrix}"),
+                    &format!("SCOPE-EVENT-{content}"),
+                    GrammaticalScopeEdgeKindIR::ContentComplement,
+                    "CLAUSE_CONTENT_ARGUMENT",
+                    950,
+                );
+            }
+        }
         let mut seen_quantifiers = BTreeSet::new();
         for scope in &role_graph.quantifier_scopes {
             if !seen_quantifiers.insert((

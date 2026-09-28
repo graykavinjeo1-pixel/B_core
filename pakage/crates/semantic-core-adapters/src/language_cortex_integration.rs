@@ -111,7 +111,17 @@ impl LanguageCortexResponseIntegrationIR {
     }
 
     pub fn validate_against(&self, sources: LanguageCortexResponseSources<'_>) -> bool {
-        self.validate() && self == &build_language_cortex_response_integration(sources)
+        let check =
+            crate::natural_realization::NaturalRealizationCheck::new(sources.natural_realization);
+        self.validate_with_realization_check(sources, &check)
+    }
+
+    pub(crate) fn validate_with_realization_check(
+        &self,
+        sources: LanguageCortexResponseSources<'_>,
+        check: &crate::natural_realization::NaturalRealizationCheck,
+    ) -> bool {
+        self.validate() && self == &build_language_cortex_with_realization_check(sources, check)
     }
 }
 
@@ -182,6 +192,15 @@ struct ResponsePayloadView<'a> {
 pub fn build_language_cortex_response_integration(
     sources: LanguageCortexResponseSources<'_>,
 ) -> LanguageCortexResponseIntegrationIR {
+    let check =
+        crate::natural_realization::NaturalRealizationCheck::new(sources.natural_realization);
+    build_language_cortex_with_realization_check(sources, &check)
+}
+
+pub(crate) fn build_language_cortex_with_realization_check(
+    sources: LanguageCortexResponseSources<'_>,
+    check: &crate::natural_realization::NaturalRealizationCheck,
+) -> LanguageCortexResponseIntegrationIR {
     let discourse_outputs = DiscourseOutputsView {
         discourse_group_update: sources.discourse_group_update,
         topic_transition: sources.topic_transition,
@@ -216,7 +235,7 @@ pub fn build_language_cortex_response_integration(
         six_axis_integration: sources.six_axis_integration,
         output: sources.output,
     };
-    let violations = source_component_violations(sources);
+    let violations = source_component_violations(sources, check);
     let complete = violations.is_empty();
     let mut integration = LanguageCortexResponseIntegrationIR {
         schema: LANGUAGE_CORTEX_RESPONSE_INTEGRATION_SCHEMA.to_string(),
@@ -263,7 +282,10 @@ pub fn language_cortex_response_integration_sha256(
     content_sha256(&canonical)
 }
 
-fn source_component_violations(sources: LanguageCortexResponseSources<'_>) -> Vec<String> {
+fn source_component_violations(
+    sources: LanguageCortexResponseSources<'_>,
+    check: &crate::natural_realization::NaturalRealizationCheck,
+) -> Vec<String> {
     let mut violations = Vec::new();
     let request_valid = sources.request.schema == CONVERSATION_TURN_REQUEST_SCHEMA
         && valid_id(&sources.request.conversation_id)
@@ -290,20 +312,23 @@ fn source_component_violations(sources: LanguageCortexResponseSources<'_>) -> Ve
             .is_none_or(TopicTransitionIR::validate);
     let six_axis_valid = sources
         .six_axis_integration
-        .validate_against(SixAxisIntegrationSources {
-            request_id: &sources.request.request_id,
-            turn_index: sources.request.turn_index,
-            pragmatic_interpretation: sources.pragmatic_interpretation,
-            conversation_state: sources.conversation_state,
-            reference_resolution: sources.reference_resolution,
-            action_state_analysis: sources.action_state_analysis,
-            plan_result_boundary: sources.plan_result_boundary,
-            grounded_plan: sources.grounded_response.map(|response| &response.plan),
-            natural_realization: sources.natural_realization,
-            grounded_realization: sources.grounded_realization,
-            interaction_provenance: sources.interaction_provenance,
-            realized_output: &sources.output.text,
-        });
+        .validate_with_realization_check(
+            SixAxisIntegrationSources {
+                request_id: &sources.request.request_id,
+                turn_index: sources.request.turn_index,
+                pragmatic_interpretation: sources.pragmatic_interpretation,
+                conversation_state: sources.conversation_state,
+                reference_resolution: sources.reference_resolution,
+                action_state_analysis: sources.action_state_analysis,
+                plan_result_boundary: sources.plan_result_boundary,
+                grounded_plan: sources.grounded_response.map(|response| &response.plan),
+                natural_realization: sources.natural_realization,
+                grounded_realization: sources.grounded_realization,
+                interaction_provenance: sources.interaction_provenance,
+                realized_output: &sources.output.text,
+            },
+            check,
+        );
     let checks = [
         (request_valid, "REQUEST_INVALID"),
         (turn_aligned, "TURN_STATE_MISALIGNED"),
@@ -337,11 +362,11 @@ fn source_component_violations(sources: LanguageCortexResponseSources<'_>) -> Ve
             "PLAN_RESULT_BOUNDARY_INVALID",
         ),
         (
-            sources.natural_realization.validate_output(
-                sources.output.language,
-                &sources.output.text,
-                sources.output.unsupported_freeform_claims,
-            ),
+            check.accepts(sources.natural_realization)
+                && sources.natural_realization.language == sources.output.language
+                && sources.natural_realization.realized_text == sources.output.text
+                && sources.natural_realization.unsupported_claims
+                    == sources.output.unsupported_freeform_claims,
             "NATURAL_REALIZATION_INVALID",
         ),
         (

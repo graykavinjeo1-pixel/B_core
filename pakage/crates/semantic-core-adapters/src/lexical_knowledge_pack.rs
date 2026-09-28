@@ -7,8 +7,12 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
 pub const PACK_SHA256: &str = "d614048f9df99ac9104cf0206ace8cb9238f0f6a7490bfb06980d6fbf69d23c8";
-pub const PACK_SCHEMA: &str = "B_CORE_BILINGUAL_LEXICAL_LOOKUP_1";
+pub const PACK_SCHEMA: &str = "B_CORE_BILINGUAL_LEXICAL_LOOKUP_5";
 const DATA: &str = include_str!("../data/lexical-knowledge/nikl-ko-en.jsonl");
+const ENGLISH_STRESS_DATA: &str =
+    include_str!("../data/lexical-knowledge/english-final-stress.json");
+pub const ENGLISH_STRESS_SHA256: &str =
+    "34ff6891bb70f9bbf66d2ea05fd7e6df8dd6e9aaf721866d9b2b5ff7c3ef066c";
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct BilingualSenseIR {
@@ -174,11 +178,47 @@ pub struct LexicalKnowledgeMatchIR {
     /// Polysemy remains a set of candidates; frequency does not select truth.
     pub concept_ids: Vec<String>,
 }
+
+/// A bounded reading of an attributed dictionary definition, not world truth.
+/// Topic categories (e.g. housing) are deliberately not entity types.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum NominalReferentKindIR {
+    Person,
+    Place,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct NominalReferentEvidenceIR {
+    pub pack_sha256: String,
+    pub surface: String,
+    pub kind: NominalReferentKindIR,
+    pub definition_heads: BTreeMap<String, String>,
+}
+
+fn definition_referent_head(definition: &str) -> Option<(&str, NominalReferentKindIR)> {
+    // Korean nominal dictionary definitions end in their genus. A noun
+    // occurring inside a modifier is not evidence for the referent's type.
+    let head = definition
+        .trim()
+        .trim_end_matches('.')
+        .split_whitespace()
+        .next_back()?;
+    let kind = match head {
+        "사람" => NominalReferentKindIR::Person,
+        "곳" | "장소" | "공간" => NominalReferentKindIR::Place,
+        _ => return None,
+    };
+    Some((head, kind))
+}
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct LexicalKnowledgeLookupIR {
     pub schema: String,
     pub source_sha256: String,
     pub pack_sha256: String,
+    /// Auxiliary pronunciation/inflection knowledge, not semantic concept data.
+    #[serde(default)]
+    pub english_stress_lexicon_sha256: String,
     pub matches: Vec<LexicalKnowledgeMatchIR>,
     pub unmatched_tokens: Vec<String>,
     pub truncated: bool,
@@ -288,6 +328,19 @@ impl LexicalKnowledgePack {
                 .filter(|a| !a.is_empty())
             {
                 self.add_form(i, alias, "", "SOURCE_ENGLISH_EQUIVALENT");
+                // Finite irregular forms are lexical grammar, not event effects.
+                // Keep the source lemma/senses; do not create new concepts.
+                if e.pos == "동사" {
+                    if let Some(past) = english_irregular_past(alias) {
+                        self.add_form(i, past, "", "EN_IRREGULAR_PAST");
+                    }
+                    if let Some(participle) = english_participle(alias) {
+                        self.add_form(i, participle, "", "EN_PAST_PARTICIPLE");
+                    }
+                    if let Some(past) = english_regular_past(alias) {
+                        self.add_form(i, &past, "", "EN_REGULAR_PAST");
+                    }
+                }
             }
         }
         for form in &e.forms {
@@ -322,8 +375,17 @@ impl LexicalKnowledgePack {
         ] {
             self.add_form(i, stem, ending, "KO_STEM_SENTENTIAL_ENDING");
         }
+        if matches!(e.pos.as_str(), "형용사" | "보조 형용사") {
+            self.add_form(i, stem, "다고", "KO_STATIVE_QUOTATIVE");
+        }
         if matches!(e.pos.as_str(), "동사" | "보조 동사") {
             self.add_form(i, stem, "자", "KO_PROPOSITIVE");
+            self.add_form(i, stem, "는", "KO_ADNOMINAL_PRESENT");
+            if let Some(adnominal) = add_final(stem, 4) {
+                self.add_form(i, &adnominal, "", "KO_ADNOMINAL_PAST");
+            } else {
+                self.add_form(i, stem, "은", "KO_ADNOMINAL_PAST");
+            }
         }
         for form in e.forms.iter().filter_map(|f| f.get("writtenForm")) {
             let mut connected = vec![form.clone()];
@@ -337,11 +399,16 @@ impl LexicalKnowledgePack {
                 if is_connective_principal_form(&connected) {
                     self.add_form(i, &connected, "", "KO_CONNECTIVE_CONTRACTION");
                     self.add_form(i, &connected, "요", "KO_CONNECTIVE_POLITE");
+                    self.add_form(i, &connected, "서", "KO_CONNECTIVE_CAUSE_OR_SEQUENCE");
                     if let Some(past) = add_final(&connected, 20) {
                         for ending in [
                             "어",
                             "어요",
                             "다",
+                            "지",
+                            "죠",
+                            "을까",
+                            "을까요",
                             "네",
                             "네요",
                             "거든",
@@ -377,6 +444,76 @@ impl LexicalKnowledgePack {
             }
         }
     }
+    /// Use the same sense IDs for Korean lemmas and English aliases. Every
+    /// admissible nominal sense must agree; unknown/polysemous types abstain.
+    #[cfg(test)]
+    pub(crate) fn nominal_referent_evidence(
+        &self,
+        surface: &str,
+    ) -> Option<NominalReferentEvidenceIR> {
+        self.nominal_referent_evidence_with_constraint(surface, None)
+    }
+
+    /// A typed question/reference supplies a sense constraint, not a new
+    /// lexical definition. Only existing compatible senses may satisfy it.
+    pub(crate) fn nominal_referent_evidence_for(
+        &self,
+        surface: &str,
+        required: NominalReferentKindIR,
+    ) -> Option<NominalReferentEvidenceIR> {
+        self.nominal_referent_evidence_with_constraint(surface, Some(required))
+    }
+
+    fn nominal_referent_evidence_with_constraint(
+        &self,
+        surface: &str,
+        required: Option<NominalReferentKindIR>,
+    ) -> Option<NominalReferentEvidenceIR> {
+        let surface = normalize(surface);
+        let lookup = self.lookup(&surface);
+        if lookup.truncated || !lookup.unmatched_tokens.is_empty() {
+            return None;
+        }
+        let mut kind = None;
+        let mut definition_heads = BTreeMap::new();
+        for m in lookup.matches.iter().filter(|m| {
+            m.matched_form == surface
+                && m.entry.pos == "명사"
+                && matches!(
+                    m.morphology.grammar_rule.as_str(),
+                    "LEXICAL_LEMMA" | "SOURCE_ENGLISH_EQUIVALENT"
+                )
+        }) {
+            for sense in m
+                .entry
+                .senses
+                .iter()
+                .filter(|s| m.concept_ids.contains(&m.entry.concept_id(s)))
+            {
+                let Some((head, candidate)) = definition_referent_head(&sense.definition_ko) else {
+                    if required.is_some() {
+                        continue;
+                    }
+                    return None;
+                };
+                if required.is_some_and(|r| r != candidate) {
+                    continue;
+                }
+                if kind.is_some_and(|prior| prior != candidate) {
+                    return None;
+                }
+                kind = Some(candidate);
+                definition_heads.insert(m.entry.concept_id(sense), head.to_string());
+            }
+        }
+        Some(NominalReferentEvidenceIR {
+            pack_sha256: self.sha256.clone(),
+            surface,
+            kind: kind?,
+            definition_heads,
+        })
+    }
+
     pub fn lookup(&self, text: &str) -> LexicalKnowledgeLookupIR {
         let normalized = normalize(text);
         let mut tokens = normalized
@@ -395,7 +532,8 @@ impl LexicalKnowledgePack {
                 for end in start + 1..=(start + 8).min(tokens.len()) {
                     let form = tokens[start..end].join(" ");
                     probes += 1;
-                    if let Some(bindings) = self.forms.get(&form) {
+                    let exact_bindings = self.forms.get(&form);
+                    if let Some(bindings) = exact_bindings {
                         for b in bindings {
                             matched.insert((b.entry, form.clone()), b.clone());
                         }
@@ -403,6 +541,36 @@ impl LexicalKnowledgePack {
                     }
                     if end != start + 1 {
                         continue;
+                    }
+                    // Recover productive finite morphology against the sparse
+                    // lemma index when source principal forms omit it. A suffix
+                    // alone never establishes a lexeme or its world semantics.
+                    if exact_bindings.is_none() {
+                        for (lemma, ending, rule) in finite_lemma_candidates(&form) {
+                            probes += 1;
+                            if let Some(bindings) = self.forms.get(&lemma) {
+                                for b in bindings {
+                                    let entry = &self.entries[b.entry];
+                                    if normalize(&entry.lemma) == lemma
+                                        && matches!(
+                                            entry.pos.as_str(),
+                                            "동사" | "형용사" | "보조 동사" | "보조 형용사"
+                                        )
+                                    {
+                                        matched.insert(
+                                            (b.entry, form.clone()),
+                                            Binding {
+                                                entry: b.entry,
+                                                base: entry.lemma.trim_end_matches('다').into(),
+                                                ending: ending.into(),
+                                                rule,
+                                            },
+                                        );
+                                        covered.insert(start);
+                                    }
+                                }
+                            }
+                        }
                     }
                     for (cut, _) in form.char_indices().skip(1) {
                         let (base, ending) = form.split_at(cut);
@@ -472,8 +640,22 @@ impl LexicalKnowledgePack {
                     .senses
                     .iter()
                     .filter(|s| {
-                        b.rule != "SOURCE_ENGLISH_EQUIVALENT"
-                            || s.english.split(';').any(|a| normalize(a) == form)
+                        !matches!(
+                            b.rule,
+                            "SOURCE_ENGLISH_EQUIVALENT"
+                                | "EN_IRREGULAR_PAST"
+                                | "EN_PAST_PARTICIPLE"
+                                | "EN_REGULAR_PAST"
+                        ) || s.english.split(';').any(|a| {
+                            normalize(a) == form
+                                || b.rule == "EN_IRREGULAR_PAST"
+                                    && english_irregular_past(a.trim()) == Some(form.as_str())
+                                || b.rule == "EN_PAST_PARTICIPLE"
+                                    && english_participle(a.trim()) == Some(form.as_str())
+                                || b.rule == "EN_REGULAR_PAST"
+                                    && english_regular_past(a.trim()).as_deref()
+                                        == Some(form.as_str())
+                        })
                     })
                     .map(|s| entry.concept_id(s))
                     .collect();
@@ -489,7 +671,7 @@ impl LexicalKnowledgePack {
                 }
             })
             .collect();
-        LexicalKnowledgeLookupIR{schema:PACK_SCHEMA.into(),source_sha256:digest(text),pack_sha256:self.sha256.clone(),matches,
+        LexicalKnowledgeLookupIR{schema:PACK_SCHEMA.into(),source_sha256:digest(text),pack_sha256:self.sha256.clone(),english_stress_lexicon_sha256:ENGLISH_STRESS_SHA256.into(),matches,
             unmatched_tokens:tokens.iter().enumerate().filter(|(i,_)|!covered.contains(i)).map(|(_,t)|(*t).into()).collect(),truncated,index_probes:probes,full_catalog_scans:0,
             semantic_authority:false,execution_authority:false,attribution:"국립국어원 한국어기초사전, 2026-08-19; CC BY-SA 2.0 KR; definitions/lexical grammar only".into()}
     }
@@ -517,7 +699,192 @@ impl LexicalKnowledgePack {
         }
     }
 }
-fn is_connective_principal_form(form: &str) -> bool {
+
+#[derive(Deserialize)]
+struct EnglishStressLexicon {
+    schema: String,
+    base_dictionary_sha256: String,
+    entry_count: usize,
+    entries: BTreeMap<String, EnglishStressEntry>,
+}
+
+#[derive(Deserialize)]
+struct EnglishStressEntry {
+    pronunciations: Vec<String>,
+    attested_forms: Vec<String>,
+}
+
+fn stress_licensed_past(lemma: &str) -> Option<String> {
+    static LEXICON: OnceLock<EnglishStressLexicon> = OnceLock::new();
+    let lexicon = LEXICON.get_or_init(|| {
+        assert_eq!(digest(ENGLISH_STRESS_DATA), ENGLISH_STRESS_SHA256);
+        let data: EnglishStressLexicon =
+            serde_json::from_str(ENGLISH_STRESS_DATA).expect("sealed English stress metadata");
+        assert_eq!(data.schema, "B_CORE_ENGLISH_FINAL_STRESS_LEXICON_1");
+        assert_eq!(data.base_dictionary_sha256, PACK_SHA256);
+        assert_eq!(data.entry_count, data.entries.len());
+        assert!(data.entry_count <= 512);
+        data
+    });
+    let entry = lexicon.entries.get(lemma)?;
+    let final_stress = |pronunciation: &str| {
+        pronunciation
+            .split_whitespace()
+            .filter_map(|phone| match phone.as_bytes().last()? {
+                b'0' => Some(false),
+                b'1' | b'2' => Some(true),
+                _ => None,
+            })
+            .next_back()
+    };
+    let stressed = final_stress(entry.pronunciations.first()?)?;
+    if !entry
+        .pronunciations
+        .iter()
+        .all(|p| final_stress(p) == Some(stressed))
+    {
+        return None;
+    }
+    let form = if stressed {
+        format!("{lemma}{}ed", lemma.chars().last()?)
+    } else {
+        format!("{lemma}ed")
+    };
+    // Korean POS does not prove that an English equivalent is a base verb.
+    // Require both the stress-derived spelling AND source form attestation.
+    entry.attested_forms.contains(&form).then_some(form)
+}
+
+fn english_regular_past(lemma: &str) -> Option<String> {
+    if lemma.is_empty()
+        || !lemma.bytes().all(|b| b.is_ascii_lowercase())
+        || english_irregular_past(lemma).is_some()
+        || english_participle(lemma).is_some()
+        // Unimplemented irregular paradigms are not permission to accept a
+        // fabricated regular form (e.g. haved/teached). These are lexical
+        // exceptions, not sentence or answer patterns.
+        || matches!(lemma,
+            "be" | "am" | "is" | "are" | "do" | "have" | "say" | "make" | "get"
+            | "know" | "think" | "find" | "feel" | "leave" | "keep" | "sell" | "tell"
+            | "meet" | "stand" | "sit" | "fall" | "hold" | "hear" | "lose" | "win"
+            | "pay" | "teach" | "catch" | "choose" | "break" | "begin" | "become"
+            | "arise" | "awake" | "bear" | "beat" | "bend" | "bet" | "bid" | "bind"
+            | "bite" | "bleed" | "blow" | "breed" | "build" | "burst" | "cast"
+            | "cling" | "cost" | "creep" | "cut" | "deal" | "dig" | "draw" | "drive"
+            | "feed" | "fight" | "flee" | "fling" | "fly" | "forbid" | "forget"
+            | "forgive" | "freeze" | "grow" | "hang" | "hide" | "hit" | "hurt"
+            | "lay" | "lead" | "lie" | "light" | "mean" | "put" | "quit" | "ride"
+            | "ring" | "rise" | "seek" | "set" | "shake" | "shine" | "shoot"
+            | "shrink" | "shut" | "sing" | "sink" | "slide" | "slit" | "spend"
+            | "spin" | "spit" | "split" | "spread" | "spring" | "steal" | "stick"
+            | "sting" | "stink" | "stride" | "strike" | "string" | "strive"
+            | "swear" | "sweep" | "swim" | "swing" | "tear" | "throw" | "understand"
+            | "wear" | "weave" | "weep" | "wind" | "withdraw" | "wring")
+    {
+        return None;
+    }
+    let vowel = |b: u8| matches!(b, b'a' | b'e' | b'i' | b'o' | b'u');
+    let bytes = lemma.as_bytes();
+    if lemma.ends_with('e') {
+        Some(format!("{lemma}d"))
+    } else if bytes.len() > 1 && lemma.ends_with('y') && !vowel(bytes[bytes.len() - 2]) {
+        Some(format!("{}ied", &lemma[..lemma.len() - 1]))
+    } else if bytes.len() >= 3
+        && !vowel(bytes[bytes.len() - 3])
+        && vowel(bytes[bytes.len() - 2])
+        && !vowel(bytes[bytes.len() - 1])
+        && !matches!(bytes[bytes.len() - 1], b'w' | b'x' | b'y')
+    {
+        // Final stress cannot be inferred from spelling for a multi-syllable
+        // CVC stem. Do not manufacture a spelling without lexical evidence.
+        if bytes.iter().filter(|b| vowel(**b)).count() != 1 {
+            return stress_licensed_past(lemma);
+        }
+        Some(format!("{lemma}{}ed", bytes[bytes.len() - 1] as char))
+    } else {
+        Some(format!("{lemma}ed"))
+    }
+}
+
+fn english_irregular_past(lemma: &str) -> Option<&'static str> {
+    Some(match lemma {
+        "lend" => "lent",
+        "send" => "sent",
+        "sleep" => "slept",
+        "give" => "gave",
+        "take" => "took",
+        "write" => "wrote",
+        "eat" => "ate",
+        "buy" => "bought",
+        "bring" => "brought",
+        "go" => "went",
+        "come" => "came",
+        "see" => "saw",
+        "speak" => "spoke",
+        "drink" => "drank",
+        "run" => "ran",
+        _ => return None,
+    })
+}
+
+// Lexical inflection data, not a semantic consequence or solved-event table.
+pub(crate) fn english_participle(lemma: &str) -> Option<&'static str> {
+    Some(match lemma {
+        "read" => "read",
+        "lend" => "lent",
+        "send" => "sent",
+        "give" => "given",
+        "take" => "taken",
+        "write" => "written",
+        "eat" => "eaten",
+        "buy" => "bought",
+        "bring" => "brought",
+        "see" => "seen",
+        "speak" => "spoken",
+        "drink" => "drunk",
+        _ => return None,
+    })
+}
+pub(crate) fn has_productive_finite_shape(form: &str) -> bool {
+    !finite_lemma_candidates(form).is_empty()
+}
+
+fn finite_lemma_candidates(form: &str) -> Vec<(String, &'static str, &'static str)> {
+    let mut candidates = Vec::new();
+    for ending in [
+        "겠어",
+        "겠어요",
+        "겠다",
+        "겠네",
+        "겠네요",
+        "겠지",
+        "겠죠",
+        "겠지만",
+        "겠습니다",
+    ] {
+        if let Some(stem) = form.strip_suffix(ending).filter(|s| !s.is_empty()) {
+            candidates.push((format!("{stem}다"), ending, "KO_STEM_MODAL_FINITE"));
+        }
+    }
+    for ending in [
+        "해",
+        "해요",
+        "했어",
+        "했어요",
+        "했다",
+        "했네",
+        "했네요",
+        "했지만",
+        "했는데",
+    ] {
+        if let Some(base) = form.strip_suffix(ending) {
+            candidates.push((format!("{base}하다"), ending, "KO_HADA_FINITE_CONTRACTION"));
+        }
+    }
+    candidates
+}
+
+pub(crate) fn is_connective_principal_form(form: &str) -> bool {
     if ["아라", "어라", "너라", "거라"]
         .iter()
         .any(|ending| form.ends_with(ending))
@@ -583,6 +950,156 @@ fn digest(text: &str) -> String {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn stress_and_attestation_license_regular_inflection_not_arbitrary_suffixes() {
+        use super::*;
+        for (lemma, past) in [
+            ("open", "opened"),
+            ("happen", "happened"),
+            ("visit", "visited"),
+            ("limit", "limited"),
+            ("prefer", "preferred"),
+            ("admit", "admitted"),
+            ("permit", "permitted"),
+            ("occur", "occurred"),
+        ] {
+            assert_eq!(english_regular_past(lemma).as_deref(), Some(past));
+        }
+        for lemma in [
+            "transfer", "closed", "stupid", "arson", "traffic", "qzorpen", "begin", "forget",
+        ] {
+            assert!(english_regular_past(lemma).is_none(), "{lemma}");
+        }
+        for word in [
+            "openned",
+            "happenned",
+            "visitted",
+            "limitted",
+            "prefered",
+            "haved",
+            "teached",
+        ] {
+            assert!(builtin_pack().lookup(word).matches.is_empty(), "{word}");
+        }
+    }
+
+    #[test]
+    fn inflection_keeps_bilingual_concepts_and_records_auxiliary_provenance() {
+        use super::*;
+        for (lemma, past) in [
+            ("open", "opened"),
+            ("visit", "visited"),
+            ("admit", "admitted"),
+        ] {
+            let base = builtin_pack().lookup(lemma);
+            let inflected = builtin_pack().lookup(past);
+            assert!(!base.truncated && !inflected.truncated);
+            assert!(!inflected.matches.is_empty());
+            assert_eq!(inflected.full_catalog_scans, 0);
+            assert_eq!(
+                inflected.english_stress_lexicon_sha256,
+                ENGLISH_STRESS_SHA256
+            );
+            for form in &inflected.matches {
+                assert!(base
+                    .matches
+                    .iter()
+                    .any(|b| b.entry == form.entry && b.concept_ids == form.concept_ids));
+            }
+            assert!(inflected.validate_source(past));
+            let mut corrupted = inflected;
+            corrupted.english_stress_lexicon_sha256.clear();
+            assert!(!corrupted.validate_source(past));
+        }
+    }
+
+    #[test]
+    fn nominal_types_read_definition_heads_not_topic_categories_or_substrings() {
+        use super::*;
+        let pack = builtin_pack();
+        for (surface, expected) in [
+            ("창고", NominalReferentKindIR::Place),
+            ("학생", NominalReferentKindIR::Person),
+        ] {
+            let evidence = pack.nominal_referent_evidence(surface).expect(surface);
+            assert_eq!(evidence.kind, expected);
+            assert_eq!(evidence.pack_sha256, PACK_SHA256);
+            assert!(!evidence.definition_heads.is_empty());
+        }
+        for surface in ["시멘트", "가방", "교사", "창고의 시멘트", "unknown-noun"] {
+            assert!(
+                pack.nominal_referent_evidence(surface).is_none(),
+                "{surface}"
+            );
+        }
+        let korean = pack.nominal_referent_evidence("창고").unwrap();
+        let english = pack.nominal_referent_evidence("warehouse").unwrap();
+        assert_eq!(korean.kind, english.kind);
+        assert_eq!(korean.definition_heads, english.definition_heads);
+        assert_eq!(pack.lookup("warehouse").full_catalog_scans, 0);
+        assert_eq!(
+            definition_referent_head("사람이 물건을 보관하는 곳."),
+            Some(("곳", NominalReferentKindIR::Place))
+        );
+        assert!(definition_referent_head("장소를 찾아가는 행위.").is_none());
+        assert!(definition_referent_head("사람이 사용하는 물건.").is_none());
+    }
+    #[test]
+    fn past_recollection_endings_share_source_lemma_and_tense() {
+        for (lemma, past) in [
+            ("잃어버리다", "잃어버렸"),
+            ("쓰다", "썼"),
+            ("사다", "샀"),
+            ("오다", "왔"),
+            ("보다", "봤"),
+            ("먹다", "먹었"),
+        ] {
+            for ending in ["지", "죠", "을까", "을까요"] {
+                let form = format!("{past}{ending}");
+                let lookup = super::builtin_pack().lookup(&form);
+                assert!(!lookup.truncated);
+                assert_eq!(lookup.full_catalog_scans, 0);
+                assert!(
+                    lookup.matches.iter().any(|m| m.entry.lemma == lemma
+                        && m.matched_form == form
+                        && m.morphology.grammar_rule == "KO_PRINCIPAL_FORM_PAST_ENDING"),
+                    "{form}: {:?}",
+                    lookup.matches
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn regular_past_inflection_preserves_lexical_senses() {
+        use super::*;
+        for (lemma, past) in [
+            ("borrow", "borrowed"),
+            ("play", "played"),
+            ("study", "studied"),
+            ("move", "moved"),
+            ("stop", "stopped"),
+            ("fix", "fixed"),
+        ] {
+            assert_eq!(english_regular_past(lemma).as_deref(), Some(past));
+        }
+        assert!(english_regular_past("read").is_none());
+        for lemma in ["have", "teach", "do", "make", "put"] {
+            assert!(english_regular_past(lemma).is_none());
+        }
+        assert_eq!(english_regular_past("prefer").as_deref(), Some("preferred"));
+        assert!(english_regular_past("transfer").is_none()); // competing stress readings
+        assert!(english_regular_past("take away").is_none());
+        let lookup = builtin_pack().lookup("borrowed");
+        assert!(!lookup.truncated);
+        assert_eq!(lookup.full_catalog_scans, 0);
+        assert!(lookup
+            .matches
+            .iter()
+            .any(|m| m.entry.source_entry_id == "17824"
+                && m.morphology.grammar_rule == "EN_REGULAR_PAST"
+                && m.concept_ids.len() == 1));
+    }
     use super::*;
     #[test]
     fn pack_has_real_disjoint_counts_and_bilingual_senses() {
@@ -653,6 +1170,41 @@ mod tests {
         assert!(!tampered.validate_source("계약"));
         assert!(LexicalKnowledgePack::from_jsonl(DATA, "bad hash").is_err());
     }
+    #[test]
+    fn productive_finite_lookup_uses_lemma_evidence_without_catalog_growth() {
+        let pack = builtin_pack();
+        let before = pack.statistics();
+        for (surface, lemma) in [
+            ("취소해", "취소하다"),
+            ("취소했어요", "취소하다"),
+            ("모르겠어", "모르다"),
+            ("읽겠어요", "읽다"),
+            ("확인했네요", "확인하다"),
+            ("노력해요", "노력하다"),
+        ] {
+            let found = pack.lookup(surface);
+            let base = pack.lookup(lemma);
+            assert!(
+                found.matches.iter().any(|m| m.entry.lemma == lemma),
+                "{surface}"
+            );
+            for m in found.matches.iter().filter(|m| m.entry.lemma == lemma) {
+                assert!(base
+                    .matches
+                    .iter()
+                    .any(|b| b.entry == m.entry && b.concept_ids == m.concept_ids));
+            }
+            assert_eq!(found.full_catalog_scans, 0);
+            assert!(found.index_probes < 20);
+            assert!(found.validate_source(surface));
+            assert!(!found.semantic_authority && !found.execution_authority);
+        }
+        for unknown in ["zzqvnonce해", "zzqvnonce겠어요"] {
+            assert!(pack.lookup(unknown).matches.is_empty());
+        }
+        assert_eq!(before, pack.statistics());
+    }
+
     #[test]
     fn morphology_transfers_across_roots_and_keeps_bounds_explicit() {
         for (surface, lemma) in [

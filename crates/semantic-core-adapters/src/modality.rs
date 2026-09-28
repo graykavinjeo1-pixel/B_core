@@ -10,7 +10,7 @@ use std::collections::BTreeSet;
 
 use serde::{Deserialize, Serialize};
 
-pub const MODAL_SCOPE_GRAPH_SCHEMA: &str = "B_CORE_MODAL_SCOPE_GRAPH_IR_1";
+pub const MODAL_SCOPE_GRAPH_SCHEMA: &str = "B_CORE_MODAL_SCOPE_GRAPH_IR_2";
 const MAX_MODAL_OPERATORS: usize = 16;
 const MAX_CONDITIONALS: usize = 8;
 
@@ -788,6 +788,9 @@ impl ModalSemanticAnalyzer {
 
 fn marker_matches(text: &str) -> Vec<MarkerMatch> {
     let mut matches = Vec::new();
+    if let Some(wish) = korean_desiderative_match(text) {
+        matches.push(wish);
+    }
     for marker in MODAL_MARKERS {
         for (start, _) in text.match_indices(marker.form) {
             let end = start + marker.form.len();
@@ -895,7 +898,6 @@ fn detect_conditionals(text: &str) -> Vec<ConditionalRelationIR> {
     if ["하면 안", "해서는 안", "면 안 돼", "면 안돼"]
         .iter()
         .any(|marker| text.contains(marker))
-        || korean_desiderative_request(text)
     {
         return result;
     }
@@ -927,17 +929,59 @@ fn detect_conditionals(text: &str) -> Vec<ConditionalRelationIR> {
     result
 }
 
-fn korean_desiderative_request(text: &str) -> bool {
-    [
-        "해줬으면 해",
-        "해줬으면 좋",
-        "해 주었으면 해",
-        "해 주었으면 좋",
-        "해 주셨으면 해",
-        "해 주셨으면 좋",
-    ]
-    .iter()
-    .any(|marker| text.contains(marker))
+pub(crate) fn korean_desiderative_clause(text: &str) -> bool {
+    korean_desiderative_match(text).is_some()
+}
+
+/// Recover the connective form of the selected complement for lexical-role
+/// lookup. This is not a rewritten request or an assertion of its content.
+pub(crate) fn korean_desiderative_content(text: &str) -> Option<String> {
+    let matched = korean_desiderative_match(text)?;
+    let before = &text[..matched.start];
+    let last = before.chars().next_back()?;
+    let connective = char::from_u32(last as u32 - 20)?;
+    Some(format!(
+        "{}{}",
+        &before[..before.len() - last.len_utf8()],
+        connective
+    ))
+}
+
+fn korean_desiderative_match(text: &str) -> Option<MarkerMatch> {
+    if text.contains(['"', '“', '”', '‘', '’', '`', '\n']) {
+        return None;
+    }
+    let body = text.trim_end().trim_end_matches(['.', '!', '?']);
+    // Past connective + desiderative matrix head. The contracted past coda
+    // belongs to morphology, not a list of action names or complete requests.
+    for form in [
+        "으면 좋겠습니다",
+        "으면 좋겠어요",
+        "으면 좋겠네",
+        "으면 좋겠다",
+        "으면 좋겠어",
+        "으면 합니다",
+        "으면 해요",
+        "으면 해",
+    ] {
+        let Some(before) = body.strip_suffix(form) else {
+            continue;
+        };
+        let last = before.chars().next_back()? as u32;
+        if (0xac00..=0xd7a3).contains(&last) && (last - 0xac00) % 28 == 20 {
+            return Some(MarkerMatch {
+                marker: ModalMarker {
+                    kind: ModalOperatorKindIR::Desire,
+                    form,
+                    strength_millis: 880,
+                    negation_scope: ModalNegationScopeIR::None,
+                },
+                start: before.len(),
+                end: body.len(),
+            });
+        }
+    }
+    None
 }
 
 fn split_conditional(text: &str) -> Option<(ConditionalKindIR, String, String, bool)> {
@@ -1037,7 +1081,7 @@ fn split_conditional(text: &str) -> Option<(ConditionalKindIR, String, String, b
         if let Some(position) = text.find(marker) {
             let start = coordinated_conditional_clause_start(text, position);
             let antecedent = text[start..position].trim().to_string();
-            let consequent = text[position + marker.len()..].trim().to_string();
+            let consequent = sentence_local_tail(&text[position + marker.len()..]);
             let compound_antecedent = [" or ", " and ", " 또는 ", " 혹은 ", "거나 ", "고 "]
                 .iter()
                 .any(|connector| antecedent.contains(connector));
@@ -1052,7 +1096,7 @@ fn split_conditional(text: &str) -> Option<(ConditionalKindIR, String, String, b
     if let Some((token_start, antecedent_end)) = korean_conditional_token_span(text) {
         let antecedent_start = coordinated_conditional_clause_start(text, token_start);
         let antecedent = text[antecedent_start..antecedent_end].trim().to_string();
-        let consequent = text[antecedent_end..].trim().to_string();
+        let consequent = sentence_local_tail(&text[antecedent_end..]);
         if !antecedent.is_empty() && !consequent.is_empty() && looks_directive(&consequent) {
             return Some((
                 if counterfactual {
@@ -1080,7 +1124,7 @@ fn split_conditional(text: &str) -> Option<(ConditionalKindIR, String, String, b
         if let Some(position) = text.find(marker) {
             let start = coordinated_conditional_clause_start(text, position);
             let antecedent = format!("{}{}", text[start..position].trim(), marker.trim());
-            let consequent = text[position + marker.len()..].trim().to_string();
+            let consequent = sentence_local_tail(&text[position + marker.len()..]);
             if !antecedent.is_empty() && !consequent.is_empty() {
                 return Some((
                     if counterfactual {
@@ -1105,7 +1149,7 @@ fn split_conditional(text: &str) -> Option<(ConditionalKindIR, String, String, b
     ] {
         if let Some(position) = text.find(marker) {
             let antecedent = text[..position].trim().to_string();
-            let consequent = text[position + marker.len()..].trim().to_string();
+            let consequent = sentence_local_tail(&text[position + marker.len()..]);
             if !antecedent.is_empty() && !consequent.is_empty() && looks_directive(&consequent) {
                 return Some((
                     ConditionalKindIR::Hypothetical,
@@ -1121,13 +1165,23 @@ fn split_conditional(text: &str) -> Option<(ConditionalKindIR, String, String, b
 
 fn coordinated_conditional_clause_start(text: &str, anchor_start: usize) -> usize {
     let prefix = &text[..anchor_start];
+    let sentence_boundary = prefix
+        .char_indices()
+        .filter_map(|(position, character)| {
+            matches!(character, '.' | '!' | '?' | '。' | '！' | '？' | '\n')
+                .then_some(position + character.len_utf8())
+        })
+        .max()
+        .unwrap_or(0);
     let fixed_boundary = ["고 나서 ", "; ", ". "]
         .iter()
         .filter_map(|marker| prefix.rfind(marker).map(|position| position + marker.len()))
         .max()
-        .unwrap_or(0);
+        .unwrap_or(0)
+        .max(sentence_boundary);
     let action_coordination = prefix
         .rmatch_indices("하고 ")
+        .filter(|(position, _)| *position >= fixed_boundary)
         .find_map(|(position, marker)| {
             let preceding = prefix[fixed_boundary..position].trim();
             [
@@ -1141,7 +1195,21 @@ fn coordinated_conditional_clause_start(text: &str, anchor_start: usize) -> usiz
     action_coordination.unwrap_or(fixed_boundary)
 }
 
+/// Conditional relations are sentence-local. A later request must not make a
+/// noun ending in `면` (for example `수면`) look like the antecedent of a
+/// conditional in an earlier factual sentence.
+fn sentence_local_tail(text: &str) -> String {
+    let end = text
+        .char_indices()
+        .find_map(|(position, character)| {
+            matches!(character, '.' | '!' | '?' | '。' | '！' | '？' | '\n').then_some(position)
+        })
+        .unwrap_or(text.len());
+    text[..end].trim().to_string()
+}
+
 fn korean_conditional_token_span(text: &str) -> Option<(usize, usize)> {
+    let wish = korean_desiderative_match(text);
     let mut token_start = None;
     for (index, character) in text
         .char_indices()
@@ -1154,6 +1222,9 @@ fn korean_conditional_token_span(text: &str) -> Option<(usize, usize)> {
                     raw_token.trim_matches(|candidate: char| candidate.is_ascii_punctuation());
                 if token.ends_with('면')
                     && !["반면", "측면", "장면", "화면", "표면"].contains(&token)
+                    && !wish
+                        .as_ref()
+                        .is_some_and(|w| w.start >= start && w.start < index)
                 {
                     return Some((start, index));
                 }
@@ -1194,7 +1265,8 @@ fn is_polite_request(text: &str) -> bool {
     ]
     .iter()
     .any(|marker| text.contains(marker));
-    english || korean
+    let benefactive = crate::compositional_semantics::is_korean_benefactive_request(text);
+    english || korean || benefactive
 }
 
 fn looks_directive(text: &str) -> bool {
@@ -1276,6 +1348,18 @@ mod tests {
     use super::*;
 
     #[test]
+    fn conditional_coordination_never_crosses_sentence_boundary() {
+        for prefix in ["검사하고 있어", "작업을 하고 있어", "확인하고 있어"] {
+            for boundary in [". ", "; ", "고 나서 "] {
+                let text = format!("{prefix}{boundary}결과가 맞으면 계속해.");
+                let graph = ModalSemanticAnalyzer.analyze(&text);
+                assert_eq!(graph.conditionals.len(), 1, "{text}");
+                assert!(!graph.conditionals[0].antecedent.contains(prefix));
+            }
+        }
+    }
+
+    #[test]
     fn nested_possibility_scopes_over_obligation() {
         let graph = ModalSemanticAnalyzer.analyze("We might need to delete the cache.");
         assert_eq!(graph.root_world, ModalWorldIR::EpistemicPossible);
@@ -1341,6 +1425,21 @@ mod tests {
     }
 
     #[test]
+    fn korean_conditional_scope_cannot_cross_into_a_later_request() {
+        let graph = ModalSemanticAnalyzer.analyze(
+            "잠을 8시간 자도 찌푸둥한 이유는 수면 시간이 부족해서가 아니라, 뒤척일 때마다 척추 정렬이 무너지며 깊은 렘수면 진입을 방해받기 때문입니다. 흔들림을 흡수하는 독립 스프링이 뒤척임의 진동을 차단해 깨지 않는 숙면을 만듭니다. 이 내용을 원인과 해결책이 드러나는 장문 보고서로 정리해줘.",
+        );
+        assert!(graph.conditionals.is_empty());
+        assert_ne!(graph.illocution, ModalIllocutionIR::ConditionalDirective);
+
+        let conditional = ModalSemanticAnalyzer
+            .analyze("캐시가 오래되면 수리해. 수리 결과는 보고서로 정리해줘.");
+        assert_eq!(conditional.conditionals.len(), 1);
+        assert_eq!(conditional.conditionals[0].antecedent, "캐시가 오래되면");
+        assert_eq!(conditional.conditionals[0].consequent, "수리해");
+    }
+
+    #[test]
     fn korean_prohibition_and_desiderative_request_are_not_conditionals() {
         let prohibition =
             ModalSemanticAnalyzer.analyze("캐시를 지우면 안 돼. 대신 상태를 검증해줘.");
@@ -1349,7 +1448,57 @@ mod tests {
         assert!(prohibition.conditionals.is_empty());
         assert!(desiderative.conditionals.is_empty());
         assert_eq!(prohibition.root_world, ModalWorldIR::Actual);
-        assert_eq!(desiderative.root_world, ModalWorldIR::Actual);
+        assert_eq!(desiderative.root_world, ModalWorldIR::Desired);
+        assert_eq!(desiderative.illocution, ModalIllocutionIR::Wish);
+    }
+
+    #[test]
+    fn desiderative_scope_is_compositional_and_does_not_erase_outer_condition() {
+        for predicate in ["들어줬", "먹었", "왔", "봤", "주었", "무루했"] {
+            for ending in ["으면 해", "으면 해요", "으면 좋겠어", "으면 좋겠습니다"]
+            {
+                let text = format!("{predicate}{ending}.");
+                let graph = ModalSemanticAnalyzer.analyze(&text);
+                assert!(graph.validate(), "{text}");
+                assert_eq!(graph.root_world, ModalWorldIR::Desired, "{text}");
+                assert_eq!(graph.illocution, ModalIllocutionIR::Wish);
+                assert!(graph.conditionals.is_empty());
+                assert!(!graph.external_execution_authorized);
+                assert!(!graph.dialogue_truth_established);
+                let op = graph
+                    .operators
+                    .iter()
+                    .find(|op| op.kind == ModalOperatorKindIR::Desire)
+                    .unwrap();
+                assert_eq!(
+                    &text[op.source_start_byte..op.source_end_byte],
+                    op.surface_form
+                );
+            }
+        }
+        assert_eq!(
+            korean_desiderative_content("내 말을 들어줬으면 해.").as_deref(),
+            Some("내 말을 들어줘")
+        );
+        for text in [
+            "비가 오면 내 말을 들어줬으면 해.",
+            "끝나지 않으면 다시 확인해줬으면 해.",
+        ] {
+            let graph = ModalSemanticAnalyzer.analyze(text);
+            assert!(graph.validate());
+            assert_eq!(graph.conditionals.len(), 1, "{text}");
+            assert_eq!(graph.root_world, ModalWorldIR::Hypothetical);
+            assert!(!graph.conditionals[0].antecedent.contains("줬으면"));
+            assert!(!graph.external_execution_authorized);
+        }
+        for text in [
+            "들어줬으면 저장해.",
+            "들어줬으면 한다고 말했어.",
+            "\"들어줬으면 해\"",
+            "먹으면 해.",
+        ] {
+            assert!(!korean_desiderative_clause(text), "{text}");
+        }
     }
 
     #[test]

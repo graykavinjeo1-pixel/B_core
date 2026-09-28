@@ -15,7 +15,7 @@ use crate::action_state::{
 };
 use crate::language_knowledge::LanguageCodeIR;
 
-pub const PLAN_RESULT_BOUNDARY_SCHEMA: &str = "B_CORE_PLAN_RESULT_BOUNDARY_IR_2";
+pub const PLAN_RESULT_BOUNDARY_SCHEMA: &str = "B_CORE_PLAN_RESULT_BOUNDARY_IR_3";
 pub const ACTION_LIFECYCLE_SNAPSHOT_SCHEMA: &str = "B_CORE_ACTION_LIFECYCLE_SNAPSHOT_IR_1";
 const MAX_LIFECYCLE_SNAPSHOTS: usize = 32;
 const MAX_SELECTED_ACTIONS: usize = 32;
@@ -32,6 +32,7 @@ pub enum PlanResultQueryFocusIR {
     PlanVersusResult,
     ReportedVersusResult,
     ExecutionVersusPlan,
+    UnverifiedEventPremise,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -282,7 +283,13 @@ pub fn build_plan_result_boundary(
     analysis: &ActionStateAnalysisIR,
     ledger: &ActionStateLedgerIR,
 ) -> PlanResultBoundaryIR {
-    let query_focus = classify_plan_result_query_focus(source_text);
+    let query_focus = if !analysis.event_question_content_slots.is_empty() {
+        PlanResultQueryFocusIR::UnverifiedEventPremise
+    } else if !analysis.event_question_frame_ids.is_empty() {
+        PlanResultQueryFocusIR::ExecutionVersusPlan
+    } else {
+        classify_plan_result_query_focus(source_text)
+    };
     let snapshots = ledger
         .records
         .iter()
@@ -295,7 +302,7 @@ pub fn build_plan_result_boundary(
         .collect::<BTreeSet<_>>();
     let mut selected_action_ids = if query_focus == PlanResultQueryFocusIR::None {
         Vec::new()
-    } else if selects_action_set(source_text) {
+    } else if analysis.event_question_frame_ids.is_empty() && selects_action_set(source_text) {
         snapshots
             .iter()
             .map(|snapshot| snapshot.action_id.clone())
@@ -308,7 +315,10 @@ pub fn build_plan_result_boundary(
             .cloned()
             .collect::<Vec<_>>()
     };
-    if query_focus != PlanResultQueryFocusIR::None && selected_action_ids.is_empty() {
+    if query_focus != PlanResultQueryFocusIR::None
+        && selected_action_ids.is_empty()
+        && analysis.event_question_frame_ids.is_empty()
+    {
         if let Some(record) = ledger.current_record() {
             selected_action_ids.push(record.action_id.clone());
         }
@@ -621,21 +631,36 @@ fn realize_snapshot(
         (_, None) => "no user outcome report".to_string(),
         (_, Some(status)) => format!("user-reported {status:?}"),
     };
+    let subject_topic = if let Some(particle) =
+        crate::korean_nominal::select_particle(&snapshot.subject, "은", "는")
+    {
+        format!("‘{}’{particle}", snapshot.subject)
+    } else {
+        crate::korean_nominal::mark_or_label(&snapshot.subject, "은", "는", "작업")
+    };
+    let result_copula = crate::korean_copula::positive_suffix(
+        crate::korean_copula::KoreanCopulaFormIR::InformalStatement,
+        crate::korean_nominal::surface_coda(result).unwrap_or(false),
+    );
+    let execution_copula = crate::korean_copula::positive_suffix(
+        crate::korean_copula::KoreanCopulaFormIR::InformalStatement,
+        crate::korean_nominal::surface_coda(execution).unwrap_or(false),
+    );
     match (language, focus) {
         (LanguageCodeIR::Korean, PlanResultQueryFocusIR::ReportedVersusResult) => format!(
-            "‘{}’은 {report} 상태지만, 별개로 {result} 상태야.",
-            snapshot.subject
+            "{subject_topic} {report} 상태지만, 별개로 {result} 상태야."
         ),
         (LanguageCodeIR::Korean, PlanResultQueryFocusIR::VerifiedResult) => {
-            format!("‘{}’의 실제 결과 축은 {result}이야.", snapshot.subject)
+            format!(
+                "‘{}’의 실제 결과 축은 {result}{result_copula}.",
+                snapshot.subject
+            )
         }
         (LanguageCodeIR::Korean, PlanResultQueryFocusIR::ExecutionVersusPlan) => format!(
-            "‘{}’은 {plan}이고, 계획과 분리된 실제 실행 축은 {execution}이야.",
-            snapshot.subject
+            "{subject_topic} {plan}이고, 계획과 분리된 실제 실행 축은 {execution}{execution_copula}."
         ),
         (LanguageCodeIR::Korean, _) => format!(
-            "‘{}’은 {plan}이고, 실제 실행은 {execution}, 결과는 {result}이야.",
-            snapshot.subject
+            "{subject_topic} {plan}이고, 실제 실행은 {execution}, 결과는 {result}{result_copula}."
         ),
         (_, PlanResultQueryFocusIR::ReportedVersusResult) => format!(
             "For {}, the state is {report}; separately, there is {result}.",
@@ -819,5 +844,47 @@ mod tests {
         let mut boundary = build_plan_result_boundary("actual result?", &analysis, &ledger);
         boundary.snapshots[0].result_availability = ResultAvailabilityIR::VerifiedSuccess;
         assert!(!boundary.validate_against("actual result?", &analysis, &ledger));
+    }
+
+    #[test]
+    fn korean_snapshot_particles_and_copulas_follow_the_rendered_coda() {
+        let mut snapshot = ActionLifecycleSnapshotIR {
+            schema: ACTION_LIFECYCLE_SNAPSHOT_SCHEMA.into(),
+            action_id: "GRAMMAR-AUDIT".into(),
+            subject: "배포".into(),
+            canonical_predicate: "EXECUTE".into(),
+            plan_status: ActionPlanStatusIR::Active,
+            reported_status: None,
+            execution_status: ActionExecutionStatusIR::Failed,
+            result_availability: ResultAvailabilityIR::VerifiedFailure,
+            plan_only: false,
+            report_only: false,
+            verified_result: true,
+            execution_evidence_ids: vec!["E1".into()],
+            language_report_ids: Vec::new(),
+            latest_evidence_turn: Some(1),
+            latest_language_report_turn: None,
+            semantic_authority: false,
+            external_action_executed: false,
+            snapshot_sha256: String::new(),
+        };
+        snapshot.snapshot_sha256 = snapshot_sha256(&snapshot);
+
+        assert_eq!(
+            realize_snapshot(
+                &snapshot,
+                PlanResultQueryFocusIR::VerifiedResult,
+                LanguageCodeIR::Korean,
+            ),
+            "‘배포’의 실제 결과 축은 검증된 실패 결과야."
+        );
+        snapshot.subject = "점검".into();
+        snapshot.snapshot_sha256 = snapshot_sha256(&snapshot);
+        assert!(realize_snapshot(
+            &snapshot,
+            PlanResultQueryFocusIR::ExecutionVersusPlan,
+            LanguageCodeIR::Korean,
+        )
+        .starts_with("‘점검’은 "));
     }
 }

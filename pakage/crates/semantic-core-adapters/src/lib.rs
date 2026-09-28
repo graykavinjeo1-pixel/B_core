@@ -2,10 +2,12 @@
 
 pub mod action_state;
 pub mod affective_field;
+pub mod approved_response;
 pub mod attribution;
 pub mod clause_graph;
 pub mod cognitive;
 pub mod compositional_semantics;
+pub mod concurrent_runtime;
 pub mod conditional_guard;
 pub mod conversation;
 pub mod deferred_commitment;
@@ -16,6 +18,7 @@ pub mod discourse_ontology;
 pub mod discourse_qa;
 pub mod discourse_relations;
 mod document_design;
+pub mod document_response;
 pub mod document_swarm;
 pub mod epistemic;
 pub mod generative_language;
@@ -24,6 +27,9 @@ pub mod grammatical_scope;
 pub mod grounded_realization;
 pub mod interaction_provenance;
 pub mod knowledge_work;
+mod korean_copula;
+mod korean_hada;
+pub mod korean_nominal;
 pub mod language;
 pub mod language_center;
 pub mod language_cortex_integration;
@@ -34,6 +40,7 @@ pub mod long_term_repair;
 mod long_term_repair_catalog;
 pub mod mechanism_induction;
 pub mod modality;
+pub mod mtp_efficiency;
 pub mod native_language_circuit;
 pub mod natural_realization;
 pub mod nonliteral;
@@ -47,6 +54,7 @@ pub mod raw_mechanism_induction;
 pub mod reference_resolution_graph;
 pub mod semantic_roles;
 pub mod six_axis_integration;
+pub mod standalone_service;
 pub mod temporal;
 pub mod topic_context;
 pub mod typed_coreference;
@@ -65,6 +73,21 @@ pub use action_state::{
     ACTION_EVIDENCE_AUDIT_SCHEMA, ACTION_EVIDENCE_RECEIPT_SCHEMA, ACTION_EVIDENCE_REQUEST_SCHEMA,
     ACTION_LANGUAGE_REPORT_RECORD_SCHEMA, ACTION_SET_QUERY_SCHEMA, ACTION_STATE_ANALYSIS_SCHEMA,
     ACTION_STATE_LEDGER_SCHEMA,
+};
+pub use approved_response::{
+    approved_response_sha256, compositional_response_sha256, ApprovedClaimBindingIR,
+    ApprovedClauseUnitIR, ApprovedCompositionalClaimIR, ApprovedCompositionalResponseBuilder,
+    ApprovedCompositionalResponseIR, ApprovedDiscourseRelationIR, ApprovedEventDiscourseStateIR,
+    ApprovedEventExpressionPreferenceIR, ApprovedEventFocusIR, ApprovedEventInformationRoleIR,
+    ApprovedEventInformationStructureIR, ApprovedEventPerspectiveIR, ApprovedEventPhaseIR,
+    ApprovedEventPragmaticContextIR, ApprovedEventPredicateSenseIR,
+    ApprovedEventRealizationClassIR, ApprovedEventRealizationIR, ApprovedEventVoiceIR,
+    ApprovedLexicalNodeIR, ApprovedModalityIR, ApprovedOpenValueIR, ApprovedOperationIR,
+    ApprovedRelationTypeIR, ApprovedResponseBuilder, ApprovedResponseCandidateIR,
+    ApprovedResponseIR, ApprovedResponseStyleIR, ApprovedSemanticTypeIR, ApprovedSpeechActIR,
+    ApprovedValueIR, ApprovedVerbosityIR, APPROVED_EVENT_DISCOURSE_STATE_SCHEMA,
+    APPROVED_EVENT_PRAGMATIC_CONTEXT_SCHEMA, APPROVED_RESPONSE_SCHEMA,
+    COMPOSITIONAL_APPROVED_RESPONSE_SCHEMA, MAX_APPROVED_RESPONSE_CLAIMS,
 };
 pub use attribution::{
     AttributedPropositionIR, AttributedPropositionPolarityIR, AttributionAnalyzer,
@@ -91,6 +114,11 @@ pub use compositional_semantics::{
     InterpretationCandidateIR, PredicateFrameIR, PredicateLexemeError, PredicateLexemeIR,
     PredicateLexiconSnapshotIR, ScopeConstraintIR, ScopeKindIR, COMPOSITIONAL_ANALYSIS_SCHEMA,
     PREDICATE_LEXEME_SCHEMA, PREDICATE_LEXICON_SNAPSHOT_SCHEMA,
+};
+pub use concurrent_runtime::{
+    ConcurrentConversationRuntime, ConcurrentRuntimeError, ConcurrentRuntimeStatsIR,
+    CONCURRENT_RUNTIME_STATS_SCHEMA, DEFAULT_CONVERSATION_SHARDS, DEFAULT_MAX_IN_FLIGHT,
+    MAX_CONVERSATION_SHARDS, MAX_IN_FLIGHT_LIMIT,
 };
 pub use conditional_guard::{
     ConditionalGuardEvaluationIR, ConditionalGuardIR, ConditionalGuardStoreIR, GuardEvidenceIR,
@@ -154,6 +182,20 @@ pub use discourse_relations::{
     DialogueRelationPathIR, DialogueRelationQaEngine, DialogueRelationQueryIR,
     DialogueRelationQueryKindIR, DialogueRelationStatusIR, DIALOGUE_RELATION_ANSWER_SCHEMA,
     DIALOGUE_RELATION_GRAPH_SCHEMA, MAX_DIALOGUE_RELATION_PATHS, MAX_DIALOGUE_RELATION_PATH_HOPS,
+};
+pub use document_response::{
+    build_document_response_plan, document_response_output_sha256, document_response_plan_sha256,
+    document_semantic_interpretation_sha256, document_surface_structure_sha256,
+    interpret_document_semantics, interpret_document_surface, realize_document_response,
+    DocumentClauseFusionIR, DocumentClauseFusionKindIR, DocumentEventArgumentIR,
+    DocumentEventArgumentRoleIR, DocumentEventPredicateIR, DocumentEventPredicateKindIR,
+    DocumentResponseBlockIR, DocumentResponseBlockKindIR, DocumentResponseOutputIR,
+    DocumentResponsePlanIR, DocumentResponseRoleIR, DocumentResponseSectionIR,
+    DocumentRhetoricalMoveIR, DocumentRhetoricalUnitIR, DocumentSemanticClaimIR,
+    DocumentSemanticEvidenceKindIR, DocumentSemanticInterpretationIR, DocumentSurfaceNodeIR,
+    DocumentSurfaceNodeKindIR, DocumentSurfaceStructureIR, DOCUMENT_RESPONSE_OUTPUT_SCHEMA,
+    DOCUMENT_RESPONSE_PLAN_SCHEMA, DOCUMENT_SEMANTIC_INTERPRETATION_SCHEMA,
+    DOCUMENT_SURFACE_STRUCTURE_SCHEMA,
 };
 pub use document_swarm::{DocumentDeliberationIR, DOCUMENT_DELIBERATION_SCHEMA};
 pub use epistemic::{
@@ -253,6 +295,10 @@ pub use modality::{
     ModalOperatorIR, ModalOperatorKindIR, ModalPropositionIR, ModalScopeGraphIR,
     ModalSemanticAnalyzer, ModalWorldIR, MODAL_SCOPE_GRAPH_SCHEMA,
 };
+pub use mtp_efficiency::{
+    select_mtp_speculation, MtpConditioningSignalsIR, MtpSelectionReasonIR,
+    MtpSpeculationDecisionIR, MtpSpeculationModeIR, MTP_SPECULATION_DECISION_SCHEMA,
+};
 pub use native_language_circuit::{
     NativeContextEntityIR, NativeContextGoalIR, NativeContextReferentIR, NativeDialogueContextIR,
     NativeDiscourseRelationIR, NativeEntityIR, NativeEventIR, NativeEventScopeIR, NativeGoalIR,
@@ -330,6 +376,13 @@ pub use six_axis_integration::{
     CrossAxisInvariantKindIR, LanguageAxisEvidenceIR, LanguageAxisIR, LanguageAxisStatusIR,
     LanguageCortexPackageBoundaryIR, SixAxisIntegrationIR, SixAxisIntegrationSources,
     LANGUAGE_CORTEX_PACKAGE_BOUNDARY_SCHEMA, SIX_AXIS_INTEGRATION_SCHEMA,
+};
+pub use standalone_service::{
+    ApprovedDocumentInterpretRequestIR, ApprovedDocumentRequestIR, StandaloneHttpService,
+    StandaloneHttpServiceConfig, StandaloneServiceError, StandaloneServiceRunReportIR,
+    StandaloneServiceStatsIR, DEFAULT_HTTP_QUEUE_CAPACITY, DEFAULT_HTTP_WORKERS,
+    DEFAULT_IO_TIMEOUT_MILLIS, DEFAULT_MAX_HTTP_BODY_BYTES, MAX_HTTP_QUEUE_CAPACITY,
+    MAX_HTTP_WORKERS, STANDALONE_SERVICE_STATS_SCHEMA,
 };
 pub use temporal::{
     TemporalAnswerDispositionIR, TemporalAnswerIR, TemporalConflictIR, TemporalEventIR,

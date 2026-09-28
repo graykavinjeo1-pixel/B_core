@@ -1000,10 +1000,22 @@ fn realize_temporal_answer(
                 let values = events
                     .iter()
                     .filter_map(|event| event.event_time.as_ref())
-                    .map(|time| format!("‘{}’는 {}", time.surface, time.normalized_value))
+                    .map(|time| {
+                        let topic = crate::korean_nominal::mark_or_label(
+                            &time.surface,
+                            "은",
+                            "는",
+                            "시간 표현",
+                        );
+                        format!("{topic} {}", time.normalized_value)
+                    })
                     .collect::<Vec<_>>()
                     .join(", ");
-                format!("대화의 사건 기록상 시간 표현은 {values}이야. 보고된 시간이지 실제 발생 사실을 독립 검증한 것은 아니야.")
+                let copula = crate::korean_copula::positive_suffix(
+                    crate::korean_copula::KoreanCopulaFormIR::InformalStatement,
+                    crate::korean_nominal::surface_coda(&values).unwrap_or(false),
+                );
+                format!("대화의 사건 기록상 시간 표현은 {values}{copula}. 보고된 시간이지 실제 발생 사실을 독립 검증한 것은 아니야.")
             } else {
                 let surfaces = events
                     .iter()

@@ -1202,15 +1202,16 @@ fn realize_relation_answer(
     } else {
         ""
     };
+    let rows_object = crate::korean_nominal::mark_or_label(&rows, "을", "를", "관계");
     match (language, query.kind) {
         (LanguageCodeIR::Korean, DialogueRelationQueryKindIR::CauseOf) => format!(
-            "{plurality}대화에서는 {rows}를 이유 경로로 연결했어. 이는 대화상의 주장일 뿐, 실제 인과가 검증됐다는 뜻은 아니야.{bounded_warning}{world_warning}{contested_warning}"
+            "{plurality}대화에서는 {rows_object} 이유 경로로 연결했어. 이는 대화상의 주장일 뿐, 실제 인과가 검증됐다는 뜻은 아니야.{bounded_warning}{world_warning}{contested_warning}"
         ),
         (LanguageCodeIR::Korean, DialogueRelationQueryKindIR::ConsequenceOf) => format!(
-            "{plurality}대화에서는 {rows}를 결과 경로로 연결했어. 이는 대화 기록이며 실제 인과 검증은 아니야.{bounded_warning}{world_warning}{contested_warning}"
+            "{plurality}대화에서는 {rows_object} 결과 경로로 연결했어. 이는 대화 기록이며 실제 인과 검증은 아니야.{bounded_warning}{world_warning}{contested_warning}"
         ),
         (LanguageCodeIR::Korean, DialogueRelationQueryKindIR::ConcessionOutcome) => format!(
-            "{plurality}대화에서는 {rows}를 어려움에도 성립한 결과로 연결했어. 두 명제를 보존할 뿐 사실 여부를 새로 확정하지는 않아.{world_warning}{contested_warning}"
+            "{plurality}대화에서는 {rows_object} 어려움에도 성립한 결과로 연결했어. 두 명제를 보존할 뿐 사실 여부를 새로 확정하지는 않아.{world_warning}{contested_warning}"
         ),
         (_, DialogueRelationQueryKindIR::CauseOf) => format!(
             "{plurality}The dialogue links {rows} as a reason path. This records what was claimed; it does not verify actual causation.{bounded_warning}{world_warning}{contested_warning}"

@@ -15,7 +15,7 @@ use crate::compositional_semantics::{
 };
 use crate::language_knowledge::LanguageCodeIR;
 
-pub const NATIVE_LANGUAGE_CIRCUIT_SCHEMA: &str = "B_CORE_NATIVE_LANGUAGE_CIRCUIT_IR_1";
+pub const NATIVE_LANGUAGE_CIRCUIT_SCHEMA: &str = "B_CORE_NATIVE_LANGUAGE_CIRCUIT_IR_6";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -25,6 +25,7 @@ pub enum NativeEventScopeIR {
     Prohibited,
     Reported,
     Possible,
+    ContentComplement,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -334,6 +335,79 @@ impl NativeTurnIR {
         self.selected_semantic_sha256 = selected_semantic_sha256(self);
         self.circuit_sha256 = native_turn_sha256(self);
         debug_assert!(self.validate_for_source(source));
+    }
+
+    /// Lexical nominations do not override a source-aligned argument boundary.
+    /// Retain the event and its evidence; withdraw only its live goal status.
+    pub(crate) fn apply_content_complement_boundary(
+        &mut self,
+        source: &str,
+        analysis_source: &str,
+        analysis: &CompositionalAnalysisIR,
+    ) -> bool {
+        if source.len() != analysis_source.len()
+            || source.to_lowercase() != analysis_source.to_lowercase()
+        {
+            return false;
+        }
+        let information_statement =
+            crate::grammatical_scope::embedded_information_statement(source);
+        let mut changed = false;
+        for event in &mut self.events {
+            let content_frame = analysis.frames.iter().find(|frame| {
+                frame.mood == crate::compositional_semantics::FrameMoodIR::ContentComplement
+                    && frame.canonical_predicate == event.canonical_predicate
+                    && frame.source_start_byte == event.start_byte
+                    && source
+                        .get(event.start_byte..event.end_byte)
+                        .is_some_and(|s| s.to_lowercase() == event.predicate_surface.to_lowercase())
+            });
+            let matrix_evidence = content_frame
+                .map(|frame| format!("CONTENT_ARGUMENT_OF_MATRIX:{}", frame.frame_id))
+                .or_else(|| {
+                    information_statement
+                        .as_ref()
+                        .filter(|statement| {
+                            event.start_byte >= statement.content_start_byte
+                                && event.end_byte <= statement.content_end_byte
+                                && source.get(event.start_byte..event.end_byte).is_some_and(
+                                    |surface| {
+                                        surface.to_lowercase()
+                                            == event.predicate_surface.to_lowercase()
+                                    },
+                                )
+                        })
+                        .map(|statement| {
+                            format!(
+                                "CONTENT_ARGUMENT_OF_MATRIX_GRAMMAR:{}",
+                                statement.grammar_rule
+                            )
+                        })
+                });
+            if let Some(evidence) = matrix_evidence {
+                if event.scope != NativeEventScopeIR::ContentComplement {
+                    event.scope = NativeEventScopeIR::ContentComplement;
+                    event.evidence.push(evidence);
+                    changed = true;
+                }
+            }
+        }
+        if !changed {
+            return false;
+        }
+        self.selected_live_goals.retain(|goal| {
+            self.events.iter().any(|event| {
+                event.event_id == goal.source_event_id && event.scope == NativeEventScopeIR::Live
+            })
+        });
+        if self.selected_live_goals.is_empty() && self.unresolved.is_empty() {
+            self.response_goal = NativeResponseGoalIR::Acknowledge;
+            self.response_mode = NativeResponseModeIR::Acknowledgement;
+        }
+        self.selected_semantic_sha256 = selected_semantic_sha256(self);
+        self.circuit_sha256 = native_turn_sha256(self);
+        debug_assert!(self.validate_for_source(source));
+        true
     }
 
     /// Materialize a request selected by the compositional grammar into the
@@ -760,6 +834,12 @@ impl NativeTurnIR {
                             || item.starts_with("DIALOGUE_CONTEXT_ENTITY:")
                     }) && (entity.start_byte != 0 || entity.end_byte != 0))
                     || entity.confidence_millis > 1_000
+                    || (entity
+                        .evidence
+                        .iter()
+                        .any(|e| e.starts_with("CLAUSE_OWNED_THEME:"))
+                        && source.get(entity.start_byte..entity.end_byte)
+                            != Some(entity.surface.as_str()))
                     || entity.evidence.is_empty()
             })
         {
@@ -1564,19 +1644,48 @@ impl NativeLanguageCircuit {
             });
         }
         let mut unresolved = Vec::new();
-        if context_entity_ambiguity {
+        // The native action path owns only its argument requirements. A
+        // descriptive/corrective turn without an action or result query must
+        // leave reference adjudication to its semantic consumer instead of
+        // vetoing that consumer with an unused action-context ambiguity.
+        if context_entity_ambiguity && (!actions.is_empty() || verified_result_query) {
             unresolved.push("AMBIGUOUS_DIALOGUE_CONTEXT_ENTITY".to_string());
         }
-        if actions.is_empty()
-            && !verified_result_query
-            && !action_outcome_report
-            && !competing_outcome_reports
-            && underspecified_problem_disclosure(&lower, &entities)
-        {
-            unresolved.push("UNDERSPECIFIED_PROBLEM_DISCLOSURE".to_string());
-        }
+        // A reported problem is content, not a missing request. Only an actual
+        // interpretation/binding failure may populate `unresolved`; lexical
+        // sentiment or a negative state cannot manufacture a clarification goal.
         let coordinated_groups = coordinated_entity_groups(&entities, &lower);
         let mut last_coordinated_group = Vec::<String>::new();
+        // Action vocabulary is intentionally incomplete. Its nearest-action
+        // windows must not span a different grammar-owned clause merely because
+        // that clause's predicate has no native action lexeme.
+        let argument_structure =
+            crate::compositional_semantics::CompositionalSemanticAnalyzer.analyze(source);
+        let multiple_matrix_clauses = argument_structure
+            .clause_graph
+            .nodes
+            .iter()
+            .filter(|node| node.function.permits_independent_directive())
+            .count()
+            > 1;
+        let incomplete_native_clause_coverage = multiple_matrix_clauses
+            && argument_structure
+                .clause_graph
+                .nodes
+                .iter()
+                .filter(|node| node.function.permits_independent_directive())
+                .any(|node| {
+                    argument_structure
+                        .frames
+                        .iter()
+                        .find(|frame| frame.frame_id == node.anchor_frame_id)
+                        .is_some_and(|frame| {
+                            !actions.iter().any(|action| {
+                                action.start == frame.source_start_byte
+                                    && action.canonical_predicate == frame.canonical_predicate
+                            })
+                        })
+                });
 
         for (index, action) in actions.iter().enumerate() {
             let previous_end = index
@@ -1586,12 +1695,32 @@ impl NativeLanguageCircuit {
             let next_start = actions
                 .get(index + 1)
                 .map_or(source.len(), |next| next.start);
-            let left = connector_left_boundary(&lower, previous_end, action.start);
+            let owned_frame = incomplete_native_clause_coverage
+                .then(|| {
+                    argument_structure.frames.iter().find(|frame| {
+                        frame.source_start_byte == action.start
+                            && frame.canonical_predicate == action.canonical_predicate
+                    })
+                })
+                .flatten();
+            let owned_clause = owned_frame
+                .and_then(|frame| {
+                    argument_structure
+                        .clause_graph
+                        .node_for_frame(&frame.frame_id)
+                })
+                .filter(|node| node.function.permits_independent_directive());
+            let left = owned_clause.map_or_else(
+                || connector_left_boundary(&lower, previous_end, action.start),
+                |node| node.source_start_byte,
+            );
             // A sequencing connective between two objects does not terminate
             // the theme span when the utterance contains only one predicate
             // ("check A and then B"). Connector boundaries separate actions,
             // not coordinated arguments of the same action.
-            let right = if actions.len() == 1 {
+            let right = if let Some(node) = owned_clause {
+                node.source_end_byte
+            } else if actions.len() == 1 {
                 source.len()
             } else {
                 connector_right_boundary(&lower, action.end, next_start)
@@ -1648,6 +1777,47 @@ impl NativeLanguageCircuit {
                 })
                 .map(|entity| entity.entity_id.clone())
                 .collect::<Vec<_>>();
+            if let Some((frame, clause)) = owned_frame.zip(owned_clause) {
+                let theme = frame.theme.trim();
+                // Explicit arguments constrain entity selection. Context can
+                // still fill genuine pronouns/ellipsis, but cannot substitute
+                // an actor belonging to an adjacent content question.
+                if !theme.is_empty() && !contains_context_reference_marker(&theme.to_lowercase()) {
+                    if let Some(offset) = lower
+                        .get(left..right)
+                        .and_then(|span| span.rfind(&theme.to_lowercase()))
+                    {
+                        let start = left + offset;
+                        let end = start + theme.len();
+                        if end <= clause.source_end_byte && source.get(start..end).is_some() {
+                            local.retain(|id| {
+                                entities.iter().any(|entity| {
+                                    &entity.entity_id == id
+                                        && entity.start_byte >= start
+                                        && entity.end_byte <= end
+                                })
+                            });
+                            if local.is_empty() {
+                                let id = format!("NX{:03}", entities.len() + 1);
+                                entities.push(NativeEntityIR {
+                                    entity_id: id.clone(),
+                                    surface: source[start..end].to_string(),
+                                    canonical_concept: context_subject_concept(theme),
+                                    start_byte: start,
+                                    end_byte: end,
+                                    rejected_by_contrast: false,
+                                    confidence_millis: 900,
+                                    evidence: vec![format!(
+                                        "CLAUSE_OWNED_THEME:{}",
+                                        frame.frame_id
+                                    )],
+                                });
+                                local.push(id);
+                            }
+                        }
+                    }
+                }
+            }
             if action.inherited_goal_id.is_some() {
                 local.retain(|entity_id| {
                     entities
@@ -2044,6 +2214,9 @@ fn action_matches(lower: &str) -> Vec<ActionMatch> {
             if lexeme.surface.is_ascii() && !ascii_word_boundaries(lower, start, end) {
                 continue;
             }
+            if !lexeme.surface.is_ascii() && nominal_lexical_use(lower, start, end) {
+                continue;
+            }
             candidates.push(ActionMatch {
                 start,
                 end,
@@ -2072,6 +2245,32 @@ fn action_matches(lower: &str) -> Vec<ActionMatch> {
     }
     selected.sort_by_key(|candidate| candidate.start);
     selected
+}
+
+/// A lexical action label inside an indexed noun is not an imperative. Preserve
+/// bare nominal requests, but distinguish subject/topic/genitive morphology and
+/// compounds from the event head. Actual governing requests are parsed separately.
+fn nominal_lexical_use(source: &str, start: usize, end: usize) -> bool {
+    let Some(token) = token_spans(source)
+        .into_iter()
+        .find(|t| t.start <= start && end <= t.end)
+    else {
+        return false;
+    };
+    let lookup = crate::lexical_knowledge_pack::builtin_pack().lookup(&token.surface);
+    if lookup.truncated {
+        return false;
+    }
+    lookup.matches.iter().any(|m| {
+        m.matched_form == token.surface
+            && matches!(m.entry.pos.as_str(), "명사" | "대명사" | "의존 명사")
+            && (m.entry.lemma != source[start..end]
+                || m.morphology.grammar_rule == "KO_NOMINAL_PARTICLE"
+                    && matches!(
+                        m.morphology.ending.as_str(),
+                        "이" | "가" | "은" | "는" | "의"
+                    ))
+    })
 }
 
 /// Projects an event from a productive grammatical construction. The lexical
@@ -2890,6 +3089,7 @@ fn is_proper_entity_token(surface: &str) -> bool {
             .is_some_and(|head| head == lower)
     });
     !action_head
+        && !crate::typed_coreference::is_pronominal(&lower)
         && !matches!(
             lower.as_str(),
             "i" | "the"
@@ -3675,44 +3875,6 @@ fn reports_completed_user_action(text: &str) -> bool {
     first_person && completed_action && !text.trim_end().ends_with('?')
 }
 
-fn underspecified_problem_disclosure(text: &str, entities: &[NativeEntityIR]) -> bool {
-    if entities.is_empty()
-        || text.trim_end().ends_with('?')
-        || REPORTED_SCOPE_MARKERS
-            .iter()
-            .any(|marker| text.contains(marker))
-    {
-        return false;
-    }
-    let problem_state = [
-        "acting up",
-        "seems wrong",
-        "seems odd",
-        "is broken",
-        "malfunction",
-        "이상하네",
-        "이상해",
-        "문제가 있",
-        "고장",
-    ]
-    .iter()
-    .any(|marker| text.contains(marker));
-    let personal_affect = [
-        "tired",
-        "exhausted",
-        "drained",
-        "frustrated",
-        "지친",
-        "진이 빠",
-        "힘들",
-        "답답",
-        "짜증",
-    ]
-    .iter()
-    .any(|marker| text.contains(marker));
-    problem_state && !personal_affect
-}
-
 fn reports_competing_outcomes(text: &str) -> bool {
     let reports = [" says ", " said ", " reports ", " reported ", "다고 했"]
         .iter()
@@ -3824,6 +3986,39 @@ fn sha256_serialized(value: &impl Serialize) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn capitalization_cannot_promote_pronouns_into_named_entities() {
+        for surface in ["I", "We", "You", "He", "She", "It", "They", "Her", "His"] {
+            assert!(!is_proper_entity_token(surface), "{surface}");
+        }
+        for surface in ["Mira", "Weaver", "Iris", "Youville"] {
+            assert!(is_proper_entity_token(surface), "{surface}");
+        }
+        let turn = NativeLanguageCircuit.analyze("We understand how it works.");
+        assert!(turn.entities.is_empty());
+        let context = NativeDialogueContextIR {
+            active_entities: ["Aster", "Beryl"]
+                .into_iter()
+                .enumerate()
+                .map(|(i, name)| NativeContextEntityIR {
+                    referent_id: format!("TEST-{i}"),
+                    surface: name.into(),
+                    introduced_turn: 1,
+                    last_mentioned_turn: 1,
+                })
+                .collect(),
+            ..NativeDialogueContextIR::default()
+        };
+        let description = NativeLanguageCircuit.analyze_with_context("It was different.", &context);
+        assert!(description.unresolved.is_empty());
+        assert!(description.selected_live_goals.is_empty());
+        let action = NativeLanguageCircuit.analyze_with_context("Inspect it.", &context);
+        assert!(action
+            .unresolved
+            .iter()
+            .any(|s| s == "AMBIGUOUS_DIALOGUE_CONTEXT_ENTITY"));
+    }
 
     fn selected(source: &str) -> NativeGoalIR {
         let turn = NativeLanguageCircuit.analyze(source);
@@ -4205,10 +4400,8 @@ mod tests {
     #[test]
     fn problem_disclosure_and_action_report_choose_response_goals_without_execution() {
         let disclosure = NativeLanguageCircuit.analyze("The Alder cache is acting up again...");
-        assert_eq!(
-            disclosure.response_goal,
-            NativeResponseGoalIR::AskClarification
-        );
+        assert_eq!(disclosure.response_goal, NativeResponseGoalIR::Acknowledge);
+        assert!(disclosure.unresolved.is_empty());
         assert!(disclosure.selected_live_goals.is_empty());
         assert!(!disclosure.language_can_execute);
 

@@ -1,4 +1,7 @@
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    time::Instant,
+};
 
 #[cfg(test)]
 #[path = "pipeline_route_tests.rs"]
@@ -50,6 +53,10 @@ use crate::definition_grounding::{
 use crate::discourse_focus::{DiscourseFocusCandidateIR, DiscourseFocusSourceIR};
 use crate::discourse_qa::{DiscourseAnswerIR, DiscourseQaEngine};
 use crate::discourse_relations::{DialogueRelationAnswerIR, DialogueRelationQaEngine};
+use crate::document_response::{
+    interpret_document_semantics, realize_document_response, DocumentResponseOutputIR,
+    DocumentSemanticInterpretationIR,
+};
 use crate::generative_language::{
     validate_interaction_boundary_generation_source, GenerationClarificationKindIR,
 };
@@ -65,8 +72,9 @@ use crate::knowledge_work::{
     KNOWLEDGE_WORK_RESPONSE_SCHEMA,
 };
 use crate::language_cortex_integration::{
-    build_language_cortex_response_integration, LanguageCortexResponseIntegrationIR,
-    LanguageCortexResponseSources,
+    build_language_cortex_with_realization_check_and_trusted_state,
+    build_language_cortex_with_realization_check_profiled_and_trusted_state,
+    LanguageCortexResponseIntegrationIR, LanguageCortexResponseSources,
 };
 use crate::language_knowledge::{
     LanguageCodeIR, LanguageDialogueDirectiveAnalysisIR, LanguageDialogueDirectiveAxisIR,
@@ -90,10 +98,14 @@ use crate::native_language_circuit::{
     NativeContextReferentIR, NativeDialogueContextIR, NativeEventScopeIR, NativeLanguageCircuit,
     NativeReferenceKindIR, NativeResponseGoalIR, NativeResponseModeIR, NativeTurnIR,
 };
+#[cfg(test)]
+use crate::natural_realization::arbitrate_natural_response;
 use crate::natural_realization::{
-    arbitrate_natural_response, build_natural_realization, ContinuationGateRealizationSourceIR,
-    NaturalRealizationIR, NaturalRealizationSources, NaturalResponseActIR,
-    NaturalResponseCandidateIR, NaturalResponseSourceIR,
+    arbitrate_natural_response_with_context, build_natural_realization,
+    natural_response_payload_sha256, ContinuationGateRealizationSourceIR, NaturalRealizationIR,
+    NaturalRealizationSources, NaturalResponseActIR, NaturalResponseCandidateIR,
+    NaturalResponseDecisionContextIR, NaturalResponseSourceIR, SourceBoundReportIR,
+    source_bound_report_request,
 };
 use crate::plan_result_boundary::{
     build_plan_result_boundary, classify_plan_result_query_focus, PlanResultBoundaryIR,
@@ -118,7 +130,7 @@ use crate::raw_mechanism_induction::{
 };
 use crate::semantic_roles::SemanticRoleKindIR;
 use crate::six_axis_integration::{
-    build_six_axis_integration, SixAxisIntegrationIR, SixAxisIntegrationSources,
+    build_six_axis_with_realization_check, SixAxisIntegrationIR, SixAxisIntegrationSources,
 };
 use crate::temporal::{
     TemporalAnswerIR, TemporalQaEngine, TemporalSemanticAnalyzer, TemporalTurnAnalysisIR,
@@ -126,8 +138,8 @@ use crate::temporal::{
 use crate::utterance_intent::CommunicativeIntentIR;
 
 pub const NATURAL_LANGUAGE_REQUEST_SCHEMA: &str = "B_CORE_NATURAL_LANGUAGE_REQUEST_1";
-pub const NATURAL_LANGUAGE_RESPONSE_SCHEMA: &str = "B_CORE_NATURAL_LANGUAGE_RESPONSE_2";
-pub const CONVERSATION_TURN_RESPONSE_SCHEMA: &str = "B_CORE_CONVERSATION_TURN_RESPONSE_23";
+pub const NATURAL_LANGUAGE_RESPONSE_SCHEMA: &str = "B_CORE_NATURAL_LANGUAGE_RESPONSE_3";
+pub const CONVERSATION_TURN_RESPONSE_SCHEMA: &str = "B_CORE_CONVERSATION_TURN_RESPONSE_120";
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct NaturalLanguageRequestIR {
@@ -160,6 +172,12 @@ pub struct NaturalLanguageResponseIR {
     pub semantic_plan_bundle: SemanticPlanBundleIR,
     /// Compatibility projection of the first selected semantic event.
     pub plan: PlanIR,
+    /// Canonical approved meaning issued from the live semantic-plan snapshot.
+    /// This is a plan-description boundary, not a record that any external
+    /// plan step has executed.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub approved_plan_response:
+        Option<Box<crate::approved_response::ApprovedCompositionalResponseIR>>,
     pub output: NaturalLanguageOutputIR,
 }
 
@@ -171,6 +189,13 @@ impl NaturalLanguageResponseIR {
                 .semantic_plan_bundle
                 .validate_against(&self.semantic_goal)
             && self.semantic_plan_bundle.primary_plan() == Some(&self.plan)
+            && self
+                .approved_plan_response
+                .as_ref()
+                .is_some_and(|response| {
+                    response.validate()
+                        && response.source_world_state_sha256 == self.semantic_goal.semantic_sha256
+                })
             && self.output.grounded_plan_sha256 == self.plan.plan_sha256
             && self.output.unsupported_freeform_claims == 0
     }
@@ -191,6 +216,7 @@ pub struct ConversationTurnResponseIR {
     pub lexical_knowledge: crate::lexical_knowledge_pack::LexicalKnowledgeLookupIR,
     pub conversation_contract: crate::conversation_contract::ConversationContractIR,
     pub affective_field: crate::affective_field::AffectiveFieldIR,
+    pub dialogue_personality: crate::affective_field::DialoguePersonalityIR,
     pub affective_policy: crate::affective_field::AffectiveRealizationPolicyIR,
     /// The interpreted request, not a generated plan or an execution receipt.
     pub request_semantics: Option<SemanticPlanGoalIR>,
@@ -229,21 +255,191 @@ pub struct ConversationTurnResponseIR {
     pub output: ConversationalOutputIR,
 }
 
+/// Read-only latency evidence for one completed conversation turn.  These
+/// boundaries describe execution phases only; they never participate in
+/// routing, planning, authority, or realization.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ConversationTurnTimingIR {
+    pub schema: String,
+    pub total_micros: u64,
+    pub stages: Vec<ConversationTurnStageTimingIR>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ConversationTurnStageTimingIR {
+    pub stage: String,
+    pub elapsed_micros: u64,
+}
+
+struct ConversationTurnProfiler {
+    started: Instant,
+    last_mark: Instant,
+    stages: Vec<ConversationTurnStageTimingIR>,
+}
+
+impl ConversationTurnProfiler {
+    fn new() -> Self {
+        let started = Instant::now();
+        Self {
+            started,
+            last_mark: started,
+            stages: Vec::new(),
+        }
+    }
+
+    fn mark(&mut self, stage: &'static str) {
+        let now = Instant::now();
+        self.stages.push(ConversationTurnStageTimingIR {
+            stage: stage.into(),
+            elapsed_micros: elapsed_micros(now.duration_since(self.last_mark)),
+        });
+        self.last_mark = now;
+    }
+
+    /// Records a nested subphase measured inside an otherwise authoritative
+    /// call. It intentionally does not advance the enclosing stage clock, so
+    /// the outer boundary remains the real end-to-end duration.
+    fn record_nested(&mut self, stage: &'static str, elapsed_micros: u64) {
+        self.stages.push(ConversationTurnStageTimingIR {
+            stage: stage.into(),
+            elapsed_micros,
+        });
+    }
+
+    /// Records a subphase that owns the next outer boundary.
+    fn record_exact(&mut self, stage: &'static str, elapsed_micros: u64) {
+        self.record_nested(stage, elapsed_micros);
+        self.last_mark = Instant::now();
+    }
+
+    fn finish(mut self) -> ConversationTurnTimingIR {
+        self.mark("RESPONSE_POST_VALIDATION_STATE_FINALIZATION");
+        ConversationTurnTimingIR {
+            schema: "B_CORE_CONVERSATION_TURN_TIMING_IR_1".into(),
+            total_micros: elapsed_micros(self.last_mark.duration_since(self.started)),
+            stages: self.stages,
+        }
+    }
+}
+
+fn elapsed_micros(duration: std::time::Duration) -> u64 {
+    duration.as_micros().min(u128::from(u64::MAX)) as u64
+}
+
 impl ConversationTurnResponseIR {
     pub fn validate_against(&self, request: &ConversationTurnRequestIR) -> bool {
+        let check =
+            crate::natural_realization::NaturalRealizationCheck::new(&self.natural_realization);
+        self.validate_with_realization_check(request, &check)
+    }
+
+    fn validate_with_realization_check(
+        &self,
+        request: &ConversationTurnRequestIR,
+        check: &crate::natural_realization::NaturalRealizationCheck,
+    ) -> bool {
+        self.validate_with_realization_check_mode(request, check, true, None)
+    }
+
+    /// The response constructor has just built `language_cortex_integration`
+    /// from these exact immutable sources.  Rebuilding its complete hashed
+    /// integration immediately afterwards adds no new source evidence, while
+    /// it does add an expensive duplicate serialization pass.  Keep the
+    /// integration's own integrity validation here; callers that receive an
+    /// arbitrary response must use `validate_against`, which re-derives and
+    /// compares the source-bound integration as before.
+    fn validate_constructed_with_realization_check(
+        &self,
+        request: &ConversationTurnRequestIR,
+        check: &crate::natural_realization::NaturalRealizationCheck,
+        conversation_contract: &crate::conversation_contract::ConversationContractIR,
+    ) -> bool {
+        self.validate_with_realization_check_mode(
+            request,
+            check,
+            false,
+            Some(conversation_contract),
+        )
+    }
+
+    fn validate_with_realization_check_mode(
+        &self,
+        request: &ConversationTurnRequestIR,
+        check: &crate::natural_realization::NaturalRealizationCheck,
+        rederive_language_cortex_integration: bool,
+        constructed_conversation_contract: Option<
+            &crate::conversation_contract::ConversationContractIR,
+        >,
+    ) -> bool {
         self.schema == CONVERSATION_TURN_RESPONSE_SCHEMA
             && self.lexical_knowledge.validate_source(&request.raw_text)
-            && self.conversation_contract
-                == crate::conversation_contract::ConversationContractIR::derive(
-                    &self.normalization.semantic_surface_text,
-                    &self.pragmatic_interpretation,
-                    &self.native_language_circuit,
-                )
+            && match constructed_conversation_contract {
+                // The production constructor already derived this source-bound
+                // contract in the current authoritative turn. Compare against
+                // that immutable value instead of parsing the same long input
+                // again. Public validation below still re-derives it.
+                Some(contract) => self.conversation_contract == *contract,
+                None => self.conversation_contract
+                    == crate::conversation_contract::ConversationContractIR::derive(
+                        &self.normalization.semantic_surface_text,
+                        &self.pragmatic_interpretation,
+                        &self.native_language_circuit,
+                    ),
+            }
             && self
                 .request_semantics
                 .as_ref()
                 .is_none_or(SemanticPlanGoalIR::validate)
             && self.affective_field.validate()
+            && self.discourse_answer.as_ref().and_then(|a| a.response_constraint_conflict.as_ref())
+                .is_none_or(|c| c.source_text == self.normalization.semantic_surface_text)
+            && (!self.conversation_contract.suppresses_answer()
+                || (self.discourse_answer.is_none()
+                    && self.temporal_answer.is_none()
+                    && self.dialogue_relation_answer.is_none()
+                    && self.grounded_response.is_none()
+                    && self.natural_realization.response_act == NaturalResponseActIR::InformAcknowledgement
+                    && self.natural_realization.response_arbitration.selected_source == NaturalResponseSourceIR::ResponseProhibition))
+            && self.discourse_answer.as_ref().is_none_or(|a|
+                a.question_request == crate::proposition_content::question_request(
+                    &self.normalization.semantic_surface_text))
+            && self.discourse_answer.as_ref().and_then(|a| a.question_request.as_ref())
+                .is_none_or(|q| q.source_text == self.normalization.semantic_surface_text)
+            && self.discourse_answer.as_ref().is_none_or(|a| a.validate_response_part_memory(&self.conversation_state))
+            && self.discourse_answer.as_ref().and_then(|a| a.reference_gap.as_ref())
+                .is_none_or(|gap| gap.live_in(&self.conversation_state))
+            && mixed_response_obligations_preserved(self)
+            && self.discourse_answer.as_ref().and_then(|a| a.event_summary.as_ref())
+                .is_none_or(|s| self.conversation_state.epistemic_ledger.records.iter().any(|r|
+                    r.belief_id == s.belief_id && r.source_actor == s.source_actor
+                        && r.proposition_surface == s.source_proposition
+                        && r.status == crate::epistemic::BeliefRecordStatusIR::Active
+                        && r.signature.modal_world == crate::modality::ModalWorldIR::Actual
+                        && r.content.validate_source(&r.proposition_surface)
+                        && r.content.context_sources == s.context_sources
+                        && (r.proposition_polarity != crate::attribution::AttributedPropositionPolarityIR::Negative
+                            || s.event.negated || !r.content.context_sources.is_empty())
+                        && r.content.events == [s.event.clone()]))
+            && self.discourse_answer.as_ref().and_then(|a| a.content_projection.as_ref())
+                .is_none_or(|p| p.all_projections().all(|p| p.reference_context.as_ref().is_none_or(|c|
+                    self.conversation_state.epistemic_ledger.records.iter().any(|r|
+                        r.belief_id == c.belief_id && r.source_actor == c.source_actor
+                        && r.proposition_surface == c.source_proposition
+                        && r.status == crate::epistemic::BeliefRecordStatusIR::Active
+                        && r.signature.modal_world == crate::modality::ModalWorldIR::Actual
+                        && r.content.validate_source(&r.proposition_surface)
+                        && r.content.context_sources == c.context_sources
+                        && r.content.events.iter().any(|e| e.event_id == c.event_id)))))
+            && self.discourse_answer.as_ref().and_then(|a| a.content_projection.as_ref())
+                .is_none_or(|p| p.all_projections().all(|p| p.binding.event_id.is_none() ||
+                    self.conversation_state.epistemic_ledger.records.iter().any(|r|
+                        r.belief_id == p.belief_id && r.source_actor == p.source_actor
+                        && r.proposition_surface == p.source_proposition
+                        && r.status == crate::epistemic::BeliefRecordStatusIR::Active
+                        && r.signature.modal_world == crate::modality::ModalWorldIR::Actual
+                        && r.content.validate_source(&r.proposition_surface)
+                        && r.content.context_sources == p.context_sources
+                        && p.bindings_grounded_in(&r.content))))
             && self
                 .discourse_answer
                 .as_ref()
@@ -263,7 +459,37 @@ impl ConversationTurnResponseIR {
                         && update.turn == request.turn_index
                         && update.source_text == request.raw_text
                 })
-            && self.affective_policy == self.affective_field.policy()
+            && self.dialogue_personality.validate()
+            && self.affective_policy == self.affective_field.policy_with_personality(&self.dialogue_personality)
+            && self.natural_realization.generation_traces.iter().all(|trace| {
+                (!self.affective_policy.formal
+                    || trace.context.register == crate::language_knowledge::LanguageRegisterIR::Formal)
+                    && trace.context.urgency_millis == self.affective_policy.urgency_millis
+                    && trace.korean_dialect
+                        == if trace.context.language
+                            == crate::language_knowledge::LanguageCodeIR::Korean
+                        {
+                            self.affective_policy.korean_dialect
+                        } else {
+                            crate::affective_field::KoreanDialectIR::Standard
+                        }
+            })
+            && self.discourse_answer.as_ref().and_then(|a| a.decision_inquiry.as_ref())
+                .is_none_or(|inquiry| inquiry.validate()
+                    && inquiry.assessment.as_ref().is_none_or(|a| a.matches_world(&self.conversation_state.dialogue_world)
+                        && a.evaluated_turn == inquiry.evaluation_turn(request.turn_index))
+                    && inquiry.knowledge_gap.as_ref().is_none_or(|g| g.matches_world(&self.conversation_state.dialogue_world)
+                        && g.evaluated_turn == inquiry.evaluation_turn(request.turn_index))
+                    && inquiry.source_text == request.raw_text
+                    && (self.conversation_contract.answer_only() || inquiry.clarification_reply.is_some() || inquiry.resumption.as_ref().is_some_and(|r| self.conversation_contract.assertion_only || r.update.is_bound_boolean_answer()))
+                    && (self.pragmatic_interpretation.pragmatic_intent_graph.selected_utterance_intent()
+                        .is_some_and(|i| i.expected_response == crate::utterance_intent::ExpectedResponseKindIR::DecisionSupport)
+                        || inquiry.resumption.as_ref().is_some_and(|r| r.update.turn == request.turn_index && r.update.source_text == request.raw_text)
+                        || inquiry.clarification_reply.as_ref().is_some_and(|r| r.turn == request.turn_index)
+                        || inquiry.explanation_of.as_ref().is_some_and(|o|
+                            o.asked_turn < request.turn_index && request.turn_index - o.asked_turn <= 3))
+                    && self.conversation_state.answer_focus.as_ref().is_some_and(|f|
+                        f.answered_turn == request.turn_index && f.decision_inquiry.as_ref() == Some(inquiry)))
             && self
                 .discourse_answer
                 .as_ref()
@@ -271,12 +497,19 @@ impl ConversationTurnResponseIR {
                 .is_none_or(|c| {
                     c.validate()
                         && c.memory == self.conversation_state.dialogue_world
-                        && c.gap.source_text == request.raw_text
-                        && c.gap.turn == request.turn_index
+                        && c.response_source() == request.raw_text
+                        && c.response_turn() == request.turn_index
+                        && self.conversation_state.answer_focus.as_ref().is_some_and(|focus|
+                            focus.clarification_act.as_ref() == Some(&c.response_act())
+                            && focus.query.original_text == request.raw_text)
                 })
             && (!self.conversation_contract.answer_only()
                 || (self.grounded_response.is_none()
                     && self.natural_realization.response_act != NaturalResponseActIR::PlanPreview))
+            && self.discourse_answer.as_ref().and_then(|a| a.plan_method.as_ref())
+                .is_none_or(|method| self.conversation_contract.answer_only()
+                    && method.matches_active_state(&self.conversation_state)
+                    && method.validate(&self.normalization.semantic_surface_text))
             && (!self.conversation_contract.question_surface
                 || !self.action_state_analysis.has_language_reports())
             && self.conversation_id == request.conversation_id
@@ -314,6 +547,45 @@ impl ConversationTurnResponseIR {
                     None
                 },
             )
+            && self.natural_realization.response_arbitration.decision_context
+                == crate::natural_realization::NaturalResponseDecisionContextIR {
+                    information_requested: self.conversation_contract.information_requested,
+                    typed: true,
+                    assertion_only: self.conversation_contract.assertion_only,
+                    temporal_answer_available: self.temporal_answer.is_some(),
+                    dialogue_relation_answer_available: self.dialogue_relation_answer.is_some(),
+                    discourse_answer_available: self.discourse_answer.is_some(),
+                    discourse_answer_eligible: self.discourse_answer.as_ref().is_none_or(|answer| discourse_answer_is_currently_eligible(answer, &self.conversation_state, &request.raw_text, self.turn_index)),
+                    native_answer_available: self.natural_realization.response_arbitration.candidates.iter().any(|c| c.source == crate::natural_realization::NaturalResponseSourceIR::NativeAnswer),
+                    native_answer_act: self.natural_realization.response_arbitration.candidates.iter().find(|c| c.source == crate::natural_realization::NaturalResponseSourceIR::NativeAnswer).map(|c| c.response_act),
+                    plan_requested: self.conversation_contract.independent_action_requested,
+                    plan_available: self.grounded_response.is_some() || self.natural_realization.response_arbitration.candidates.iter().any(|c| c.source == crate::natural_realization::NaturalResponseSourceIR::NativePlan),
+                    reference_resolved: self.reference_resolution.ambiguous_reference_surfaces.is_empty(),
+                    resolved_reference_count: self.reference_resolution.resolved_reference_count as u32,
+                    discourse_payload_sha256: self.discourse_answer.as_ref().map(natural_response_payload_sha256),
+                    discourse_evidence_ids: self.discourse_answer.as_ref().map(|a| a.evidence.iter().map(|e| e.belief_id.clone()).collect()).unwrap_or_default(),
+                    ambiguity_required: !self.natural_realization.response_arbitration.candidates.iter().any(|c| c.source == crate::natural_realization::NaturalResponseSourceIR::SourceBoundReport)
+                        && (self.disposition == ConversationTurnDispositionIR::ClarificationRequired
+                            || self.natural_realization.response_arbitration.candidates.iter().any(|c| c.source == crate::natural_realization::NaturalResponseSourceIR::Clarification)),
+                    prohibition_required: self.conversation_contract.suppresses_answer(),
+                    topic_transition_applied: self.topic_transition.as_ref().is_some_and(|transition| {
+                        transition.applied
+                            && self.discourse_answer.is_none()
+                            && self.temporal_answer.is_none()
+                            && self.dialogue_relation_answer.is_none()
+                    }),
+                    plan_result_status_required: self
+                        .natural_realization
+                        .response_arbitration
+                        .candidates
+                        .iter()
+                        .any(|candidate| {
+                            candidate.source
+                                == crate::natural_realization::NaturalResponseSourceIR::PlanResult
+                                && candidate.response_act
+                                    == NaturalResponseActIR::PlanResultStatus
+                        }),
+                }
             && self.reference_resolution.resolution_graph.validate_against(
                 &self.reference_resolution.original_semantic_text,
                 &self.reference_resolution.resolved_semantic_text,
@@ -324,9 +596,10 @@ impl ConversationTurnResponseIR {
                 &self.action_state_analysis,
                 &self.conversation_state.action_state_ledger,
             )
-            && self
+            && self.language_cortex_integration.validate()
+            && (!rederive_language_cortex_integration || self
                 .language_cortex_integration
-                .validate_against(LanguageCortexResponseSources {
+                .validate_with_realization_check(LanguageCortexResponseSources {
                     request,
                     disposition: self.disposition,
                     normalization: &self.normalization,
@@ -349,8 +622,127 @@ impl ConversationTurnResponseIR {
                     interaction_provenance: &self.interaction_provenance,
                     six_axis_integration: &self.six_axis_integration,
                     output: &self.output,
-                })
+                }, check))
     }
+}
+
+fn mixed_response_obligations_preserved(response: &ConversationTurnResponseIR) -> bool {
+    let Some(grounded) = response.grounded_response.as_ref() else {
+        return true;
+    };
+    let Some(task_frames) = crate::discourse_qa::mixed_response_task_frames(
+        &response.normalization.semantic_surface_text,
+    ) else {
+        return true;
+    };
+    let selected = &grounded.semantic_goal.selected_live_event_ids;
+    response.discourse_answer.as_ref().is_some_and(|a| {
+        !a.response_parts.is_empty()
+            && a.query.original_text == response.normalization.semantic_surface_text
+    }) && response
+        .natural_realization
+        .response_plan
+        .moves
+        .iter()
+        .filter(|m| m.response_act == NaturalResponseActIR::DiscourseAnswer)
+        .count()
+        == 1
+        && selected.iter().all(|id| {
+            response
+                .pragmatic_interpretation
+                .language_center
+                .events
+                .iter()
+                .any(|event| event.event_id == *id && task_frames.contains(&event.source_frame_id))
+        })
+}
+
+fn discourse_answer_is_currently_eligible(
+    answer: &crate::discourse_qa::DiscourseAnswerIR,
+    state: &ConversationStateIR,
+    raw_text: &str,
+    turn_index: u64,
+) -> bool {
+    if answer.world_reasoning.is_none()
+        && answer.world_memory_update.is_none()
+        && answer.content_projection.is_none()
+    {
+        return true;
+    }
+    let mut expected_memory = state.dialogue_world.clone();
+    expected_memory.last_query = None;
+    answer.validate_response_part_memory(state)
+        && answer.world_reasoning.as_ref().is_none_or(|world| {
+            let mut answer_memory = world.memory.clone();
+            answer_memory.last_query = None;
+            answer_memory == expected_memory && world.matches_question(raw_text)
+        })
+        && answer.world_memory_update.as_ref().is_none_or(|update| {
+            let mut update_memory = update.memory.clone();
+            update_memory.last_query = None;
+            update_memory == expected_memory
+                && update.turn == turn_index
+                && update.source_text == raw_text
+        })
+        && answer.content_projection.as_ref().is_none_or(|projection| {
+            state.epistemic_ledger.records.iter().any(|record| {
+                record.belief_id == projection.belief_id
+                    && projection.bindings_grounded_in(&record.content)
+                    && (record.signature.modal_world == crate::modality::ModalWorldIR::Actual
+                        || source_content_projection_is_reported(answer, projection, record))
+            })
+        })
+}
+
+/// A source-content answer may faithfully report a desired or hypothetical
+/// proposition. Such a projection owns the answer only when its evidence and
+/// claims retain attribution; it must never be promoted to an actual-world
+/// event or an executable decision.
+pub(crate) fn source_content_projection_is_reported(
+    answer: &crate::discourse_qa::DiscourseAnswerIR,
+    projection: &crate::proposition_content::ContentProjectionIR,
+    record: &crate::epistemic::BeliefRecordIR,
+) -> bool {
+    answer.query.kind == crate::discourse_qa::DiscourseQueryKindIR::SourceContent
+        && matches!(
+            answer.disposition,
+            crate::discourse_qa::DiscourseAnswerDispositionIR::AnsweredFromDialogueRecords
+                | crate::discourse_qa::DiscourseAnswerDispositionIR::MultipleDialogueRecords
+        )
+        && answer.query.requested_attitudes.is_empty()
+        && answer.query.presuppositions.is_empty()
+        && !answer.dialogue_truth_established
+        && !answer.external_execution_authorized
+        && record.status == crate::epistemic::BeliefRecordStatusIR::Active
+        && record.content.validate_source(&record.proposition_surface)
+        && record.content.context_sources == projection.context_sources
+        && answer.evidence.iter().all(|evidence| {
+            evidence.record_status == crate::epistemic::BeliefRecordStatusIR::Active
+                && evidence.attitude == crate::attribution::AttributionAttitudeIR::Say
+                && evidence.epistemic_status == crate::attribution::EpistemicStatusIR::Reported
+                && !evidence.dialogue_truth_established
+                && !evidence.external_execution_authorized
+        })
+        && answer.evidence.iter().any(|evidence| {
+            evidence.belief_id == record.belief_id
+                && evidence.source_actor == projection.source_actor
+                && evidence.proposition_surface == projection.source_proposition
+                && evidence.modal_world == record.signature.modal_world
+        })
+        && projection.all_projections().all(|item| {
+            answer.evidence.iter().any(|evidence| {
+                evidence.belief_id == item.belief_id
+                    && evidence.source_actor == item.source_actor
+                    && evidence.proposition_surface == item.source_proposition
+            }) && item.all_bindings().all(|binding| {
+                answer.claims.iter().any(|claim| {
+                    claim.kind == crate::discourse_qa::AnswerClaimKindIR::SourceAttributedContent
+                        && claim.subject == item.source_actor
+                        && claim.value == binding.value
+                        && claim.evidence_belief_ids == [item.belief_id.clone()]
+                })
+            })
+        })
 }
 
 fn semantic_plan_matches_current_turn_memory(
@@ -599,9 +991,28 @@ pub enum CognitiveApiCommandIR {
     ProcessConversationTurn {
         request: ConversationTurnRequestIR,
     },
+    RealizeApprovedDocumentResponse {
+        response: Box<crate::approved_response::ApprovedCompositionalResponseIR>,
+        output_language: LanguageCodeIR,
+    },
+    InterpretApprovedDocumentResponse {
+        response: Box<crate::approved_response::ApprovedCompositionalResponseIR>,
+        output_language: LanguageCodeIR,
+        markdown: String,
+    },
+    SetDialoguePersonality {
+        personality: crate::affective_field::DialoguePersonalityIR,
+    },
     UpdateWorldVocabulary {
         conversation_id: String,
         update: crate::world_vocabulary::WorldVocabularyUpdateIR,
+    },
+    UpdateWorldSyntaxModel {
+        conversation_id: String,
+        model_id: String,
+        model_version: String,
+        resolution_mode: crate::world_vocabulary::WorldSyntaxResolutionModeIR,
+        observations: Vec<crate::world_vocabulary::WorldSyntaxObservationIR>,
     },
     SubmitConditionEvidence {
         request: ConditionEvidenceRequestIR,
@@ -647,7 +1058,11 @@ pub enum CognitiveApiPayloadIR {
     LexicalOutcomeRecorded,
     NaturalLanguageResponse(Box<NaturalLanguageResponseIR>),
     ConversationTurnResponse(Box<ConversationTurnResponseIR>),
+    DocumentResponse(Box<DocumentResponseOutputIR>),
+    DocumentSemanticInterpretation(Box<DocumentSemanticInterpretationIR>),
+    DialoguePersonalityUpdated(crate::affective_field::DialoguePersonalityIR),
     WorldVocabularyUpdated(Box<ConversationStateIR>),
+    WorldSyntaxModelUpdated(Box<ConversationStateIR>),
     ConditionEvidenceReceipt(ConditionEvidenceReceiptIR),
     ActionEvidenceReceipt(ActionEvidenceReceiptIR),
     KnowledgeWorkResponse(Box<KnowledgeWorkResponseIR>),
@@ -685,6 +1100,7 @@ pub enum CognitiveApiError {
     KnowledgeWork,
     LongTermRepairPlan,
     ProfessionalDocument,
+    DocumentResponse,
     Deliberation,
     MechanismMemory,
     MechanismInduction,
@@ -700,6 +1116,8 @@ pub enum CognitiveApiError {
 /// central routing receipt below is the sole interpreter of those facts.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 enum LanguagePipelineSignalIR {
+    MixedResponse,
+    ResponseProhibited,
     InformationRequest,
     AssertionOnly,
     GroupUpdateOwnsTurn,
@@ -766,16 +1184,19 @@ impl LanguagePipelineRoutingIR {
     }
 
     fn common_qa_path_open(&self) -> bool {
-        !self.has(LanguagePipelineSignalIR::GroupUpdateOwnsTurn)
+        !self.has(LanguagePipelineSignalIR::ResponseProhibited)
+            && !self.has(LanguagePipelineSignalIR::GroupUpdateOwnsTurn)
             && !self.has(LanguagePipelineSignalIR::DefinitionOwnsTurn)
             && (!self.has(LanguagePipelineSignalIR::DialogueDirectiveOwnsTurn)
                 || self.has(LanguagePipelineSignalIR::InformationRequest))
             && !self.has(LanguagePipelineSignalIR::FutureNotificationOwnsTurn)
             && (!self.has(LanguagePipelineSignalIR::NativeGoalOwnsTurn)
-                || self.has(LanguagePipelineSignalIR::InformationRequest))
+                || self.has(LanguagePipelineSignalIR::InformationRequest)
+                || self.has(LanguagePipelineSignalIR::MixedResponse))
             && !self.has(LanguagePipelineSignalIR::ActionStateOwnsTurn)
             && (!self.has(LanguagePipelineSignalIR::PragmaticForceOwnsSurfaceQuestion)
-                || self.has(LanguagePipelineSignalIR::InformationRequest))
+                || self.has(LanguagePipelineSignalIR::InformationRequest)
+                || self.has(LanguagePipelineSignalIR::MixedResponse))
             && !self.has(LanguagePipelineSignalIR::ResultReferenceOwnsTurn)
             && !self.has(LanguagePipelineSignalIR::InitialContinuationGateOwnsTurn)
             && self.has(LanguagePipelineSignalIR::NormalizedGrounded)
@@ -804,6 +1225,7 @@ impl LanguagePipelineRoutingIR {
     ) -> bool {
         self.common_qa_path_open()
             && (self.has(LanguagePipelineSignalIR::InformationRequest)
+                || self.has(LanguagePipelineSignalIR::MixedResponse)
                 || (!self.has(LanguagePipelineSignalIR::ExplicitSelectedRequest)
                     && !self.has(LanguagePipelineSignalIR::ResponseGoalCorrection)))
             && self.has(LanguagePipelineSignalIR::DeicticQueryReferenceSafe)
@@ -829,6 +1251,7 @@ impl LanguagePipelineRoutingIR {
 /// inspectable without restoring the old first-matching-module control flow.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 enum PlanProjectionBlockerIR {
+    ResponseProhibited,
     AmbiguousInput,
     InformationRequest,
     NonGroundedDisposition,
@@ -876,6 +1299,9 @@ impl PlanProjectionDecisionIR {
 
         Self::from_candidates([
             routing
+                .has(Signal::ResponseProhibited)
+                .then_some(PlanProjectionBlockerIR::ResponseProhibited),
+            routing
                 .has(Signal::AmbiguousInput)
                 .then_some(PlanProjectionBlockerIR::AmbiguousInput),
             routing
@@ -906,8 +1332,7 @@ impl PlanProjectionDecisionIR {
             routing
                 .has(Signal::ActionStateOwnsTurn)
                 .then_some(PlanProjectionBlockerIR::ActionState),
-            routing
-                .has(Signal::QuestionAnswer)
+            (routing.has(Signal::QuestionAnswer) && !routing.has(Signal::MixedResponse))
                 .then_some(PlanProjectionBlockerIR::QuestionAnswer),
             routing
                 .has(Signal::TopicTransitionOwnsTurn)
@@ -971,7 +1396,9 @@ pub struct CognitiveApi {
     pragmatic_memory: PragmaticMemory,
     conversation_memory: ConversationMemory,
     native_dialogue_memory: BTreeMap<String, NativeDialogueContextIR>,
+    recorded_plans: BTreeMap<String, crate::discourse_qa::RecordedPlanIR>,
     affective_memory: BTreeMap<String, crate::affective_field::AffectiveFieldIR>,
+    dialogue_personality: crate::affective_field::DialoguePersonalityIR,
     mechanism_induction: MechanismInductionEngine,
     raw_mechanism_induction: RawMechanismInductionEngine,
 }
@@ -992,10 +1419,68 @@ impl CognitiveApi {
             pragmatic_memory: PragmaticMemory::default(),
             conversation_memory: ConversationMemory::default(),
             native_dialogue_memory: BTreeMap::new(),
+            recorded_plans: BTreeMap::new(),
             affective_memory: BTreeMap::new(),
+            dialogue_personality: crate::affective_field::DialoguePersonalityIR::default(),
             mechanism_induction: MechanismInductionEngine,
             raw_mechanism_induction: RawMechanismInductionEngine,
         })
+    }
+
+    /// Changes this API instance's expression preferences, not semantic memory.
+    /// Hosts reapply the configuration when constructing a new instance.
+    pub fn set_dialogue_personality(
+        &mut self,
+        personality: crate::affective_field::DialoguePersonalityIR,
+    ) -> Result<(), CognitiveApiError> {
+        if !personality.validate() {
+            return Err(CognitiveApiError::InvalidRequest);
+        }
+        self.dialogue_personality = personality;
+        Ok(())
+    }
+
+    /// Explicitly releases all conversation-local state after the caller has
+    /// ended a session. This does not mutate the shared semantic core or any
+    /// learned language resource.
+    pub fn close_conversation(&mut self, conversation_id: &str) -> Result<bool, CognitiveApiError> {
+        if conversation_id.trim().is_empty() || conversation_id.len() > 128 {
+            return Err(CognitiveApiError::InvalidRequest);
+        }
+        let conversation_closed = self.conversation_memory.close(conversation_id);
+        let pragmatic_closed = self.pragmatic_memory.close(conversation_id);
+        let native_closed = self
+            .native_dialogue_memory
+            .remove(conversation_id)
+            .is_some();
+        let plans_closed = self.recorded_plans.remove(conversation_id).is_some();
+        let affect_closed = self.affective_memory.remove(conversation_id).is_some();
+        Ok(conversation_closed
+            || pragmatic_closed
+            || native_closed
+            || plans_closed
+            || affect_closed)
+    }
+
+    /// Counts distinct active conversation identifiers across every
+    /// conversation-local store. Shared semantic and language resources are
+    /// intentionally excluded.
+    pub fn active_conversation_count(&self) -> usize {
+        let mut ids = BTreeSet::new();
+        ids.extend(self.conversation_memory.conversation_ids());
+        ids.extend(self.pragmatic_memory.conversation_ids());
+        ids.extend(self.native_dialogue_memory.keys().map(String::as_str));
+        ids.extend(self.recorded_plans.keys().map(String::as_str));
+        ids.extend(self.affective_memory.keys().map(String::as_str));
+        ids.len()
+    }
+
+    pub(crate) fn conversation_is_active(&self, conversation_id: &str) -> bool {
+        self.conversation_memory.state(conversation_id).is_some()
+            || self.pragmatic_memory.state(conversation_id).is_some()
+            || self.native_dialogue_memory.contains_key(conversation_id)
+            || self.recorded_plans.contains_key(conversation_id)
+            || self.affective_memory.contains_key(conversation_id)
     }
 
     pub fn inject_experience(
@@ -1199,6 +1684,10 @@ impl CognitiveApi {
             request,
             pragmatic_interpretation,
             Some(&native_language_circuit),
+            None,
+            None,
+            None,
+            None,
         )
     }
 
@@ -1207,15 +1696,102 @@ impl CognitiveApi {
         request: &NaturalLanguageRequestIR,
         pragmatic_interpretation: PragmaticInterpretationIR,
         native_language_circuit: Option<&NativeTurnIR>,
+        precomputed_lexical_knowledge: Option<&crate::lexical_knowledge_pack::LexicalKnowledgeLookupIR>,
+        task_frame_ids: Option<&[String]>,
+        trusted_dialogue_directive_analysis: Option<&LanguageDialogueDirectiveAnalysisIR>,
+        mut profiler: Option<&mut ConversationTurnProfiler>,
     ) -> Result<NaturalLanguageResponseIR, CognitiveApiError> {
+        macro_rules! record_semantic_substage {
+            ($stage:literal, $started:expr) => {
+                if let (Some(profiler), Some(started)) = (profiler.as_deref_mut(), $started) {
+                    profiler.record_nested($stage, elapsed_micros(started.elapsed()));
+                }
+            };
+        }
         validate_request(request)?;
+        let understanding_started = profiler.as_ref().map(|_| Instant::now());
+        let language_knowledge_started = profiler.as_ref().map(|_| Instant::now());
         let mut understanding = self
             .language_knowledge
             .understand(&request.text)
             .map_err(map_language_error)?;
-        let lexical_activations = self
-            .lexical_memory
-            .activate(&request.text, &request.context_tags);
+        record_semantic_substage!(
+            "SEMANTIC_PLAN_LANGUAGE_KNOWLEDGE_UNDERSTANDING",
+            language_knowledge_started
+        );
+        let lexical_memory_started = profiler.as_ref().map(|_| Instant::now());
+        let (lexical_activations, lexical_activation_timing) =
+            match (precomputed_lexical_knowledge, profiler.is_some()) {
+                (Some(lookup), true) => self
+                    .lexical_memory
+                    .activate_profiled_with_precomputed_lookup(
+                        &request.text,
+                        &request.context_tags,
+                        lookup,
+                    ),
+                (Some(lookup), false) => (
+                    self.lexical_memory.activate_with_precomputed_lookup(
+                        &request.text,
+                        &request.context_tags,
+                        lookup,
+                    ),
+                    crate::lexical_memory::LexicalActivationTimingIR::default(),
+                ),
+                (None, true) => self
+                    .lexical_memory
+                    .activate_profiled(&request.text, &request.context_tags),
+                (None, false) => (
+                    self.lexical_memory
+                        .activate(&request.text, &request.context_tags),
+                    crate::lexical_memory::LexicalActivationTimingIR::default(),
+                ),
+            };
+        if let Some(profiler) = profiler.as_deref_mut() {
+            profiler.record_nested(
+                "SEMANTIC_PLAN_LEXICAL_PACK_LOOKUP",
+                lexical_activation_timing.pack_lookup_micros,
+            );
+            profiler.record_nested(
+                "SEMANTIC_PLAN_LEXICAL_PACK_INJECTION",
+                lexical_activation_timing.pack_injection_micros,
+            );
+            profiler.record_nested(
+                "SEMANTIC_PLAN_LEXICAL_PACK_MATCH_IDENTITY",
+                lexical_activation_timing.pack_match_identity_micros,
+            );
+            profiler.record_nested(
+                "SEMANTIC_PLAN_LEXICAL_PACK_LEXEME_MATERIALIZATION",
+                lexical_activation_timing.pack_lexeme_materialization_micros,
+            );
+            profiler.record_nested(
+                "SEMANTIC_PLAN_LEXICAL_PACK_SOURCE_INSTALLATION",
+                lexical_activation_timing.pack_source_installation_micros,
+            );
+            profiler.record_nested(
+                "SEMANTIC_PLAN_LEXICAL_PACK_SOURCE_INSTALL_VALIDATION",
+                lexical_activation_timing.pack_source_install_validation_micros,
+            );
+            profiler.record_nested(
+                "SEMANTIC_PLAN_LEXICAL_PACK_SOURCE_INSTALL_INDEXING",
+                lexical_activation_timing.pack_source_install_indexing_micros,
+            );
+            profiler.record_nested(
+                "SEMANTIC_PLAN_LEXICAL_CANDIDATE_INDEX",
+                lexical_activation_timing.candidate_index_micros,
+            );
+            profiler.record_nested(
+                "SEMANTIC_PLAN_LEXICAL_CANDIDATE_SCORING",
+                lexical_activation_timing.candidate_scoring_micros,
+            );
+            profiler.record_nested(
+                "SEMANTIC_PLAN_LEXICAL_SEMANTIC_SPREAD_AND_BUDGET",
+                lexical_activation_timing.semantic_spread_and_budget_micros,
+            );
+        }
+        record_semantic_substage!(
+            "SEMANTIC_PLAN_LEXICAL_MEMORY_ACTIVATION",
+            lexical_memory_started
+        );
         merge_lexical_activations(&mut understanding, &lexical_activations);
         understanding
             .semantic_tags
@@ -1272,12 +1848,25 @@ impl CognitiveApi {
         }
         understanding.semantic_tags.sort();
         understanding.semantic_tags.dedup();
-        let dialogue_directive_analysis = self
-            .language_knowledge
-            .analyze_dialogue_directives(&request.text);
+        record_semantic_substage!(
+            "SEMANTIC_PLAN_UNDERSTANDING_AND_LEXICON",
+            understanding_started
+        );
+        let directive_started = profiler.as_ref().map(|_| Instant::now());
+        // The conversation path has already analyzed this exact semantic
+        // surface for directive routing. Reuse only that authenticated result;
+        // public/direct processing always derives it locally.
+        let dialogue_directive_analysis = trusted_dialogue_directive_analysis
+            .cloned()
+            .unwrap_or_else(|| {
+                self.language_knowledge
+                    .analyze_dialogue_directives(&request.text)
+            });
         let planner_inferred_goal =
             planner_inferred_goal(&pragmatic_interpretation, &dialogue_directive_analysis);
-        let semantic_goal = pragmatic_interpretation
+        record_semantic_substage!("SEMANTIC_PLAN_DIRECTIVE_ANALYSIS", directive_started);
+        let goal_projection_started = profiler.as_ref().map(|_| Instant::now());
+        let mut semantic_goal = pragmatic_interpretation
             .language_center
             .to_semantic_plan_goal(
                 &request.request_id,
@@ -1288,14 +1877,74 @@ impl CognitiveApi {
                 planner_inferred_goal,
             )
             .ok_or(CognitiveApiError::Planning)?;
-        let semantic_plan_bundle = self
-            .core
-            .generate_semantic_plan(&semantic_goal)
-            .map_err(map_planning_error)?;
+        if let Some(task_frames) = task_frame_ids {
+            let task_events = pragmatic_interpretation
+                .language_center
+                .events
+                .iter()
+                .filter(|event| task_frames.contains(&event.source_frame_id))
+                .map(|event| event.event_id.as_str())
+                .collect::<BTreeSet<_>>();
+            semantic_goal
+                .selected_live_event_ids
+                .retain(|id| task_events.contains(id.as_str()));
+            // Keep the whole source graph, but information requests are not
+            // pending external tasks. No new event is granted live authority.
+            for event in &mut semantic_goal.events {
+                if !task_events.contains(event.event_id.as_str())
+                    && event.projection
+                        == dockable_semantic_core::SemanticPlanProjectionIR::LiveRequest
+                {
+                    event.projection = dockable_semantic_core::SemanticPlanProjectionIR::Inquiry;
+                }
+            }
+            semantic_goal.seal();
+            if !semantic_goal.validate() {
+                return Err(CognitiveApiError::Planning);
+            }
+        }
+        record_semantic_substage!("SEMANTIC_PLAN_GOAL_PROJECTION", goal_projection_started);
+        let core_planning_started = profiler.as_ref().map(|_| Instant::now());
+        let (semantic_plan_bundle, semantic_plan_generation_timing) = if profiler.is_some() {
+            self.core
+                .generate_semantic_plan_profiled(&semantic_goal)
+                .map_err(map_planning_error)?
+        } else {
+            (
+                self.core
+                    .generate_semantic_plan(&semantic_goal)
+                    .map_err(map_planning_error)?,
+                dockable_semantic_core::SemanticPlanGenerationTimingIR::default(),
+            )
+        };
+        if let Some(profiler) = profiler.as_deref_mut() {
+            profiler.record_nested(
+                "SEMANTIC_PLAN_CORE_GOAL_VALIDATION",
+                semantic_plan_generation_timing.goal_validation_micros,
+            );
+            profiler.record_nested(
+                "SEMANTIC_PLAN_CORE_EVENT_COMPATIBILITY",
+                semantic_plan_generation_timing.event_compatibility_micros,
+            );
+            profiler.record_nested(
+                "SEMANTIC_PLAN_CORE_PLAN_GENERATION",
+                semantic_plan_generation_timing.plan_generation_micros,
+            );
+            profiler.record_nested(
+                "SEMANTIC_PLAN_CORE_BUNDLE_SEALING",
+                semantic_plan_generation_timing.bundle_sealing_micros,
+            );
+            profiler.record_nested(
+                "SEMANTIC_PLAN_CORE_BUNDLE_VALIDATION",
+                semantic_plan_generation_timing.bundle_validation_micros,
+            );
+        }
         let plan = semantic_plan_bundle
             .primary_plan()
             .cloned()
             .ok_or(CognitiveApiError::Planning)?;
+        record_semantic_substage!("SEMANTIC_PLAN_CORE_PLANNING", core_planning_started);
+        let render_bridge_started = profiler.as_ref().map(|_| Instant::now());
         let output_language = request
             .output_language
             .filter(|language| matches!(language, LanguageCodeIR::Korean | LanguageCodeIR::English))
@@ -1304,6 +1953,11 @@ impl CognitiveApi {
                 _ => LanguageCodeIR::English,
             });
         let output = render_plan(output_language, &understanding, &plan);
+        let approved_plan_response = crate::canonical_response_bridge::CanonicalResponseBridge
+            .issue_plan_description(&semantic_goal, &semantic_plan_bundle, output_language)
+            .map(Box::new)
+            .map_err(|_| CognitiveApiError::ResponseBoundary)?;
+        record_semantic_substage!("SEMANTIC_PLAN_RENDER_AND_BRIDGE", render_bridge_started);
         Ok(NaturalLanguageResponseIR {
             schema: NATURAL_LANGUAGE_RESPONSE_SCHEMA.to_string(),
             request_id: request.request_id.clone(),
@@ -1313,6 +1967,7 @@ impl CognitiveApi {
             semantic_goal,
             semantic_plan_bundle,
             plan,
+            approved_plan_response: Some(approved_plan_response),
             output,
         })
     }
@@ -1341,7 +1996,7 @@ impl CognitiveApi {
             .state(&request.conversation_id)
             .cloned();
         let prior_predicates = self.compositional_predicates.clone();
-        let result = self.process_conversation_turn_inner(request);
+        let result = self.process_conversation_turn_inner(request, None);
         if result.is_err() {
             self.conversation_memory
                 .restore_turn_state(&request.conversation_id, prior_conversation);
@@ -1352,16 +2007,53 @@ impl CognitiveApi {
         result
     }
 
+    /// Executes the same authoritative turn path while returning coarse,
+    /// non-authoritative timing evidence.  This is for bounded performance
+    /// diagnosis; callers must not treat timings as semantic evidence.
+    pub fn process_conversation_turn_profiled(
+        &mut self,
+        request: &ConversationTurnRequestIR,
+    ) -> Result<(ConversationTurnResponseIR, ConversationTurnTimingIR), CognitiveApiError> {
+        let prior_conversation = self
+            .conversation_memory
+            .state(&request.conversation_id)
+            .cloned();
+        let prior_pragmatic = self
+            .pragmatic_memory
+            .state(&request.conversation_id)
+            .cloned();
+        let prior_predicates = self.compositional_predicates.clone();
+        let mut profiler = ConversationTurnProfiler::new();
+        let result = self.process_conversation_turn_inner(request, Some(&mut profiler));
+        if result.is_err() {
+            self.conversation_memory
+                .restore_turn_state(&request.conversation_id, prior_conversation);
+            self.pragmatic_memory
+                .restore_turn_state(&request.conversation_id, prior_pragmatic);
+            self.compositional_predicates = prior_predicates;
+        }
+        result.map(|response| (response, profiler.finish()))
+    }
+
     fn process_conversation_turn_inner(
         &mut self,
         request: &ConversationTurnRequestIR,
+        mut profiler: Option<&mut ConversationTurnProfiler>,
     ) -> Result<ConversationTurnResponseIR, CognitiveApiError> {
+        macro_rules! mark_stage {
+            ($stage:literal) => {
+                if let Some(profiler) = profiler.as_deref_mut() {
+                    profiler.mark($stage);
+                }
+            };
+        }
         self.conversation_memory
             .validate_turn_order(request)
             .map_err(map_conversation_error)?;
         self.pragmatic_memory
             .validate_turn_order(request)
             .map_err(map_pragmatic_memory_error)?;
+        let turn_validation_directive_ledger_started = profiler.as_ref().map(|_| Instant::now());
         let active_dialogue_directive_tags = self
             .conversation_memory
             .state(&request.conversation_id)
@@ -1369,16 +2061,52 @@ impl CognitiveApi {
             .flat_map(|state| state.dialogue_directive_ledger.active())
             .map(dialogue_directive_tag)
             .collect::<Vec<_>>();
+        if let (Some(profiler), Some(started)) =
+            (profiler.as_deref_mut(), turn_validation_directive_ledger_started)
+        {
+            profiler.record_nested(
+                "TURN_VALIDATION_DIRECTIVE_LEDGER",
+                elapsed_micros(started.elapsed()),
+            );
+        }
+        let turn_validation_normalization_started = profiler.as_ref().map(|_| Instant::now());
         let normalization = self
             .utterance_normalizer
             .normalize(request)
             .map_err(map_conversation_error)?;
+        if let (Some(profiler), Some(started)) =
+            (profiler.as_deref_mut(), turn_validation_normalization_started)
+        {
+            profiler.record_nested(
+                "TURN_VALIDATION_NORMALIZATION",
+                elapsed_micros(started.elapsed()),
+            );
+        }
+        let turn_validation_affective_field_started = profiler.as_ref().map(|_| Instant::now());
         let affective_field = crate::affective_field::AffectiveFieldIR::observe(
             self.affective_memory.get(&request.conversation_id),
             &request.raw_text,
             None,
         );
-        let affective_policy = affective_field.policy();
+        if let (Some(profiler), Some(started)) =
+            (profiler.as_deref_mut(), turn_validation_affective_field_started)
+        {
+            profiler.record_nested(
+                "TURN_VALIDATION_AFFECTIVE_FIELD",
+                elapsed_micros(started.elapsed()),
+            );
+        }
+        let turn_validation_affective_policy_started = profiler.as_ref().map(|_| Instant::now());
+        let affective_policy = affective_field.policy_with_personality(&self.dialogue_personality);
+        if let (Some(profiler), Some(started)) =
+            (profiler.as_deref_mut(), turn_validation_affective_policy_started)
+        {
+            profiler.record_nested(
+                "TURN_VALIDATION_AFFECTIVE_POLICY",
+                elapsed_micros(started.elapsed()),
+            );
+        }
+        mark_stage!("TURN_VALIDATION_NORMALIZATION_AND_AFFECT");
         // Parse the entire source once. A partial/ambiguous interpretation may
         // not become an observation. Preparation is pure; ConversationMemory
         // commits it atomically with the response below (and rolls back on error).
@@ -1387,12 +2115,104 @@ impl CognitiveApi {
             .state(&request.conversation_id)
             .map(|s| s.dialogue_world.clone())
             .unwrap_or_default();
-        let prepared_world = if !normalization.ambiguous_input
+        if prior_world
+            .last_query
+            .as_ref()
+            .is_some_and(|q| q.clarification_goal.is_some())
+        {
+            let live_question = self
+                .conversation_memory
+                .state(&request.conversation_id)
+                .and_then(|s| s.answer_focus.as_ref())
+                .and_then(|f| f.decision_inquiry.as_ref())
+                .is_some_and(|i| {
+                    if i.clarification_reply
+                        .as_ref()
+                        .is_some_and(|r| r.abstention.is_some())
+                    {
+                        return false;
+                    }
+                    i.knowledge_gap.as_ref().is_some_and(|g| {
+                        request.turn_index > g.evaluated_turn
+                            && request.turn_index - g.evaluated_turn <= 3
+                            && i.proposed_action
+                                .as_ref()
+                                .and_then(|a| g.state_question(a, i.continues_context))
+                                .as_ref()
+                                == prior_world.last_query.as_ref()
+                    })
+                });
+            if !live_question {
+                prior_world.last_query = None;
+            }
+        }
+        // Select the dialogue-act target before world preparation. A reason
+        // for asking is not a new query about the previous world's property.
+        let inquiry_explanation = self
+            .conversation_memory
+            .state(&request.conversation_id)
+            .and_then(|s| {
+                s.answer_focus
+                    .as_ref()
+                    .filter(|f| f.validate(s.completed_turns))
+            })
+            .and_then(|f| {
+                f.decision_inquiry.as_ref().and_then(|prior| {
+                    if prior
+                        .assessment
+                        .as_ref()
+                        .is_some_and(|a| !a.matches_world(&prior_world))
+                        || prior
+                            .knowledge_gap
+                            .as_ref()
+                            .is_some_and(|g| !g.matches_world(&prior_world))
+                    {
+                        return None;
+                    }
+                    let bare_why = matches!(
+                        request
+                            .raw_text
+                            .trim()
+                            .trim_end_matches(['?', '.', '!'])
+                            .to_lowercase()
+                            .as_str(),
+                        "why" | "왜"
+                    );
+                    if bare_why
+                        && prior.proposed_action.is_none()
+                        && prior_world.discourse.focus.is_some()
+                    {
+                        // A generic request for decision input has not introduced
+                        // a competing action target. Preserve the current world QUD.
+                        return None;
+                    }
+                    crate::utterance_intent::DecisionInquiryIR::explain_from(
+                        &request.raw_text,
+                        prior,
+                        f.answered_turn,
+                        request.turn_index,
+                    )
+                })
+            });
+        let mut prepared_world = if inquiry_explanation.is_none()
+            && !normalization.ambiguous_input
+            && !crate::discourse_qa::non_actual_world_question(&request.raw_text)
             && (normalization.disposition == ConversationTurnDispositionIR::Grounded
                 || prior_world.accepts_observation_reply(&request.raw_text))
         {
             prior_world
-                .prepare(&request.raw_text, request.turn_index)
+                .prepare_with_act(
+                    &request.raw_text,
+                    request.turn_index,
+                    self.conversation_memory
+                        .state(&request.conversation_id)
+                        .and_then(|s| {
+                            s.answer_focus.as_ref().filter(|f| {
+                                f.validate(s.completed_turns) && f.validate_proposition_in(s)
+                            })
+                        })
+                        .and_then(|f| f.clarification_act.as_ref()),
+                )
                 .map_err(|_| CognitiveApiError::ConversationFrontend)?
         } else {
             if normalization.ambiguous_input {
@@ -1403,8 +2223,10 @@ impl CognitiveApi {
                 query: None,
                 recognized: false,
                 clarification: None,
+                syntax_candidate: None,
             }
         };
+        mark_stage!("WORLD_PREPARATION");
         use LanguagePipelineSignalIR as PipelineSignal;
         let mut pipeline_routing = LanguagePipelineRoutingIR::from_candidates([
             (normalization.disposition == ConversationTurnDispositionIR::Grounded)
@@ -1413,6 +2235,14 @@ impl CognitiveApi {
                 .ambiguous_input
                 .then_some(PipelineSignal::AmbiguousInput),
         ]);
+        // A typed non-actual question is a grounded response request even
+        // when its modal outcome wording is outside the world parser's
+        // premise grammar. It must reach discourse QA, while its assumed
+        // event remains barred from actual-world memory.
+        pipeline_routing.activate_if(
+            crate::discourse_qa::non_actual_world_question(&request.raw_text),
+            PipelineSignal::NormalizedGrounded,
+        );
         pipeline_routing.activate_if(
             requests_future_epistemic_notification(&normalization.semantic_surface_text),
             PipelineSignal::FutureNotificationOwnsTurn,
@@ -1565,6 +2395,7 @@ impl CognitiveApi {
                 native_dialogue_context.active_referents.clear();
             }
         }
+        mark_stage!("CONTEXT_BUILD");
         let definition_grounding = DefinitionGrounder.ground(
             &normalization.semantic_surface_text,
             request.turn_index,
@@ -1579,6 +2410,7 @@ impl CognitiveApi {
             self.inject_compositional_predicate(predicate)?;
         }
         debug_assert!(definition_grounding.validate());
+        mark_stage!("DEFINITION_GROUNDING");
         let definition_grounding_applies = definition_grounding.consumes_turn();
         let quoted_metalinguistic_request =
             is_quoted_metalinguistic_request(&normalization.semantic_surface_text);
@@ -1627,6 +2459,14 @@ impl CognitiveApi {
                 binding: None,
             }
         };
+        let event_reference_answer = pending_answer.disposition
+            == QuestionAnswerDispositionIR::Resolved
+            && self
+                .conversation_memory
+                .state(&request.conversation_id)
+                .and_then(|s| s.pending_question.as_ref())
+                .is_some_and(|q| q.kind == QuestionUnderDiscussionKindIR::EventReference);
+        mark_stage!("DISCOURSE_STATE_ANALYSIS");
         let mut reference_resolution = if pipeline_routing.has(PipelineSignal::GroupUpdateOwnsTurn)
         {
             ReferenceResolutionIR {
@@ -1718,8 +2558,158 @@ impl CognitiveApi {
         // rewrite authority and the original utterance remains the source.
         let native_source_text =
             authoritative_native_source(request, &reference_resolution).to_string();
-        let mut native_language_circuit = NativeLanguageCircuit
-            .analyze_with_context(&native_source_text, &native_dialogue_context);
+        mark_stage!("REFERENCE_RESOLUTION");
+        // Native and pragmatic analysis may share one compositional result
+        // only for the exact source/observation identity case. A resolved
+        // reference, a repaired surface, or learned predicate inventory can
+        // change interpretation, so every one of those cases retains the two
+        // independently derived analyses.
+        let exact_native_compositional_started = profiler.as_ref().map(|_| Instant::now());
+        let exact_native_compositional_source = native_source_text
+            == reference_resolution.resolved_semantic_text
+            && native_source_text == normalization.semantic_surface_text
+            && self.compositional_predicates.is_empty();
+        let (exact_shared_compositional_analysis, exact_compositional_timing) =
+            if exact_native_compositional_source && profiler.is_some() {
+                let (analysis, timing) =
+                    crate::compositional_semantics::CompositionalSemanticAnalyzer
+                        .analyze_profiled(&native_source_text);
+                (Some(analysis), timing)
+            } else {
+                (
+                    exact_native_compositional_source.then(|| {
+                        crate::compositional_semantics::CompositionalSemanticAnalyzer
+                            .analyze(&native_source_text)
+                    }),
+                    crate::compositional_semantics::CompositionalAnalysisTimingIR::default(),
+                )
+            };
+        if let (Some(profiler), Some(started)) =
+            (profiler.as_deref_mut(), exact_native_compositional_started)
+        {
+            profiler.record_nested(
+                "NATIVE_LANGUAGE_CIRCUIT_EXACT_COMPOSITIONAL_ANALYSIS",
+                elapsed_micros(started.elapsed()),
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_SOURCE_AND_CLAUSE",
+                exact_compositional_timing.source_and_clause_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_FRAME_DISCOVERY",
+                exact_compositional_timing.frame_discovery_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCES",
+                exact_compositional_timing.action_occurrence_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCE_BUILTIN_SCAN",
+                exact_compositional_timing.action_occurrence_builtin_scan_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCE_STRUCTURAL_SCAN",
+                exact_compositional_timing.action_occurrence_structural_scan_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCE_LEARNED_SCAN",
+                exact_compositional_timing.action_occurrence_learned_scan_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCE_NORMALIZATION",
+                exact_compositional_timing.action_occurrence_normalization_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_FRAME_ANNOTATION",
+                exact_compositional_timing.frame_annotation_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_GRAPH",
+                exact_compositional_timing.structural_graph_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_SCOPE_NORMALIZATION",
+                exact_compositional_timing.structural_scope_normalization_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_CLAUSE_GRAPH",
+                exact_compositional_timing.structural_clause_graph_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_ATTRIBUTION",
+                exact_compositional_timing.structural_attribution_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_SEMANTIC_ROLES",
+                exact_compositional_timing.structural_semantic_roles_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_FRAME_SCOPE",
+                exact_compositional_timing.structural_frame_scope_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_GRAMMATICAL_SCOPE",
+                exact_compositional_timing.structural_grammatical_scope_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_MODAL_SCOPE",
+                exact_compositional_timing.structural_modal_scope_micros,
+            );
+            profiler.record_nested(
+                "COMPOSITIONAL_ANALYSIS_CANDIDATE_SELECTION",
+                exact_compositional_timing.candidate_selection_micros,
+            );
+        }
+        let (mut native_language_circuit, native_analysis_timing) = if profiler.is_some() {
+            NativeLanguageCircuit.analyze_profiled_with_context_and_compositional_analysis(
+                &native_source_text,
+                &native_dialogue_context,
+                exact_shared_compositional_analysis.as_ref(),
+            )
+        } else {
+            (
+                NativeLanguageCircuit.analyze_with_context_and_compositional_analysis(
+                    &native_source_text,
+                    &native_dialogue_context,
+                    exact_shared_compositional_analysis.as_ref(),
+                ),
+                crate::native_language_circuit::NativeAnalysisTimingIR::default(),
+            )
+        };
+        if let Some(profiler) = profiler.as_deref_mut() {
+            profiler.record_nested(
+                "NATIVE_LANGUAGE_CIRCUIT_PREPARATION",
+                native_analysis_timing.preparation_micros,
+            );
+            profiler.record_nested(
+                "NATIVE_LANGUAGE_CIRCUIT_SOURCE_VIEWS",
+                native_analysis_timing.source_views_micros,
+            );
+            profiler.record_nested(
+                "NATIVE_LANGUAGE_CIRCUIT_ENTITY_EXTRACTION",
+                native_analysis_timing.entity_extraction_micros,
+            );
+            profiler.record_nested(
+                "NATIVE_LANGUAGE_CIRCUIT_DISCOURSE_CONTEXT",
+                native_analysis_timing.discourse_context_micros,
+            );
+            profiler.record_nested(
+                "NATIVE_LANGUAGE_CIRCUIT_ACTION_AND_RESPONSE_MODE",
+                native_analysis_timing.action_and_response_mode_micros,
+            );
+            profiler.record_nested(
+                "NATIVE_LANGUAGE_CIRCUIT_ARGUMENT_CONTEXT",
+                native_analysis_timing.argument_context_micros,
+            );
+            profiler.record_nested(
+                "NATIVE_LANGUAGE_CIRCUIT_EVENT_BINDING",
+                native_analysis_timing.event_binding_micros,
+            );
+            profiler.record_nested(
+                "NATIVE_LANGUAGE_CIRCUIT_FINALIZATION",
+                native_analysis_timing.finalization_micros,
+            );
+        }
         if pipeline_routing.has(PipelineSignal::FutureNotificationOwnsTurn) {
             native_language_circuit.apply_future_notification_boundary(&native_source_text);
         }
@@ -1729,6 +2719,8 @@ impl CognitiveApi {
             native_language_circuit.add_boundary_ambiguity("FRONTEND_INPUT_ALTERNATIVES");
         }
         debug_assert!(native_language_circuit.validate_for_source(&native_source_text));
+        mark_stage!("NATIVE_LANGUAGE_CIRCUIT_ANALYSIS");
+        let pragmatic_context_started = profiler.as_ref().map(|_| Instant::now());
         let pragmatic_topic_id = self
             .conversation_memory
             .state(&request.conversation_id)
@@ -1797,22 +2789,118 @@ impl CognitiveApi {
                 });
             pragmatic_context.recent_subjects.truncate(4);
         }
-        let mut pragmatic_interpretation = self
-            .pragmatic_reasoner
-            .interpret_with_predicates_and_illocution(
-                &reference_resolution.resolved_semantic_text,
-                &normalization.semantic_surface_text,
-                &pragmatic_context,
-                &self.compositional_predicates,
+        if let (Some(profiler), Some(started)) =
+            (profiler.as_deref_mut(), pragmatic_context_started)
+        {
+            profiler.record_nested(
+                "PRAGMATIC_INTERPRETATION_CONTEXT",
+                elapsed_micros(started.elapsed()),
             );
+        }
+        let pragmatic_reasoner_started = profiler.as_ref().map(|_| Instant::now());
+        let (mut pragmatic_interpretation, pragmatic_interpretation_timing) = if profiler.is_some()
+        {
+            if let Some(analysis) = exact_shared_compositional_analysis.as_ref() {
+                self.pragmatic_reasoner
+                    .interpret_exact_surface_with_compositional_analysis_profiled(
+                        &native_source_text,
+                        &pragmatic_context,
+                        analysis,
+                    )
+            } else {
+                self.pragmatic_reasoner
+                    .interpret_with_predicates_and_illocution_profiled(
+                        &reference_resolution.resolved_semantic_text,
+                        &normalization.semantic_surface_text,
+                        &pragmatic_context,
+                        &self.compositional_predicates,
+                    )
+            }
+        } else if let Some(analysis) = exact_shared_compositional_analysis.as_ref() {
+            (
+                self.pragmatic_reasoner
+                    .interpret_exact_surface_with_compositional_analysis(
+                        &native_source_text,
+                        &pragmatic_context,
+                        analysis,
+                    ),
+                crate::pragmatics::PragmaticInterpretationTimingIR::default(),
+            )
+        } else {
+            (
+                self.pragmatic_reasoner
+                    .interpret_with_predicates_and_illocution(
+                        &reference_resolution.resolved_semantic_text,
+                        &normalization.semantic_surface_text,
+                        &pragmatic_context,
+                        &self.compositional_predicates,
+                    ),
+                crate::pragmatics::PragmaticInterpretationTimingIR::default(),
+            )
+        };
+        if let (Some(profiler), Some(started)) =
+            (profiler.as_deref_mut(), pragmatic_reasoner_started)
+        {
+            profiler.record_nested(
+                "PRAGMATIC_INTERPRETATION_REASONER",
+                elapsed_micros(started.elapsed()),
+            );
+            profiler.record_nested(
+                "PRAGMATIC_REASONER_CLAUSE_AND_NONLITERAL",
+                pragmatic_interpretation_timing.clause_and_nonliteral_micros,
+            );
+            profiler.record_nested(
+                "PRAGMATIC_REASONER_COMPOSITIONAL_ANALYSIS",
+                pragmatic_interpretation_timing.compositional_analysis_micros,
+            );
+            profiler.record_nested(
+                "PRAGMATIC_REASONER_INTENT_AND_ILLOCUTION",
+                pragmatic_interpretation_timing.intent_and_illocution_micros,
+            );
+            profiler.record_nested(
+                "PRAGMATIC_REASONER_LANGUAGE_CENTER",
+                pragmatic_interpretation_timing.language_center_micros,
+            );
+            profiler.record_nested(
+                "PRAGMATIC_REASONER_PROJECTION_AND_RESOLUTION",
+                pragmatic_interpretation_timing.projection_and_resolution_micros,
+            );
+        }
+        mark_stage!("PRAGMATIC_INTERPRETATION_ANALYSIS");
         let dialogue_directive_analysis = self
             .language_knowledge
             .analyze_dialogue_directives(&normalization.semantic_surface_text);
-        let dialogue_directive_candidates = dialogue_directive_candidates(
+        let mut dialogue_directive_candidates = dialogue_directive_candidates(
             &pragmatic_interpretation,
             &dialogue_directive_analysis,
             &request.raw_text,
         );
+        let directive_conflicts = if dialogue_directive_candidates.is_empty() {
+            Vec::new()
+        } else {
+            self.conversation_memory
+                .state(&request.conversation_id)
+                .map_or_else(
+                    || {
+                        crate::conversation::DialogueDirectiveLedgerIR::default()
+                            .response_conflicts_after(
+                                request.turn_index,
+                                &dialogue_directive_candidates,
+                            )
+                    },
+                    |state| {
+                        state.dialogue_directive_ledger.response_conflicts_after(
+                            request.turn_index,
+                            &dialogue_directive_candidates,
+                        )
+                    },
+                )
+        };
+        let dialogue_directive_conflict = !directive_conflicts.is_empty();
+        // Keep the prior satisfiable policy and ask, rather than acknowledging
+        // a set of constraints for which no supported realization remains.
+        dialogue_directive_candidates
+            .retain(|candidate| !directive_conflicts.contains(&candidate.kind));
         let feedback_goal_agreement = pragmatic_interpretation.user_feedback.is_none()
             || pragmatic_interpretation
                 .inferred_goal
@@ -1830,6 +2918,11 @@ impl CognitiveApi {
                                 )
                         })
                 });
+        native_language_circuit.apply_content_complement_boundary(
+            &native_source_text,
+            &reference_resolution.resolved_semantic_text,
+            &pragmatic_interpretation.compositional_analysis,
+        );
         let compositional_goal_materialized = !pipeline_routing
             .has(PipelineSignal::FutureNotificationOwnsTurn)
             && feedback_goal_agreement
@@ -1839,7 +2932,8 @@ impl CognitiveApi {
             );
         debug_assert!(native_language_circuit.validate_for_source(&native_source_text));
         let explicit_dialogue_directive = !dialogue_directive_analysis.frames.is_empty()
-            && dialogue_directive_analysis.unresolved_axes.is_empty();
+            && dialogue_directive_analysis.unresolved_axes.is_empty()
+            && !dialogue_directive_conflict;
         let has_non_directive_goal =
             if let Some(goals) = native_language_circuit.authoritative_live_goals() {
                 goals
@@ -1857,7 +2951,9 @@ impl CognitiveApi {
             dialogue_directive_owns_turn,
             PipelineSignal::DialogueDirectiveOwnsTurn,
         );
-        if pending_answer.disposition == QuestionAnswerDispositionIR::Resolved {
+        if pending_answer.disposition == QuestionAnswerDispositionIR::Resolved
+            && !event_reference_answer
+        {
             let resolved_operation = pragmatic_interpretation
                 .compositional_analysis
                 .selected_candidates()
@@ -1901,19 +2997,62 @@ impl CognitiveApi {
             pragmatic_interpretation
                 .reconcile_native_projection(&native_language_circuit, &native_source_text);
         }
-        let conversation_contract = crate::conversation_contract::ConversationContractIR::derive(
-            &normalization.semantic_surface_text,
-            &pragmatic_interpretation,
-            &native_language_circuit,
+        let action_state_contract_started = profiler.as_ref().map(|_| Instant::now());
+        let (conversation_contract, conversation_contract_timing) = if profiler.is_some() {
+            crate::conversation_contract::ConversationContractIR::derive_profiled(
+                &normalization.semantic_surface_text,
+                &pragmatic_interpretation,
+                &native_language_circuit,
+            )
+        } else {
+            (
+                crate::conversation_contract::ConversationContractIR::derive(
+                    &normalization.semantic_surface_text,
+                    &pragmatic_interpretation,
+                    &native_language_circuit,
+                ),
+                crate::conversation_contract::ConversationContractTimingIR::default(),
+            )
+        };
+        if let (Some(profiler), Some(started)) =
+            (profiler.as_deref_mut(), action_state_contract_started)
+        {
+            profiler.record_nested(
+                "CONVERSATION_CONTRACT_INITIAL_PROHIBITION",
+                conversation_contract_timing.initial_prohibition_micros,
+            );
+            profiler.record_nested(
+                "CONVERSATION_CONTRACT_LOCAL_PROHIBITION_FALLBACK",
+                conversation_contract_timing.local_prohibition_fallback_micros,
+            );
+            profiler.record_nested(
+                "CONVERSATION_CONTRACT_REQUEST_EFFECTS",
+                conversation_contract_timing.request_effects_micros,
+            );
+            profiler.record_nested(
+                "CONVERSATION_CONTRACT_REMAINING_DERIVATION",
+                conversation_contract_timing.remaining_derivation_micros,
+            );
+            profiler.record_nested(
+                "ACTION_STATE_CONVERSATION_CONTRACT",
+                elapsed_micros(started.elapsed()),
+            );
+        }
+        pipeline_routing.activate_if(
+            conversation_contract.suppresses_answer(),
+            PipelineSignal::ResponseProhibited,
         );
         pipeline_routing.activate_if(
-            conversation_contract.answer_only(),
+            conversation_contract.answer_only()
+                || event_reference_answer
+                || crate::discourse_qa::non_actual_world_question(&request.raw_text),
             PipelineSignal::InformationRequest,
         );
         pipeline_routing.activate_if(
             conversation_contract.assertion_only,
             PipelineSignal::AssertionOnly,
         );
+        let action_state_inherited_goals_started = profiler.as_ref().map(|_| Instant::now());
         let inherited_action_goal_ids = reference_resolution
             .discourse_bindings
             .iter()
@@ -1934,12 +3073,27 @@ impl CognitiveApi {
             .collect::<BTreeSet<_>>()
             .into_iter()
             .collect::<Vec<_>>();
+        if let (Some(profiler), Some(started)) = (
+            profiler.as_deref_mut(),
+            action_state_inherited_goals_started,
+        ) {
+            profiler.record_nested(
+                "ACTION_STATE_INHERITED_GOALS",
+                elapsed_micros(started.elapsed()),
+            );
+        }
+        let selected_authorized_pragmatic_request = pragmatic_interpretation
+            .pragmatic_intent_graph
+            .composition
+            .as_ref()
+            .is_some_and(|graph| graph.has_selected_authorized_request());
+        let action_state_analyzer_started = profiler.as_ref().map(|_| Instant::now());
         let mut action_state_analysis = if pipeline_routing.has(PipelineSignal::GroupUpdateOwnsTurn)
             || pipeline_routing.has(PipelineSignal::DefinitionOwnsTurn)
         {
             ActionStateAnalysisIR::default()
         } else {
-            ActionStateAnalyzer.analyze_with_goal_hints_and_query_surface(
+            ActionStateAnalyzer.analyze_with_composition(
                 &reference_resolution.resolved_semantic_text,
                 &normalization.semantic_surface_text,
                 self.conversation_memory
@@ -1947,8 +3101,33 @@ impl CognitiveApi {
                     .map(|state| &state.action_state_ledger)
                     .unwrap_or(&ActionStateLedgerIR::default()),
                 &inherited_action_goal_ids,
+                Some(&pragmatic_interpretation.compositional_analysis),
             )
         };
+        if let (Some(profiler), Some(started)) =
+            (profiler.as_deref_mut(), action_state_analyzer_started)
+        {
+            profiler.record_nested("ACTION_STATE_ANALYZER", elapsed_micros(started.elapsed()));
+        }
+        mark_stage!("ACTION_STATE_ANALYSIS");
+        if selected_authorized_pragmatic_request
+            && action_state_analysis
+                .execution_capability_question
+                .is_some()
+        {
+            // A conventional indirect request retains its selected pragmatic
+            // force; surface ability morphology cannot replace it with a query.
+            action_state_analysis = ActionStateAnalysisIR::default();
+        }
+        // A source-bound event question has already selected the ledger as its
+        // answer domain. Generic discourse fallbacks cannot replace that domain.
+        pipeline_routing.activate_if(
+            !action_state_analysis.event_question_frame_ids.is_empty()
+                || action_state_analysis
+                    .execution_capability_question
+                    .is_some(),
+            PipelineSignal::ActionStateOwnsTurn,
+        );
         if action_state_analysis.has_language_reports()
             && pipeline_routing.has(PipelineSignal::NativeGoalOwnsTurn)
         {
@@ -2088,10 +3267,21 @@ impl CognitiveApi {
                 .reference_bindings
                 .iter()
                 .any(|binding| binding.kind == NativeReferenceKindIR::OperationEllipsis);
-            let resolves_prior_theme = native_language_circuit
-                .reference_bindings
-                .iter()
-                .any(|binding| binding.kind == NativeReferenceKindIR::ExplicitPriorTheme);
+            let resolves_prior_theme =
+                native_language_circuit
+                    .reference_bindings
+                    .iter()
+                    .any(|binding| {
+                        binding.kind == NativeReferenceKindIR::ExplicitPriorTheme
+                            && native_language_circuit.entities.iter().any(|entity| {
+                                entity.entity_id == binding.target_entity_id
+                                    && !entity.rejected_by_contrast
+                                    && !entity.surface.trim().is_empty()
+                                    && !crate::typed_coreference::is_pronominal(
+                                        &entity.surface.to_lowercase(),
+                                    )
+                            })
+                    });
             let resolves_event_ordinal = native_language_circuit
                 .reference_bindings
                 .iter()
@@ -2128,6 +3318,15 @@ impl CognitiveApi {
                 .ambiguous_reference_surfaces
                 .retain(|surface| {
                     let normalized = surface.to_lowercase();
+                    // The native circuit may already have bound an explicit
+                    // theme while the compatibility resolver still carries
+                    // its inflected surface as a gap. Consume the shared
+                    // reference vocabulary, not another spelling whitelist.
+                    if resolves_prior_theme
+                        && crate::conversation::is_reference_surface(&normalized)
+                    {
+                        return false;
+                    }
                     !normalized.contains("demonstrative_focus_reference")
                         && !(resolves_bound_ellipsis
                             && (normalized.contains("elliptical_action")
@@ -2217,6 +3416,16 @@ impl CognitiveApi {
             // prior topic.
             reference_resolution.ambiguous_reference_surfaces.clear();
         }
+        // Clarification is a dependency of the selected response, not a reflex
+        // triggered by any unresolved word. Preserve content ambiguity without
+        // pretending it was resolved; this permission cannot materialize a goal
+        // or answer a question about the unknown referent.
+        let content_references_deferred = conversation_contract.assertion_only
+            && native_language_circuit.response_goal == NativeResponseGoalIR::Acknowledge
+            && native_language_circuit.selected_live_goals.is_empty()
+            && pragmatic_interpretation.inferred_goal.is_none()
+            && !action_state_analysis.consumes_turn()
+            && reference_resolution.can_defer_content_references_for_acknowledgement();
         let mut disposition = if normalization.disposition
             == ConversationTurnDispositionIR::ClarificationRequired
             || native_language_circuit.unresolved.iter().any(|reason| {
@@ -2225,7 +3434,8 @@ impl CognitiveApi {
                     "AMBIGUOUS_DIALOGUE_CONTEXT_ENTITY" | "UNDERSPECIFIED_PROBLEM_DISCLOSURE"
                 )
             })
-            || !reference_resolution.ambiguous_reference_surfaces.is_empty()
+            || (!reference_resolution.ambiguous_reference_surfaces.is_empty()
+                && !content_references_deferred)
             || pragmatic_interpretation
                 .nonliteral_analysis
                 .clarification_required
@@ -2248,6 +3458,17 @@ impl CognitiveApi {
             disposition = ConversationTurnDispositionIR::BackchannelOnly;
         }
         if dialogue_directive_owns_turn {
+            disposition = ConversationTurnDispositionIR::Grounded;
+        }
+        if (conversation_contract.interaction_only()
+            || conversation_contract
+                .evidence
+                .iter()
+                .any(|e| e == "CONDITIONAL_REPORT"))
+            && normalization.disposition == ConversationTurnDispositionIR::Grounded
+            && reference_resolution.ambiguous_reference_surfaces.is_empty()
+            && !normalization.ambiguous_input
+        {
             disposition = ConversationTurnDispositionIR::Grounded;
         }
         if topic_transition
@@ -2315,8 +3536,69 @@ impl CognitiveApi {
             .filter(|language| matches!(language, LanguageCodeIR::Korean | LanguageCodeIR::English))
             .or(remembered_language)
             .unwrap_or_else(|| conversational_language(&request.raw_text));
-        let query_function_reference_only =
-            !reference_resolution.ambiguous_reference_surfaces.is_empty()
+        // The source clauses of a same-turn deictic report are observations;
+        // the final report request is not.  Detect this bounded form before
+        // the conversation commit so the source remains available to later
+        // evidence-bound questions as well as to the immediate report.
+        let source_bound_report_candidate = (!conversation_contract.suppresses_answer())
+        .then(|| source_bound_report_request(&request.raw_text, output_language))
+        .flatten();
+        // A full-consumption content operation may resolve its own argument
+        // against attributed memory, including an explicit unresolved gap.
+        // The operation owns its argument; generic reference substitution may
+        // not replace it with the wording of a previous question.
+        let mixed_task_frames = conversation_contract
+            .independent_action_requested
+            .then(|| crate::discourse_qa::mixed_response_task_frames(&request.raw_text))
+            .flatten();
+        pipeline_routing.activate_if(mixed_task_frames.is_some(), PipelineSignal::MixedResponse);
+        let response_operations = (conversation_contract.answer_only()
+            || mixed_task_frames.is_some())
+        .then(|| {
+            self.discourse_qa.answer_response_operations(
+                &normalization.semantic_surface_text,
+                self.conversation_memory.state(&request.conversation_id),
+                output_language,
+            )
+        })
+        .flatten();
+        let contextual_operation = (conversation_contract.answer_only()
+            && (crate::proposition_content::content_request(&normalization.semantic_surface_text)
+                .is_some()
+                || crate::proposition_content::question_request(&request.raw_text).is_some()
+                || crate::discourse_qa::owns_proposition_reference(
+                    &normalization.semantic_surface_text,
+                )))
+        .then(|| {
+            self.discourse_qa
+                .answer(
+                    &normalization.semantic_surface_text,
+                    self.conversation_memory.state(&request.conversation_id),
+                    output_language,
+                )
+                .unwrap_or_else(|| {
+                    self.discourse_qa
+                        .unanswered(&normalization.semantic_surface_text, output_language)
+                })
+        })
+        .filter(|a| a.validate());
+        let event_operation_answer = response_operations.or(contextual_operation).or_else(|| {
+            (conversation_contract.answer_only()
+                && crate::proposition_content::is_deictic_event_recap(
+                    &normalization.semantic_surface_text,
+                ))
+            .then(|| {
+                self.discourse_qa.answer(
+                    &normalization.semantic_surface_text,
+                    self.conversation_memory.state(&request.conversation_id),
+                    output_language,
+                )
+            })
+            .flatten()
+            .filter(|a| a.event_summary.is_some() && a.validate())
+        });
+        let query_function_reference_only = event_operation_answer.is_some()
+            || !reference_resolution.ambiguous_reference_surfaces.is_empty()
                 && reference_resolution
                     .ambiguous_reference_surfaces
                     .iter()
@@ -2328,11 +3610,6 @@ impl CognitiveApi {
                 .any(|binding| binding.kind == DiscourseBindingKindIR::ResultReference),
             PipelineSignal::ResultReferenceOwnsTurn,
         );
-        let selected_authorized_pragmatic_request = pragmatic_interpretation
-            .pragmatic_intent_graph
-            .composition
-            .as_ref()
-            .is_some_and(|graph| graph.has_selected_authorized_request());
         let response_goal_correction = pragmatic_interpretation
             .pragmatic_intent_graph
             .selected_utterance_intent()
@@ -2362,7 +3639,14 @@ impl CognitiveApi {
                     | NativeResponseModeIR::SourceCertaintyQuery
                     | NativeResponseModeIR::OutcomeAlternativeQuery
             );
-        let plan_result_query_focus = if native_verified_result_query {
+        let plan_result_query_focus = if !action_state_analysis
+            .event_question_content_slots
+            .is_empty()
+        {
+            PlanResultQueryFocusIR::UnverifiedEventPremise
+        } else if !action_state_analysis.event_question_frame_ids.is_empty() {
+            PlanResultQueryFocusIR::ExecutionVersusPlan
+        } else if native_verified_result_query {
             PlanResultQueryFocusIR::VerifiedResult
         } else {
             classify_plan_result_query_focus(&normalization.semantic_surface_text)
@@ -2446,7 +3730,8 @@ impl CognitiveApi {
             PipelineSignal::PragmaticForceOwnsSurfaceQuestion,
         );
         pipeline_routing.activate_if(
-            pragmatic_interpretation.continuation_gate.is_some(),
+            pragmatic_interpretation.continuation_gate.is_some()
+                && !conversation_contract.assertion_only,
             PipelineSignal::InitialContinuationGateOwnsTurn,
         );
         pipeline_routing.activate_if(
@@ -2462,18 +3747,75 @@ impl CognitiveApi {
             reference_resolution.ambiguous_reference_surfaces.is_empty(),
             PipelineSignal::ReferencesFullyResolved,
         );
-        let world_answer = if let Some(c) = &prepared_world.clarification {
+        let resumed_inquiry = if prepared_world.recognized
+            && prepared_world.clarification.is_none()
+            && (conversation_contract.assertion_only
+                || crate::world_dialogue::WorldMemoryUpdateIR {
+                    memory: prepared_world.memory.clone(),
+                    turn: request.turn_index,
+                    source_text: request.raw_text.clone(),
+                }
+                .is_bound_boolean_answer())
+            && !normalization.ambiguous_input
+            && topic_transition.is_none()
+        {
+            self.conversation_memory
+                .state(&request.conversation_id)
+                .and_then(|s| {
+                    s.answer_focus
+                        .as_ref()
+                        .filter(|f| f.validate(s.completed_turns))
+                })
+                .and_then(|f| f.decision_inquiry.as_ref())
+                .and_then(|prior| {
+                    crate::utterance_intent::DecisionInquiryIR::resume_with_update(
+                        prior,
+                        crate::world_dialogue::WorldMemoryUpdateIR {
+                            memory: prepared_world.memory.clone(),
+                            turn: request.turn_index,
+                            source_text: request.raw_text.clone(),
+                        },
+                    )
+                })
+        } else {
+            None
+        };
+        let decision_inquiry = inquiry_explanation
+            .clone()
+            .or(resumed_inquiry.clone())
+            .or_else(|| {
+                pragmatic_interpretation
+                    .pragmatic_intent_graph
+                    .selected_utterance_intent()
+                    .filter(|_| !crate::discourse_qa::non_actual_world_question(&request.raw_text))
+                    .filter(|i| {
+                        i.expected_response
+                            == crate::utterance_intent::ExpectedResponseKindIR::DecisionSupport
+                    })
+                    .and_then(|_| crate::utterance_intent::decision_inquiry(&request.raw_text))
+            });
+        mark_stage!("NATIVE_PRAGMATIC_AND_ACTION_POST_ANALYSIS");
+        let world_answer = if conversation_contract.suppresses_answer() {
+            None
+        } else if let Some(c) = &prepared_world.clarification {
             Some(
                 c.clone()
                     .into_answer(output_language)
                     .map_err(|_| CognitiveApiError::Deliberation)?,
             )
-        } else if let Some(query) = prepared_world.query.as_ref() {
+        } else if let Some(query) = prepared_world
+            .query
+            .as_ref()
+            .filter(|_| inquiry_explanation.is_none() && resumed_inquiry.is_none())
+        {
             crate::world_dialogue::deliberate_world(&prepared_world.memory, query)
                 .and_then(|world| world.into_answer(&request.raw_text, output_language))
                 .map(Some)
                 .map_err(|_| CognitiveApiError::Deliberation)?
-        } else if prepared_world.recognized {
+        } else if prepared_world.recognized
+            && inquiry_explanation.is_none()
+            && resumed_inquiry.is_none()
+        {
             Some(
                 crate::world_dialogue::WorldMemoryUpdateIR {
                     memory: prepared_world.memory.clone(),
@@ -2483,10 +3825,79 @@ impl CognitiveApi {
                 .into_answer(output_language)
                 .map_err(|_| CognitiveApiError::Deliberation)?,
             )
+        } else if let Some(mut inquiry) = decision_inquiry {
+            if inquiry.assessment.is_none()
+                && inquiry.explanation_of.is_none()
+                && inquiry.resumption.is_none()
+                && inquiry.clarification_reply.is_none()
+            {
+                inquiry.assessment = inquiry
+                    .proposed_action
+                    .as_ref()
+                    .and_then(|action| {
+                        crate::world_dialogue::assess_action_benefit(
+                            action,
+                            inquiry.continues_context,
+                            &prepared_world.memory,
+                            request.turn_index,
+                        )
+                    })
+                    .map(Box::new);
+                if inquiry.assessment.is_none() {
+                    inquiry.knowledge_gap = inquiry
+                        .proposed_action
+                        .as_ref()
+                        .and_then(|action| {
+                            crate::world_dialogue::action_benefit_gap(
+                                action,
+                                inquiry.continues_context,
+                                &prepared_world.memory,
+                                request.turn_index,
+                            )
+                        })
+                        .map(Box::new);
+                }
+            }
+            let mut answer = self
+                .discourse_qa
+                .unanswered(&request.raw_text, output_language);
+            answer.claims.clear();
+            answer.disposition = if inquiry.assessment.is_some() {
+                crate::discourse_qa::DiscourseAnswerDispositionIR::AnsweredFromDialogueRecords
+            } else {
+                crate::discourse_qa::DiscourseAnswerDispositionIR::AmbiguousQuery
+            };
+            answer.decision_inquiry = Some(inquiry);
+            answer.refresh_structured_preview();
+            if !answer.validate() {
+                return Err(CognitiveApiError::Deliberation);
+            }
+            Some(answer)
         } else {
             None
         };
-        let temporal_answer = if world_answer.is_none() && pipeline_routing.allows_temporal_qa() {
+        let described_event_answer = if world_answer.is_none()
+            && event_operation_answer.is_some()
+            && pipeline_routing.allows_discourse_qa(false, false)
+        {
+            event_operation_answer
+        } else if world_answer.is_none() && pipeline_routing.allows_discourse_qa(false, false) {
+            self.discourse_qa.answer_described_event(
+                if event_reference_answer {
+                    &reference_resolution.resolved_semantic_text
+                } else {
+                    &normalization.semantic_surface_text
+                },
+                self.conversation_memory.state(&request.conversation_id),
+                output_language,
+            )
+        } else {
+            None
+        };
+        let temporal_answer = if world_answer.is_none()
+            && described_event_answer.is_none()
+            && pipeline_routing.allows_temporal_qa()
+        {
             let state = self.conversation_memory.state(&request.conversation_id);
             if query_function_reference_only {
                 self.temporal_qa.answer(
@@ -2533,6 +3944,7 @@ impl CognitiveApi {
                         }))))
         });
         let dialogue_relation_answer = if world_answer.is_none()
+            && described_event_answer.is_none()
             && pipeline_routing.allows_dialogue_relation_qa(temporal_answer.is_some())
             && self
                 .conversation_memory
@@ -2561,8 +3973,26 @@ impl CognitiveApi {
         } else {
             None
         };
-        let discourse_answer = if world_answer.is_some() {
+        let recorded_method = (conversation_contract.answer_only()
+            && pipeline_routing.common_qa_path_open()
+            && reference_resolution.ambiguous_reference_surfaces.is_empty())
+        .then(|| {
+            self.recorded_plans
+                .get(&request.conversation_id)?
+                .answer_method(
+                    &normalization.semantic_surface_text,
+                    &pragmatic_interpretation.compositional_analysis,
+                    self.conversation_memory.state(&request.conversation_id)?,
+                    output_language,
+                )
+        })
+        .flatten();
+        let discourse_answer = if recorded_method.is_some() {
+            recorded_method
+        } else if world_answer.is_some() {
             world_answer
+        } else if described_event_answer.is_some() {
+            described_event_answer
         } else if pipeline_routing.allows_discourse_qa(
             temporal_answer.is_some(),
             dialogue_relation_answer.is_some(),
@@ -2615,26 +4045,73 @@ impl CognitiveApi {
                     .unanswered(&normalization.semantic_surface_text, output_language)
             })
         });
+        if conversation_contract.answer_only()
+            && discourse_answer.as_ref().is_some_and(|answer| {
+                answer.disposition
+                    == crate::discourse_qa::DiscourseAnswerDispositionIR::NoMatchingRecord
+            })
+        {
+            if let Some(clarification) = self.discourse_qa.clarify_unbound_explanation(
+                &normalization.semantic_surface_text,
+                self.conversation_memory.state(&request.conversation_id),
+                output_language,
+            ) {
+                discourse_answer = Some(clarification);
+            }
+        }
         if let Some(answer) = discourse_answer.as_mut().filter(|answer| {
             answer.disposition
                 == crate::discourse_qa::DiscourseAnswerDispositionIR::NoMatchingRecord
                 && answer.reformulated_request.is_none()
+                && answer.question_request.is_none()
+                && answer.content_request.is_none()
+                && crate::proposition_content::contextual_content_slot(&answer.query.original_text)
+                    .is_none()
+                && answer.query.topic_terms.is_empty()
         }) {
-            answer.query.topic_terms = information_subject(
-                &conversation_contract,
-                &native_language_circuit,
-                &pragmatic_interpretation,
-                self.conversation_memory
-                    .state(&request.conversation_id)
-                    .and_then(|state| state.active_subject.as_deref()),
-            )
-            .or_else(|| {
-                self.conversation_memory
-                    .state(&request.conversation_id)
-                    .and_then(|state| state.active_subject.clone())
-            })
-            .into_iter()
-            .collect();
+            // The current question owns explicit content. A previous operation
+            // may supply an omitted topic, never replace a new predicate/topic.
+            let feedback_reformulation = pragmatic_interpretation
+                .user_feedback
+                .as_ref()
+                .is_some_and(|feedback| {
+                    let mut requests = pragmatic_interpretation
+                        .clauses
+                        .iter()
+                        .filter(|clause| !feedback.evidence_clause_ids.contains(&clause.clause_id))
+                        .peekable();
+                    requests.peek().is_some()
+                        && requests.all(|clause| {
+                            crate::discourse_qa::is_answer_reformulation(&clause.surface_text)
+                        })
+                });
+            let current_terms = if feedback_reformulation {
+                Vec::new()
+            } else {
+                crate::discourse_qa::query_topic_terms(
+                    &answer.query.original_text.to_lowercase(),
+                    answer.query.requested_source.as_deref(),
+                )
+            };
+            answer.query.topic_terms = if !current_terms.is_empty() {
+                current_terms
+            } else {
+                information_subject(
+                    &conversation_contract,
+                    &native_language_circuit,
+                    &pragmatic_interpretation,
+                    self.conversation_memory
+                        .state(&request.conversation_id)
+                        .and_then(|state| state.active_subject.as_deref()),
+                )
+                .or_else(|| {
+                    self.conversation_memory
+                        .state(&request.conversation_id)
+                        .and_then(|state| state.active_subject.clone())
+                })
+                .into_iter()
+                .collect()
+            };
         }
         pipeline_routing.activate_if(
             temporal_answer.is_some()
@@ -2677,6 +4154,14 @@ impl CognitiveApi {
             disposition = ConversationTurnDispositionIR::Grounded;
         }
 
+        // Answer-domain selection does not resolve an event identity. Preserve
+        // the action analyzer's required ambiguity after all interpretation
+        // contributors, before planning and response arbitration consume it.
+        if action_state_analysis.query_requested
+            && !action_state_analysis.unresolved_ambiguities.is_empty()
+        {
+            disposition = ConversationTurnDispositionIR::ClarificationRequired;
+        }
         let explicit_selected_request = has_explicit_selected_request(&pragmatic_interpretation);
         let planner_inferred_goal =
             planner_inferred_goal(&pragmatic_interpretation, &dialogue_directive_analysis);
@@ -2707,9 +4192,15 @@ impl CognitiveApi {
                 .is_some_and(|update| update.applied),
             PipelineSignal::DiscourseGroupUpdateApplied,
         );
+        // A topic-return phrase may establish the referential frame of a
+        // question in the same turn.  It owns the response only when no typed
+        // answer is available; otherwise the resolved answer is the primary
+        // discourse obligation and the transition remains silent context.
         pipeline_routing.activate_if(
             topic_transition.as_ref().is_some_and(|transition| {
-                transition.applied && !pipeline_routing.has(PipelineSignal::NativeGoalOwnsTurn)
+                transition.applied
+                    && !pipeline_routing.has(PipelineSignal::NativeGoalOwnsTurn)
+                    && !pipeline_routing.has(PipelineSignal::QuestionAnswer)
             }),
             PipelineSignal::TopicTransitionOwnsTurn,
         );
@@ -2738,8 +4229,9 @@ impl CognitiveApi {
                 && !pipeline_routing.has(PipelineSignal::NativeGoalOwnsTurn),
             PipelineSignal::FeedbackOnly,
         );
+        let user_affect = detect_user_affect(&request.raw_text);
         pipeline_routing.activate_if(
-            detect_user_affect(&request.raw_text).is_some()
+            user_affect.is_some()
                 && !explicit_selected_request
                 && !pipeline_routing.has(PipelineSignal::NativeGoalOwnsTurn),
             PipelineSignal::AffectOnly,
@@ -2767,6 +4259,13 @@ impl CognitiveApi {
             PipelineSignal::ConditionalGuardEvidenceCandidate,
         );
         let precommit_plan_projection = PlanProjectionDecisionIR::from_routing(&pipeline_routing);
+        mark_stage!("ANSWER_ROUTING_AND_CONTRACT");
+
+        // The public response always carries a source-bound lexical receipt.
+        // Prepare it once for this raw turn; the plan path may reuse it only
+        // when reference resolution leaves the semantic source byte-identical.
+        let raw_lexical_knowledge = crate::lexical_knowledge_pack::builtin_pack()
+            .lookup(&request.raw_text);
 
         // No analyzer renders here. This stage either materializes a semantic
         // plan or produces an empty shell for the single final realizer below.
@@ -2807,6 +4306,13 @@ impl CognitiveApi {
                     pipeline_routing
                         .has(PipelineSignal::NativeGoalOwnsTurn)
                         .then_some(&native_language_circuit),
+                    (reference_resolution.resolved_semantic_text == request.raw_text)
+                        .then_some(&raw_lexical_knowledge),
+                    mixed_task_frames.as_deref(),
+                    (normalization.semantic_surface_text
+                        == reference_resolution.resolved_semantic_text)
+                        .then_some(&dialogue_directive_analysis),
+                    profiler.as_deref_mut(),
                 )?;
                 response.understanding.original_text = request.raw_text.clone();
                 response.understanding.normalized_text =
@@ -2814,18 +4320,26 @@ impl CognitiveApi {
                 let subject = response.understanding.subject.clone();
                 (Some(Box::new(response)), Some(subject))
             } else {
-                (
-                    None,
-                    information_subject(
-                        &conversation_contract,
-                        &native_language_circuit,
-                        &pragmatic_interpretation,
-                        self.conversation_memory
-                            .state(&request.conversation_id)
-                            .and_then(|state| state.active_subject.as_deref()),
-                    ),
-                )
+                let information_subject_started = profiler.as_ref().map(|_| Instant::now());
+                let subject = information_subject(
+                    &conversation_contract,
+                    &native_language_circuit,
+                    &pragmatic_interpretation,
+                    self.conversation_memory
+                        .state(&request.conversation_id)
+                        .and_then(|state| state.active_subject.as_deref()),
+                );
+                if let (Some(profiler), Some(started)) =
+                    (profiler.as_deref_mut(), information_subject_started)
+                {
+                    profiler.record_nested(
+                        "SEMANTIC_PLAN_INFORMATION_SUBJECT",
+                        elapsed_micros(started.elapsed()),
+                    );
+                }
+                (None, subject)
             };
+        mark_stage!("SEMANTIC_PLAN");
         let memory_goal_projection_allowed = pipeline_routing
             .has(PipelineSignal::GroundedDisposition)
             && !pipeline_routing.has(PipelineSignal::InformationRequest)
@@ -2836,7 +4350,8 @@ impl CognitiveApi {
             && !pipeline_routing.has(PipelineSignal::FutureNotificationOwnsTurn)
             && !pipeline_routing.has(PipelineSignal::ActionStateOwnsTurn)
             && !pipeline_routing.has(PipelineSignal::PlanResultOwnsTurn)
-            && !pipeline_routing.has(PipelineSignal::QuestionAnswer)
+            && (!pipeline_routing.has(PipelineSignal::QuestionAnswer)
+                || pipeline_routing.has(PipelineSignal::MixedResponse))
             && !quoted_metalinguistic_request
             && (topic_transition.is_none()
                 || pipeline_routing.has(PipelineSignal::NativeGoalOwnsTurn))
@@ -2919,28 +4434,104 @@ impl CognitiveApi {
             &grounded_goals,
             &deferred_commitments,
         );
-        let proposition_referents = if pipeline_routing.has(PipelineSignal::GroundedDisposition)
+        // A world-memory acknowledgement is an output owner, not a question.
+        // Preserve its input report in the shared attributed history as well;
+        // otherwise later discourse retrieval sees an older, incompatible view.
+        let observed_world_statement = conversation_contract.assertion_only
+            && discourse_answer
+                .as_ref()
+                .and_then(|a| {
+                    a.world_memory_update.as_ref().or_else(|| {
+                        a.decision_inquiry
+                            .as_ref()
+                            .and_then(|i| i.resumption.as_ref())
+                            .map(|r| r.update.as_ref())
+                    })
+                })
+                .is_some_and(|update| update.source_text == request.raw_text && update.validate());
+        // A source-bound assertion does not require an executable planning
+        // frame. Observation readiness and plan readiness are separate;
+        // retain all turn-ownership exclusions below.
+        let observation_ready = pipeline_routing.has(PipelineSignal::GroundedDisposition)
+            || (conversation_contract.assertion_only && request.input_confidence_millis >= 900);
+        // Reference resolution is authoritative for planning and query
+        // execution, but must not rewrite the proposition surface stored as
+        // an assertion. The special reanalysis below is limited to the
+        // source-preserving ledger view; typed focus continues to use the
+        // already-resolved interpretation.
+        let assertion_rewrite = reference_resolution.resolved_semantic_text
+            != normalization.semantic_surface_text
+            && conversation_contract.assertion_only
+            && reference_resolution
+                .discourse_bindings
+                .iter()
+                .any(|binding| {
+                    matches!(
+                        binding.kind,
+                        DiscourseBindingKindIR::LocalAntecedentReference
+                    ) && binding
+                        .evidence
+                        .iter()
+                        .any(|e| e == "SYNTACTIC_PRIORITY:NEAREST_SAME_TURN_NOMINAL")
+                });
+        let assertion_interpretation = assertion_rewrite.then(|| {
+            self.pragmatic_reasoner.interpret_with_predicates(
+                &normalization.semantic_surface_text,
+                &pragmatic_context,
+                &self.compositional_predicates,
+            )
+        });
+        let proposition_interpretation = assertion_interpretation
+            .as_ref()
+            .unwrap_or(&pragmatic_interpretation);
+        let ordinary_proposition_memory_allowed = observation_ready
+            && !matches!(
+                disposition,
+                ConversationTurnDispositionIR::BackchannelOnly
+                    | ConversationTurnDispositionIR::HoldFloor
+            )
             && !pipeline_routing.has(PipelineSignal::GroupUpdateOwnsTurn)
             && !pipeline_routing.has(PipelineSignal::DefinitionOwnsTurn)
             && !pipeline_routing.has(PipelineSignal::ActionStateOwnsTurn)
             && !pipeline_routing.has(PipelineSignal::PlanResultOwnsTurn)
-            && !pipeline_routing.has(PipelineSignal::QuestionAnswer)
+            && (!pipeline_routing.has(PipelineSignal::QuestionAnswer) || observed_world_statement)
             && !quoted_metalinguistic_request
             && topic_transition.is_none()
-            && !pipeline_routing.has(PipelineSignal::PendingContinuationGateDecision)
-        {
+            && !pipeline_routing.has(PipelineSignal::PendingContinuationGateDecision);
+        let proposition_memory_allowed = ordinary_proposition_memory_allowed
+            || source_bound_report_candidate.is_some();
+        let proposition_referents = if let Some(report) = source_bound_report_candidate.as_ref() {
+            source_bound_proposition_referents(report, request.turn_index)
+        } else if ordinary_proposition_memory_allowed {
             conversation_proposition_referents(
-                &pragmatic_interpretation,
+                proposition_interpretation,
                 request.turn_index,
                 conversation_contract.assertion_only,
             )
         } else {
             Vec::new()
         };
+        // Keep literal assertion evidence and typed referent identity as
+        // separate views.  The former feeds epistemic storage; the latter
+        // remains authoritative for focus/goal continuity when reanalysis
+        // was needed only to preserve the original source text.
+        let resolved_focus_referents = if proposition_memory_allowed && assertion_rewrite {
+            Some(conversation_proposition_referents(
+                &pragmatic_interpretation,
+                request.turn_index,
+                conversation_contract.assertion_only,
+            ))
+        } else {
+            None
+        };
+        let focus_proposition_referents = resolved_focus_referents
+            .as_deref()
+            .unwrap_or(&proposition_referents);
         let discourse_focus_candidates = conversation_focus_candidates(
+            &normalization.semantic_surface_text,
             &pragmatic_interpretation,
             &grounded_goals,
-            &proposition_referents,
+            focus_proposition_referents,
         );
         let temporal_analysis = if pipeline_routing.has(PipelineSignal::GroundedDisposition) {
             candidate_temporal_analysis
@@ -2959,8 +4550,19 @@ impl CognitiveApi {
             .state(&request.conversation_id)
             .and_then(|state| state.active_topics.first())
             .map(|topic| topic.topic_id.clone());
-        let pending_question_candidate = if disposition
-            == ConversationTurnDispositionIR::ClarificationRequired
+        let event_reference_question = discourse_answer
+            .as_ref()
+            .and_then(|a| a.reference_gap.as_ref())
+            .and_then(|gap| {
+                QuestionUnderDiscussionIR::from_event_reference_gap(
+                    gap,
+                    request.turn_index,
+                    pending_question_topic_id.as_deref(),
+                )
+            });
+        let pending_question_candidate = if event_reference_question.is_some() {
+            event_reference_question
+        } else if disposition == ConversationTurnDispositionIR::ClarificationRequired
             && pending_answer.disposition == QuestionAnswerDispositionIR::NotApplicable
         {
             build_pending_question(
@@ -3000,6 +4602,11 @@ impl CognitiveApi {
         } else {
             reference_resolution.used_referent_ids.as_slice()
         };
+        // Keep preparation (question state, commit context construction) apart
+        // from the mutation itself.  Both remain on the same authoritative
+        // path; this boundary only makes the remaining long-input cost
+        // attributable before another repair is attempted.
+        mark_stage!("CONVERSATION_PRIMARY_STATE_PREPARE");
         if pending_answer.disposition == QuestionAnswerDispositionIR::Resolved {
             // Remove the answered QUD before the selected option can activate
             // a different topic during commit. Keeping the old topic-scoped
@@ -3009,59 +4616,117 @@ impl CognitiveApi {
                 .update_pending_question(&request.conversation_id, None)
                 .map_err(map_conversation_error)?;
         }
-        let mut conversation_state = self
-            .conversation_memory
-            .commit_turn_with_discourse(
-                request,
-                ConversationCommitContext {
-                    semantic_subject: semantic_subject.as_deref(),
-                    used_referent_ids: commit_referent_ids,
-                    unresolved_reference_count: if (pipeline_routing
-                        .has(PipelineSignal::QuestionAnswer)
-                        || temporal_deictic_reference_resolved)
-                        && query_function_reference_only
-                    {
-                        usize::from(normalization.ambiguous_input)
-                    } else {
-                        reference_resolution.ambiguous_reference_surfaces.len()
-                            + usize::from(normalization.ambiguous_input)
-                    },
-                    language: Some(output_language),
-                    grounded_goals: &grounded_goals,
-                    proposition_referents: &proposition_referents,
-                    temporal_analysis: temporal_analysis_ref,
-                    guard_conditionals: (pipeline_routing.has(PipelineSignal::GroundedDisposition)
-                        && !pipeline_routing.has(PipelineSignal::GroupUpdateOwnsTurn)
-                        && !pipeline_routing.has(PipelineSignal::DefinitionOwnsTurn)
-                        && !pipeline_routing.has(PipelineSignal::PlanResultOwnsTurn)
-                        && !pipeline_routing.has(PipelineSignal::QuestionAnswer)
-                        && (!pragmatic_interpretation
-                            .compositional_analysis
-                            .modal_scope_graph
-                            .conditionals
-                            .is_empty()
-                            || !proposition_referents.is_empty()))
-                    .then_some(
-                        pragmatic_interpretation
-                            .compositional_analysis
-                            .modal_scope_graph
-                            .conditionals
-                            .as_slice(),
-                    ),
-                    semantic_role_graph: Some(
-                        &pragmatic_interpretation
-                            .compositional_analysis
-                            .semantic_role_graph,
-                    ),
-                    attribution_graph: Some(
-                        &pragmatic_interpretation
-                            .compositional_analysis
-                            .attribution_graph,
-                    ),
-                    discourse_focus_candidates: &discourse_focus_candidates,
-                },
+        let commit_context = ConversationCommitContext {
+            semantic_subject: semantic_subject.as_deref(),
+            used_referent_ids: commit_referent_ids,
+            unresolved_reference_count: if (pipeline_routing.has(PipelineSignal::QuestionAnswer)
+                || temporal_deictic_reference_resolved)
+                && query_function_reference_only
+            {
+                usize::from(normalization.ambiguous_input)
+            } else {
+                reference_resolution.ambiguous_reference_surfaces.len()
+                    + usize::from(normalization.ambiguous_input)
+            },
+            language: Some(output_language),
+            grounded_goals: &grounded_goals,
+            proposition_referents: &proposition_referents,
+            temporal_analysis: temporal_analysis_ref,
+            guard_conditionals: (pipeline_routing.has(PipelineSignal::GroundedDisposition)
+                && !pipeline_routing.has(PipelineSignal::GroupUpdateOwnsTurn)
+                && !pipeline_routing.has(PipelineSignal::DefinitionOwnsTurn)
+                && !pipeline_routing.has(PipelineSignal::PlanResultOwnsTurn)
+                && !pipeline_routing.has(PipelineSignal::QuestionAnswer)
+                && (!pragmatic_interpretation
+                    .compositional_analysis
+                    .modal_scope_graph
+                    .conditionals
+                    .is_empty()
+                    || !proposition_referents.is_empty()))
+            .then_some(
+                pragmatic_interpretation
+                    .compositional_analysis
+                    .modal_scope_graph
+                    .conditionals
+                    .as_slice(),
+            ),
+            semantic_role_graph: Some(
+                &pragmatic_interpretation
+                    .compositional_analysis
+                    .semantic_role_graph,
+            ),
+            attribution_graph: Some(
+                &pragmatic_interpretation
+                    .compositional_analysis
+                    .attribution_graph,
+            ),
+            // The primary-state source observer needs the raw received surface.
+            // Sharing is allowed only for the exact same text and immutable
+            // predicate view already verified above; every rewrite keeps the
+            // independent source analysis path.
+            raw_compositional_analysis: if native_source_text == request.raw_text {
+                exact_shared_compositional_analysis.as_ref()
+            } else {
+                None
+            },
+            source_bound_transformation: source_bound_report_candidate.is_some(),
+            discourse_focus_candidates: &discourse_focus_candidates,
+        };
+        let (mut conversation_state, commit_timing) = if profiler.is_some() {
+            self.conversation_memory
+                .commit_turn_with_discourse_profiled(request, commit_context)
+                .map_err(map_conversation_error)?
+        } else {
+            (
+                self.conversation_memory
+                    .commit_turn_with_discourse(request, commit_context)
+                    .map_err(map_conversation_error)?,
+                crate::conversation::ConversationCommitTimingIR::default(),
             )
-            .map_err(map_conversation_error)?;
+        };
+        if let Some(profiler) = profiler.as_deref_mut() {
+            profiler.record_nested(
+                "CONVERSATION_PRIMARY_STATE_TRANSITION_STATE_REFRESH",
+                commit_timing.transition_state_refresh_micros,
+            );
+            profiler.record_nested(
+                "CONVERSATION_PRIMARY_STATE_TRANSITION_REFERENT_EXTRACTION",
+                commit_timing.transition_referent_extraction_micros,
+            );
+            profiler.record_nested(
+                "CONVERSATION_PRIMARY_STATE_TRANSITION_GOAL_PROJECTION",
+                commit_timing.transition_goal_projection_micros,
+            );
+            profiler.record_nested(
+                "CONVERSATION_PRIMARY_STATE_TRANSITION_DISCOURSE_FOCUS",
+                commit_timing.transition_discourse_focus_micros,
+            );
+            profiler.record_exact(
+                "CONVERSATION_PRIMARY_STATE_OBSERVATION_PREPARATION",
+                commit_timing.observation_preparation_micros,
+            );
+            profiler.record_exact(
+                "CONVERSATION_PRIMARY_STATE_EPISTEMIC_LEDGER",
+                commit_timing.epistemic_ledger_micros,
+            );
+            profiler.record_exact(
+                "CONVERSATION_PRIMARY_STATE_POST_LEDGER_SYNCHRONIZATION",
+                commit_timing.post_ledger_synchronization_micros,
+            );
+            profiler.record_exact(
+                "CONVERSATION_PRIMARY_STATE_TRANSITION",
+                commit_timing.transition_micros,
+            );
+            profiler.record_exact("CONVERSATION_PRIMARY_STATE_SEAL", commit_timing.seal_micros);
+            profiler.record_exact(
+                "CONVERSATION_PRIMARY_STATE_INVARIANT_VALIDATION",
+                commit_timing.invariant_validation_micros,
+            );
+            profiler.record_exact(
+                "CONVERSATION_PRIMARY_STATE_SNAPSHOT",
+                commit_timing.snapshot_micros,
+            );
+        }
         if !dialogue_directive_candidates.is_empty() {
             conversation_state = self
                 .conversation_memory
@@ -3161,7 +4826,16 @@ impl CognitiveApi {
                 )
                 .map_err(map_conversation_error)?;
         }
-        if let Some(update) = pending_question_update {
+        // A question scoped by a topic transition belongs to the resulting
+        // topic, not the previously active one. Commit its QUD after the move.
+        let deferred_reference_question = pending_question_update
+            .as_ref()
+            .and_then(|q| q.as_ref())
+            .filter(|q| q.reference_gap.is_some())
+            .cloned();
+        if let Some(update) =
+            pending_question_update.filter(|_| deferred_reference_question.is_none())
+        {
             conversation_state = self
                 .conversation_memory
                 .update_pending_question(&request.conversation_id, update)
@@ -3184,6 +4858,13 @@ impl CognitiveApi {
             conversation_state = self
                 .conversation_memory
                 .reassert_topic_anchor(&request.conversation_id, reference, request.turn_index)
+                .map_err(map_conversation_error)?;
+        }
+        if let Some(mut question) = deferred_reference_question {
+            question.topic_id = None;
+            conversation_state = self
+                .conversation_memory
+                .update_pending_question(&request.conversation_id, Some(question))
                 .map_err(map_conversation_error)?;
         }
         let conditional_guard_evaluations = conversation_state
@@ -3213,9 +4894,20 @@ impl CognitiveApi {
                             || current_turn_declares_condition))),
             PipelineSignal::ConditionalGuardOwnsTurn,
         );
+        // A report/summary request may include its source material in the
+        // same turn.  Preserve that material as source-bound evidence before
+        // the generic action planner sees the final imperative.  This does
+        // not grant execution authority or infer a new relation from the
+        // source clauses; it only enables a literal, replayable presentation
+        // of the supplied content.
+        // A source-bound report is a literal presentation of its source, so a
+        // conditional inside that source must not force the request back into
+        // an action-plan or conditional-answer owner.
+        let source_bound_report = source_bound_report_candidate.clone();
+        mark_stage!("CONVERSATION_STATE_FOLLOW_UP_MUTATIONS");
         let final_plan_projection = PlanProjectionDecisionIR::from_routing(&pipeline_routing);
-        let grounded_response = final_plan_projection
-            .allows_plan()
+        let grounded_response = (source_bound_report.is_none()
+            && final_plan_projection.allows_plan())
             .then_some(pending_grounded_response)
             .flatten();
         output.grounded_plan_sha256 = grounded_response
@@ -3248,9 +4940,11 @@ impl CognitiveApi {
                             .find(|snapshot| &snapshot.action_id == action_id)
                     })
                     .collect::<Vec<_>>();
-                let verified_result_absent = plan_result_boundary.query_focus
-                    == PlanResultQueryFocusIR::VerifiedResult
-                    && !selected_snapshots.is_empty()
+                let verified_result_absent = matches!(
+                    plan_result_boundary.query_focus,
+                    PlanResultQueryFocusIR::VerifiedResult
+                        | PlanResultQueryFocusIR::PlanVersusResult
+                ) && !selected_snapshots.is_empty()
                     && selected_snapshots.iter().all(|snapshot| {
                         snapshot.result_availability
                             == crate::plan_result_boundary::ResultAvailabilityIR::Unavailable
@@ -3264,7 +4958,7 @@ impl CognitiveApi {
                 && action_state_analysis.unresolved_ambiguities.is_empty()
             {
                 Some(NativeResponseModeIR::VerificationStatusQuery)
-            } else if discourse_answer.is_some() {
+            } else if discourse_answer.is_some() && mixed_task_frames.is_none() {
                 Some(NativeResponseModeIR::SourceCertaintyQuery)
             } else {
                 None
@@ -3290,7 +4984,7 @@ impl CognitiveApi {
                 .is_some_and(|transition| transition.applied)
             && (!has_social_dialogue_event(&normalization)
                 || pipeline_routing.has(PipelineSignal::FutureNotificationOwnsTurn))
-            && detect_user_affect(&request.raw_text).is_none()
+            && user_affect.is_none()
             && pragmatic_interpretation.user_feedback.is_none()
             && !matches!(
                 disposition,
@@ -3351,7 +5045,11 @@ impl CognitiveApi {
             | NativeResponseModeIR::Clarification
             | NativeResponseModeIR::Acknowledgement => NaturalResponseActIR::ResultAbsence,
         });
-        let unambiguous_standalone_affect = detect_user_affect(&request.raw_text).is_some()
+        let unambiguous_standalone_affect = user_affect.is_some()
+            && !conversation_contract
+                .evidence
+                .iter()
+                .any(|e| e == "CONDITIONAL_REPORT")
             && grounded_response.is_none()
             && native_language_circuit.unresolved.is_empty()
             && reference_resolution.ambiguous_reference_surfaces.is_empty();
@@ -3369,8 +5067,11 @@ impl CognitiveApi {
                         .find(|snapshot| &snapshot.action_id == action_id)
                 })
                 .collect::<Vec<_>>();
-            if plan_result_boundary.query_focus == PlanResultQueryFocusIR::VerifiedResult
-                && !selected.is_empty()
+            if matches!(
+                plan_result_boundary.query_focus,
+                PlanResultQueryFocusIR::VerifiedResult
+                    | PlanResultQueryFocusIR::PlanVersusResult
+            ) && !selected.is_empty()
                 && selected.iter().all(|snapshot| {
                     snapshot.result_availability
                         == crate::plan_result_boundary::ResultAvailabilityIR::Unavailable
@@ -3392,13 +5093,43 @@ impl CognitiveApi {
             ConversationTurnDispositionIR::Grounded => NaturalResponseActIR::ClarificationRequest,
         };
         let mut response_candidates = Vec::new();
+        if conversation_contract.suppresses_answer() {
+            response_candidates.push(NaturalResponseCandidateIR::new(
+                NaturalResponseSourceIR::ResponseProhibition,
+                NaturalResponseActIR::InformAcknowledgement,
+                "negative matrix information act forbids answer content",
+            ));
+        }
+        // A status word inside a question does not own the requested relation.
+        // Missing actor/time/place/cause/method evidence must stay a gap in that
+        // relation, not turn into a generic execution-receipt answer. Outcome
+        // contents and truth/status queries retain their lifecycle arbitration.
+        let requested_relations = crate::proposition_content::requested_content_slots(
+            &normalization.semantic_surface_text,
+        );
+        let relational_question = !requested_relations.is_empty()
+            && requested_relations.iter().all(|slot| {
+                use crate::proposition_content::ContentSlotIR;
+                matches!(
+                    slot,
+                    ContentSlotIR::Agent
+                        | ContentSlotIR::Recipient
+                        | ContentSlotIR::Source
+                        | ContentSlotIR::Location
+                        | ContentSlotIR::Time
+                        | ContentSlotIR::Duration
+                        | ContentSlotIR::Cause
+                        | ContentSlotIR::Manner
+                        | ContentSlotIR::Intention
+                        | ContentSlotIR::Condition
+                )
+            });
         if (conversation_contract.answer_only() || prepared_world.recognized)
             && (!native_verified_result_query
-                || crate::proposition_content::requested_content_slot(
-                    &normalization.semantic_surface_text,
-                ) == Some(crate::proposition_content::ContentSlotIR::Cause)
+                || relational_question
                 || discourse_answer.as_ref().is_some_and(|answer| {
                     answer.content_projection.is_some()
+                        || answer.event_summary.is_some()
                         || answer.world_reasoning.is_some()
                         || answer.world_memory_update.is_some()
                         || answer.world_clarification.is_some()
@@ -3460,13 +5191,19 @@ impl CognitiveApi {
             "conditional guard produced a current-turn evaluation",
         );
         contribute(
+            source_bound_report.is_some(),
+            NaturalResponseSourceIR::SourceBoundReport,
+            NaturalResponseActIR::SourceBoundReport,
+            "a deictic report request retains verbatim source clauses from the current turn",
+        );
+        contribute(
             native_plan_response,
             NaturalResponseSourceIR::NativePlan,
             NaturalResponseActIR::PlanPreview,
             "native live goals were materialized into a plan",
         );
         contribute(
-            native_acknowledgement,
+            native_acknowledgement || conversation_contract.interaction_only(),
             NaturalResponseSourceIR::NativeAcknowledgement,
             NaturalResponseActIR::InformAcknowledgement,
             "native boundary selected a non-live acknowledgement",
@@ -3493,7 +5230,9 @@ impl CognitiveApi {
             "typed nonliteral analysis selected a non-literal reading",
         );
         contribute(
-            disposition == ConversationTurnDispositionIR::ClarificationRequired,
+            source_bound_report.is_none()
+                && (disposition == ConversationTurnDispositionIR::ClarificationRequired
+                    || dialogue_directive_conflict),
             NaturalResponseSourceIR::Clarification,
             NaturalResponseActIR::ClarificationRequest,
             "the resolved turn still contains required ambiguity",
@@ -3529,7 +5268,8 @@ impl CognitiveApi {
             "dialogue-relation QA produced a supported answer",
         );
         contribute(
-            discourse_answer.is_some(),
+            discourse_answer.is_some()
+                && !(mixed_task_frames.is_some() && grounded_response.is_some()),
             NaturalResponseSourceIR::DiscourseAnswer,
             NaturalResponseActIR::DiscourseAnswer,
             "discourse QA produced a supported answer",
@@ -3581,7 +5321,12 @@ impl CognitiveApi {
             "typed feedback is present without a materialized task",
         );
         contribute(
-            detect_user_affect(&request.raw_text).is_some() && grounded_response.is_none(),
+            user_affect.is_some()
+                && grounded_response.is_none()
+                && !conversation_contract
+                    .evidence
+                    .iter()
+                    .any(|e| e == "CONDITIONAL_REPORT"),
             NaturalResponseSourceIR::Affect,
             NaturalResponseActIR::AffectSupport,
             "affect evidence is present without a materialized task",
@@ -3606,7 +5351,56 @@ impl CognitiveApi {
             fallback_response_act,
             "conversation disposition fallback",
         );
-        let response_arbitration = arbitrate_natural_response(response_candidates);
+        // Answer payloads are derived from the prospective world snapshot;
+        // commit_response_state happens after realization. Use that same
+        // snapshot for candidate eligibility to avoid comparing a new answer
+        // with the previous turn's dialogue world.
+        let mut response_decision_state = conversation_state.clone();
+        response_decision_state.dialogue_world = prepared_world.memory.clone();
+        let response_decision_context = NaturalResponseDecisionContextIR {
+            typed: true,
+            information_requested: conversation_contract.information_requested,
+            assertion_only: conversation_contract.assertion_only,
+            temporal_answer_available: temporal_answer.is_some(),
+            dialogue_relation_answer_available: dialogue_relation_answer.is_some(),
+            discourse_answer_available: discourse_answer.is_some(),
+            discourse_answer_eligible: discourse_answer.as_ref().is_none_or(|answer| {
+                discourse_answer_is_currently_eligible(
+                    answer,
+                    &response_decision_state,
+                    &request.raw_text,
+                    request.turn_index,
+                )
+            }),
+            native_answer_available: native_answer_response.is_some(),
+            native_answer_act: native_answer_response,
+            plan_requested: conversation_contract.independent_action_requested,
+            plan_available: grounded_response.is_some() || native_plan_response,
+            reference_resolved: reference_resolution.ambiguous_reference_surfaces.is_empty(),
+            resolved_reference_count: reference_resolution.resolved_reference_count as u32,
+            discourse_payload_sha256: discourse_answer
+                .as_ref()
+                .map(natural_response_payload_sha256),
+            discourse_evidence_ids: discourse_answer
+                .as_ref()
+                .map(|a| a.evidence.iter().map(|e| e.belief_id.clone()).collect())
+                .unwrap_or_default(),
+            // A source-bound transformation owns this turn through an explicit,
+            // terminal deictic request. Ambiguity detected inside the literal
+            // source is evidence to preserve, not an unresolved argument of the
+            // transformation request itself.
+            ambiguity_required: source_bound_report.is_none()
+                && (disposition == ConversationTurnDispositionIR::ClarificationRequired
+                    || dialogue_directive_conflict),
+            prohibition_required: conversation_contract.suppresses_answer(),
+            topic_transition_applied: topic_transition.as_ref().is_some_and(|transition| {
+                transition.applied && !pipeline_routing.has(PipelineSignal::QuestionAnswer)
+            }),
+            plan_result_status_required: lifecycle_response_act
+                == Some(NaturalResponseActIR::PlanResultStatus),
+        };
+        let response_arbitration =
+            arbitrate_natural_response_with_context(response_candidates, response_decision_context);
         let natural_response_act = response_arbitration.selected_act;
         // Single owner for answer focus. Other informational/action/topic turns
         // invalidate it; a social backchannel may bridge at most three turns.
@@ -3614,26 +5408,55 @@ impl CognitiveApi {
             discourse_answer
                 .as_ref()
                 .filter(|answer| {
-                    answer.world_memory_update.is_none()
-                        && answer.world_reasoning.is_none()
-                        && answer.world_clarification.is_none()
+                    answer.world_memory_update.is_none() && answer.world_reasoning.is_none()
                 })
                 .map(|answer| crate::discourse_qa::AnswerFocusIR {
+                    shared_proposition: answer.focused_shared_proposition(&conversation_state),
+                    proposition_belief_id: answer.focused_proposition(),
                     query: answer.query.clone(),
                     answered_turn: request.turn_index,
+                    described_event: answer.focused_event(),
+                    clarification_act: answer
+                        .world_clarification
+                        .as_ref()
+                        .map(|c| c.response_act()),
+                    decision_inquiry: answer.decision_inquiry.clone(),
                 })
         } else if natural_response_act == NaturalResponseActIR::SocialBackchannel {
             conversation_state.answer_focus.clone()
         } else {
             None
         };
-        self.conversation_memory
-            .commit_answer_focus(&request.conversation_id, focus)
-            .map_err(map_conversation_error)?;
-        conversation_state = self
+        if let Some(inquiry) = focus.as_ref().and_then(|f| f.decision_inquiry.as_ref()) {
+            if inquiry
+                .clarification_reply
+                .as_ref()
+                .is_some_and(|r| r.abstention.is_some())
+            {
+                prepared_world.memory.last_query = None;
+            }
+            if inquiry.explanation_of.is_none()
+                && inquiry
+                    .clarification_reply
+                    .as_ref()
+                    .is_none_or(|r| r.abstention.is_none())
+            {
+                if let Some(query) = inquiry.knowledge_gap.as_ref().and_then(|g| {
+                    g.state_question(inquiry.proposed_action.as_ref()?, inquiry.continues_context)
+                }) {
+                    prepared_world.memory.last_query = Some(query);
+                }
+            }
+        }
+        let (committed_conversation_state, conversation_state_validation_receipt) = self
             .conversation_memory
-            .commit_dialogue_world(&request.conversation_id, prepared_world.memory)
+            .commit_response_state_with_validation_receipt(
+                &request.conversation_id,
+                focus,
+                prepared_world.memory,
+            )
             .map_err(map_conversation_error)?;
+        conversation_state = committed_conversation_state;
         output.unsupported_freeform_claims = match natural_response_act {
             NaturalResponseActIR::TemporalAnswer => temporal_answer
                 .as_ref()
@@ -3731,6 +5554,12 @@ impl CognitiveApi {
                 .iter()
                 .map(|surface| format!("AMBIGUOUS_REFERENCE:{surface}")),
         );
+        if content_references_deferred {
+            natural_source_refs.push(format!(
+                "REFERENCE_REQUIREMENT:ACKNOWLEDGEMENT_WITH_UNRESOLVED_CONTENT:{}",
+                reference_resolution.resolution_graph.source_text_sha256
+            ));
+        }
         natural_source_refs.sort();
         natural_source_refs.dedup();
         let continuation_gate_realization_source =
@@ -3748,19 +5577,137 @@ impl CognitiveApi {
                     .as_ref()
                     .map(ContinuationGateRealizationSourceIR::Initial)
             };
-        let (clarification_kind, clarification_detail) =
-            if natural_response_act == NaturalResponseActIR::ClarificationRequest {
-                let (kind, detail) = clarification_generation_source(
-                    output.language,
-                    &normalization,
-                    &reference_resolution,
-                    &pragmatic_interpretation,
-                );
-                (Some(kind), detail)
+        let (clarification_kind, clarification_detail) = if dialogue_directive_conflict {
+            (
+                Some(GenerationClarificationKindIR::ResponsePreference),
+                Some(
+                    if output.language == LanguageCodeIR::Korean {
+                        "원하는 응답 방식"
+                    } else {
+                        "your preferred response style"
+                    }
+                    .to_string(),
+                ),
+            )
+        } else if natural_response_act == NaturalResponseActIR::ClarificationRequest
+            && action_state_analysis.query_requested
+            && !action_state_analysis.unresolved_ambiguities.is_empty()
+        {
+            (
+                Some(GenerationClarificationKindIR::Reference),
+                Some(
+                    if output.language == LanguageCodeIR::Korean {
+                        "질문한 작업"
+                    } else {
+                        "the action in your question"
+                    }
+                    .to_string(),
+                ),
+            )
+        } else if natural_response_act == NaturalResponseActIR::ClarificationRequest {
+            let (kind, detail) = clarification_generation_source(
+                output.language,
+                &normalization,
+                &reference_resolution,
+                &pragmatic_interpretation,
+            );
+            (Some(kind), detail)
+        } else {
+            (None, None)
+        };
+        use crate::generative_language::AcknowledgementContentIR;
+        let state_acknowledgement = if natural_response_act
+            == NaturalResponseActIR::InformAcknowledgement
+            && conversation_contract.assertion_only
+            && !dialogue_directive_owns_turn
+        {
+            conversation_state
+                .epistemic_ledger
+                .records
+                .iter()
+                .filter(|r| {
+                    let graph = &pragmatic_interpretation.compositional_analysis.attribution_graph;
+                    let direct = r.source_actor == "DIALOGUE_USER"
+                        // Clause observation omits terminal assertion punctuation.
+                        // Match the entire current utterance, never a substring or
+                        // an old topic that happens to share its state predicate.
+                        && r.proposition_surface.trim().trim_end_matches(['.', '!'])
+                            == request.raw_text.trim().trim_end_matches(['.', '!']);
+                    let reported = graph.validate()
+                        && graph.attributions.len() == 1
+                        && graph.root_attributions().any(|edge| {
+                            use crate::attribution::{AttributionAttitudeIR, DiscourseActorKindIR, EpistemicStatusIR};
+                            matches!(edge.attitude, AttributionAttitudeIR::Say | AttributionAttitudeIR::Report)
+                                && edge.epistemic_status == EpistemicStatusIR::Reported
+                                && graph.actor(&edge.actor_id).is_some_and(|a|
+                                    a.kind == DiscourseActorKindIR::NamedEntity && a.surface == r.source_actor)
+                                && graph.proposition(&edge.proposition_id).is_some_and(|p|
+                                    !p.quoted && p.surface_text == r.proposition_surface)
+                                && r.attribution_attitude == edge.attitude
+                                && r.epistemic_status == edge.epistemic_status
+                        });
+                    (direct || reported)
+                        && r.last_updated_turn == request.turn_index
+                        && r.signature.modal_world == crate::modality::ModalWorldIR::Actual
+                        && r.status == crate::epistemic::BeliefRecordStatusIR::Active
+                })
+                .find_map(|r| {
+                    let [event] = r.content.events.as_slice() else {
+                        return None;
+                    };
+                    let summary = crate::generative_language::EventSummaryIR {
+                        omitted_roles: vec![],
+                        belief_id: r.belief_id.clone(),
+                        source_actor: r.source_actor.clone(),
+                        source_proposition: r.proposition_surface.clone(),
+                        context_sources: r.content.context_sources.clone(),
+                        event: event.clone(),
+                    };
+                    let direct = summary.source_actor == "DIALOGUE_USER";
+                    let allowed = if direct {
+                        summary.can_acknowledge(output.language)
+                    } else {
+                        summary.event.kind == crate::proposition_content::DescriptionKindIR::State
+                            && summary.can_realize(output.language)
+                            // Embedded speaker/addressee deixis needs its own
+                            // quote/attribution binding before it can be voiced.
+                            && summary.event.roles.values().all(|v| !crate::proposition_content::speaker_or_addressee_reference(v))
+                    };
+                    allowed.then_some(summary)
+                })
+        } else {
+            None
+        };
+        let acknowledgement_content =
+            if natural_response_act != NaturalResponseActIR::InformAcknowledgement
+                || dialogue_directive_owns_turn
+            {
+                AcknowledgementContentIR::Receipt
+            } else if let Some(state) = state_acknowledgement.as_ref() {
+                AcknowledgementContentIR::State(state)
+            } else if crate::proposition_content::wants_conversation(&request.raw_text) {
+                AcknowledgementContentIR::OpenConversation
             } else {
-                (None, None)
+                let composition = &pragmatic_interpretation.compositional_analysis;
+                match composition.modal_scope_graph.conditionals.as_slice() {
+                    [conditional]
+                        if !conditional.consequent_is_directive
+                            && composition.modal_scope_graph.illocution
+                                == crate::modality::ModalIllocutionIR::Assertion
+                            && !composition.scopes.iter().any(|scope| {
+                                matches!(scope.kind,
+                        crate::compositional_semantics::ScopeKindIR::Quotation
+                        | crate::compositional_semantics::ScopeKindIR::ReportedSpeech)
+                            }) =>
+                    {
+                        AcknowledgementContentIR::Conditional(conditional)
+                    }
+                    _ => AcknowledgementContentIR::Receipt,
+                }
             };
+        mark_stage!("RESPONSE_ARBITRATION_AND_REALIZATION_INPUT");
         let natural_realization = build_natural_realization(NaturalRealizationSources {
+            acknowledgement_content,
             affective_policy: &affective_policy,
             response_arbitration: &response_arbitration,
             language: output.language,
@@ -3794,17 +5741,15 @@ impl CognitiveApi {
             temporal_answer: temporal_answer.as_ref(),
             source_refs: &natural_source_refs,
             dialogue_directives: &conversation_state.dialogue_directive_ledger.directives,
+            dialogue_directive_owns_turn,
+            source_bound_report: source_bound_report.as_ref(),
             unsupported_claims: output.unsupported_freeform_claims,
         });
         output.text = natural_realization.realized_text.clone();
-        debug_assert!(
-            natural_realization.validate_output(
-                output.language,
-                &output.text,
-                output.unsupported_freeform_claims
-            ),
-            "invalid natural realization: {natural_realization:#?}"
-        );
+        // One owner verifies the completed sentence. Downstream integration
+        // checks bind this immutable result instead of rebuilding its grammar.
+        let realization_check =
+            crate::natural_realization::NaturalRealizationCheck::new(&natural_realization);
         let grounded_realization =
             build_evidence_grounded_realization(GroundedRealizationSources {
                 language: output.language,
@@ -3837,27 +5782,36 @@ impl CognitiveApi {
             action_ledger: &conversation_state.action_state_ledger,
             grounded_realization: &grounded_realization,
         });
-        let six_axis_integration = build_six_axis_integration(SixAxisIntegrationSources {
-            request_id: &request.request_id,
-            turn_index: request.turn_index,
-            pragmatic_interpretation: &pragmatic_interpretation,
-            conversation_state: &conversation_state,
-            reference_resolution: &reference_resolution,
-            action_state_analysis: &action_state_analysis,
-            plan_result_boundary: &plan_result_boundary,
-            grounded_plan: grounded_response.as_deref().map(|response| &response.plan),
-            natural_realization: &natural_realization,
-            grounded_realization: &grounded_realization,
-            interaction_provenance: &interaction_provenance,
-            realized_output: &output.text,
-        });
-        debug_assert!(
-            six_axis_integration.validate(),
-            "invalid six-axis integration: {six_axis_integration:#?}"
+        let six_axis_integration = build_six_axis_with_realization_check(
+            SixAxisIntegrationSources {
+                request_id: &request.request_id,
+                turn_index: request.turn_index,
+                pragmatic_interpretation: &pragmatic_interpretation,
+                conversation_state: &conversation_state,
+                reference_resolution: &reference_resolution,
+                action_state_analysis: &action_state_analysis,
+                plan_result_boundary: &plan_result_boundary,
+                grounded_plan: grounded_response.as_deref().map(|response| &response.plan),
+                natural_realization: &natural_realization,
+                grounded_realization: &grounded_realization,
+                interaction_provenance: &interaction_provenance,
+                realized_output: &output.text,
+            },
+            &realization_check,
         );
+        if !six_axis_integration.validate() {
+            // The public wrapper restores the pre-turn snapshot on error.
+            // An invalid cross-axis link must not crash the process or commit.
+            return Err(CognitiveApiError::Deliberation);
+        }
+        mark_stage!("NATURAL_REALIZATION_AND_EVIDENCE");
         output.unsupported_freeform_claims = grounded_realization.unsupported_claims;
         let mut memory_interpretation = pragmatic_interpretation.clone();
         if pipeline_routing.has(PipelineSignal::QuestionAnswer)
+            || conversation_contract
+                .evidence
+                .iter()
+                .any(|e| e == "CONDITIONAL_REPORT")
             || pipeline_routing.has(PipelineSignal::ActionStateOwnsTurn)
             || pipeline_routing.has(PipelineSignal::GroupUpdateOwnsTurn)
             || pipeline_routing.has(PipelineSignal::DefinitionOwnsTurn)
@@ -3883,6 +5837,7 @@ impl CognitiveApi {
             .pragmatic_memory
             .commit_turn_in_topic(request, &memory_interpretation, memory_topic_id)
             .map_err(map_pragmatic_memory_error)?;
+        mark_stage!("PRAGMATIC_MEMORY_COMMIT");
         let response_disposition = if discourse_connected_backchannel
             && disposition == ConversationTurnDispositionIR::BackchannelOnly
         {
@@ -3890,42 +5845,81 @@ impl CognitiveApi {
         } else {
             disposition
         };
-        let language_cortex_integration =
-            build_language_cortex_response_integration(LanguageCortexResponseSources {
-                request,
-                disposition: response_disposition,
-                normalization: &normalization,
-                definition_grounding: &definition_grounding,
-                reference_resolution: &reference_resolution,
-                pragmatic_interpretation: &pragmatic_interpretation,
-                action_state_analysis: &action_state_analysis,
-                plan_result_boundary: &plan_result_boundary,
-                discourse_group_update: discourse_group_update.as_ref(),
-                topic_transition: topic_transition.as_ref(),
-                pragmatic_state: &pragmatic_state,
-                conversation_state: &conversation_state,
-                grounded_response: grounded_response.as_deref(),
-                discourse_answer: discourse_answer.as_ref(),
-                dialogue_relation_answer: dialogue_relation_answer.as_ref(),
-                temporal_answer: temporal_answer.as_ref(),
-                conditional_guard_evaluations: &conditional_guard_evaluations,
-                natural_realization: &natural_realization,
-                grounded_realization: &grounded_realization,
-                interaction_provenance: &interaction_provenance,
-                six_axis_integration: &six_axis_integration,
-                output: &output,
-            });
+        let language_cortex_sources = LanguageCortexResponseSources {
+            request,
+            disposition: response_disposition,
+            normalization: &normalization,
+            definition_grounding: &definition_grounding,
+            reference_resolution: &reference_resolution,
+            pragmatic_interpretation: &pragmatic_interpretation,
+            action_state_analysis: &action_state_analysis,
+            plan_result_boundary: &plan_result_boundary,
+            discourse_group_update: discourse_group_update.as_ref(),
+            topic_transition: topic_transition.as_ref(),
+            pragmatic_state: &pragmatic_state,
+            conversation_state: &conversation_state,
+            grounded_response: grounded_response.as_deref(),
+            discourse_answer: discourse_answer.as_ref(),
+            dialogue_relation_answer: dialogue_relation_answer.as_ref(),
+            temporal_answer: temporal_answer.as_ref(),
+            conditional_guard_evaluations: &conditional_guard_evaluations,
+            natural_realization: &natural_realization,
+            grounded_realization: &grounded_realization,
+            interaction_provenance: &interaction_provenance,
+            six_axis_integration: &six_axis_integration,
+            output: &output,
+        };
+        let (language_cortex_integration, language_cortex_timing) = if profiler.is_some() {
+            build_language_cortex_with_realization_check_profiled_and_trusted_state(
+                language_cortex_sources,
+                &realization_check,
+                &conversation_state_validation_receipt,
+            )
+        } else {
+            (
+                build_language_cortex_with_realization_check_and_trusted_state(
+                    language_cortex_sources,
+                    &realization_check,
+                    &conversation_state_validation_receipt,
+                ),
+                crate::language_cortex_integration::LanguageCortexIntegrationTimingIR::default(),
+            )
+        };
         debug_assert!(language_cortex_integration.validate());
+        if let Some(profiler) = profiler.as_deref_mut() {
+            profiler.record_nested(
+                "LANGUAGE_CORTEX_SOURCE_COMPONENT_VALIDATION",
+                language_cortex_timing.source_component_validation_micros,
+            );
+            profiler.record_nested(
+                "LANGUAGE_CORTEX_CONVERSATION_STATE_VALIDATION",
+                language_cortex_timing.conversation_state_validation_micros,
+            );
+            profiler.record_nested(
+                "LANGUAGE_CORTEX_SIX_AXIS_SOURCE_VALIDATION",
+                language_cortex_timing.six_axis_source_validation_micros,
+            );
+            profiler.record_nested(
+                "LANGUAGE_CORTEX_COMPONENT_HASHING",
+                language_cortex_timing.component_hashing_micros,
+            );
+            profiler.record_nested(
+                "LANGUAGE_CORTEX_RECEIPT_SEALING",
+                language_cortex_timing.receipt_sealing_micros,
+            );
+        }
+        mark_stage!("LANGUAGE_CORTEX_INTEGRATION");
         let goal_withdrawal_present = pragmatic_interpretation
             .illocutionary_commitments
             .goal_withdrawal
             .is_some();
+        mark_stage!("RESPONSE_ENVELOPE_CONSTRUCTION");
         let response = ConversationTurnResponseIR {
             schema: CONVERSATION_TURN_RESPONSE_SCHEMA.to_string(),
-            lexical_knowledge: crate::lexical_knowledge_pack::builtin_pack()
-                .lookup(&request.raw_text),
+            lexical_knowledge: raw_lexical_knowledge,
             conversation_contract: conversation_contract.clone(),
             affective_field: affective_field.clone(),
+            dialogue_personality: self.dialogue_personality,
             affective_policy,
             request_semantics,
             conversation_id: request.conversation_id.clone(),
@@ -3954,9 +5948,32 @@ impl CognitiveApi {
             language_cortex_integration,
             output,
         };
-        if !response.validate_against(request) {
+        if !response.validate_constructed_with_realization_check(
+            request,
+            &realization_check,
+            &conversation_contract,
+        ) {
             return Err(CognitiveApiError::ResponseBoundary);
         }
+        mark_stage!("RESPONSE_ENVELOPE_VALIDATION");
+        if let Some(grounded) = response
+            .grounded_response
+            .as_deref()
+            .filter(|_| !grounded_goals.is_empty())
+        {
+            let recorded = crate::discourse_qa::RecordedPlanIR {
+                conversation_id: request.conversation_id.clone(),
+                semantic_goal: grounded.semantic_goal.clone(),
+                bundle: grounded.semantic_plan_bundle.clone(),
+                discourse_goals: grounded_goals.clone(),
+            };
+            if recorded.validate() {
+                self.recorded_plans
+                    .insert(request.conversation_id.clone(), recorded);
+            }
+        }
+        self.recorded_plans
+            .retain(|id, _| self.conversation_memory.state(id).is_some());
         self.affective_memory
             .insert(request.conversation_id.clone(), affective_field);
         self.affective_memory
@@ -3978,6 +5995,11 @@ impl CognitiveApi {
                 &request.conversation_id,
                 request.turn_index,
                 &response.native_language_circuit,
+                response.grounded_response.is_some()
+                    && response
+                        .reference_resolution
+                        .ambiguous_reference_surfaces
+                        .is_empty(),
             );
         }
         Ok(response)
@@ -4287,6 +6309,21 @@ impl CognitiveApi {
                     CognitiveApiPayloadIR::ConversationTurnResponse(Box::new(response))
                 })
             }
+            CognitiveApiCommandIR::RealizeApprovedDocumentResponse {
+                response,
+                output_language,
+            } => realize_document_response(&response, output_language)
+                .map(|output| CognitiveApiPayloadIR::DocumentResponse(Box::new(output)))
+                .map_err(|_| CognitiveApiError::DocumentResponse),
+            CognitiveApiCommandIR::InterpretApprovedDocumentResponse {
+                response,
+                output_language,
+                markdown,
+            } => interpret_document_semantics(&markdown, &response, output_language)
+                .map(|interpretation| {
+                    CognitiveApiPayloadIR::DocumentSemanticInterpretation(Box::new(interpretation))
+                })
+                .map_err(|_| CognitiveApiError::DocumentResponse),
             CognitiveApiCommandIR::UpdateWorldVocabulary {
                 conversation_id,
                 update,
@@ -4295,6 +6332,28 @@ impl CognitiveApi {
                 .update_world_vocabulary(&conversation_id, &update)
                 .map(|state| CognitiveApiPayloadIR::WorldVocabularyUpdated(Box::new(state)))
                 .map_err(CognitiveApiError::WorldVocabulary),
+            CognitiveApiCommandIR::UpdateWorldSyntaxModel {
+                conversation_id,
+                model_id,
+                model_version,
+                resolution_mode,
+                observations,
+            } => crate::world_vocabulary::WorldSyntaxModelIR::train_with_mode(
+                model_id,
+                model_version,
+                resolution_mode,
+                &observations,
+            )
+            .map_err(CognitiveApiError::WorldVocabulary)
+            .and_then(|model| {
+                self.conversation_memory
+                    .update_world_syntax_model(&conversation_id, model)
+                    .map_err(CognitiveApiError::WorldVocabulary)
+            })
+            .map(|state| CognitiveApiPayloadIR::WorldSyntaxModelUpdated(Box::new(state))),
+            CognitiveApiCommandIR::SetDialoguePersonality { personality } => self
+                .set_dialogue_personality(personality)
+                .map(|()| CognitiveApiPayloadIR::DialoguePersonalityUpdated(personality)),
             CognitiveApiCommandIR::SubmitConditionEvidence { request } => self
                 .submit_condition_evidence(&request)
                 .map(CognitiveApiPayloadIR::ConditionEvidenceReceipt),
@@ -4606,6 +6665,7 @@ fn build_pending_question(
         return None;
     }
     Some(QuestionUnderDiscussionIR {
+        reference_gap: None,
         question_id: format!("QUD-{:06}-{kind:?}", request.turn_index),
         kind,
         topic_id: topic_id.map(ToString::to_string),
@@ -4690,10 +6750,18 @@ fn localized_question_action(
 }
 
 fn conversation_focus_candidates(
+    source: &str,
     interpretation: &PragmaticInterpretationIR,
     grounded_goals: &[ConversationGoalFrameIR],
     proposition_referents: &[DynamicDiscourseReferentIR],
 ) -> Vec<DiscourseFocusCandidateIR> {
+    // Preserve matrix ownership before the legacy clause list splits the
+    // utterance. A clause fragment alone cannot recover its parent boundary.
+    if grounded_goals.is_empty()
+        && crate::grammatical_scope::embedded_information_statement(source).is_some()
+    {
+        return Vec::new();
+    }
     let analysis = &interpretation.compositional_analysis;
     if !grounded_goals.is_empty() {
         let selected = analysis
@@ -4825,6 +6893,18 @@ fn conversation_focus_candidates(
 }
 
 fn proposition_focus_surface(text: &str, fallback: &str) -> Option<String> {
+    if let Some(state) = crate::proposition_content::described_event(text, false)
+        .filter(|e| e.kind == crate::proposition_content::DescriptionKindIR::State)
+    {
+        return (!state.has_references())
+            .then(|| {
+                state
+                    .roles
+                    .get(&crate::proposition_content::ContentSlotIR::Theme)
+                    .cloned()
+            })
+            .flatten();
+    }
     let normalized = text.trim().to_lowercase();
     let clean = |surface: &str| {
         surface
@@ -4877,7 +6957,8 @@ fn focus_relation_weight(relation: ClauseRelationKindIR) -> u16 {
         ClauseRelationKindIR::Coordination => 60,
         ClauseRelationKindIR::Condition
         | ClauseRelationKindIR::Cause
-        | ClauseRelationKindIR::Purpose => 40,
+        | ClauseRelationKindIR::Purpose
+        | ClauseRelationKindIR::ContentComplement => 40,
     }
 }
 
@@ -5002,6 +7083,7 @@ fn remember_native_dialogue_turn(
     conversation_id: &str,
     turn_index: u64,
     turn: &NativeTurnIR,
+    may_replay_goals: bool,
 ) {
     let state = memory.entry(conversation_id.to_string()).or_default();
     let explicit_entities = turn
@@ -5010,6 +7092,7 @@ fn remember_native_dialogue_turn(
         .filter(|entity| {
             entity.start_byte < entity.end_byte
                 && !entity.rejected_by_contrast
+                && !crate::typed_coreference::is_pronominal(&entity.surface.to_lowercase())
                 && entity.canonical_concept != "C_TASK"
                 && entity.canonical_concept != "C_ISSUE"
                 && entity.canonical_concept != "C_PROBLEM"
@@ -5026,7 +7109,10 @@ fn remember_native_dialogue_turn(
             })
             .collect();
     }
-    if !turn.selected_live_goals.is_empty() {
+    // A proposed interpretation is not an established operation. In particular,
+    // a clarification must not turn an unbound pronoun into a future antecedent.
+    // Explicit entity observations remain useful independently of plan acceptance.
+    if may_replay_goals && !turn.selected_live_goals.is_empty() {
         state.active_goals = turn
             .selected_live_goals
             .iter()
@@ -5143,24 +7229,7 @@ fn subjects_semantically_overlap(left: &str, right: &str) -> bool {
 }
 
 fn native_subject_is_interrogative_placeholder(subject: &str) -> bool {
-    matches!(
-        subject.trim().to_lowercase().as_str(),
-        "what"
-            | "who"
-            | "where"
-            | "when"
-            | "why"
-            | "how"
-            | "which"
-            | "무엇"
-            | "뭐"
-            | "누구"
-            | "어디"
-            | "언제"
-            | "왜"
-            | "어떻게"
-            | "무슨"
-    )
+    crate::conversation_contract::is_interrogative_placeholder(subject)
 }
 
 fn native_intent_from_predicate(canonical_predicate: &str) -> PlanIntentIR {
@@ -6069,6 +8138,60 @@ fn conversation_proposition_referents(
         .collect()
 }
 
+fn source_bound_proposition_referents(
+    report: &SourceBoundReportIR,
+    turn_index: u64,
+) -> Vec<DynamicDiscourseReferentIR> {
+    // Ordinary report requests retain sentence-level provenance.  A long
+    // source document must not evict the whole bounded dialogue ledger merely
+    // because it contains more than 64 sentences, so its source is retained
+    // as exact, attributed 16-sentence document chunks instead.  This is a
+    // memory representation change, not a fact merge: every original surface
+    // remains in exactly one chunk and the report body remains verbatim.
+    const MAX_SENTENCE_LEVEL_SOURCE_REFERENTS: usize = 64;
+    const SOURCE_DOCUMENT_CHUNK_SENTENCES: usize = 16;
+    let groups = if report.source_sentences.len() <= MAX_SENTENCE_LEVEL_SOURCE_REFERENTS {
+        report
+            .source_sentences
+            .iter()
+            .cloned()
+            .map(|sentence| vec![sentence])
+            .collect::<Vec<_>>()
+    } else {
+        report
+            .source_sentences
+            .chunks(SOURCE_DOCUMENT_CHUNK_SENTENCES)
+            .map(|chunk| chunk.to_vec())
+            .collect::<Vec<_>>()
+    };
+    groups
+        .into_iter()
+        .enumerate()
+        .map(|(index, sentences)| {
+            let sentence = sentences.join(" ");
+            DynamicDiscourseReferentIR {
+            referent_id: format!("DREF-SOURCE-REPORT-{turn_index:06}-{:02}", index + 1),
+            kind: DiscourseReferentKindIR::Proposition,
+            topic_id: None,
+            semantic_summary: sentence.clone(),
+            attributed_source: Some("DIALOGUE_USER".to_string()),
+            attribution_attitude: Some(crate::attribution::AttributionAttitudeIR::Say),
+            epistemic_status: Some(crate::attribution::EpistemicStatusIR::Reported),
+            proposition_polarity: Some(crate::attribution::AttributedPropositionPolarityIR::Positive),
+            modal_world: Some(
+                crate::modality::ModalSemanticAnalyzer
+                    .analyze(&sentence)
+                    .root_world,
+            ),
+            belief_record_id: None,
+            introduced_turn: turn_index,
+            last_referenced_turn: turn_index,
+            external_execution_authorized: false,
+        }
+        })
+        .collect()
+}
+
 fn has_semantic_proposition_content(surface: &str) -> bool {
     surface.chars().any(char::is_alphanumeric)
 }
@@ -6661,12 +8784,10 @@ fn structured_candidate_clause(
     let action = localized_question_action(predicate_surface, candidate.intent, language);
     let subject = structured_candidate_subject(language, candidate, analysis);
     match language {
-        LanguageCodeIR::Korean => format!(
-            "‘{}’{} {}",
-            subject,
-            korean_object_particle(&subject),
-            action
-        ),
+        LanguageCodeIR::Korean => {
+            let subject = crate::korean_nominal::mark_or_label(&subject, "을", "를", "대상");
+            format!("{subject} {action}")
+        }
         _ => format!("{} ‘{}’", action, subject),
     }
 }
@@ -6806,9 +8927,12 @@ fn render_action_state_response(
             |record| restore_user_grounded_acronyms(&record.subject, &record.source_semantic_text),
         );
         return match language {
-            LanguageCodeIR::Korean => format!(
-                "‘{subject}’ 작업을 {reported}이라고 사용자가 보고한 상태로 기록했어. 언어 보고는 검증된 실행 결과가 아니므로 실행 상태 자체는 바꾸지 않았어."
-            ),
+            LanguageCodeIR::Korean => {
+                let reported = crate::korean_nominal::mark_direction_or_label(reported, "상태");
+                format!(
+                    "‘{subject}’ 작업의 사용자 보고 상태를 {reported} 기록했어. 언어 보고는 검증된 실행 결과가 아니므로 실행 상태 자체는 바꾸지 않았어."
+                )
+            }
             _ => format!(
                 "I recorded {subject} as reported {reported}. A language report is not a verified execution result, so the observed execution state is unchanged."
             ),
@@ -6821,40 +8945,41 @@ fn render_action_state_response(
         };
     };
     let subject = restore_user_grounded_acronyms(&record.subject, &record.source_semantic_text);
+    let subject_topic = crate::korean_nominal::mark_or_label(&subject, "은", "는", "작업");
     match (language, record.execution_status, record.reported_status) {
         (
             LanguageCodeIR::Korean,
             ActionExecutionStatusIR::NotObserved,
             Some(ActionReportedStatusIR::Attempted),
         ) => format!(
-            "‘{subject}’은 시도했다는 사용자 보고만 있어. 계획은 남아 있지만 검증된 실행 관찰이나 결과는 없어."
+            "{subject_topic} 시도했다는 사용자 보고만 있어. 계획은 남아 있지만 검증된 실행 관찰이나 결과는 없어."
         ),
         (
             LanguageCodeIR::Korean,
             ActionExecutionStatusIR::NotObserved,
             Some(ActionReportedStatusIR::InProgressClaimed),
         ) => format!(
-            "‘{subject}’은 진행 중이라는 사용자 보고만 있어. 호스트 영수증으로 검증된 실행 상태는 아직 없어."
+            "{subject_topic} 진행 중이라는 사용자 보고만 있어. 호스트 영수증으로 검증된 실행 상태는 아직 없어."
         ),
         (
             LanguageCodeIR::Korean,
             ActionExecutionStatusIR::NotObserved,
             Some(ActionReportedStatusIR::SuccessClaimed),
         ) => format!(
-            "‘{subject}’은 성공·완료됐다는 사용자 보고가 있지만 검증된 실행 결과는 없어. 보고와 검증 상태를 분리해 유지하고 있어."
+            "{subject_topic} 성공·완료됐다는 사용자 보고가 있지만 검증된 실행 결과는 없어. 보고와 검증 상태를 분리해 유지하고 있어."
         ),
         (
             LanguageCodeIR::Korean,
             ActionExecutionStatusIR::NotObserved,
             Some(ActionReportedStatusIR::FailureClaimed),
         ) => format!(
-            "‘{subject}’은 실패했다는 사용자 보고가 있지만 검증된 실행 결과는 없어. 보고와 검증 상태를 분리해 유지하고 있어."
+            "{subject_topic} 실패했다는 사용자 보고가 있지만 검증된 실행 결과는 없어. 보고와 검증 상태를 분리해 유지하고 있어."
         ),
         (LanguageCodeIR::Korean, ActionExecutionStatusIR::NotObserved, None) => format!(
-            "‘{subject}’은 활성 계획 상태야. 검증된 실행 관찰은 없고, 실행 결과는 아직 없어."
+            "{subject_topic} 활성 계획 상태야. 검증된 실행 관찰은 없고, 실행 결과는 아직 없어."
         ),
         (LanguageCodeIR::Korean, ActionExecutionStatusIR::InProgress, _) => format!(
-            "‘{subject}’은 호스트 검증 영수증 기준으로 실행 중이야. 아직 성공·실패 결과는 확정되지 않았어."
+            "{subject_topic} 호스트 검증 영수증 기준으로 실행 중이야. 아직 성공·실패 결과는 확정되지 않았어."
         ),
         (LanguageCodeIR::Korean, ActionExecutionStatusIR::Succeeded, _) => format!(
             "‘{subject}’의 검증된 실행 결과는 성공이야. 시작 및 종료 영수증이 모두 기록돼 있어."
@@ -7197,13 +9322,15 @@ fn dialogue_directive_candidates(
             LanguageDialogueDirectiveValueIR::Table => "TABLE",
             LanguageDialogueDirectiveValueIR::Plain => "PLAIN",
         };
-        DialogueDirectiveCandidateIR::from_surface(
+        let mut candidate = DialogueDirectiveCandidateIR::from_surface(
             kind,
             "ASSISTANT_RESPONSE",
             value_key,
             source_surface,
             frame.confidence_millis,
-        )
+        );
+        candidate.prohibited = frame.prohibited;
+        candidate
     }));
     candidates.sort_by(|left, right| {
         left.kind
@@ -7249,8 +9376,15 @@ fn planner_inferred_goal<'a>(
 
 fn dialogue_directive_tag(directive: &DialogueDirectiveIR) -> String {
     format!(
-        "DIALOGUE_DIRECTIVE:{:?}:{}:{}",
-        directive.kind, directive.target_key, directive.value_key
+        "DIALOGUE_DIRECTIVE{}:{:?}:{}:{}",
+        if directive.prohibited {
+            "_PROHIBIT"
+        } else {
+            ""
+        },
+        directive.kind,
+        directive.target_key,
+        directive.value_key
     )
     .to_uppercase()
 }
@@ -7392,35 +9526,14 @@ enum UserAffectIR {
 }
 
 fn detect_user_affect(original_text: &str) -> Option<UserAffectIR> {
-    let unquoted = strip_quoted_spans(original_text).to_lowercase();
-    if contains_any_surface(
-        &unquoted,
-        &[
-            "답답",
-            "지친",
-            "지쳤",
-            "힘들어",
-            "frustrating",
-            "frustrated",
-            "exhausted",
-            "tired",
-            "worn out",
-            "drained",
-            "진이 빠",
-        ],
-    ) {
-        Some(UserAffectIR::Frustrated)
-    } else if contains_any_surface(&unquoted, &["화나", "화가 나", "angry"]) {
-        Some(UserAffectIR::Angry)
-    } else if contains_any_surface(&unquoted, &["속상", "upset"]) {
-        Some(UserAffectIR::Upset)
-    } else if contains_any_surface(&unquoted, &["불안", "걱정", "worried", "worrying"]) {
-        Some(UserAffectIR::Worried)
-    } else if contains_any_surface(&unquoted, &["짜증", "킹받", "annoying", "annoyed"]) {
-        Some(UserAffectIR::Annoyed)
-    } else {
-        None
-    }
+    use crate::affective_field::ExpressedAffectIR as Affect;
+    crate::affective_field::expressed_affect(original_text).map(|affect| match affect {
+        Affect::Frustrated => UserAffectIR::Frustrated,
+        Affect::Angry => UserAffectIR::Angry,
+        Affect::Hurt => UserAffectIR::Upset,
+        Affect::Worried => UserAffectIR::Worried,
+        Affect::Annoyed => UserAffectIR::Annoyed,
+    })
 }
 
 fn has_social_dialogue_event(normalization: &NormalizedUtteranceIR) -> bool {
@@ -7627,10 +9740,9 @@ fn render_conversation_plan_preview(
         });
     match language {
         LanguageCodeIR::Korean => {
-            let display = quote_subject_once(subject);
-            let particle = korean_topic_particle(subject);
+            let subject = crate::korean_nominal::mark_or_label(subject, "은", "는", "작업");
             format!(
-                "알겠어. {display}{particle} 다음 검증 계획으로 처리할게. {realized}. 아직 실행 결과는 없으므로 이 단계들을 완료된 사실로 말하지 않을게."
+                "알겠어. {subject} 다음 검증 계획으로 처리할게. {realized}. 아직 실행 결과는 없으므로 이 단계들을 완료된 사실로 말하지 않을게."
             )
         }
         _ => {
@@ -7651,31 +9763,9 @@ fn quote_subject_once(subject: &str) -> String {
     }
 }
 
+#[cfg(test)]
 fn korean_topic_particle(subject: &str) -> &'static str {
-    let final_character = subject.chars().rev().find(|character| {
-        character.is_alphanumeric()
-            || matches!(character, '\u{ac00}'..='\u{d7a3}' | '\u{3131}'..='\u{318e}')
-    });
-    let has_final_consonant = final_character.is_some_and(|character| {
-        if matches!(character, '\u{ac00}'..='\u{d7a3}') {
-            (u32::from(character) - 0xac00) % 28 != 0
-        } else {
-            false
-        }
-    });
-    if has_final_consonant {
-        "은"
-    } else {
-        "는"
-    }
-}
-
-fn korean_object_particle(subject: &str) -> &'static str {
-    if korean_topic_particle(subject) == "은" {
-        "을"
-    } else {
-        "를"
-    }
+    crate::korean_nominal::select_particle(subject, "은", "는").unwrap_or("")
 }
 
 fn user_grounded_acronyms(text: &str) -> Vec<String> {
@@ -7968,8 +10058,10 @@ fn render_non_grounded_conversation(
                     .unresolved_competitions
                     .first()
                     .map_or("서로 다른 요청 후보", String::as_str);
+                let competition =
+                    crate::korean_nominal::mark_or_label(competition, "이", "가", "해석");
                 format!(
-                    "문장에서 {competition}가 비슷한 강도로 해석돼. 어느 쪽이 실제 요청인지 지정해줘. 인용·가정·금지된 행동은 임의로 실행하지 않을게."
+                    "문장에서 {competition} 비슷한 강도로 해석돼. 어느 쪽이 실제 요청인지 지정해줘. 인용·가정·금지된 행동은 임의로 실행하지 않을게."
                 )
             } else if pragmatic_interpretation
                 .nonliteral_analysis
@@ -7997,17 +10089,15 @@ fn render_non_grounded_conversation(
                     .map(|candidate| format!("‘{}’", candidate.normalized_text))
                     .collect::<Vec<_>>()
                     .join(" 또는 ");
-                format!("음성 입력이 {choices}로 들릴 수 있어. 어느 쪽인지 한 번만 확인해줘.")
+                format!("음성 입력 후보: {choices}. 어느 쪽으로 들렸는지 한 번만 확인해줘.")
             } else if !resolution.ambiguous_reference_surfaces.is_empty() {
-                format!(
-                    "{}가 무엇을 가리키는지 하나만 지정해줘.",
-                    resolution
-                        .ambiguous_reference_surfaces
-                        .iter()
-                        .map(|surface| format!("‘{surface}’"))
-                        .collect::<Vec<_>>()
-                        .join(", ")
-                )
+                let references = resolution
+                    .ambiguous_reference_surfaces
+                    .iter()
+                    .map(|surface| format!("‘{surface}’"))
+                    .collect::<Vec<_>>()
+                    .join(", ");
+                format!("참조 후보: {references}. 무엇을 가리키는지 하나만 지정해줘.")
             } else {
                 "무엇을 원하는지 조금만 더 말해줘.".to_string()
             }
@@ -8540,6 +10630,25 @@ mod tests {
         assert_eq!(response.plan.recalled_experiences.len(), 1);
         assert!(response.output.text.contains("관련 성공 경험 1건"));
         assert_eq!(response.output.unsupported_freeform_claims, 0);
+        let approved = response
+            .approved_plan_response
+            .as_ref()
+            .expect("live semantic plan must issue canonical response IR");
+        assert!(approved.validate());
+        assert_eq!(
+            approved.source_world_state_sha256,
+            response.semantic_goal.semantic_sha256
+        );
+        assert!(approved.event_realizations.iter().all(|event| {
+            event.phase == Some(crate::approved_response::ApprovedEventPhaseIR::Planned)
+        }));
+        let training_record =
+            crate::canonical_response_dataset::CanonicalResponseTrainingRecordIR::from_approved(
+                approved.as_ref().clone(),
+                LanguageCodeIR::Korean,
+            )
+            .expect("canonical IR must realize into a source-free training record");
+        assert!(training_record.validate());
     }
 
     #[test]
@@ -9439,7 +11548,11 @@ mod tests {
                 "아니, 고치지는 말고 왜 실패하는지만 설명해.",
             ))
             .expect("correction turn");
-        assert!(response.conversation_contract.answer_only());
+        assert!(
+            response.conversation_contract.answer_only(),
+            "{:?}",
+            response.conversation_contract
+        );
         assert!(response.grounded_response.is_none());
         assert!(response.discourse_answer.is_some());
         assert!(setup.natural_realization.validate());
@@ -10012,6 +12125,159 @@ mod tests {
     }
 
     #[test]
+    fn communicative_requests_route_by_effect_not_polite_mood() {
+        use crate::conversation_contract::RequestedEffectIR;
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        for (index, text) in [
+            "이유를 다시 설명해줄래요?",
+            "Could you explain the reason?",
+            "Could you explain the report to me?",
+            "계약을 해설해줄래?",
+            "Would you describe the report?",
+            "그 내용을 요약해줄래?",
+            "Could you summarize the report?",
+            "Would you summarise the letter?",
+        ]
+        .iter()
+        .enumerate()
+        {
+            let request = conversation_request(&format!("EFFECT-REPLY-{index}"), 1, text);
+            let response = api
+                .process_conversation_turn(&request)
+                .unwrap_or_else(|e| panic!("{text}: {e:?}"));
+            assert!(
+                response.conversation_contract.answer_only(),
+                "{text}: {:?}",
+                response.conversation_contract
+            );
+            assert!(response
+                .conversation_contract
+                .request_effects
+                .iter()
+                .all(|e| e.effect == RequestedEffectIR::ResponseContent));
+            let mut tampered = response.clone();
+            tampered.conversation_contract.request_effects[0].effect =
+                RequestedEffectIR::TaskWorkflow;
+            assert!(!tampered.validate_against(&request));
+            assert!(
+                response.grounded_response.is_none(),
+                "reply cannot be replaced by a plan: {text}"
+            );
+            assert_ne!(
+                response.natural_realization.response_act,
+                NaturalResponseActIR::PlanPreview
+            );
+            assert!(
+                !response
+                    .language_cortex_integration
+                    .external_action_executed
+            );
+        }
+        for (index, text) in [
+            "계약을 설명하고 문서를 삭제해줘.",
+            "Could you explain the report and delete the cache?",
+        ]
+        .iter()
+        .enumerate()
+        {
+            let response = api
+                .process_conversation_turn(&conversation_request(
+                    &format!("EFFECT-MIXED-{index}"),
+                    1,
+                    text,
+                ))
+                .unwrap_or_else(|e| panic!("{text}: {e:?}"));
+            let effects = &response.conversation_contract.request_effects;
+            assert!(
+                effects
+                    .iter()
+                    .any(|e| e.effect == RequestedEffectIR::ResponseContent),
+                "{text}: {effects:?}"
+            );
+            assert!(
+                effects
+                    .iter()
+                    .any(|e| e.effect == RequestedEffectIR::TaskWorkflow),
+                "{text}: {effects:?}"
+            );
+            assert!(response.conversation_contract.independent_action_requested);
+            assert!(
+                !response
+                    .language_cortex_integration
+                    .external_action_executed
+            );
+        }
+    }
+
+    #[test]
+    fn polite_explanation_returns_stored_cause_not_a_plan() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        for (id, statement, question, expected) in [
+            (
+                "CAUSE-EFFECT-EN",
+                "The alarm stopped because the battery was empty.",
+                "Could you explain why the alarm stopped?",
+                "battery was empty",
+            ),
+            (
+                "CAUSE-EFFECT-KO",
+                "배터리가 비었기 때문에 경보가 멈췄어.",
+                "경보가 왜 멈췄는지 설명해줄래?",
+                "배터리가 비었기",
+            ),
+        ] {
+            api.process_conversation_turn(&conversation_request(id, 1, statement))
+                .unwrap();
+            let response = api
+                .process_conversation_turn(&conversation_request(id, 2, question))
+                .unwrap();
+            assert!(response.grounded_response.is_none());
+            assert!(
+                response.output.text.contains(expected),
+                "{question}: {}",
+                response.output.text
+            );
+            assert!(
+                !response
+                    .language_cortex_integration
+                    .external_action_executed
+            );
+        }
+        for (index, text) in [
+            "Did the alarm stop because the battery was empty?",
+            "Mira said, 'The alarm stopped because the battery was empty.'",
+            "If the alarm stopped because the battery was empty, inspect it.",
+            "The alarm did not stop because the battery was empty.",
+            "The alarm stopped because the battery was empty. Delete the log.",
+        ]
+        .iter()
+        .enumerate()
+        {
+            let response = api
+                .process_conversation_turn(&conversation_request(
+                    &format!("CAUSE-SCOPE-CONTROL-{index}"),
+                    1,
+                    text,
+                ))
+                .unwrap();
+            assert!(
+                !response
+                    .conversation_state
+                    .epistemic_ledger
+                    .records
+                    .iter()
+                    .any(|r| r.origin_referent_id.starts_with("DREF-SOURCE-RELATION-")),
+                "must not broaden report scope: {text}"
+            );
+            assert!(
+                !response
+                    .language_cortex_integration
+                    .external_action_executed
+            );
+        }
+    }
+
+    #[test]
     fn polite_modal_question_projects_the_action_but_not_modal_truth() {
         let mut api = CognitiveApi::new_embedded().unwrap();
         let response = api
@@ -10276,7 +12542,7 @@ mod tests {
             answer.disposition,
             crate::discourse_qa::DiscourseAnswerDispositionIR::AnsweredFromDialogueRecords
         );
-        assert_eq!(answer.evidence[0].source_actor, "alice");
+        assert_eq!(answer.evidence[0].source_actor, "Alice");
         assert!(response.grounded_response.is_none());
         assert!(response.conversation_state.active_goals.is_empty());
         assert_eq!(
@@ -10858,7 +13124,15 @@ mod tests {
             response.output.grounded_plan_sha256,
             Some(grounded.plan.plan_sha256.clone())
         );
-        assert!(response.output.text.starts_with("알겠어."));
+        assert!(response
+            .natural_realization
+            .generation_traces
+            .iter()
+            .any(|trace| trace
+                .meaning
+                .nodes
+                .iter()
+                .any(|node| node.node_id == "E_ACTION" && node.concept_id == "C_REPAIR")));
         assert_eq!(response.output.unsupported_freeform_claims, 0);
     }
 
@@ -11737,14 +14011,31 @@ mod tests {
                 referent.kind == crate::conversation::DiscourseReferentKindIR::Proposition
             })
             .expect("attributed proposition memory");
-        assert_eq!(proposition.attributed_source.as_deref(), Some("alice"));
+        assert_eq!(proposition.attributed_source.as_deref(), Some("Alice"));
         assert_eq!(
             proposition.attribution_attitude,
             Some(crate::attribution::AttributionAttitudeIR::Say)
         );
         assert!(!proposition.external_execution_authorized);
         assert!(response.grounded_response.is_none());
-        assert!(response.output.text.contains("사실로 확인"));
+        // Receiving an attributed instruction need not lecture about evidence.
+        // Its meaning stays reported and cannot authorize the embedded action.
+        assert!(response
+            .conversation_state
+            .epistemic_ledger
+            .records
+            .iter()
+            .all(|record| !record.dialogue_truth_established
+                && !record.external_execution_authorized));
+        assert!(response
+            .natural_realization
+            .generation_traces
+            .iter()
+            .all(|trace| trace
+                .meaning
+                .nodes
+                .iter()
+                .all(|node| node.concept_id == "C_ACKNOWLEDGE")));
         assert!(response.output.grounded_plan_sha256.is_none());
     }
 
@@ -12460,7 +14751,11 @@ mod tests {
                 "The release lead wrote, 'publish the bundle tonight.' I am asking only for an assessment of recovery cost; do not publish it.",
             ))
             .expect("assessment request");
-        assert!(response.conversation_contract.answer_only());
+        assert!(
+            response.conversation_contract.answer_only(),
+            "{:?}",
+            response.conversation_contract
+        );
         assert!(response.grounded_response.is_none());
         assert!(response.request_semantics.as_ref().is_some_and(|goal| goal
             .arguments
@@ -12916,9 +15211,18 @@ mod tests {
             ))
             .expect("grounded plan turn");
         assert!(response.output.text.contains("CCTV"));
-        assert!(response.output.text.contains("현재 상태"));
-        assert!(response.output.text.contains("원인을 좁"));
-        assert!(response.output.text.contains("검증"));
+        assert!(!response.output.text.contains("현재 상태"));
+        assert!(response.output.text.contains("조사"));
+        assert!(response
+            .natural_realization
+            .generation_traces
+            .iter()
+            .any(|trace| trace
+                .meaning
+                .nodes
+                .iter()
+                .any(|node| node.node_id == "E_ACTION" && node.concept_id == "C_INVESTIGATE")));
+        assert!(!response.output.text.contains("검증할게"));
         assert!(response.output.text.contains("아직 실행한 것은 아니"));
         assert_eq!(
             response.natural_realization.response_act,
@@ -13275,13 +15579,20 @@ mod tests {
                 })
             }));
         let mut baseline_api = CognitiveApi::new_embedded().unwrap();
-        let baseline = baseline_api
+        baseline_api
             .process_conversation_turn(&conversation_request(
                 "CHAT-DIRECTIVE-BASELINE",
                 1,
+                "Please make the response detailed.",
+            ))
+            .expect("explicit detailed comparison; default is already compact");
+        let baseline = baseline_api
+            .process_conversation_turn(&conversation_request(
+                "CHAT-DIRECTIVE-BASELINE",
+                2,
                 "Inspect the cache.",
             ))
-            .expect("unconstrained baseline");
+            .expect("detailed baseline");
         assert!(
             task.output.text.chars().count() < baseline.output.text.chars().count(),
             "concise={} baseline={}",
@@ -15417,5 +17728,820 @@ mod tests {
                     .external_action_executed
             );
         }
+    }
+
+    #[test]
+    fn event_recap_constructs_content_instead_of_searching_a_summary_slot() {
+        for (language, source, question, expected, followup, value) in [
+            (
+                LanguageCodeIR::English,
+                "Nico read the note at the harbor.",
+                "Would you summarize what happened?",
+                "Nico read the note at the harbor",
+                "Where?",
+                "harbor",
+            ),
+            (
+                LanguageCodeIR::Korean,
+                "규리는 강당에서 일기를 읽었어.",
+                "방금 일 요약해줘.",
+                "규리가 강당에서 일기를 읽었어",
+                "어디서?",
+                "강당",
+            ),
+        ] {
+            let mut api = CognitiveApi::new_embedded().unwrap();
+            let mut request = conversation_request("EVENT-RECAP", 1, source);
+            request.output_language = Some(language);
+            api.process_conversation_turn(&request).unwrap();
+            request = conversation_request("EVENT-RECAP", 2, question);
+            request.output_language = Some(language);
+            let response = api.process_conversation_turn(&request).unwrap();
+            assert!(response.validate_against(&request));
+            assert!(
+                response
+                    .discourse_answer
+                    .as_ref()
+                    .is_some_and(|a| a.event_summary.is_some()),
+                "{question}: {} {:?}",
+                response.output.text,
+                response.discourse_answer
+            );
+            assert!(
+                response
+                    .output
+                    .text
+                    .to_lowercase()
+                    .contains(&expected.to_lowercase()),
+                "{}",
+                response.output.text
+            );
+            assert!(response.grounded_response.is_none());
+            assert!(
+                !response
+                    .language_cortex_integration
+                    .external_action_executed
+            );
+            let mut tampered = response.clone();
+            tampered
+                .discourse_answer
+                .as_mut()
+                .unwrap()
+                .event_summary
+                .as_mut()
+                .unwrap()
+                .event
+                .negated = true;
+            assert!(!tampered.validate_against(&request));
+            request = conversation_request("EVENT-RECAP", 3, followup);
+            request.output_language = Some(language);
+            let answer = api.process_conversation_turn(&request).unwrap();
+            assert!(answer.output.text.contains(value), "{}", answer.output.text);
+        }
+    }
+
+    #[test]
+    fn deictic_same_turn_report_preserves_source_without_becoming_a_plan() {
+        let request = conversation_request(
+            "SOURCE-BOUND-REPORT",
+            1,
+            "잠을 8시간 자도 찌푸둥한 이유는 수면 시간이 부족해서가 아니라, 뒤척일 때마다 척추 정렬이 무너지며 깊은 렘수면 진입을 방해받기 때문입니다. 흔들림을 흡수하는 독립 스프링이 뒤척임의 진동을 차단해 깨지 않는 숙면을 만듭니다. 이 내용을 원인과 해결책이 드러나는 장문 보고서로 정리해줘.",
+        );
+        let response = CognitiveApi::new_embedded()
+            .unwrap()
+            .process_conversation_turn(&request)
+            .expect("source-bound report response");
+        assert!(response.validate_against(&request));
+        assert_eq!(
+            response.natural_realization.response_act,
+            NaturalResponseActIR::SourceBoundReport
+        );
+        assert_eq!(
+            response
+                .natural_realization
+                .response_arbitration
+                .selected_source,
+            NaturalResponseSourceIR::SourceBoundReport
+        );
+        assert!(response.grounded_response.is_none());
+        assert!(response.output.text.contains("잠을 8시간 자도 찌푸둥한 이유"));
+        assert!(response
+            .output
+            .text
+            .contains("독립 스프링이 뒤척임의 진동을 차단"));
+        assert!(!response.output.text.contains("계획은 이 내용을"));
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
+        assert!(response
+            .natural_realization
+            .generation_traces
+            .iter()
+            .all(|trace| trace.validate()));
+        assert!(response
+            .conversation_state
+            .epistemic_ledger
+            .records
+            .iter()
+            .flat_map(|record| &record.content.bindings)
+            .any(|binding| {
+                binding.grammar_evidence == "ATTRIBUTED_KOREAN_REASON_EXPLANATION"
+            }));
+    }
+
+    #[test]
+    fn same_turn_source_report_commits_only_its_source_sentences_as_observations() {
+        let request = conversation_request(
+            "SOURCE-BOUND-REPORT-MEMORY",
+            1,
+            "규리는 강당에서 일기를 읽었어. 하린은 도서관에서 편지를 읽었어. 이 내용을 장문 보고서로 정리해줘.",
+        );
+        let response = CognitiveApi::new_embedded()
+            .unwrap()
+            .process_conversation_turn(&request)
+            .expect("source report observation commit");
+        assert!(response.validate_against(&request));
+        let records = &response.conversation_state.epistemic_ledger.records;
+        assert_eq!(records.len(), 2);
+        assert!(records.iter().all(|record| {
+            record.source_actor == "DIALOGUE_USER"
+                && record.content.events.len() == 1
+                && record.content.events[0]
+                    .roles
+                    .contains_key(&crate::proposition_content::ContentSlotIR::Agent)
+        }));
+        assert!(records
+            .iter()
+            .all(|record| !record.proposition_surface.contains("정리해줘")));
+    }
+
+    #[test]
+    fn dense_genre_source_corpus_retains_every_clause_without_plan_or_claim_invention() {
+        let corpus = include_str!("../../../research/BCORE_SPARSE_BLOCK_LANGUAGE/dense_semantic_genre_gold_040_ko.tsv");
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let mut completed = 0;
+        for row in corpus.lines().filter(|row| !row.trim().is_empty()) {
+            let mut fields = row.splitn(4, '\t');
+            let id = fields.next().expect("corpus id");
+            let _genre = fields.next().expect("corpus genre");
+            let _topic = fields.next().expect("corpus topic");
+            let source = fields.next().expect("corpus source");
+            let raw = format!(
+                "{source} 이 내용을 원인과 해결 방향이 드러나는 장문 보고서로 정리해줘."
+            );
+            let expected = source_bound_report_request(&raw, LanguageCodeIR::Korean)
+                .expect("well-formed source-bound report request");
+            let request = conversation_request(&format!("DENSE-SOURCE-{id}"), 1, &raw);
+            let response = api
+                .process_conversation_turn(&request)
+                .unwrap_or_else(|error| panic!("{id}: {error:?}"));
+            assert!(response.validate_against(&request), "{id}");
+            assert_eq!(
+                response.natural_realization.response_act,
+                NaturalResponseActIR::SourceBoundReport,
+                "{id}: {}",
+                response.output.text
+            );
+            assert!(response.grounded_response.is_none(), "{id}");
+            assert_eq!(response.output.unsupported_freeform_claims, 0, "{id}");
+            assert!(expected
+                .source_sentences
+                .iter()
+                .all(|sentence| response.output.text.contains(sentence)), "{id}: {}", response.output.text);
+            assert_eq!(
+                response.conversation_state.epistemic_ledger.records.len(),
+                expected.source_sentences.len(),
+                "{id}: {:#?}",
+                response.conversation_state.epistemic_ledger.records
+            );
+            assert!(response
+                .conversation_state
+                .epistemic_ledger
+                .records
+                .iter()
+                .all(|record| !record.proposition_surface.contains("정리해줘")), "{id}");
+            completed += 1;
+        }
+        assert_eq!(completed, 40);
+    }
+
+    #[test]
+    fn forty_unrelated_source_sentences_survive_one_long_report_turn() {
+        let corpus = include_str!("../../../research/BCORE_SPARSE_BLOCK_LANGUAGE/dense_semantic_genre_gold_040_ko.tsv");
+        let source_sentences = corpus
+            .lines()
+            .filter(|row| !row.trim().is_empty())
+            .map(|row| row.splitn(4, '\t').nth(3).expect("corpus source").to_string())
+            .collect::<Vec<_>>();
+        assert_eq!(source_sentences.len(), 40);
+        let raw = format!(
+            "{} 이 내용을 원인과 해결 방향이 드러나는 장문 보고서로 정리해줘.",
+            source_sentences.join(" ")
+        );
+        let report = source_bound_report_request(&raw, LanguageCodeIR::Korean)
+            .expect("long source-bound report detection");
+        assert_eq!(report.source_sentences.len(), 80);
+        assert_eq!(
+            report.source_sentences.join(" "),
+            source_sentences.join(" "),
+            "source-bound segmentation must preserve every source character"
+        );
+        let request = conversation_request("DENSE-SOURCE-LONG-40", 1, &raw);
+        let response = CognitiveApi::new_embedded()
+            .expect("embedded api")
+            .process_conversation_turn(&request)
+            .expect("bounded forty-source report");
+        assert!(response.validate_against(&request));
+        assert_eq!(
+            response.natural_realization.response_act,
+            NaturalResponseActIR::SourceBoundReport
+        );
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
+        assert!(!response.output.text.contains("그 상황은 걱정할 만해"));
+        assert_eq!(response.conversation_state.epistemic_ledger.records.len(), 5);
+        assert!(report
+            .source_sentences
+            .iter()
+            .all(|sentence| response.output.text.contains(sentence)), "{}", response.output.text);
+        let retained_source = response
+            .conversation_state
+            .epistemic_ledger
+            .records
+            .iter()
+            .map(|record| record.proposition_surface.as_str())
+            .collect::<Vec<_>>()
+            .join(" ");
+        assert_eq!(retained_source, report.source_sentences.join(" "));
+        assert!(response
+            .conversation_state
+            .epistemic_ledger
+            .records
+            .iter()
+            .all(|record| !record.proposition_surface.contains("정리해줘")));
+    }
+
+    #[test]
+    fn causal_dialogue_corpus_survives_the_public_long_report_pipeline() {
+        let source = include_str!("../../../research/BCORE_SPARSE_BLOCK_LANGUAGE/causal_dialogue_gold_024_ko.txt");
+        let raw = format!("{source} 이 내용을 장문 보고서로 정리해줘.");
+        let report = source_bound_report_request(&raw, LanguageCodeIR::Korean)
+            .expect("bounded causal-dialogue source report");
+        let request = conversation_request("CAUSAL-DIALOGUE-LONG", 1, &raw);
+        let response = CognitiveApi::new_embedded()
+            .expect("embedded api")
+            .process_conversation_turn(&request)
+            .expect("causal dialogue report response");
+        assert!(response.validate_against(&request));
+        assert_eq!(response.natural_realization.response_act, NaturalResponseActIR::SourceBoundReport);
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
+        assert!(report
+            .source_sentences
+            .iter()
+            .all(|sentence| response.output.text.contains(sentence)), "{}", response.output.text);
+        let expected_records = if report.source_sentences.len() <= 64 {
+            report.source_sentences.len()
+        } else {
+            report.source_sentences.len().div_ceil(16)
+        };
+        assert_eq!(response.conversation_state.epistemic_ledger.records.len(), expected_records);
+        let retained_source = response
+            .conversation_state
+            .epistemic_ledger
+            .records
+            .iter()
+            .map(|record| record.proposition_surface.as_str())
+            .collect::<Vec<_>>()
+            .join(" ");
+        assert_eq!(retained_source, report.source_sentences.join(" "));
+        assert!(response
+            .conversation_state
+            .epistemic_ledger
+            .records
+            .iter()
+            .all(|record| !record.proposition_surface.contains("정리해줘")));
+    }
+
+    #[test]
+    fn described_event_roles_survive_the_public_conversation_pipeline() {
+        for (language, report, questions) in [
+            (
+                LanguageCodeIR::Korean,
+                "어제 민수는 지연에게 책을 빌려줬어.",
+                vec![
+                    ("누가 책을 빌려줬어?", "민수"),
+                    ("누구에게?", "지연"),
+                    ("뭘?", "책"),
+                    ("언제?", "어제"),
+                ],
+            ),
+            (
+                LanguageCodeIR::English,
+                "Mina lent a book to Jin yesterday.",
+                vec![
+                    ("Who lent a book to Jin?", "Mina"),
+                    ("To whom?", "Jin"),
+                    ("What?", "book"),
+                    ("When?", "yesterday"),
+                ],
+            ),
+        ] {
+            let mut api = CognitiveApi::new_embedded().unwrap();
+            let id = format!("DESCRIBED-{language:?}");
+            let mut first = conversation_request(&id, 1, report);
+            first.output_language = Some(language);
+            let stored = api.process_conversation_turn(&first).unwrap();
+            assert!(
+                stored
+                    .conversation_state
+                    .epistemic_ledger
+                    .records
+                    .iter()
+                    .any(|r| !r.content.events.is_empty()),
+                "{report}: {:?}",
+                stored.conversation_state.epistemic_ledger.records
+            );
+            for (i, (question, expected)) in questions.into_iter().enumerate() {
+                let mut request = conversation_request(&id, i as u64 + 2, question);
+                request.output_language = Some(language);
+                let response = api.process_conversation_turn(&request).expect(question);
+                assert!(response.validate_against(&request));
+                let value = response
+                    .discourse_answer
+                    .as_ref()
+                    .and_then(|a| a.content_projection.as_ref())
+                    .map(|p| p.binding.value.as_str());
+                assert_eq!(
+                    value.map(str::to_lowercase),
+                    Some(expected.to_lowercase()),
+                    "{question}: act={:?} output={} answer={:?}",
+                    response.natural_realization.response_act,
+                    response.output.text,
+                    response.discourse_answer
+                );
+                assert!(
+                    response
+                        .output
+                        .text
+                        .to_lowercase()
+                        .contains(&expected.to_lowercase()),
+                    "{}",
+                    response.output.text
+                );
+                assert!(response.grounded_response.is_none());
+                assert!(
+                    !response
+                        .language_cortex_integration
+                        .external_action_executed
+                );
+                assert_eq!(response.output.unsupported_freeform_claims, 0);
+            }
+        }
+    }
+
+    #[test]
+    fn source_content_answers_preserve_non_actual_modal_reports() {
+        for (language, report, question, expected) in [
+            (
+                LanguageCodeIR::Korean,
+                "나는 그냥 천천히 이야기하고 싶어요.",
+                "지금 내가 원하는 게 뭐야?",
+                "나는 그냥 천천히 이야기하고 싶어요",
+            ),
+            (
+                LanguageCodeIR::English,
+                "I want to just chat.",
+                "What do I want?",
+                "i want to just chat",
+            ),
+            (
+                LanguageCodeIR::Korean,
+                "검사 작업을 하고 있어. 오류가 줄어든다면 계속할 만하지.",
+                "계속하라고 한 조건이 뭐야?",
+                "오류가 줄어든다면",
+            ),
+        ] {
+            let mut api = CognitiveApi::new_embedded().unwrap();
+            let id = format!("SOURCE-CONTENT-MODAL-{language:?}");
+            let mut first = conversation_request(&id, 1, report);
+            first.output_language = Some(language);
+            api.process_conversation_turn(&first).expect(report);
+
+            let mut request = conversation_request(&id, 2, question);
+            request.output_language = Some(language);
+            let response = api.process_conversation_turn(&request).expect(question);
+            assert!(response.validate_against(&request), "{response:#?}");
+            assert_eq!(
+                response.natural_realization.response_act,
+                NaturalResponseActIR::DiscourseAnswer,
+                "{response:#?}"
+            );
+            assert!(response
+                .output
+                .text
+                .to_lowercase()
+                .contains(&expected.to_lowercase()));
+            let answer = response.discourse_answer.as_ref().expect("source answer");
+            let projection = answer.content_projection.as_ref().expect("projection");
+            assert_eq!(
+                projection.binding.value.to_lowercase(),
+                expected.to_lowercase()
+            );
+            assert!(!answer.dialogue_truth_established);
+            assert!(!answer.external_execution_authorized);
+            assert_ne!(
+                answer.evidence[0].modal_world,
+                crate::modality::ModalWorldIR::Actual,
+                "the regression proof must exercise a reported non-actual world"
+            );
+        }
+    }
+
+    #[test]
+    fn non_actual_events_cannot_answer_actual_event_questions() {
+        for (report, question) in [
+            ("Leo wants the team to retry.", "Did the team retry?"),
+            (
+                "Alice believes that the server might fail.",
+                "Did the server fail?",
+            ),
+        ] {
+            let mut api = CognitiveApi::new_embedded().unwrap();
+            let mut report_request = conversation_request("NON-ACTUAL-EVENT-BOUNDARY", 1, report);
+            report_request.output_language = Some(LanguageCodeIR::English);
+            let stored = api
+                .process_conversation_turn(&report_request)
+                .expect("non-actual report");
+            assert!(stored
+                .conversation_state
+                .epistemic_ledger
+                .records
+                .iter()
+                .any(|r| { r.signature.modal_world != crate::modality::ModalWorldIR::Actual }));
+
+            let mut question_request =
+                conversation_request("NON-ACTUAL-EVENT-BOUNDARY", 2, question);
+            question_request.output_language = Some(LanguageCodeIR::English);
+            let response = api
+                .process_conversation_turn(&question_request)
+                .expect("actual-event question");
+            assert!(response.validate_against(&question_request));
+            let answer = response.discourse_answer.expect("typed boundary answer");
+            assert_eq!(
+                answer.disposition,
+                crate::discourse_qa::DiscourseAnswerDispositionIR::NoMatchingRecord,
+                "{question}: {answer:#?}"
+            );
+            assert!(answer.content_projection.is_none(), "{answer:#?}");
+            assert!(answer
+                .evidence
+                .iter()
+                .all(|e| { e.modal_world != crate::modality::ModalWorldIR::Actual }));
+            assert!(answer.claims.iter().all(|claim| claim.kind
+                != crate::discourse_qa::AnswerClaimKindIR::SourceAttributedContent));
+            assert!(!answer.dialogue_truth_established);
+            assert!(!answer.external_execution_authorized);
+            assert!(response.conversation_state.active_goals.is_empty());
+        }
+    }
+
+    #[test]
+    fn korean_hypothetical_outcome_questions_do_not_enter_world_deliberation() {
+        for text in [
+            "만약 세아가 문서를 읽었다면 어떨까?",
+            "만약 유나가 잡지를 읽었다면 어떨까요?",
+            "만약 보라가 보고서를 읽었다면 어떨까?",
+        ] {
+            let mut api = CognitiveApi::new_embedded().unwrap();
+            let mut request = conversation_request("KO-HYPOTHETICAL-OUTCOME", 1, text);
+            request.output_language = Some(LanguageCodeIR::Korean);
+            let response = api
+                .process_conversation_turn(&request)
+                .unwrap_or_else(|error| panic!("{text}: {error:?}"));
+            assert!(response.validate_against(&request), "{response:#?}");
+            let answer = response.discourse_answer.as_ref().expect("modal answer");
+            assert!(answer.world_reasoning.is_none(), "{answer:#?}");
+            assert!(!answer.dialogue_truth_established);
+            assert!(!answer.external_execution_authorized);
+            assert!(response
+                .conversation_state
+                .epistemic_ledger
+                .records
+                .iter()
+                .all(|record| {
+                    record.signature.modal_world != crate::modality::ModalWorldIR::Actual
+                        || record.content.events.is_empty()
+                }));
+            assert!(response.conversation_state.active_goals.is_empty());
+        }
+    }
+
+    #[test]
+    fn event_reference_queries_survive_the_public_pipeline() {
+        for (language, turns) in [
+            (
+                LanguageCodeIR::Korean,
+                vec![
+                    ("민수는 지연에게 책을 빌려줬어.", None),
+                    ("하린은 도서관에서 책을 읽었어.", None),
+                    ("누가 책을 빌려줬어?", Some("민수")),
+                    ("그 사람은 누구에게 책을 빌려줬어?", Some("지연")),
+                    ("누가 그것을 읽었어?", Some("하린")),
+                    ("어디서?", Some("도서관")),
+                ],
+            ),
+            (
+                LanguageCodeIR::English,
+                vec![
+                    ("Mina lent a book to Jin.", None),
+                    ("Nora read a book in the library.", None),
+                    ("Who lent a book?", Some("mina")),
+                    ("To whom did that person lend it?", Some("jin")),
+                    ("Who read it?", Some("nora")),
+                    ("Where?", Some("library")),
+                ],
+            ),
+        ] {
+            let mut api = CognitiveApi::new_embedded().unwrap();
+            for (i, (text, expected)) in turns.into_iter().enumerate() {
+                let mut request = conversation_request("EVENT-REFERENCE", i as u64 + 1, text);
+                request.output_language = Some(language);
+                let response = api.process_conversation_turn(&request).expect(text);
+                assert!(response.validate_against(&request));
+                if let Some(expected) = expected {
+                    let p = response
+                        .discourse_answer
+                        .as_ref()
+                        .and_then(|a| a.content_projection.as_ref());
+                    assert_eq!(
+                        p.map(|p| p.binding.value.to_lowercase()),
+                        Some(expected.to_lowercase()),
+                        "{text}: output={} refs={:?} answer={:?}",
+                        response.output.text,
+                        response.reference_resolution.ambiguous_reference_surfaces,
+                        response.discourse_answer
+                    );
+                    assert!(response.output.text.to_lowercase().contains(expected));
+                    if p.is_some_and(|p| p.reference_context.is_some()) {
+                        let mut tampered = response.clone();
+                        tampered
+                            .discourse_answer
+                            .as_mut()
+                            .unwrap()
+                            .content_projection
+                            .as_mut()
+                            .unwrap()
+                            .reference_context
+                            .as_mut()
+                            .unwrap()
+                            .source_actor = "UNRECORDED_SOURCE".into();
+                        assert!(!tampered.validate_against(&request));
+                    }
+                    assert!(response.grounded_response.is_none());
+                    assert!(
+                        !response
+                            .language_cortex_integration
+                            .external_action_executed
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn profiled_turn_reuses_the_authoritative_path_and_returns_ordered_stage_evidence() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let request = conversation_request("PROFILED-TURN", 1, "문서를 검토하고 요약해 줘.");
+        let (response, timing) = api.process_conversation_turn_profiled(&request).unwrap();
+        assert!(response.validate_against(&request));
+        assert_eq!(timing.schema, "B_CORE_CONVERSATION_TURN_TIMING_IR_1");
+        assert_eq!(
+            timing
+                .stages
+                .iter()
+                .map(|stage| stage.stage.as_str())
+                .collect::<Vec<_>>(),
+            vec![
+                "TURN_VALIDATION_DIRECTIVE_LEDGER",
+                "TURN_VALIDATION_NORMALIZATION",
+                "TURN_VALIDATION_AFFECTIVE_FIELD",
+                "TURN_VALIDATION_AFFECTIVE_POLICY",
+                "TURN_VALIDATION_NORMALIZATION_AND_AFFECT",
+                "WORLD_PREPARATION",
+                "CONTEXT_BUILD",
+                "DEFINITION_GROUNDING",
+                "DISCOURSE_STATE_ANALYSIS",
+                "REFERENCE_RESOLUTION",
+                "NATIVE_LANGUAGE_CIRCUIT_EXACT_COMPOSITIONAL_ANALYSIS",
+                "COMPOSITIONAL_ANALYSIS_SOURCE_AND_CLAUSE",
+                "COMPOSITIONAL_ANALYSIS_FRAME_DISCOVERY",
+                "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCES",
+                "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCE_BUILTIN_SCAN",
+                "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCE_STRUCTURAL_SCAN",
+                "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCE_LEARNED_SCAN",
+                "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCE_NORMALIZATION",
+                "COMPOSITIONAL_ANALYSIS_FRAME_ANNOTATION",
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_GRAPH",
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_SCOPE_NORMALIZATION",
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_CLAUSE_GRAPH",
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_ATTRIBUTION",
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_SEMANTIC_ROLES",
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_FRAME_SCOPE",
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_GRAMMATICAL_SCOPE",
+                "COMPOSITIONAL_ANALYSIS_STRUCTURAL_MODAL_SCOPE",
+                "COMPOSITIONAL_ANALYSIS_CANDIDATE_SELECTION",
+                "NATIVE_LANGUAGE_CIRCUIT_PREPARATION",
+                "NATIVE_LANGUAGE_CIRCUIT_SOURCE_VIEWS",
+                "NATIVE_LANGUAGE_CIRCUIT_ENTITY_EXTRACTION",
+                "NATIVE_LANGUAGE_CIRCUIT_DISCOURSE_CONTEXT",
+                "NATIVE_LANGUAGE_CIRCUIT_ACTION_AND_RESPONSE_MODE",
+                "NATIVE_LANGUAGE_CIRCUIT_ARGUMENT_CONTEXT",
+                "NATIVE_LANGUAGE_CIRCUIT_EVENT_BINDING",
+                "NATIVE_LANGUAGE_CIRCUIT_FINALIZATION",
+                "NATIVE_LANGUAGE_CIRCUIT_ANALYSIS",
+                "PRAGMATIC_INTERPRETATION_CONTEXT",
+                "PRAGMATIC_INTERPRETATION_REASONER",
+                "PRAGMATIC_REASONER_CLAUSE_AND_NONLITERAL",
+                "PRAGMATIC_REASONER_COMPOSITIONAL_ANALYSIS",
+                "PRAGMATIC_REASONER_INTENT_AND_ILLOCUTION",
+                "PRAGMATIC_REASONER_LANGUAGE_CENTER",
+                "PRAGMATIC_REASONER_PROJECTION_AND_RESOLUTION",
+                "PRAGMATIC_INTERPRETATION_ANALYSIS",
+                "CONVERSATION_CONTRACT_INITIAL_PROHIBITION",
+                "CONVERSATION_CONTRACT_LOCAL_PROHIBITION_FALLBACK",
+                "CONVERSATION_CONTRACT_REQUEST_EFFECTS",
+                "CONVERSATION_CONTRACT_REMAINING_DERIVATION",
+                "ACTION_STATE_CONVERSATION_CONTRACT",
+                "ACTION_STATE_INHERITED_GOALS",
+                "ACTION_STATE_ANALYZER",
+                "ACTION_STATE_ANALYSIS",
+                "NATIVE_PRAGMATIC_AND_ACTION_POST_ANALYSIS",
+                "ANSWER_ROUTING_AND_CONTRACT",
+                "SEMANTIC_PLAN_LANGUAGE_KNOWLEDGE_UNDERSTANDING",
+                "SEMANTIC_PLAN_LEXICAL_PACK_LOOKUP",
+                "SEMANTIC_PLAN_LEXICAL_PACK_INJECTION",
+                "SEMANTIC_PLAN_LEXICAL_PACK_MATCH_IDENTITY",
+                "SEMANTIC_PLAN_LEXICAL_PACK_LEXEME_MATERIALIZATION",
+                "SEMANTIC_PLAN_LEXICAL_PACK_SOURCE_INSTALLATION",
+                "SEMANTIC_PLAN_LEXICAL_PACK_SOURCE_INSTALL_VALIDATION",
+                "SEMANTIC_PLAN_LEXICAL_PACK_SOURCE_INSTALL_INDEXING",
+                "SEMANTIC_PLAN_LEXICAL_CANDIDATE_INDEX",
+                "SEMANTIC_PLAN_LEXICAL_CANDIDATE_SCORING",
+                "SEMANTIC_PLAN_LEXICAL_SEMANTIC_SPREAD_AND_BUDGET",
+                "SEMANTIC_PLAN_LEXICAL_MEMORY_ACTIVATION",
+                "SEMANTIC_PLAN_UNDERSTANDING_AND_LEXICON",
+                "SEMANTIC_PLAN_DIRECTIVE_ANALYSIS",
+                "SEMANTIC_PLAN_GOAL_PROJECTION",
+                "SEMANTIC_PLAN_CORE_GOAL_VALIDATION",
+                "SEMANTIC_PLAN_CORE_EVENT_COMPATIBILITY",
+                "SEMANTIC_PLAN_CORE_PLAN_GENERATION",
+                "SEMANTIC_PLAN_CORE_BUNDLE_SEALING",
+                "SEMANTIC_PLAN_CORE_BUNDLE_VALIDATION",
+                "SEMANTIC_PLAN_CORE_PLANNING",
+                "SEMANTIC_PLAN_RENDER_AND_BRIDGE",
+                "SEMANTIC_PLAN",
+                "CONVERSATION_PRIMARY_STATE_PREPARE",
+                "CONVERSATION_PRIMARY_STATE_TRANSITION_STATE_REFRESH",
+                "CONVERSATION_PRIMARY_STATE_TRANSITION_REFERENT_EXTRACTION",
+                "CONVERSATION_PRIMARY_STATE_TRANSITION_GOAL_PROJECTION",
+                "CONVERSATION_PRIMARY_STATE_TRANSITION_DISCOURSE_FOCUS",
+                "CONVERSATION_PRIMARY_STATE_OBSERVATION_PREPARATION",
+                "CONVERSATION_PRIMARY_STATE_EPISTEMIC_LEDGER",
+                "CONVERSATION_PRIMARY_STATE_POST_LEDGER_SYNCHRONIZATION",
+                "CONVERSATION_PRIMARY_STATE_TRANSITION",
+                "CONVERSATION_PRIMARY_STATE_SEAL",
+                "CONVERSATION_PRIMARY_STATE_INVARIANT_VALIDATION",
+                "CONVERSATION_PRIMARY_STATE_SNAPSHOT",
+                "CONVERSATION_STATE_FOLLOW_UP_MUTATIONS",
+                "RESPONSE_ARBITRATION_AND_REALIZATION_INPUT",
+                "NATURAL_REALIZATION_AND_EVIDENCE",
+                "PRAGMATIC_MEMORY_COMMIT",
+                "LANGUAGE_CORTEX_SOURCE_COMPONENT_VALIDATION",
+                "LANGUAGE_CORTEX_CONVERSATION_STATE_VALIDATION",
+                "LANGUAGE_CORTEX_SIX_AXIS_SOURCE_VALIDATION",
+                "LANGUAGE_CORTEX_COMPONENT_HASHING",
+                "LANGUAGE_CORTEX_RECEIPT_SEALING",
+                "LANGUAGE_CORTEX_INTEGRATION",
+                "RESPONSE_ENVELOPE_CONSTRUCTION",
+                "RESPONSE_ENVELOPE_VALIDATION",
+                "RESPONSE_POST_VALIDATION_STATE_FINALIZATION",
+            ]
+        );
+        assert!(
+            timing
+                .stages
+                .iter()
+                // Commit detail stages are intentionally nested inside the
+                // primary transition total, so exclude them from the
+                // top-level elapsed-time accounting invariant.
+                .filter(|stage| {
+                    !matches!(
+                        stage.stage.as_str(),
+                        "TURN_VALIDATION_DIRECTIVE_LEDGER"
+                            | "TURN_VALIDATION_NORMALIZATION"
+                            | "TURN_VALIDATION_AFFECTIVE_FIELD"
+                            | "TURN_VALIDATION_AFFECTIVE_POLICY"
+                            | "NATIVE_LANGUAGE_CIRCUIT_EXACT_COMPOSITIONAL_ANALYSIS"
+                            | "COMPOSITIONAL_ANALYSIS_SOURCE_AND_CLAUSE"
+                            | "COMPOSITIONAL_ANALYSIS_FRAME_DISCOVERY"
+                            | "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCES"
+                            | "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCE_BUILTIN_SCAN"
+                            | "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCE_STRUCTURAL_SCAN"
+                            | "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCE_LEARNED_SCAN"
+                            | "COMPOSITIONAL_ANALYSIS_ACTION_OCCURRENCE_NORMALIZATION"
+                            | "COMPOSITIONAL_ANALYSIS_FRAME_ANNOTATION"
+                            | "COMPOSITIONAL_ANALYSIS_STRUCTURAL_GRAPH"
+                            | "COMPOSITIONAL_ANALYSIS_STRUCTURAL_SCOPE_NORMALIZATION"
+                            | "COMPOSITIONAL_ANALYSIS_STRUCTURAL_CLAUSE_GRAPH"
+                            | "COMPOSITIONAL_ANALYSIS_STRUCTURAL_ATTRIBUTION"
+                            | "COMPOSITIONAL_ANALYSIS_STRUCTURAL_SEMANTIC_ROLES"
+                            | "COMPOSITIONAL_ANALYSIS_STRUCTURAL_FRAME_SCOPE"
+                            | "COMPOSITIONAL_ANALYSIS_STRUCTURAL_GRAMMATICAL_SCOPE"
+                            | "COMPOSITIONAL_ANALYSIS_STRUCTURAL_MODAL_SCOPE"
+                            | "COMPOSITIONAL_ANALYSIS_CANDIDATE_SELECTION"
+                            | "NATIVE_LANGUAGE_CIRCUIT_PREPARATION"
+                            | "NATIVE_LANGUAGE_CIRCUIT_SOURCE_VIEWS"
+                            | "NATIVE_LANGUAGE_CIRCUIT_ENTITY_EXTRACTION"
+                            | "NATIVE_LANGUAGE_CIRCUIT_DISCOURSE_CONTEXT"
+                            | "NATIVE_LANGUAGE_CIRCUIT_ACTION_AND_RESPONSE_MODE"
+                            | "NATIVE_LANGUAGE_CIRCUIT_ARGUMENT_CONTEXT"
+                            | "NATIVE_LANGUAGE_CIRCUIT_EVENT_BINDING"
+                            | "NATIVE_LANGUAGE_CIRCUIT_FINALIZATION"
+                            | "PRAGMATIC_INTERPRETATION_CONTEXT"
+                            | "PRAGMATIC_INTERPRETATION_REASONER"
+                            | "PRAGMATIC_REASONER_CLAUSE_AND_NONLITERAL"
+                            | "PRAGMATIC_REASONER_COMPOSITIONAL_ANALYSIS"
+                            | "PRAGMATIC_REASONER_INTENT_AND_ILLOCUTION"
+                            | "PRAGMATIC_REASONER_LANGUAGE_CENTER"
+                            | "PRAGMATIC_REASONER_PROJECTION_AND_RESOLUTION"
+                            | "CONVERSATION_CONTRACT_INITIAL_PROHIBITION"
+                            | "CONVERSATION_CONTRACT_LOCAL_PROHIBITION_FALLBACK"
+                            | "CONVERSATION_CONTRACT_REQUEST_EFFECTS"
+                            | "CONVERSATION_CONTRACT_REMAINING_DERIVATION"
+                            | "ACTION_STATE_CONVERSATION_CONTRACT"
+                            | "ACTION_STATE_INHERITED_GOALS"
+                            | "ACTION_STATE_ANALYZER"
+                            | "LANGUAGE_CORTEX_SOURCE_COMPONENT_VALIDATION"
+                            | "LANGUAGE_CORTEX_CONVERSATION_STATE_VALIDATION"
+                            | "LANGUAGE_CORTEX_SIX_AXIS_SOURCE_VALIDATION"
+                            | "LANGUAGE_CORTEX_COMPONENT_HASHING"
+                            | "LANGUAGE_CORTEX_RECEIPT_SEALING"
+                            | "CONVERSATION_PRIMARY_STATE_TRANSITION_STATE_REFRESH"
+                            | "CONVERSATION_PRIMARY_STATE_TRANSITION_REFERENT_EXTRACTION"
+                            | "CONVERSATION_PRIMARY_STATE_TRANSITION_GOAL_PROJECTION"
+                            | "CONVERSATION_PRIMARY_STATE_TRANSITION_DISCOURSE_FOCUS"
+                            | "CONVERSATION_PRIMARY_STATE_OBSERVATION_PREPARATION"
+                            | "CONVERSATION_PRIMARY_STATE_EPISTEMIC_LEDGER"
+                            | "CONVERSATION_PRIMARY_STATE_POST_LEDGER_SYNCHRONIZATION"
+                            | "SEMANTIC_PLAN_LANGUAGE_KNOWLEDGE_UNDERSTANDING"
+                            | "SEMANTIC_PLAN_LEXICAL_PACK_LOOKUP"
+                            | "SEMANTIC_PLAN_LEXICAL_PACK_INJECTION"
+                            | "SEMANTIC_PLAN_LEXICAL_PACK_MATCH_IDENTITY"
+                            | "SEMANTIC_PLAN_LEXICAL_PACK_LEXEME_MATERIALIZATION"
+                            | "SEMANTIC_PLAN_LEXICAL_PACK_SOURCE_INSTALLATION"
+                            | "SEMANTIC_PLAN_LEXICAL_PACK_SOURCE_INSTALL_VALIDATION"
+                            | "SEMANTIC_PLAN_LEXICAL_PACK_SOURCE_INSTALL_INDEXING"
+                            | "SEMANTIC_PLAN_LEXICAL_CANDIDATE_INDEX"
+                            | "SEMANTIC_PLAN_LEXICAL_CANDIDATE_SCORING"
+                            | "SEMANTIC_PLAN_LEXICAL_SEMANTIC_SPREAD_AND_BUDGET"
+                            | "SEMANTIC_PLAN_LEXICAL_MEMORY_ACTIVATION"
+                            | "SEMANTIC_PLAN_UNDERSTANDING_AND_LEXICON"
+                            | "SEMANTIC_PLAN_DIRECTIVE_ANALYSIS"
+                            | "SEMANTIC_PLAN_GOAL_PROJECTION"
+                            | "SEMANTIC_PLAN_CORE_GOAL_VALIDATION"
+                            | "SEMANTIC_PLAN_CORE_EVENT_COMPATIBILITY"
+                            | "SEMANTIC_PLAN_CORE_PLAN_GENERATION"
+                            | "SEMANTIC_PLAN_CORE_BUNDLE_SEALING"
+                            | "SEMANTIC_PLAN_CORE_BUNDLE_VALIDATION"
+                            | "SEMANTIC_PLAN_CORE_PLANNING"
+                            | "SEMANTIC_PLAN_RENDER_AND_BRIDGE"
+                            | "SEMANTIC_PLAN_INFORMATION_SUBJECT"
+                    )
+                })
+                .map(|stage| stage.elapsed_micros)
+                .sum::<u64>()
+                <= timing.total_micros
+        );
+    }
+
+    #[test]
+    fn public_response_validation_rederives_language_cortex_sources() {
+        let request =
+            conversation_request("PUBLIC-INTEGRATION-SOURCE-A", 1, "회의 시간이 오후 4시야.");
+        let other_request =
+            conversation_request("PUBLIC-INTEGRATION-SOURCE-B", 1, "회의 시간이 오후 4시야.");
+        let mut first_api = CognitiveApi::new_embedded().unwrap();
+        let mut second_api = CognitiveApi::new_embedded().unwrap();
+        let response = first_api.process_conversation_turn(&request).unwrap();
+        let other_response = second_api
+            .process_conversation_turn(&other_request)
+            .unwrap();
+        assert!(response.validate_against(&request));
+        assert!(other_response.validate_against(&other_request));
+
+        // The substituted integration remains internally well-formed, so the
+        // public boundary must reject it by rebuilding from this response's
+        // actual sources rather than trusting its self-hash alone.
+        let mut forged = response.clone();
+        forged.language_cortex_integration = other_response.language_cortex_integration;
+        assert!(forged.language_cortex_integration.validate());
+        assert!(!forged.validate_against(&request));
     }
 }

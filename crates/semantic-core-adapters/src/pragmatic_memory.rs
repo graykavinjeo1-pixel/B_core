@@ -103,6 +103,16 @@ impl PragmaticMemory {
         self.states.get(conversation_id)
     }
 
+    pub(crate) fn conversation_ids(&self) -> impl Iterator<Item = &str> {
+        self.states.keys().map(String::as_str)
+    }
+
+    /// Explicit lifecycle cleanup paired with ConversationMemory cleanup.
+    /// No state is automatically discarded while a conversation may resume.
+    pub fn close(&mut self, conversation_id: &str) -> bool {
+        self.states.remove(conversation_id).is_some()
+    }
+
     pub fn context(&self, conversation_id: &str) -> PragmaticContextIR {
         self.context_in_topic(conversation_id, None)
     }

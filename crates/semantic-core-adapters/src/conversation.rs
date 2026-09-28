@@ -6,6 +6,7 @@
 //! inspectable, and ambiguous ASR/reference bindings fail closed.
 
 use std::collections::{BTreeMap, BTreeSet};
+use std::time::Instant;
 
 use dockable_semantic_core::PlanIntentIR;
 use serde::{Deserialize, Serialize};
@@ -60,9 +61,9 @@ use crate::typed_coreference::{
 };
 
 pub const CONVERSATION_TURN_REQUEST_SCHEMA: &str = "B_CORE_CONVERSATION_TURN_REQUEST_1";
-pub const CONVERSATION_FRONTEND_SCHEMA: &str = "B_CORE_CONVERSATION_FRONTEND_3";
-pub const CONVERSATION_STATE_SCHEMA: &str = "B_CORE_CONVERSATION_STATE_32";
-pub const DIALOGUE_DIRECTIVE_LEDGER_SCHEMA: &str = "B_CORE_DIALOGUE_DIRECTIVE_LEDGER_IR_1";
+pub const CONVERSATION_FRONTEND_SCHEMA: &str = "B_CORE_CONVERSATION_FRONTEND_4";
+pub const CONVERSATION_STATE_SCHEMA: &str = "B_CORE_CONVERSATION_STATE_122";
+pub const DIALOGUE_DIRECTIVE_LEDGER_SCHEMA: &str = "B_CORE_DIALOGUE_DIRECTIVE_LEDGER_IR_2";
 pub const DISCOURSE_PROGRAM_SCHEMA: &str = "B_CORE_DISCOURSE_PROGRAM_IR_4";
 pub const DISCOURSE_PROGRAM_GUARD_SCHEMA: &str = "B_CORE_DISCOURSE_PROGRAM_GUARD_IR_3";
 pub const GUARD_CONDITION_EXPRESSION_SCHEMA: &str = "B_CORE_GUARD_CONDITION_EXPRESSION_IR_1";
@@ -125,6 +126,7 @@ pub enum NormalizationOperationKindIR {
     AsrCandidateSelection,
     KnownTypo,
     UniqueFuzzyMatch,
+    RegionalMorphology,
     SelfRepair,
     FillerRemoval,
 }
@@ -669,6 +671,57 @@ fn synchronize_active_topic_context(state: &mut ConversationStateIR, turn_index:
     );
 }
 
+/// A named discourse frame scopes a question; it is neither an event argument
+/// nor permission to discard arbitrary text before a comma. Consume one
+/// explicit management clause and retain the interrogative body separately.
+pub(crate) fn topic_question_parts(text: &str) -> Option<(TopicTransitionIR, &str)> {
+    if text.len() > 4096 || text.contains(['"', '“', '”', '‘', '’', '`', '\n', ';']) {
+        return None;
+    }
+    let (prefix, question) = text.split_once(',')?;
+    let prefix = prefix.trim().to_lowercase();
+    let question = question.trim();
+    if question.contains(',') || !crate::conversation_contract::is_interrogative(question) {
+        return None;
+    }
+    let explicit_frame = if prefix.chars().any(|c| ('가'..='힣').contains(&c)) {
+        ["돌아가서", "복귀해서", "전환해서"]
+            .iter()
+            .any(|ending| prefix.ends_with(ending))
+            && !prefix.contains(['.', '?', '!', '"'])
+            && !["말고", "말라는", "않", "다고", "라면", "라고"]
+                .iter()
+                .any(|marker| prefix.contains(marker))
+    } else {
+        ["back to ", "return to ", "go back to ", "switch to "]
+            .iter()
+            .any(|start| prefix.starts_with(start))
+            && !prefix.contains(['.', '?', '!', ':'])
+    };
+    if !explicit_frame {
+        return None;
+    }
+    let transition = detect_topic_transition(text.split_once(',')?.0)?;
+    (transition.kind == TopicTransitionKindIR::ActivateNamed && transition.history_offset == 0)
+        .then_some((transition, question))
+}
+
+fn topic_head_without_deictic_modifiers(mut head: &str) -> &str {
+    // A standalone pointer still denotes history. Only modifiers preceding a
+    // named topic are removed; no word inside the name is rewritten.
+    for _ in 0..4 {
+        let Some(rest) = ["이제 ", "다시 ", "그럼 ", "그러면 ", "아까 "]
+            .iter()
+            .find_map(|prefix| head.strip_prefix(prefix))
+            .filter(|rest| !rest.trim().is_empty())
+        else {
+            break;
+        };
+        head = rest.trim();
+    }
+    head
+}
+
 pub fn detect_topic_transition(text: &str) -> Option<TopicTransitionIR> {
     let normalized = text.trim().to_lowercase();
     if let Some(history_offset) = indexed_topic_history_offset(&normalized) {
@@ -718,10 +771,7 @@ pub fn detect_topic_transition(text: &str) -> Option<TopicTransitionIR> {
             .iter()
             .filter_map(|marker| {
                 normalized.find(marker).map(|position| {
-                    ["이제 ", "다시 ", "그럼 ", "그러면 "]
-                        .iter()
-                        .find_map(|prefix| normalized[..position].trim().strip_prefix(prefix))
-                        .unwrap_or_else(|| normalized[..position].trim())
+                    topic_head_without_deictic_modifiers(normalized[..position].trim())
                         .trim_matches(|character: char| !character.is_alphanumeric())
                         .to_string()
                 })
@@ -986,6 +1036,28 @@ fn clean_topic_surface(surface: &str) -> String {
     cleaned
 }
 
+/// Matching may case-fold, but a stored observation keeps source spelling when
+/// its entire surface has one exact ASCII-case-insensitive source span. Never
+/// guess casing for a synthesized summary or select between repeated spans.
+fn source_attested_observation_surface(surface: &str, source: &str) -> String {
+    if surface.is_empty() {
+        return surface.to_string();
+    }
+    let folded_source = source.to_ascii_lowercase();
+    let folded_surface = surface.to_ascii_lowercase();
+    let mut spans = folded_source.match_indices(&folded_surface);
+    let Some((start, _)) = spans.next() else {
+        return surface.to_string();
+    };
+    if spans.next().is_some() {
+        return surface.to_string();
+    }
+    source
+        .get(start..start + surface.len())
+        .unwrap_or(surface)
+        .to_string()
+}
+
 fn restore_topic_surface_case(surface: &str, source: &str) -> String {
     let source_tokens = source
         .split(|character: char| !character.is_ascii_alphanumeric())
@@ -1186,6 +1258,7 @@ pub struct DiscourseBindingIR {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum QuestionUnderDiscussionKindIR {
+    EventReference,
     VoiceAlternative,
     CompetingGoal,
     RepeatedGoal,
@@ -1206,6 +1279,8 @@ pub struct QuestionOptionIR {
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct QuestionUnderDiscussionIR {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reference_gap: Option<crate::proposition_content::EventReferenceGapIR>,
     pub question_id: String,
     pub kind: QuestionUnderDiscussionKindIR,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1214,6 +1289,37 @@ pub struct QuestionUnderDiscussionIR {
     pub source_request: String,
     pub options: Vec<QuestionOptionIR>,
     pub external_execution_authorized: bool,
+}
+
+impl QuestionUnderDiscussionIR {
+    pub(crate) fn from_event_reference_gap(
+        gap: &crate::proposition_content::EventReferenceGapIR,
+        turn: u64,
+        topic: Option<&str>,
+    ) -> Option<Self> {
+        let options = gap
+            .choices()?
+            .into_iter()
+            .enumerate()
+            .map(|(i, (value, question))| QuestionOptionIR {
+                option_id: format!("EVENT-REFERENCE-{turn}-{i}"),
+                display_surface: value,
+                resolved_semantic_text: question,
+                referent_ids: vec![],
+                intent: None,
+            })
+            .collect();
+        Some(Self {
+            reference_gap: Some(gap.clone()),
+            question_id: format!("QUD-EVENT-REFERENCE-{turn}"),
+            kind: QuestionUnderDiscussionKindIR::EventReference,
+            topic_id: topic.map(str::to_string),
+            source_turn: turn,
+            source_request: gap.source_question.clone(),
+            options,
+            external_execution_authorized: false,
+        })
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -1545,7 +1651,33 @@ pub struct ConversationCommitContext<'a> {
     pub guard_conditionals: Option<&'a [ConditionalRelationIR]>,
     pub semantic_role_graph: Option<&'a SemanticRoleGraphIR>,
     pub attribution_graph: Option<&'a AttributionGraphIR>,
+    /// Reusable only when this is the exact received source and lexicon view.
+    /// Any repaired, resolved, or learned-predicate surface supplies `None`.
+    pub raw_compositional_analysis:
+        Option<&'a crate::compositional_semantics::CompositionalAnalysisIR>,
+    /// A same-turn source transformation has already separated the source
+    /// observations from its final request.  The request must not be stored a
+    /// second time as a source cause, condition, or persistent preference.
+    pub source_bound_transformation: bool,
     pub discourse_focus_candidates: &'a [DiscourseFocusCandidateIR],
+}
+
+/// Read-only timing evidence for the four material phases of one primary
+/// conversation-state commit.  It is supplied only to the profiled canary
+/// path and never influences state, routing, or validation.
+#[derive(Debug, Clone, Default)]
+pub(crate) struct ConversationCommitTimingIR {
+    pub transition_state_refresh_micros: u64,
+    pub transition_referent_extraction_micros: u64,
+    pub transition_goal_projection_micros: u64,
+    pub transition_discourse_focus_micros: u64,
+    pub observation_preparation_micros: u64,
+    pub epistemic_ledger_micros: u64,
+    pub post_ledger_synchronization_micros: u64,
+    pub transition_micros: u64,
+    pub seal_micros: u64,
+    pub invariant_validation_micros: u64,
+    pub snapshot_micros: u64,
 }
 
 /// A language module may propose a conversational constraint, but only this
@@ -1573,6 +1705,8 @@ pub struct DialogueDirectiveCandidateIR {
     pub kind: DialogueDirectiveKindIR,
     pub target_key: String,
     pub value_key: String,
+    #[serde(default)]
+    pub prohibited: bool,
     pub evidence_sha256: String,
     pub confidence_millis: u16,
     pub semantic_authority: bool,
@@ -1591,6 +1725,7 @@ impl DialogueDirectiveCandidateIR {
             kind,
             target_key: target_key.into(),
             value_key: value_key.into(),
+            prohibited: false,
             evidence_sha256: format!("{:x}", Sha256::digest(surface.trim().as_bytes())),
             confidence_millis,
             semantic_authority: false,
@@ -1618,6 +1753,8 @@ pub struct DialogueDirectiveIR {
     pub kind: DialogueDirectiveKindIR,
     pub target_key: String,
     pub value_key: String,
+    #[serde(default)]
+    pub prohibited: bool,
     pub evidence_sha256: String,
     pub confidence_millis: u16,
     pub introduced_turn: u64,
@@ -1670,6 +1807,27 @@ impl Default for DialogueDirectiveLedgerIR {
 }
 
 impl DialogueDirectiveLedgerIR {
+    pub(crate) fn response_conflicts_after(
+        &self,
+        turn: u64,
+        candidates: &[DialogueDirectiveCandidateIR],
+    ) -> Vec<DialogueDirectiveKindIR> {
+        let mut preview = self.clone();
+        if preview.apply_turn(turn, candidates).is_err() {
+            return vec![
+                DialogueDirectiveKindIR::ResponseLength,
+                DialogueDirectiveKindIR::ResponseFormat,
+            ];
+        }
+        [
+            DialogueDirectiveKindIR::ResponseLength,
+            DialogueDirectiveKindIR::ResponseFormat,
+        ]
+        .into_iter()
+        .filter(|kind| select_response_directive_value(&preview.directives, *kind).is_none())
+        .collect()
+    }
+
     pub fn active(&self) -> impl Iterator<Item = &DialogueDirectiveIR> {
         self.directives
             .iter()
@@ -1685,27 +1843,40 @@ impl DialogueDirectiveLedgerIR {
             return Err(ConversationFrontendError::InvalidState);
         }
         for (index, candidate) in candidates.iter().enumerate() {
+            for directive in &mut self.directives {
+                if directive.is_active()
+                    && directive.kind == candidate.kind
+                    && directive.target_key == candidate.target_key
+                    && ((directive.value_key == candidate.value_key
+                        && directive.prohibited != candidate.prohibited)
+                        || (!directive.prohibited
+                            && !candidate.prohibited
+                            && directive.value_key != candidate.value_key))
+                {
+                    directive.status = DialogueDirectiveStatusIR::Superseded;
+                }
+            }
             let active_index = self.directives.iter().position(|directive| {
                 directive.is_active()
                     && directive.kind == candidate.kind
                     && directive.target_key == candidate.target_key
+                    && directive.value_key == candidate.value_key
+                    && directive.prohibited == candidate.prohibited
             });
             if let Some(active_index) = active_index {
-                if self.directives[active_index].value_key == candidate.value_key {
-                    let existing = &mut self.directives[active_index];
-                    existing.last_reaffirmed_turn = turn_index;
-                    existing.confidence_millis =
-                        existing.confidence_millis.max(candidate.confidence_millis);
-                    existing.evidence_sha256 = candidate.evidence_sha256.clone();
-                    continue;
-                }
-                self.directives[active_index].status = DialogueDirectiveStatusIR::Superseded;
+                let existing = &mut self.directives[active_index];
+                existing.last_reaffirmed_turn = turn_index;
+                existing.confidence_millis =
+                    existing.confidence_millis.max(candidate.confidence_millis);
+                existing.evidence_sha256 = candidate.evidence_sha256.clone();
+                continue;
             }
             self.directives.push(DialogueDirectiveIR {
                 directive_id: format!("DIALOGUE-DIRECTIVE-{turn_index:06}-{:02}", index + 1),
                 kind: candidate.kind,
                 target_key: candidate.target_key.clone(),
                 value_key: candidate.value_key.clone(),
+                prohibited: candidate.prohibited,
                 evidence_sha256: candidate.evidence_sha256.clone(),
                 confidence_millis: candidate.confidence_millis,
                 introduced_turn: turn_index,
@@ -1741,21 +1912,69 @@ impl DialogueDirectiveLedgerIR {
             .collect::<BTreeSet<_>>();
         let active_axes = self
             .active()
+            .filter(|directive| !directive.prohibited)
             .map(|directive| (directive.kind, directive.target_key.as_str()))
             .collect::<BTreeSet<_>>();
-        let active_count = self.active().count();
+        let active_count = self
+            .active()
+            .filter(|directive| !directive.prohibited)
+            .count();
+        let active_keys = self
+            .active()
+            .map(|d| (d.kind, &d.target_key, &d.value_key))
+            .collect::<BTreeSet<_>>();
         let mut canonical = self.clone();
         canonical.rehash();
         self.schema == DIALOGUE_DIRECTIVE_LEDGER_SCHEMA
             && self.directives.len() <= MAX_DIALOGUE_DIRECTIVES
             && ids.len() == self.directives.len()
             && active_axes.len() == active_count
+            && active_keys.len() == self.active().count()
+            && select_response_directive_value(
+                &self.directives,
+                DialogueDirectiveKindIR::ResponseLength,
+            )
+            .is_some()
+            && select_response_directive_value(
+                &self.directives,
+                DialogueDirectiveKindIR::ResponseFormat,
+            )
+            .is_some()
             && self
                 .directives
                 .iter()
                 .all(|directive| directive.validate(completed_turns))
             && self.ledger_sha256 == canonical.ledger_sha256
     }
+}
+
+/// Select from available realization modes without rewriting a prohibition
+/// into a positive user preference. Explicit positive choices take priority;
+/// otherwise use the first mode not excluded by retained constraints.
+pub(crate) fn select_response_directive_value(
+    directives: &[DialogueDirectiveIR],
+    kind: DialogueDirectiveKindIR,
+) -> Option<&'static str> {
+    let choices: &[&str] = match kind {
+        DialogueDirectiveKindIR::ResponseLength => &["CONCISE", "DETAILED"],
+        DialogueDirectiveKindIR::ResponseFormat => &["PLAIN", "BULLETS", "NUMBERED", "TABLE"],
+        _ => return None,
+    };
+    let active = || {
+        directives
+            .iter()
+            .filter(|d| d.is_active() && d.kind == kind && d.target_key == "ASSISTANT_RESPONSE")
+    };
+    let permitted = |value: &str| !active().any(|d| d.prohibited && d.value_key == value);
+    active()
+        .find(|d| !d.prohibited)
+        .and_then(|d| {
+            choices
+                .iter()
+                .copied()
+                .find(|value| *value == d.value_key && permitted(value))
+        })
+        .or_else(|| choices.iter().copied().find(|value| permitted(value)))
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -1981,6 +2200,21 @@ pub struct ConversationStateIR {
     pub state_sha256: String,
 }
 
+/// Opaque proof emitted only by a mutation path after it has sealed and fully
+/// validated this exact conversation-state snapshot. It is an internal
+/// same-turn optimization aid; public response validation still re-derives
+/// every state invariant from the response payload.
+#[derive(Debug, Clone)]
+pub(crate) struct ConversationStateValidationReceipt {
+    state_sha256: String,
+}
+
+impl ConversationStateValidationReceipt {
+    pub(crate) fn matches(&self, state: &ConversationStateIR) -> bool {
+        self.state_sha256 == state.state_sha256
+    }
+}
+
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ReferenceResolutionIR {
     pub original_semantic_text: String,
@@ -1994,6 +2228,51 @@ pub struct ReferenceResolutionIR {
     pub discourse_bindings: Vec<DiscourseBindingIR>,
     #[serde(default)]
     pub resolution_graph: ReferenceResolutionGraphIR,
+}
+
+impl ReferenceResolutionIR {
+    /// An acknowledgement need not identify every entity mentioned inside a
+    /// statement's content argument. This is *not* successful resolution: the
+    /// original ambiguities, unresolved count and source text remain intact.
+    /// Callers must still require bindings for questions, claims about those
+    /// entities, and actions. Synthetic gap markers and matrix-clause references
+    /// are deliberately not eligible for this deferral.
+    pub fn can_defer_content_references_for_acknowledgement(&self) -> bool {
+        if self.ambiguous_reference_surfaces.is_empty() {
+            return false;
+        }
+        let Some(statement) =
+            crate::grammatical_scope::embedded_information_statement(&self.original_semantic_text)
+        else {
+            return false;
+        };
+        self.ambiguous_reference_surfaces.iter().all(|surface| {
+            // Use original byte coordinates, not offsets into case-folded text.
+            // Every occurrence must belong to content; a same-spelling matrix
+            // subject cannot be hidden by another occurrence in the complement.
+            let mut found = false;
+            let mut cursor = 0;
+            for word in self
+                .original_semantic_text
+                .split(|c: char| !c.is_alphanumeric())
+                .filter(|word| !word.is_empty())
+            {
+                let start = cursor
+                    + self.original_semantic_text[cursor..]
+                        .find(word)
+                        .expect("original source word");
+                let end = start + word.len();
+                cursor = end;
+                if word.to_lowercase() == surface.to_lowercase() {
+                    found = true;
+                    if start < statement.content_start_byte || end > statement.content_end_byte {
+                        return false;
+                    }
+                }
+            }
+            found
+        })
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -2046,7 +2325,14 @@ impl UtteranceNormalizer {
                         <= 50
             });
 
-        let (mut normalized_text, surface_changed) = normalize_surface(&selected.source_text);
+        // Candidate construction has already normalized the selected source.
+        // Reuse that exact value here; reparsing it would repeat the same
+        // Unicode-width, whitespace, and case pass without changing the
+        // authoritative normalization contract.
+        let mut normalized_text = selected.normalized_text.clone();
+        let mut observed_surface = normalize_observed_surface(&selected.source_text);
+        let surface_changed = normalized_text != selected.source_text.trim().to_lowercase()
+            || observed_surface != selected.source_text;
         let mut operations = Vec::new();
         if request.modality == ConversationInputModalityIR::VoiceTranscript
             && (!request.alternatives.is_empty()
@@ -2070,6 +2356,14 @@ impl UtteranceNormalizer {
 
         let mut discourse_events = Vec::new();
         if let Some((before, repaired)) = apply_self_repair(&normalized_text) {
+            observed_surface = crate::attribution::original_surface(
+                &observed_surface,
+                &normalized_text,
+                normalized_text.len() - repaired.len(),
+                normalized_text.len(),
+            )
+            .unwrap_or(&repaired)
+            .to_string();
             operations.push(NormalizationOperationIR {
                 kind: NormalizationOperationKindIR::SelfRepair,
                 before,
@@ -2101,6 +2395,7 @@ impl UtteranceNormalizer {
                 confidence_millis: 940,
             });
             normalized_text.clear();
+            observed_surface.clear();
         }
 
         let mut semantic_tokens = Vec::new();
@@ -2150,6 +2445,16 @@ impl UtteranceNormalizer {
                 semantic_replacements.push(None);
                 continue;
             }
+            if is_affect_display(&lower) {
+                discourse_events.push(event(
+                    DiscourseFunctionIR::AffectDisplay,
+                    &token,
+                    "C_DIALOGUE_AFFECT",
+                    970,
+                ));
+                semantic_replacements.push(None);
+                continue;
+            }
             if let Some((canonical, confidence, kind)) =
                 repair_token_in_context(&lower, index, &tokens)
             {
@@ -2167,8 +2472,31 @@ impl UtteranceNormalizer {
             }
         }
         let semantic_text = semantic_tokens.join(" ");
-        let semantic_surface_text =
-            reconstruct_semantic_surface(&normalized_text, &tokens, &semantic_replacements);
+        let observed_tokens = tokenize(&observed_surface);
+        let semantic_surface_text = if observed_tokens.len() == tokens.len()
+            && observed_tokens
+                .iter()
+                .zip(&tokens)
+                .all(|(a, b)| a.to_lowercase() == *b)
+        {
+            let surface_replacements = semantic_replacements
+                .iter()
+                .zip(&tokens)
+                .zip(&observed_tokens)
+                .map(|((replacement, token), observed)| {
+                    replacement.as_ref().map(|value| {
+                        if value == token {
+                            observed.clone()
+                        } else {
+                            value.clone()
+                        }
+                    })
+                })
+                .collect::<Vec<_>>();
+            reconstruct_semantic_surface(&observed_surface, &observed_tokens, &surface_replacements)
+        } else {
+            reconstruct_semantic_surface(&normalized_text, &tokens, &semantic_replacements)
+        };
         let mut semantic_tags = BTreeSet::new();
         for token in &semantic_tokens {
             if let Some(tag) = onomatopoeia_tag(&token.to_lowercase()) {
@@ -2272,6 +2600,13 @@ fn validate_turn_request(
 }
 
 fn normalize_surface(text: &str) -> (String, bool) {
+    let observed = normalize_observed_surface(text);
+    let normalized = observed.to_lowercase();
+    let changed = normalized != text.trim().to_lowercase() || observed != text;
+    (normalized, changed)
+}
+
+fn normalize_observed_surface(text: &str) -> String {
     let width_normalized = text
         .chars()
         .map(|character| match character {
@@ -2281,13 +2616,10 @@ fn normalize_surface(text: &str) -> (String, bool) {
             _ => character,
         })
         .collect::<String>();
-    let normalized = width_normalized
+    width_normalized
         .split_whitespace()
         .collect::<Vec<_>>()
         .join(" ")
-        .to_lowercase();
-    let changed = normalized != text.trim().to_lowercase() || width_normalized != text;
-    (normalized, changed)
 }
 
 fn apply_self_repair(text: &str) -> Option<(String, String)> {
@@ -2312,7 +2644,7 @@ fn apply_self_repair(text: &str) -> Option<(String, String)> {
         })
 }
 
-fn tokenize(text: &str) -> Vec<String> {
+pub(crate) fn tokenize(text: &str) -> Vec<String> {
     text.split(|character: char| {
         character.is_whitespace()
             || matches!(
@@ -2344,6 +2676,17 @@ fn tokenize(text: &str) -> Vec<String> {
     .collect()
 }
 
+/// Reuse the normalizer's discourse lexicon when an open semantic role awaits
+/// a nominal reply. Social/control fragments must not become entity labels.
+pub(crate) fn is_discourse_only_fragment(text: &str) -> bool {
+    filler_function(text, 0, 1).is_some()
+        || backchannel_function(text).is_some()
+        || standalone_discourse_phrase(text).is_some()
+        || social_function(text).is_some()
+        || is_laughter(text)
+        || is_affect_display(text)
+}
+
 fn filler_function(token: &str, index: usize, token_count: usize) -> Option<DiscourseFunctionIR> {
     if matches!(token, "음" | "음음" | "um" | "umm" | "hmm" | "흠") {
         return Some(if token_count == 1 {
@@ -2368,15 +2711,35 @@ fn filler_function(token: &str, index: usize, token_count: usize) -> Option<Disc
     None
 }
 
+/// Lexical polarity only: the pending dialogue act supplies the proposition
+/// or permission being answered. Acknowledgments are not factual evidence.
+pub(crate) fn confirmation_polarity(text: &str) -> Option<bool> {
+    let normalized = text.trim().trim_end_matches(['.', '!']).to_lowercase();
+    match normalized.as_str() {
+        "응" | "네" | "예" | "넵" | "그래" | "그래요" | "그렇습니다" | "그렇지" | "맞아"
+        | "맞아요" | "맞습니다" | "yes" | "yeah" | "yep" | "right" | "correct" => Some(true),
+        "아니" | "아니야" | "아니요" | "아닙니다" | "no" | "nope" => Some(false),
+        _ => None,
+    }
+}
+
 fn backchannel_function(token: &str) -> Option<DiscourseFunctionIR> {
     match token {
-        "응" | "네" | "넵" | "그래" | "알겠어" | "알겠습니다" | "yeah" | "yep" | "yes" | "okay"
-        | "ok" | "noted" => Some(DiscourseFunctionIR::Acknowledge),
+        "응" | "네" | "넵" | "그래" | "알겠어" | "알겠습니다" | "알겠데이" | "알겠어유"
+        | "알겠습니더" | "yeah" | "yep" | "yes" | "okay" | "ok" | "noted" => {
+            Some(DiscourseFunctionIR::Acknowledge)
+        }
         "좋아" | "맞아" | "맞습니다" | "ㅇㅋ" | "good" | "right" | "correct" => {
             Some(DiscourseFunctionIR::Approve)
         }
         "아니" | "아니야" | "ㄴㄴ" | "no" | "nope" => Some(DiscourseFunctionIR::Reject),
-        _ => None,
+        _ => confirmation_polarity(token).map(|positive| {
+            if positive {
+                DiscourseFunctionIR::Approve
+            } else {
+                DiscourseFunctionIR::Reject
+            }
+        }),
     }
 }
 
@@ -2407,18 +2770,18 @@ fn standalone_discourse_phrase(text: &str) -> Option<DiscourseFunctionIR> {
         | "음 그러면"
         | "어 그러면"
         | "저기" => Some(DiscourseFunctionIR::HoldFloor),
-        "you're welcome" | "you are welcome" | "천만에" | "별말씀을" => {
+        "you're welcome" | "you are welcome" | "천만에" | "별말씀을" | "아이다" | "괜찮아유" => {
             Some(DiscourseFunctionIR::Acknowledge)
         }
+        "또 보자데이" | "또 봐유" => Some(DiscourseFunctionIR::Farewell),
         _ => None,
     }
 }
 
 fn social_function(token: &str) -> Option<DiscourseFunctionIR> {
     match token {
-        "안녕" | "안녕하세요" | "반가워" | "hello" | "hi" | "hey" => {
-            Some(DiscourseFunctionIR::Greeting)
-        }
+        "안녕" | "안녕하세요" | "안녕하이소" | "반가워" | "반갑데이" | "반가워유" | "hello"
+        | "hi" | "hey" => Some(DiscourseFunctionIR::Greeting),
         "고마워" | "고맙다" | "고마워요" | "감사" | "감사해" | "감사합니다" | "thanks"
         | "thankyou" | "thank" | "thx" => Some(DiscourseFunctionIR::Gratitude),
         "잘가" | "안녕히" | "바이" | "bye" | "goodbye" => {
@@ -2429,10 +2792,19 @@ fn social_function(token: &str) -> Option<DiscourseFunctionIR> {
 }
 
 fn is_laughter(token: &str) -> bool {
-    matches!(
-        token,
-        "ㅋㅋ" | "ㅋㅋㅋ" | "ㅎㅎ" | "ㅎㅎㅎ" | "lol" | "haha" | "hehe"
-    )
+    matches!(token, "lol" | "haha" | "hehe")
+        || (token.chars().count() >= 2
+            && token
+                .chars()
+                .all(|character| matches!(character, 'ㅋ' | 'ㅎ')))
+}
+
+fn is_affect_display(token: &str) -> bool {
+    token == "ㅡㅡ"
+        || (token.chars().count() >= 1
+            && token
+                .chars()
+                .all(|character| matches!(character, 'ㅠ' | 'ㅜ')))
 }
 
 fn event(
@@ -2546,6 +2918,9 @@ fn repair_token_in_context(
     index: usize,
     tokens: &[String],
 ) -> Option<(String, u16, NormalizationOperationKindIR)> {
+    if let Some(repair) = repair_korean_regional_morphology(token, index, tokens.len()) {
+        return Some(repair);
+    }
     if token == "ya" && index > 0 && index + 1 < tokens.len() {
         let auxiliary = tokens[index - 1].to_lowercase();
         if matches!(
@@ -2560,6 +2935,66 @@ fn repair_token_in_context(
         }
     }
     repair_token(token).or_else(|| unique_fuzzy_control_form(token, index, tokens))
+}
+
+fn repair_korean_regional_morphology(
+    token: &str,
+    index: usize,
+    token_count: usize,
+) -> Option<(String, u16, NormalizationOperationKindIR)> {
+    if index + 1 != token_count {
+        return None;
+    }
+    let exact = match token {
+        "반갑데이" => Some("반가워"),
+        "알겠데이" => Some("알겠어"),
+        "반가워유" => Some("반가워"),
+        "알겠어유" => Some("알겠어"),
+        "괜찮아유" => Some("괜찮아"),
+        _ => None,
+    };
+    let canonical = exact.map(str::to_string).or_else(|| {
+        [
+            ("아입니더", "아닙니다"),
+            ("아입니꺼", "아닙니까"),
+            ("않습니더", "않습니다"),
+            ("않습니꺼", "않습니까"),
+            ("합니더", "합니다"),
+            ("합니꺼", "합니까"),
+            ("습니더", "습니다"),
+            ("습니꺼", "습니까"),
+            ("입니더", "입니다"),
+            ("입니꺼", "입니까"),
+            ("까예", "까"),
+            ("아니에유", "아니에요"),
+            ("이에유", "이에요"),
+            ("예유", "예요"),
+            ("않아유", "않아요"),
+            ("않나유", "않나요"),
+            ("않네유", "않네요"),
+            ("않거든유", "않거든요"),
+            ("않잖아유", "않잖아요"),
+            ("해유", "해요"),
+            ("하나유", "하나요"),
+            ("하네유", "하네요"),
+            ("하거든유", "하거든요"),
+            ("하잖아유", "하잖아요"),
+            ("까유", "까"),
+            ("모르겠어유", "모르겠어"),
+            ("할게유", "할게"),
+        ]
+        .into_iter()
+        .find_map(|(regional, standard)| {
+            token
+                .strip_suffix(regional)
+                .map(|root| format!("{root}{standard}"))
+        })
+    })?;
+    (canonical != token).then_some((
+        canonical,
+        980,
+        NormalizationOperationKindIR::RegionalMorphology,
+    ))
 }
 
 fn unique_fuzzy_control_form(
@@ -2679,6 +3114,39 @@ impl ConversationMemory {
         Ok(state)
     }
 
+    /// Explicitly inject one conversation-local, pre-turn syntax model. The
+    /// model is structural evidence only and cannot retroactively reinterpret
+    /// an existing grounding or alter semantic predicate contracts.
+    pub fn update_world_syntax_model(
+        &mut self,
+        conversation_id: &str,
+        model: crate::world_vocabulary::WorldSyntaxModelIR,
+    ) -> Result<ConversationStateIR, String> {
+        if conversation_id.trim().is_empty() || conversation_id.len() > 128 {
+            return Err("INVALID_CONVERSATION_ID".into());
+        }
+        let mut state = self
+            .states
+            .get(conversation_id)
+            .cloned()
+            .unwrap_or_else(|| empty_state(conversation_id));
+        if state.completed_turns != 0
+            || !state.dialogue_world.premises.is_empty()
+            || !state.dialogue_world.implications.is_empty()
+            || state.dialogue_world.last_grounding.is_some()
+            || state.dialogue_world.last_query.is_some()
+            || state.dialogue_world.pending_reference.is_some()
+        {
+            return Err("WORLD_SYNTAX_MODEL_MUST_PRECEDE_TURNS".into());
+        }
+        state.dialogue_world.vocabulary =
+            state.dialogue_world.vocabulary.with_syntax_model(model)?;
+        state.state_sha256 = state_hash(&state).map_err(|_| "INVALID_STATE_HASH")?;
+        validate_conversation_state(&state).map_err(|_| "INVALID_SYNTAX_MODEL_STATE")?;
+        self.states.insert(conversation_id.into(), state.clone());
+        Ok(state)
+    }
+
     pub(crate) fn restore_turn_state(
         &mut self,
         conversation_id: &str,
@@ -2695,41 +3163,63 @@ impl ConversationMemory {
         self.states.get(conversation_id)
     }
 
-    pub(crate) fn commit_answer_focus(
+    pub(crate) fn conversation_ids(&self) -> impl Iterator<Item = &str> {
+        self.states.keys().map(String::as_str)
+    }
+
+    /// Explicit lifecycle cleanup. Conversation state is never silently
+    /// evicted: the host must close the conversation after its client has
+    /// finished with it.
+    pub fn close(&mut self, conversation_id: &str) -> bool {
+        self.states.remove(conversation_id).is_some()
+    }
+
+    #[cfg_attr(not(test), allow(dead_code))]
+    pub(crate) fn commit_response_state(
         &mut self,
         conversation_id: &str,
         focus: Option<crate::discourse_qa::AnswerFocusIR>,
+        world: crate::world_dialogue::DialogueWorldIR,
     ) -> Result<ConversationStateIR, ConversationFrontendError> {
-        let state = self
+        self.commit_response_state_with_validation_receipt(conversation_id, focus, world)
+            .map(|(state, _)| state)
+    }
+
+    pub(crate) fn commit_response_state_with_validation_receipt(
+        &mut self,
+        conversation_id: &str,
+        focus: Option<crate::discourse_qa::AnswerFocusIR>,
+        world: crate::world_dialogue::DialogueWorldIR,
+    ) -> Result<(ConversationStateIR, ConversationStateValidationReceipt), ConversationFrontendError>
+    {
+        let mut next = self
             .states
-            .get_mut(conversation_id)
-            .ok_or(ConversationFrontendError::InvalidState)?;
-        if focus
+            .get(conversation_id)
+            .ok_or(ConversationFrontendError::InvalidState)?
+            .clone();
+        next.dialogue_world = world;
+        next.answer_focus = focus;
+        let state = &next;
+        let focus = &state.answer_focus;
+        if focus.as_ref().is_some_and(|focus| {
+            !focus.validate(state.completed_turns) || !focus.validate_proposition_in(state)
+        }) || focus
             .as_ref()
-            .is_some_and(|focus| !focus.validate(state.completed_turns))
+            .and_then(|f| f.described_event.as_ref())
+            .is_some_and(|event| !event.validate_in(state))
         {
             return Err(ConversationFrontendError::InvalidState);
         }
-        state.answer_focus = focus;
-        state.state_sha256 = state_hash(state)?;
-        Ok(state.clone())
-    }
-
-    pub(crate) fn commit_dialogue_world(
-        &mut self,
-        conversation_id: &str,
-        world: crate::world_dialogue::DialogueWorldIR,
-    ) -> Result<ConversationStateIR, ConversationFrontendError> {
-        let state = self
-            .states
-            .get_mut(conversation_id)
-            .ok_or(ConversationFrontendError::InvalidState)?;
-        if !world.validate(state.completed_turns) {
-            return Err(ConversationFrontendError::InvalidState);
-        }
-        state.dialogue_world = world;
-        state.state_sha256 = state_hash(state)?;
-        Ok(state.clone())
+        next.state_sha256 = state_hash(&next)?;
+        validate_conversation_state(&next)?;
+        self.states
+            .insert(conversation_id.to_string(), next.clone());
+        Ok((
+            next.clone(),
+            ConversationStateValidationReceipt {
+                state_sha256: next.state_sha256,
+            },
+        ))
     }
 
     /// Commits already-grounded dialogue constraints through one bounded
@@ -2747,11 +3237,15 @@ impl ConversationMemory {
         if state.completed_turns != turn_index {
             return Err(ConversationFrontendError::TurnOrder);
         }
-        state
-            .dialogue_directive_ledger
-            .apply_turn(turn_index, candidates)?;
-        state.state_sha256 = state_hash(state)?;
-        validate_conversation_state(state)?;
+        let mut ledger = state.dialogue_directive_ledger.clone();
+        ledger.apply_turn(turn_index, candidates)?;
+        if !ledger.validate(turn_index) {
+            return Err(ConversationFrontendError::InvalidState);
+        }
+        state.dialogue_directive_ledger = ledger;
+        let expected_state_sha256 = state_hash(state)?;
+        state.state_sha256 = expected_state_sha256.clone();
+        validate_conversation_state_with_hash(state, &expected_state_sha256)?;
         Ok(state.clone())
     }
 
@@ -2963,7 +3457,18 @@ impl ConversationMemory {
                 binding: None,
             };
         };
-        resolve_question_answer(question, answer_text)
+        let resolution = resolve_question_answer(question, answer_text);
+        if resolution.disposition == QuestionAnswerDispositionIR::Resolved
+            && question.reference_gap.as_ref().is_some_and(|gap| {
+                self.states.get(conversation_id).is_none_or(|state| {
+                    state.completed_turns.saturating_sub(question.source_turn) > 3
+                        || !gap.live_in(state)
+                })
+            })
+        {
+            return invalid_question_answer(answer_text);
+        }
+        resolution
     }
 
     pub fn update_pending_question(
@@ -3616,6 +4121,38 @@ impl ConversationMemory {
         conversation_id: &str,
         semantic_text: &str,
     ) -> ReferenceResolutionIR {
+        // Attributed event reports own their role binding. Generic nearest-noun
+        // and action-ellipsis resolvers must not rewrite their observation text.
+        if crate::proposition_content::interaction_preference(semantic_text)
+            .is_some_and(|p| p.owns_response())
+            || crate::proposition_content::is_event_report(semantic_text)
+            || crate::discourse_qa::owns_proposition_reference(semantic_text)
+            || crate::proposition_content::is_event_question(semantic_text)
+                && self.states.get(conversation_id).is_some_and(|state| {
+                    state
+                        .epistemic_ledger
+                        .records
+                        .iter()
+                        .any(|r| !r.content.events.is_empty())
+                })
+        {
+            return ReferenceResolutionIR {
+                original_semantic_text: semantic_text.into(),
+                resolved_semantic_text: semantic_text.into(),
+                resolved_reference_count: 0,
+                used_referent_ids: vec![],
+                ambiguous_reference_surfaces: vec![],
+                topic_anchored_resolution: None,
+                discourse_bindings: vec![],
+                resolution_graph: build_reference_resolution_graph(
+                    semantic_text,
+                    semantic_text,
+                    &[],
+                    &[],
+                    &[],
+                ),
+            };
+        }
         let state = self.states.get(conversation_id);
         let mentions = scan_reference_mentions(semantic_text);
         let candidates = state
@@ -4145,6 +4682,8 @@ impl ConversationMemory {
                 guard_conditionals: None,
                 semantic_role_graph: None,
                 attribution_graph: None,
+                raw_compositional_analysis: None,
+                source_bound_transformation: false,
                 discourse_focus_candidates: &[],
             },
         )
@@ -4155,6 +4694,26 @@ impl ConversationMemory {
         request: &ConversationTurnRequestIR,
         context: ConversationCommitContext<'_>,
     ) -> Result<ConversationStateIR, ConversationFrontendError> {
+        self.commit_turn_with_discourse_inner(request, context, None)
+    }
+
+    pub(crate) fn commit_turn_with_discourse_profiled(
+        &mut self,
+        request: &ConversationTurnRequestIR,
+        context: ConversationCommitContext<'_>,
+    ) -> Result<(ConversationStateIR, ConversationCommitTimingIR), ConversationFrontendError> {
+        let mut timing = ConversationCommitTimingIR::default();
+        let state = self.commit_turn_with_discourse_inner(request, context, Some(&mut timing))?;
+        Ok((state, timing))
+    }
+
+    fn commit_turn_with_discourse_inner(
+        &mut self,
+        request: &ConversationTurnRequestIR,
+        context: ConversationCommitContext<'_>,
+        mut timing: Option<&mut ConversationCommitTimingIR>,
+    ) -> Result<ConversationStateIR, ConversationFrontendError> {
+        let transition_started = timing.as_ref().map(|_| Instant::now());
         let ConversationCommitContext {
             semantic_subject,
             used_referent_ids,
@@ -4166,8 +4725,11 @@ impl ConversationMemory {
             guard_conditionals,
             semantic_role_graph,
             attribution_graph,
+            raw_compositional_analysis: supplied_raw_compositional_analysis,
+            source_bound_transformation,
             discourse_focus_candidates,
         } = context;
+        let state_refresh_started = timing.as_ref().map(|_| Instant::now());
         self.validate_turn_order(request)?;
         let state = self
             .states
@@ -4202,6 +4764,10 @@ impl ConversationMemory {
         if let Some(subject) = semantic_subject {
             state.active_subject = Some(subject.to_string());
         }
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), state_refresh_started) {
+            timing.transition_state_refresh_micros = duration_micros(started.elapsed());
+        }
+        let referent_extraction_started = timing.as_ref().map(|_| Instant::now());
         let mut referent_context = semantic_subject.unwrap_or_default().to_string();
         for goal in grounded_goals {
             if !referent_context.is_empty() {
@@ -4225,6 +4791,11 @@ impl ConversationMemory {
             });
             state.active_referents.truncate(MAX_ACTIVE_REFERENTS);
         }
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), referent_extraction_started)
+        {
+            timing.transition_referent_extraction_micros = duration_micros(started.elapsed());
+        }
+        let goal_projection_started = timing.as_ref().map(|_| Instant::now());
         if !grounded_goals.is_empty() {
             let scoped_explicit_topic_id = state
                 .active_topics
@@ -4261,11 +4832,21 @@ impl ConversationMemory {
                 }
             }
         }
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), goal_projection_started) {
+            timing.transition_goal_projection_micros = duration_micros(started.elapsed());
+        }
+        let discourse_focus_started = timing.as_ref().map(|_| Instant::now());
         state
             .discourse_focus
             .apply_turn(request.turn_index, discourse_focus_candidates);
         synchronize_active_topic_context(state, request.turn_index);
         let mut current_propositions = proposition_referents.to_vec();
+        for proposition in &mut current_propositions {
+            proposition.semantic_summary = source_attested_observation_surface(
+                &proposition.semantic_summary,
+                &request.raw_text,
+            );
+        }
         if let Some(topic_id) = state
             .active_topics
             .first()
@@ -4278,7 +4859,11 @@ impl ConversationMemory {
                 }
             }
         }
-        let observations = current_propositions
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), discourse_focus_started) {
+            timing.transition_discourse_focus_micros = duration_micros(started.elapsed());
+        }
+        let observation_preparation_started = timing.as_ref().map(|_| Instant::now());
+        let mut observations = current_propositions
             .iter()
             .map(|referent| EpistemicObservationIR {
                 origin_referent_id: referent.referent_id.clone(),
@@ -4299,12 +4884,167 @@ impl ConversationMemory {
                     .unwrap_or(EpistemicStatusIR::Reported),
             })
             .collect::<Vec<_>>();
-        let belief_bindings = state.epistemic_ledger.apply_turn(
-            request.turn_index,
-            &request.raw_text,
-            used_referent_ids,
-            &observations,
-        );
+        // Observation and answer readiness are distinct. A conditional statement
+        // remains available as attributed, nonactual data even when the planner
+        // cannot propose an action or asks for clarification.
+        // This analysis is over the exact received source, never its resolved
+        // semantic form.  The epistemic ledger's response-prohibition guard
+        // and source-level causal-observation admission both require that
+        // same scope-sensitive authority view.
+        let computed_raw_compositional_analysis;
+        let raw_compositional_analysis = if let Some(analysis) = supplied_raw_compositional_analysis
+        {
+            analysis
+        } else {
+            computed_raw_compositional_analysis =
+                crate::compositional_semantics::CompositionalSemanticAnalyzer
+                    .analyze(&request.raw_text);
+            &computed_raw_compositional_analysis
+        };
+        let raw_content =
+            crate::proposition_content::PropositionContentIR::compile_with_compositional_analysis(
+                &request.raw_text,
+                raw_compositional_analysis,
+            );
+        // Clause segmentation must not discard a source-level relation. Keep
+        // the containing positive report when its causal binding is absent
+        // from every fragment. This is the same user's reported explanation,
+        // not independent evidence, inferred causality or verified truth.
+        // Each observation may be a long source fragment.  The cause and
+        // condition checks below used to compile every observation twice.
+        // Compute both properties in one immutable pass and reuse those exact
+        // results; the admission predicates and the inserted source record
+        // remain unchanged.
+        let source_is_assertion = request.input_confidence_millis >= 900
+            && !request.raw_text.contains(['"', '“', '”', '`'])
+            && !crate::conversation_contract::is_interrogative(&request.raw_text);
+        let source_has_cause = raw_content
+            .bindings
+            .iter()
+            .any(|binding| binding.slot == crate::proposition_content::ContentSlotIR::Cause);
+        let source_has_condition = raw_content
+            .bindings
+            .iter()
+            .any(|binding| binding.slot == crate::proposition_content::ContentSlotIR::Condition);
+        let mut observation_has_cause = false;
+        let mut observation_has_condition = false;
+        if source_is_assertion && (source_has_cause || source_has_condition) {
+            for observation in &observations {
+                let content = crate::proposition_content::PropositionContentIR::compile(
+                    &observation.proposition_surface,
+                );
+                observation_has_cause |= content.bindings.iter().any(|binding| {
+                    binding.slot == crate::proposition_content::ContentSlotIR::Cause
+                });
+                observation_has_condition |= content.bindings.iter().any(|binding| {
+                    binding.slot == crate::proposition_content::ContentSlotIR::Condition
+                });
+                if observation_has_cause && observation_has_condition {
+                    break;
+                }
+            }
+        }
+        let add_source_cause_observation = source_is_assertion
+            && !observations.is_empty()
+            && observations.iter().all(|o| {
+                o.source_actor == "DIALOGUE_USER"
+                    && o.proposition_polarity == AttributedPropositionPolarityIR::Positive
+                    && o.modal_world == ModalWorldIR::Actual
+                    && o.attribution_attitude == AttributionAttitudeIR::Say
+            })
+            && source_has_cause
+            && !observation_has_cause
+            && raw_compositional_analysis
+                .frames
+                .iter()
+                .all(|f| !f.external_execution_authorized);
+        if add_source_cause_observation && !source_bound_transformation {
+            observations.push(EpistemicObservationIR {
+                origin_referent_id: format!("DREF-SOURCE-RELATION-{:06}", request.turn_index),
+                source_actor: "DIALOGUE_USER".into(),
+                proposition_surface: request.raw_text.clone(),
+                proposition_polarity: AttributedPropositionPolarityIR::Positive,
+                modal_world: ModalWorldIR::Actual,
+                attribution_attitude: AttributionAttitudeIR::Say,
+                epistemic_status: EpistemicStatusIR::Reported,
+            });
+        }
+        if source_is_assertion
+            && !source_bound_transformation
+            && source_has_condition
+            // The source-level cause observation contains the full original
+            // surface, so it also proves a source condition when present.
+            && !(observation_has_condition
+                || (add_source_cause_observation && source_has_condition))
+        {
+            observations.push(EpistemicObservationIR {
+                origin_referent_id: format!("DREF-CONDITIONAL-{:06}", request.turn_index),
+                source_actor: "DIALOGUE_USER".into(),
+                proposition_surface: request.raw_text.clone(),
+                proposition_polarity: AttributedPropositionPolarityIR::Positive,
+                modal_world: ModalWorldIR::Hypothetical,
+                attribution_attitude: AttributionAttitudeIR::Say,
+                epistemic_status: EpistemicStatusIR::Reported,
+            });
+        }
+        if request.input_confidence_millis >= 900 && !source_bound_transformation {
+            if let Some(preference) = raw_content.interaction_preference.as_ref() {
+                if !observations.iter().any(|o| {
+                    crate::proposition_content::interaction_preference(&o.proposition_surface)
+                        .is_some_and(|p| {
+                            p.desired == preference.desired
+                                && p.excluded == preference.excluded
+                                && p.desired_surface == preference.desired_surface
+                        })
+                }) {
+                    observations.push(EpistemicObservationIR {
+                        origin_referent_id: format!("DREF-PREFERENCE-{:06}", request.turn_index),
+                        source_actor: "DIALOGUE_USER".into(),
+                        proposition_surface: request.raw_text.clone(),
+                        proposition_polarity: AttributedPropositionPolarityIR::Positive,
+                        modal_world: ModalWorldIR::Hypothetical,
+                        attribution_attitude: AttributionAttitudeIR::Say,
+                        epistemic_status: EpistemicStatusIR::Reported,
+                    });
+                }
+            }
+        }
+        let event_focus = state
+            .answer_focus
+            .as_ref()
+            .filter(|f| request.turn_index.saturating_sub(f.answered_turn) <= 4)
+            .and_then(|f| f.described_event.as_ref())
+            .map(|e| e.belief_id.as_str());
+        if let (Some(timing), Some(started)) =
+            (timing.as_deref_mut(), observation_preparation_started)
+        {
+            timing.observation_preparation_micros = duration_micros(started.elapsed());
+        }
+        let epistemic_ledger_started = timing.as_ref().map(|_| Instant::now());
+        let belief_bindings = state
+            .epistemic_ledger
+            .apply_turn_with_event_focus_and_source_analysis(
+                request.turn_index,
+                &request.raw_text,
+                used_referent_ids,
+                &observations,
+                event_focus,
+                &raw_compositional_analysis,
+                Some(&raw_content),
+            );
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), epistemic_ledger_started) {
+            timing.epistemic_ledger_micros = duration_micros(started.elapsed());
+        }
+        let post_ledger_synchronization_started = timing.as_ref().map(|_| Instant::now());
+        // A reference cannot keep an evicted source alive or make the next
+        // conversation turn invalid. Retrieval still checks active status.
+        if state
+            .answer_focus
+            .as_ref()
+            .is_some_and(|f| !f.validate_proposition_in(state))
+        {
+            state.answer_focus = None;
+        }
         for referent in &mut current_propositions {
             referent.belief_record_id = belief_bindings
                 .iter()
@@ -4334,6 +5074,31 @@ impl ConversationMemory {
             request.turn_index,
             semantic_role_graph,
             attribution_graph,
+        );
+        crate::typed_coreference::merge_event_mentions(
+            &mut state.active_typed_entities,
+            request.turn_index,
+            state
+                .epistemic_ledger
+                .records
+                .iter()
+                .filter(|r| {
+                    r.last_updated_turn == request.turn_index
+                        // Only the source-aligned outer observation can bridge
+                        // its roles. Derived fragments and embedded questions
+                        // are not independent nominal introductions.
+                        && (r.content.source_sha256 == raw_content.source_sha256
+                            || r.proposition_surface == request.raw_text.trim().trim_end_matches(['.', '!']).trim())
+                        && crate::grammatical_scope::embedded_information_statement(&request.raw_text).is_none()
+                        && r.status == crate::epistemic::BeliefRecordStatusIR::Active
+                        && r.signature.modal_world == ModalWorldIR::Actual
+                        && !matches!(
+                            r.epistemic_status,
+                            EpistemicStatusIR::Denied | EpistemicStatusIR::Doubted
+                        )
+                })
+                .flat_map(|r| r.content.events.iter())
+                .filter(|e| e.kind == crate::proposition_content::DescriptionKindIR::Event),
         );
         merge_ontology_mentions(
             &mut state.active_typed_entities,
@@ -4372,9 +5137,32 @@ impl ConversationMemory {
         state.completed_turns = request.turn_index;
         state.preferred_language = language.or(state.preferred_language);
         state.unresolved_reference_count = unresolved_reference_count;
-        state.state_sha256 = state_hash(state)?;
-        validate_conversation_state(state)?;
-        Ok(state.clone())
+        if let (Some(timing), Some(started)) =
+            (timing.as_deref_mut(), post_ledger_synchronization_started)
+        {
+            timing.post_ledger_synchronization_micros = duration_micros(started.elapsed());
+        }
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), transition_started) {
+            timing.transition_micros = duration_micros(started.elapsed());
+        }
+        let seal_started = timing.as_ref().map(|_| Instant::now());
+        let expected_state_sha256 = state_hash(state)?;
+        state.state_sha256 = expected_state_sha256.clone();
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), seal_started) {
+            timing.seal_micros = duration_micros(started.elapsed());
+        }
+        let invariant_validation_started = timing.as_ref().map(|_| Instant::now());
+        validate_conversation_state_with_hash(state, &expected_state_sha256)?;
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), invariant_validation_started)
+        {
+            timing.invariant_validation_micros = duration_micros(started.elapsed());
+        }
+        let snapshot_started = timing.as_ref().map(|_| Instant::now());
+        let snapshot = state.clone();
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), snapshot_started) {
+            timing.snapshot_micros = duration_micros(started.elapsed());
+        }
+        Ok(snapshot)
     }
 }
 
@@ -7840,6 +8628,10 @@ fn state_hash(state: &ConversationStateIR) -> Result<String, ConversationFronten
     Ok(format!("{:x}", Sha256::digest(bytes)))
 }
 
+fn duration_micros(duration: std::time::Duration) -> u64 {
+    duration.as_micros().min(u128::from(u64::MAX)) as u64
+}
+
 pub(crate) fn guarded_program_lifecycle_links_valid(state: &ConversationStateIR) -> bool {
     let commitments = state
         .deferred_action_commitments
@@ -7905,6 +8697,20 @@ fn question_under_discussion_valid(
     question: &QuestionUnderDiscussionIR,
     completed_turns: u64,
 ) -> bool {
+    if let Some(gap) = &question.reference_gap {
+        if QuestionUnderDiscussionIR::from_event_reference_gap(
+            gap,
+            question.source_turn,
+            question.topic_id.as_deref(),
+        )
+        .as_ref()
+            != Some(question)
+        {
+            return false;
+        }
+    } else if question.kind == QuestionUnderDiscussionKindIR::EventReference {
+        return false;
+    }
     !question.question_id.trim().is_empty()
         && question
             .topic_id
@@ -7930,6 +8736,18 @@ fn question_under_discussion_valid(
 
 pub fn validate_conversation_state(
     state: &ConversationStateIR,
+) -> Result<(), ConversationFrontendError> {
+    let expected_state_sha256 = state_hash(state)?;
+    validate_conversation_state_with_hash(state, &expected_state_sha256)
+}
+
+/// Validates every conversation-state invariant against a caller-supplied
+/// digest that was computed from this exact immutable snapshot.  Mutation
+/// paths use it after assigning the digest, avoiding a second full-state JSON
+/// serialization while preserving the same hash-equality contract.
+fn validate_conversation_state_with_hash(
+    state: &ConversationStateIR,
+    expected_state_sha256: &str,
 ) -> Result<(), ConversationFrontendError> {
     let unique_referents = state
         .active_referents
@@ -7995,10 +8813,9 @@ pub fn validate_conversation_state(
         .sum::<usize>();
     if state.schema != CONVERSATION_STATE_SCHEMA
         || !state.dialogue_world.validate(state.completed_turns)
-        || state
-            .answer_focus
-            .as_ref()
-            .is_some_and(|focus| !focus.validate(state.completed_turns))
+        || state.answer_focus.as_ref().is_some_and(|focus| {
+            !focus.validate(state.completed_turns) || !focus.validate_proposition_in(state)
+        })
         || state.conversation_id.trim().is_empty()
         || state.active_referents.len() > MAX_ACTIVE_REFERENTS
         || unique_referents.len() != state.active_referents.len()
@@ -8297,7 +9114,7 @@ pub fn validate_conversation_state(
             })
         })
         || state.state_sha256.len() != 64
-        || state.state_sha256 != state_hash(state)?
+        || state.state_sha256 != expected_state_sha256
     {
         return Err(ConversationFrontendError::InvalidState);
     }
@@ -10876,6 +11693,13 @@ fn intent_for_canonical_predicate(canonical_predicate: &str) -> PlanIntentIR {
 }
 
 fn classify_goal_ellipsis(text: &str) -> Option<(GoalEllipsisKind, Option<GoalEllipsisSubject>)> {
+    // A reference inside a question is an argument of that query, not a
+    // request to inherit an executable goal. Let its semantic owner bind it.
+    if crate::proposition_content::is_event_question(text)
+        || crate::discourse_qa::owns_proposition_reference(text)
+    {
+        return None;
+    }
     let normalized = text
         .trim()
         .trim_matches(|character: char| character.is_ascii_punctuation())
@@ -11084,6 +11908,11 @@ fn resolve_question_answer(
     if normalized.is_empty() {
         return not_applicable();
     }
+    if question.kind == QuestionUnderDiscussionKindIR::EventReference
+        && crate::conversation_contract::is_interrogative(answer_text)
+    {
+        return not_applicable();
+    }
 
     let selection_marker = contains_any_surface(
         &normalized,
@@ -11129,6 +11958,39 @@ fn resolve_question_answer(
             .unwrap_or_else(|| invalid_question_answer(answer_text));
     }
 
+    if question.kind == QuestionUnderDiscussionKindIR::EventReference {
+        // A displayed label must remain selectable verbatim. Normalize both
+        // sides of a relaxed nominal match; stripping only the user's article
+        // made a displayed "The X" option impossible to select by that name.
+        let mut exact = question
+            .options
+            .iter()
+            .filter(|option| option.display_surface.to_lowercase() == normalized);
+        if let Some(option) = exact.next() {
+            return if exact.next().is_none() {
+                resolved_question_answer(question, answer_text, option)
+            } else {
+                invalid_question_answer(answer_text)
+            };
+        }
+        let bare = normalized.strip_prefix("the ").unwrap_or(&normalized);
+        let mut matches = question.options.iter().filter(|option| {
+            let value = option.display_surface.to_lowercase();
+            let value = value.strip_prefix("the ").unwrap_or(&value);
+            bare == value
+                || ["이야", "야", "이에요", "예요", "요"]
+                    .iter()
+                    .any(|ending| bare.strip_suffix(ending) == Some(value))
+        });
+        let chosen = matches.next();
+        if matches.next().is_some() {
+            return invalid_question_answer(answer_text);
+        }
+        return chosen
+            .map(|option| resolved_question_answer(question, answer_text, option))
+            .unwrap_or_else(|| invalid_question_answer(answer_text));
+    }
+
     let mut ranked = question
         .options
         .iter()
@@ -11156,7 +12018,11 @@ fn resolved_question_answer(
     answer_text: &str,
     option: &QuestionOptionIR,
 ) -> QuestionAnswerResolutionIR {
-    let resolved_semantic_text = localize_question_option_for_answer(option, answer_text);
+    let resolved_semantic_text = if question.kind == QuestionUnderDiscussionKindIR::EventReference {
+        option.resolved_semantic_text.clone()
+    } else {
+        localize_question_option_for_answer(option, answer_text)
+    };
     QuestionAnswerResolutionIR {
         disposition: QuestionAnswerDispositionIR::Resolved,
         resolved_semantic_text: resolved_semantic_text.clone(),
@@ -11617,7 +12483,7 @@ fn is_token_delimiter(character: char) -> bool {
         || matches!(character, '‘' | '’' | '“' | '”' | '「' | '」' | '『' | '』')
 }
 
-fn is_plural_reference_surface(token: &str) -> bool {
+pub(crate) fn is_plural_reference_surface(token: &str) -> bool {
     matches!(
         token.to_lowercase().as_str(),
         "그것들" | "그것들을" | "그것들이" | "그거들" | "them" | "those"
@@ -11998,7 +12864,7 @@ fn append_semantic_separator(output: &mut String, separator: &str) {
     }
 }
 
-fn is_reference_surface(token: &str) -> bool {
+pub(crate) fn is_reference_surface(token: &str) -> bool {
     matches!(
         token.to_lowercase().as_str(),
         "그거"
@@ -12027,10 +12893,7 @@ fn realize_reference(reference: &str, surface: &str) -> String {
 }
 
 fn has_final_consonant(value: &str) -> bool {
-    value.chars().next_back().is_some_and(|character| {
-        let code = u32::from(character);
-        (0xac00..=0xd7a3).contains(&code) && (code - 0xac00) % 28 != 0
-    })
+    crate::korean_nominal::surface_coda(value).unwrap_or(false)
 }
 
 fn object_particle(value: &str) -> &'static str {
@@ -12106,7 +12969,149 @@ fn phrase_mentioned(text: &str, phrase: &str) -> bool {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn event_reference_choices_are_source_bound_and_never_action_options() {
+        use crate::proposition_content::{
+            described_event, EventReferenceContextIR, EventReferenceGapIR,
+        };
+        let source = "Mira lent a book to Noel.";
+        let event = described_event(source, false).unwrap();
+        let context = EventReferenceContextIR {
+            belief_id: "BELIEF-1".into(),
+            source_actor: "DIALOGUE_USER".into(),
+            source_proposition: source.into(),
+            event_id: event.event_id,
+            focused_slot: None,
+            context_sources: vec![],
+        };
+        let gap =
+            EventReferenceGapIR::from_contexts("To whom did that person lend a book?", &[context])
+                .unwrap();
+        let question =
+            super::QuestionUnderDiscussionIR::from_event_reference_gap(&gap, 1, None).unwrap();
+        assert!(super::question_under_discussion_valid(&question, 1));
+        for value in ["Mira", "Noel", "the Mira", "first"] {
+            let selected = super::resolve_question_answer(&question, value);
+            assert_eq!(
+                selected.disposition,
+                super::QuestionAnswerDispositionIR::Resolved,
+                "{value}"
+            );
+            assert!(described_event(&selected.resolved_semantic_text, true).is_some());
+            assert!(selected
+                .binding
+                .unwrap()
+                .evidence
+                .iter()
+                .any(|e| e == "NEW_EXECUTION_AUTHORITY:false"));
+        }
+        for invalid in ["not Mira", "maybe Mira", "Alice said Mira", "Mira and Noel"] {
+            assert_ne!(
+                super::resolve_question_answer(&question, invalid).disposition,
+                super::QuestionAnswerDispositionIR::Resolved,
+                "{invalid}"
+            );
+        }
+        assert_eq!(
+            super::resolve_question_answer(&question, "Who lent a book?").disposition,
+            super::QuestionAnswerDispositionIR::NotApplicable
+        );
+        let mut forged = question.clone();
+        forged.options[0].resolved_semantic_text = "delete the file".into();
+        assert!(!super::question_under_discussion_valid(&forged, 1));
+        let mut memory = super::ConversationMemory::default();
+        let mut stale = super::empty_state("STALE-REFERENCE");
+        stale.completed_turns = 5;
+        stale.pending_question = Some(question.clone());
+        memory.states.insert("STALE-REFERENCE".into(), stale);
+        assert_eq!(
+            memory
+                .resolve_pending_question("STALE-REFERENCE", "Mira")
+                .disposition,
+            super::QuestionAnswerDispositionIR::InvalidOrNonAuthoritative
+        );
+        assert_eq!(
+            memory
+                .resolve_pending_question("STALE-REFERENCE", "Who lent a book?")
+                .disposition,
+            super::QuestionAnswerDispositionIR::NotApplicable
+        );
+        forged = question;
+        forged.external_execution_authorized = true;
+        assert!(!super::question_under_discussion_valid(&forged, 1));
+    }
+    #[test]
+    fn observations_preserve_only_uniquely_attested_spelling() {
+        assert_eq!(
+            super::source_attested_observation_surface("mcrae read the pdf", "McRae read the PDF."),
+            "McRae read the PDF"
+        );
+        assert_eq!(
+            super::source_attested_observation_surface("iris read", "Iris read; IRIS read"),
+            "iris read"
+        );
+        assert_eq!(
+            super::source_attested_observation_surface("ravi sent it", "Ravi read it."),
+            "ravi sent it"
+        );
+    }
     use super::*;
+
+    #[test]
+    fn negative_directives_preserve_other_constraints_and_detect_exhaustion() {
+        use DialogueDirectiveKindIR::ResponseFormat;
+        let candidate = |value: &str, prohibited| {
+            let mut c = DialogueDirectiveCandidateIR::from_surface(
+                ResponseFormat,
+                "ASSISTANT_RESPONSE",
+                value,
+                "supplied constraint",
+                950,
+            );
+            c.prohibited = prohibited;
+            c
+        };
+        let mut ledger = DialogueDirectiveLedgerIR::default();
+        ledger.apply_turn(1, &[candidate("TABLE", false)]).unwrap();
+        ledger.apply_turn(2, &[candidate("TABLE", true)]).unwrap();
+        assert_eq!(
+            select_response_directive_value(&ledger.directives, ResponseFormat),
+            Some("PLAIN")
+        );
+        ledger.apply_turn(3, &[candidate("PLAIN", true)]).unwrap();
+        assert_eq!(ledger.active().count(), 2);
+        assert_eq!(
+            select_response_directive_value(&ledger.directives, ResponseFormat),
+            Some("BULLETS")
+        );
+        ledger.apply_turn(4, &[candidate("BULLETS", true)]).unwrap();
+        assert_eq!(
+            ledger.response_conflicts_after(5, &[candidate("NUMBERED", true)]),
+            vec![ResponseFormat]
+        );
+        assert!(ledger.validate(4));
+        // An explicit revision of one value does not erase other exclusions.
+        ledger.apply_turn(5, &[candidate("TABLE", false)]).unwrap();
+        assert_eq!(
+            select_response_directive_value(&ledger.directives, ResponseFormat),
+            Some("TABLE")
+        );
+        assert_eq!(ledger.active().filter(|d| d.prohibited).count(), 2);
+        assert!(ledger.validate(5));
+
+        let mut memory = ConversationMemory::default();
+        let input = request("response constraints");
+        memory
+            .commit_turn(&input, None, &[], 0, Some(LanguageCodeIR::English))
+            .unwrap();
+        let before = memory.state("CONV-1").cloned().unwrap();
+        let impossible =
+            ["TABLE", "PLAIN", "BULLETS", "NUMBERED"].map(|value| candidate(value, true));
+        assert!(memory
+            .apply_dialogue_directives("CONV-1", 1, &impossible)
+            .is_err());
+        assert_eq!(memory.state("CONV-1"), Some(&before));
+    }
 
     fn request(text: &str) -> ConversationTurnRequestIR {
         ConversationTurnRequestIR {
@@ -12158,6 +13163,50 @@ mod tests {
             last_referenced_turn: 1,
             external_execution_authorized: false,
         }
+    }
+
+    #[test]
+    fn source_level_cause_and_condition_are_preserved_after_single_pass_observation_analysis() {
+        let mut memory = ConversationMemory::default();
+        let request = request(
+            "The approval was delayed because duplicate requests occupied the pool if the guard disconnected.",
+        );
+        let propositions = [attributed_proposition(
+            1,
+            "DIALOGUE_USER",
+            "The approval was delayed.",
+        )];
+        let state = memory
+            .commit_turn_with_discourse(
+                &request,
+                ConversationCommitContext {
+                    semantic_subject: None,
+                    used_referent_ids: &[],
+                    unresolved_reference_count: 0,
+                    language: Some(LanguageCodeIR::English),
+                    grounded_goals: &[],
+                    proposition_referents: &propositions,
+                    temporal_analysis: None,
+                    guard_conditionals: None,
+                    semantic_role_graph: None,
+                    attribution_graph: None,
+                    raw_compositional_analysis: None,
+                    source_bound_transformation: false,
+                    discourse_focus_candidates: &[],
+                },
+            )
+            .expect("source-level relation state");
+        validate_conversation_state(&state).expect("state remains sealed and valid");
+        assert_eq!(
+            state
+                .epistemic_ledger
+                .records
+                .iter()
+                .filter(|record| record.proposition_surface == request.raw_text)
+                .count(),
+            1,
+            "the source cause record also carries the source condition; do not duplicate it"
+        );
     }
 
     fn discourse_group_fixture(
@@ -12231,6 +13280,29 @@ mod tests {
     }
 
     #[test]
+    fn observed_spelling_survives_noise_repair_and_unicode_without_changing_semantic_tokens() {
+        for (raw, observed) in [
+            (
+                "Um, McKay said the visitor is tired.",
+                "McKay said the visitor is tired.",
+            ),
+            ("Alice said tired, no, İpek said ready.", "İpek said ready."),
+            ("ＭｃＫａｙ said ready.", "McKay said ready."),
+            (
+                "Please chek the eBay report.",
+                "Please check the eBay report.",
+            ),
+        ] {
+            let normalized = UtteranceNormalizer.normalize(&request(raw)).unwrap();
+            assert_eq!(normalized.semantic_surface_text, observed, "{raw}");
+            assert_eq!(
+                normalized.semantic_text,
+                tokenize(observed).join(" ").to_lowercase()
+            );
+        }
+    }
+
+    #[test]
     fn typo_and_hesitation_normalize_without_changing_semantic_authority() {
         let normalized = UtteranceNormalizer
             .normalize(&request("음... 파일 오류를 고처줘"))
@@ -12248,15 +13320,49 @@ mod tests {
     }
 
     #[test]
+    fn kakao_paralinguistic_jamo_preserve_raw_affect_but_not_semantic_content() {
+        for (surface, expected, function) in [
+            (
+                "배터리 광탈 오짐 ㅋㅋㅋㅋ",
+                "배터리 광탈 오짐",
+                DiscourseFunctionIR::Laughter,
+            ),
+            (
+                "통장에 50밖에 없어 ㅠㅠ",
+                "통장에 50밖에 없어",
+                DiscourseFunctionIR::AffectDisplay,
+            ),
+            (
+                "얼굴 다 뒤집어짐 ㅡㅡ",
+                "얼굴 다 뒤집어짐",
+                DiscourseFunctionIR::AffectDisplay,
+            ),
+        ] {
+            let normalized = UtteranceNormalizer
+                .normalize(&request(surface))
+                .expect("Kakao paralinguistic normalization");
+            assert_eq!(normalized.raw_text, surface);
+            assert_eq!(normalized.semantic_surface_text, expected);
+            assert!(normalized
+                .discourse_events
+                .iter()
+                .any(|event| event.function == function));
+        }
+        for fragment in ["ㅋㅋㅋㅋ", "ㅠ", "ㅜㅜ", "ㅡㅡ"] {
+            assert!(is_discourse_only_fragment(fragment), "{fragment}");
+        }
+    }
+
+    #[test]
     fn colloquial_second_person_after_auxiliary_normalizes_compositionally() {
         for (surface, expected) in [
             (
                 "Um, could ya chek the Knoll service for me?",
-                "could you check the knoll service for me?",
+                "could you check the Knoll service for me?",
             ),
-            ("Can ya inspect the cache?", "can you inspect the cache?"),
-            ("Would ya repair the queue?", "would you repair the queue?"),
-            ("Did ya review the report?", "did you review the report?"),
+            ("Can ya inspect the cache?", "Can you inspect the cache?"),
+            ("Would ya repair the queue?", "Would you repair the queue?"),
+            ("Did ya review the report?", "Did you review the report?"),
         ] {
             let normalized = UtteranceNormalizer
                 .normalize(&request(surface))
@@ -12274,7 +13380,7 @@ mod tests {
             .expect("metalinguistic lexical use");
         assert_eq!(
             lexical_use.semantic_surface_text,
-            "ya is a colloquial spelling under discussion."
+            "Ya is a colloquial spelling under discussion."
         );
         assert!(!lexical_use
             .operations
@@ -12283,23 +13389,68 @@ mod tests {
     }
 
     #[test]
+    fn regional_finite_morphology_normalizes_for_semantics_and_preserves_raw_source() {
+        for (surface, expected) in [
+            ("점검합니더.", "점검합니다."),
+            ("점검하지 않습니더.", "점검하지 않습니다."),
+            ("사람이 아입니더.", "사람이 아닙니다."),
+            ("무엇을 도와줄까예?", "무엇을 도와줄까?"),
+            ("점검해유.", "점검해요."),
+            ("점검하지 않아유.", "점검하지 않아요."),
+            ("사람이에유.", "사람이에요."),
+            ("무엇을 도와줄까유?", "무엇을 도와줄까?"),
+        ] {
+            let normalized = UtteranceNormalizer
+                .normalize(&request(surface))
+                .expect("regional morphology normalization");
+            assert_eq!(normalized.raw_text, surface, "{surface}");
+            assert_eq!(normalized.semantic_surface_text, expected, "{surface}");
+            assert!(normalized.operations.iter().any(|operation| {
+                operation.kind == NormalizationOperationKindIR::RegionalMorphology
+                    && operation.before != operation.after
+            }));
+        }
+
+        for (surface, function) in [
+            ("반갑데이!", DiscourseFunctionIR::Greeting),
+            ("반가워유!", DiscourseFunctionIR::Greeting),
+            ("알겠데이.", DiscourseFunctionIR::Acknowledge),
+            ("알겠어유.", DiscourseFunctionIR::Acknowledge),
+            ("또 보자데이.", DiscourseFunctionIR::Farewell),
+            ("또 봐유.", DiscourseFunctionIR::Farewell),
+        ] {
+            let normalized = UtteranceNormalizer.normalize(&request(surface)).unwrap();
+            assert_eq!(normalized.raw_text, surface);
+            assert_eq!(
+                normalized.disposition,
+                ConversationTurnDispositionIR::BackchannelOnly,
+                "{surface}"
+            );
+            assert!(normalized
+                .discourse_events
+                .iter()
+                .any(|event| event.function == function));
+        }
+    }
+
+    #[test]
     fn unseen_control_typos_require_unique_request_context() {
         for (surface, expected, typo, repaired) in [
             (
                 "Will ya insepct the Quartz cache?",
-                "will you inspect the quartz cache?",
+                "Will you inspect the Quartz cache?",
                 "insepct",
                 "inspect",
             ),
             (
                 "Please revieew the report.",
-                "please review the report.",
+                "Please review the report.",
                 "revieew",
                 "review",
             ),
             (
                 "Reapir the Meadow queue.",
-                "repair the meadow queue.",
+                "repair the Meadow queue.",
                 "reapir",
                 "repair",
             ),
@@ -12403,7 +13554,7 @@ mod tests {
             .expect("normalization");
         assert_eq!(
             normalized.semantic_surface_text,
-            "revisit the older pair's reports."
+            "Revisit the older pair's reports."
         );
         assert!(!normalized.operations.iter().any(|operation| {
             operation.before == "older"
@@ -12416,7 +13567,7 @@ mod tests {
         let normalized = UtteranceNormalizer
             .normalize(&request("The opal room is on fire"))
             .expect("normalization");
-        assert_eq!(normalized.semantic_surface_text, "the opal room is on fire");
+        assert_eq!(normalized.semantic_surface_text, "The opal room is on fire");
         assert!(!normalized.operations.iter().any(|operation| {
             operation.before == "fire"
                 && operation.kind == NormalizationOperationKindIR::UniqueFuzzyMatch
@@ -12619,6 +13770,25 @@ mod tests {
             resolved.discourse_bindings[0].kind,
             DiscourseBindingKindIR::EllipticalAction
         );
+    }
+
+    #[test]
+    fn question_arguments_cannot_inherit_a_task_goal() {
+        for question in [
+            "누가 그렇게 말했어?",
+            "누가 같은 방식으로 보고했어?",
+            "Who reported the same workflow?",
+            "Who applied the same procedure?",
+        ] {
+            assert!(classify_goal_ellipsis(question).is_none(), "{question}");
+        }
+        for command in [
+            "그대로 해",
+            "백업도 그렇게 해",
+            "apply the same workflow to the cache",
+        ] {
+            assert!(classify_goal_ellipsis(command).is_some(), "{command}");
+        }
     }
 
     #[test]
@@ -12883,6 +14053,7 @@ mod tests {
             )
             .expect("initial state");
         let question = QuestionUnderDiscussionIR {
+            reference_gap: None,
             question_id: "QUD-000001".to_string(),
             kind: QuestionUnderDiscussionKindIR::CompetingGoal,
             topic_id: None,
@@ -12962,6 +14133,8 @@ mod tests {
                     guard_conditionals: None,
                     semantic_role_graph: Some(&analysis.semantic_role_graph),
                     attribution_graph: Some(&analysis.attribution_graph),
+                    raw_compositional_analysis: None,
+                    source_bound_transformation: false,
                     discourse_focus_candidates: &[],
                 },
             )
@@ -13043,6 +14216,8 @@ mod tests {
                     guard_conditionals: None,
                     semantic_role_graph: None,
                     attribution_graph: None,
+                    raw_compositional_analysis: None,
+                    source_bound_transformation: false,
                     discourse_focus_candidates: &[],
                 },
             )
@@ -13080,6 +14255,8 @@ mod tests {
                     guard_conditionals: None,
                     semantic_role_graph: None,
                     attribution_graph: None,
+                    raw_compositional_analysis: None,
+                    source_bound_transformation: false,
                     discourse_focus_candidates: &[],
                 },
             )
@@ -13113,6 +14290,8 @@ mod tests {
                     guard_conditionals: None,
                     semantic_role_graph: None,
                     attribution_graph: None,
+                    raw_compositional_analysis: None,
+                    source_bound_transformation: false,
                     discourse_focus_candidates: &[],
                 },
             )
@@ -13186,6 +14365,8 @@ mod tests {
                     temporal_analysis: None,
                     semantic_role_graph: None,
                     attribution_graph: None,
+                    raw_compositional_analysis: None,
+                    source_bound_transformation: false,
                     guard_conditionals: None,
                     discourse_focus_candidates: &[],
                 },
@@ -13232,6 +14413,8 @@ mod tests {
                     guard_conditionals: None,
                     semantic_role_graph: None,
                     attribution_graph: None,
+                    raw_compositional_analysis: None,
+                    source_bound_transformation: false,
                     discourse_focus_candidates: &[],
                 },
             )
@@ -13868,6 +15051,50 @@ mod tests {
         authority_tamper.semantic_authority = true;
         authority_tamper.update_sha256 = discourse_group_update_sha256(&authority_tamper);
         assert!(!authority_tamper.validate());
+    }
+
+    #[test]
+    fn response_focus_and_world_commit_atomically() {
+        let mut memory = ConversationMemory::default();
+        let mut state = empty_state("ATOMIC-RESPONSE");
+        state.completed_turns = 1;
+        state.state_sha256 = state_hash(&state).unwrap();
+        memory
+            .states
+            .insert(state.conversation_id.clone(), state.clone());
+        let prepared = crate::world_dialogue::DialogueWorldIR::default()
+            .prepare("Tired?", 1)
+            .unwrap();
+        let c = prepared.clarification.unwrap();
+        let focus = crate::discourse_qa::AnswerFocusIR {
+            shared_proposition: None,
+            proposition_belief_id: None,
+            query: crate::discourse_qa::DiscourseQaEngine
+                .unanswered("Tired?", crate::language_knowledge::LanguageCodeIR::English)
+                .query,
+            answered_turn: 1,
+            described_event: None,
+            clarification_act: Some(c.response_act()),
+            decision_inquiry: None,
+        };
+        let mut invalid = focus.clone();
+        invalid.answered_turn = 2;
+        assert!(memory
+            .commit_response_state("ATOMIC-RESPONSE", Some(invalid), prepared.memory.clone())
+            .is_err());
+        assert_eq!(memory.state("ATOMIC-RESPONSE"), Some(&state));
+        let committed = memory
+            .commit_response_state("ATOMIC-RESPONSE", Some(focus.clone()), prepared.memory)
+            .unwrap();
+        assert_eq!(committed.answer_focus, Some(focus.clone()));
+        assert!(memory
+            .commit_response_state(
+                "ATOMIC-RESPONSE",
+                Some(focus),
+                crate::world_dialogue::DialogueWorldIR::default()
+            )
+            .is_err());
+        assert_eq!(memory.state("ATOMIC-RESPONSE"), Some(&committed));
     }
 
     #[test]

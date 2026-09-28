@@ -4,7 +4,7 @@
 //! represented as asserting. It is not a world-fact database. No ledger record
 //! establishes truth or grants execution authority.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 
 use serde::{Deserialize, Serialize};
 
@@ -13,7 +13,7 @@ use crate::attribution::{
 };
 use crate::modality::ModalWorldIR;
 
-pub const EPISTEMIC_LEDGER_SCHEMA: &str = "B_CORE_EPISTEMIC_LEDGER_IR_2";
+pub const EPISTEMIC_LEDGER_SCHEMA: &str = "B_CORE_EPISTEMIC_LEDGER_IR_3";
 const MAX_BELIEF_RECORDS: usize = 64;
 const MAX_BELIEF_REVISIONS: usize = 128;
 
@@ -160,13 +160,162 @@ impl EpistemicLedgerIR {
         referenced_referent_ids: &[String],
         observations: &[EpistemicObservationIR],
     ) -> Vec<(String, String)> {
+        self.apply_turn_with_event_focus(
+            turn_index,
+            turn_surface,
+            referenced_referent_ids,
+            observations,
+            None,
+        )
+    }
+
+    pub(crate) fn apply_turn_with_event_focus(
+        &mut self,
+        turn_index: u64,
+        turn_surface: &str,
+        referenced_referent_ids: &[String],
+        observations: &[EpistemicObservationIR],
+        event_focus: Option<&str>,
+    ) -> Vec<(String, String)> {
+        let compositional_analysis =
+            crate::compositional_semantics::CompositionalSemanticAnalyzer.analyze(turn_surface);
+        self.apply_turn_with_event_focus_and_compositional_analysis(
+            turn_index,
+            turn_surface,
+            referenced_referent_ids,
+            observations,
+            event_focus,
+            &compositional_analysis,
+        )
+    }
+
+    /// Applies a turn using analysis of this exact source surface supplied by
+    /// the caller.  Conversation commit uses this to share one immutable
+    /// source analysis between the response-prohibition boundary and its
+    /// source-level causal-observation admission check.  Callers must never
+    /// substitute a reference-resolved or otherwise rewritten surface here.
+    pub(crate) fn apply_turn_with_event_focus_and_compositional_analysis(
+        &mut self,
+        turn_index: u64,
+        turn_surface: &str,
+        referenced_referent_ids: &[String],
+        observations: &[EpistemicObservationIR],
+        event_focus: Option<&str>,
+        compositional_analysis: &crate::compositional_semantics::CompositionalAnalysisIR,
+    ) -> Vec<(String, String)> {
+        self.apply_turn_with_event_focus_and_source_analysis(
+            turn_index,
+            turn_surface,
+            referenced_referent_ids,
+            observations,
+            event_focus,
+            compositional_analysis,
+            None,
+        )
+    }
+
+    /// Like `apply_turn_with_event_focus_and_compositional_analysis`, with an
+    /// optional content record compiled from exactly `turn_surface`.  The
+    /// trusted record is used only for an observation whose surface exactly
+    /// equals the turn; final conversation-state validation still recompiles
+    /// every persisted record from its source before publishing the state.
+    pub(crate) fn apply_turn_with_event_focus_and_source_analysis(
+        &mut self,
+        turn_index: u64,
+        turn_surface: &str,
+        referenced_referent_ids: &[String],
+        observations: &[EpistemicObservationIR],
+        event_focus: Option<&str>,
+        compositional_analysis: &crate::compositional_semantics::CompositionalAnalysisIR,
+        trusted_turn_content: Option<&crate::proposition_content::PropositionContentIR>,
+    ) -> Vec<(String, String)> {
+        // A scoped response prohibition changes what may be said, not what
+        // happened. Keep it in the turn/directive history; do not let legacy
+        // proposition extraction turn its complement into a belief revision.
+        if crate::discourse_qa::is_response_operation_batch(turn_surface)
+            || !crate::conversation_contract::response_prohibition(
+                turn_surface,
+                compositional_analysis,
+            )
+            .is_empty()
+        {
+            return Vec::new();
+        }
         if is_retraction_surface(turn_surface) {
             self.retract_referenced(turn_index, turn_surface, referenced_referent_ids);
         }
-        let explicit_revision = is_revision_surface(turn_surface);
+        let turn_revision = is_revision_surface(turn_surface)
+            || crate::proposition_content::is_event_correction_surface(turn_surface);
         let mut bindings = Vec::new();
+        let turn_record_floor = self.records.len();
         for (index, observation) in observations.iter().enumerate() {
+            // A turn may contain a preface, a correction and unrelated facts.
+            // Revision force belongs to its observation, not every sentence in
+            // the turn. Preserve whole-turn attribution compatibility only for
+            // a single extracted proposition (e.g. "Alice now says ...").
+            let explicit_revision = is_revision_surface(&observation.proposition_surface)
+                || crate::proposition_content::is_event_correction_surface(
+                    &observation.proposition_surface,
+                )
+                || (observations.len() == 1 && turn_revision);
             let belief_id = format!("BELIEF-{turn_index:06}-{:02}", index + 1);
+            let mut content = trusted_turn_content
+                .filter(|_| observation.proposition_surface == turn_surface)
+                .cloned()
+                .unwrap_or_else(|| {
+                    crate::proposition_content::PropositionContentIR::compile(
+                        &observation.proposition_surface,
+                    )
+                });
+            let needs_context =
+                content.events.iter().any(|e| e.has_references()) || explicit_revision;
+            let mut event_revision_target = None;
+            let event_correction_requested = explicit_revision
+                && crate::proposition_content::is_event_report(&observation.proposition_surface);
+            if needs_context && observation.modal_world == ModalWorldIR::Actual {
+                let candidates = self
+                    .records
+                    .iter()
+                    .enumerate()
+                    .filter(|(record_index, r)| {
+                        r.status == BeliefRecordStatusIR::Active
+                            && r.signature.modal_world == ModalWorldIR::Actual
+                            && normalized_source(&r.source_actor)
+                                == normalized_source(&observation.source_actor)
+                            && (r.introduced_turn < turn_index
+                                || (*record_index >= turn_record_floor
+                                    && *record_index < self.records.len()))
+                            && (explicit_revision
+                                || r.introduced_turn + 1 == turn_index
+                                || event_focus == Some(r.belief_id.as_str())
+                                || (*record_index >= turn_record_floor
+                                    && *record_index < self.records.len()))
+                            && r.content.validate_source(&r.proposition_surface)
+                            && r.content.events.len() == 1
+                    })
+                    .filter_map(|(_, r)| {
+                        let mut sources = r.content.context_sources.clone();
+                        sources.push(crate::proposition_content::EventSourceIR {
+                            belief_id: r.belief_id.clone(),
+                            source_actor: r.source_actor.clone(),
+                            source_proposition: r.proposition_surface.clone(),
+                        });
+                        let compiled =
+                            crate::proposition_content::PropositionContentIR::compile_contextual(
+                                &observation.proposition_surface,
+                                &sources,
+                            )?;
+                        Some((r.belief_id.clone(), compiled))
+                    })
+                    .collect::<Vec<_>>();
+                if candidates.len() == 1 {
+                    let (id, compiled) = candidates.into_iter().next().unwrap();
+                    content = compiled;
+                    if explicit_revision {
+                        event_revision_target = Some(id);
+                    }
+                }
+            }
             let signature = proposition_signature_in_world(
                 &observation.proposition_surface,
                 observation.proposition_polarity,
@@ -239,9 +388,22 @@ impl EpistemicLedgerIR {
                 || observation.attribution_attitude == AttributionAttitudeIR::Correct)
                 && !had_same_source_match
             {
-                if let Some(record_index) = self
-                    .latest_active_source_record_for_subject(&observation.source_actor, &signature)
-                    .or_else(|| self.latest_active_source_record(&observation.source_actor))
+                if let Some(record_index) = event_revision_target
+                    .as_ref()
+                    .and_then(|id| self.records.iter().position(|r| &r.belief_id == id))
+                    .or_else(|| {
+                        (!event_correction_requested)
+                            .then(|| {
+                                self.latest_active_source_record_for_subject(
+                                    &observation.source_actor,
+                                    &signature,
+                                )
+                                .or_else(|| {
+                                    self.latest_active_source_record(&observation.source_actor)
+                                })
+                            })
+                            .flatten()
+                    })
                 {
                     let prior_id = self.records[record_index].belief_id.clone();
                     self.records[record_index].status = BeliefRecordStatusIR::Superseded;
@@ -256,9 +418,7 @@ impl EpistemicLedgerIR {
                 }
             }
             self.records.push(BeliefRecordIR {
-                content: crate::proposition_content::PropositionContentIR::compile(
-                    &observation.proposition_surface,
-                ),
+                content,
                 belief_id: belief_id.clone(),
                 origin_referent_id: observation.origin_referent_id.clone(),
                 source_actor: observation.source_actor.clone(),
@@ -295,6 +455,12 @@ impl EpistemicLedgerIR {
             .iter()
             .map(|record| record.belief_id.as_str())
             .collect::<BTreeSet<_>>();
+        let record_indices = self
+            .records
+            .iter()
+            .enumerate()
+            .map(|(index, record)| (record.belief_id.as_str(), index))
+            .collect::<BTreeMap<_, _>>();
         let referent_ids = self
             .records
             .iter()
@@ -309,6 +475,9 @@ impl EpistemicLedgerIR {
             && referent_ids.len() == self.records.len()
             && revision_ids.len() == self.revisions.len()
             && self.records.iter().all(|record| {
+                let Some(&record_index) = record_indices.get(record.belief_id.as_str()) else {
+                    return false;
+                };
                 !record.belief_id.trim().is_empty()
                     && !record.origin_referent_id.trim().is_empty()
                     && !record.source_actor.trim().is_empty()
@@ -320,6 +489,33 @@ impl EpistemicLedgerIR {
                     && record.last_updated_turn <= completed_turns
                     && !record.dialogue_truth_established
                     && !record.external_execution_authorized
+                    && record.content.validate_source(&record.proposition_surface)
+                    && record.content.context_sources.iter().all(|s| {
+                        record_indices
+                            .get(s.belief_id.as_str())
+                            .is_some_and(|&p_index| {
+                                let source = &self.records[p_index];
+                                source.source_actor == s.source_actor
+                                    && normalized_source(&source.source_actor)
+                                        == normalized_source(&record.source_actor)
+                                    && source.proposition_surface == s.source_proposition
+                                    && (source.introduced_turn < record.introduced_turn
+                                        || (source.introduced_turn == record.introduced_turn
+                                            && p_index < record_index))
+                            })
+                    })
+                    && record.content.context_sources.windows(2).all(|pair| {
+                        record_indices
+                            .get(pair[0].belief_id.as_str())
+                            .zip(record_indices.get(pair[1].belief_id.as_str()))
+                            .is_some_and(|(&left_index, &right_index)| {
+                                let left = &self.records[left_index];
+                                let right = &self.records[right_index];
+                                left.introduced_turn < right.introduced_turn
+                                    || (left.introduced_turn == right.introduced_turn
+                                        && left_index < right_index)
+                            })
+                    })
             })
             && self.revisions.iter().all(|revision| {
                 !revision.revision_id.trim().is_empty()
@@ -458,6 +654,25 @@ impl EpistemicLedgerIR {
             self.records.truncate(MAX_BELIEF_RECORDS);
             self.records
                 .sort_by(|left, right| left.belief_id.cmp(&right.belief_id));
+        }
+        // A retained contextual result cannot outlive the inputs required to
+        // replay it. Cascade eviction within the bounded dialogue ledger.
+        loop {
+            let ids = self
+                .records
+                .iter()
+                .map(|r| r.belief_id.clone())
+                .collect::<BTreeSet<_>>();
+            let before = self.records.len();
+            self.records.retain(|r| {
+                r.content
+                    .context_sources
+                    .iter()
+                    .all(|s| ids.contains(&s.belief_id))
+            });
+            if before == self.records.len() {
+                break;
+            }
         }
         let retained = self
             .records
@@ -800,6 +1015,9 @@ pub fn is_retraction_surface(text: &str) -> bool {
 
 fn is_revision_surface(text: &str) -> bool {
     let normalized = text.to_lowercase();
+    if normalized.starts_with("no, ") {
+        return true;
+    }
     [
         " now ",
         "now ",
@@ -823,6 +1041,160 @@ fn is_revision_surface(text: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn event_context_is_bounded_source_bound_and_evicted_with_its_inputs() {
+        use crate::proposition_content::ContentSlotIR;
+        let mut ledger = EpistemicLedgerIR::default();
+        let first = "Mira lent a letter to Sol.";
+        ledger.apply_turn(1, first, &[], &[observation("P1", "McKay", first)]);
+        let second = "Sol read it at school.";
+        ledger.apply_turn_with_event_focus(
+            3,
+            second,
+            &[],
+            &[observation("P3", "mckay", second)],
+            Some("BELIEF-000001-01"),
+        );
+        assert_eq!(
+            ledger.records[1].content.events[0].roles[&ContentSlotIR::Theme],
+            "letter"
+        );
+        assert!(ledger.validate(3));
+        let mut tampered = ledger.clone();
+        tampered.records[1].content.context_sources[0].source_actor = "OTHER".into();
+        assert!(!tampered.validate(3));
+        for turn in 4..75 {
+            let text = format!("Item{turn} says ready");
+            ledger.apply_turn(
+                turn,
+                &text,
+                &[],
+                &[observation(&format!("P{turn}"), "OTHER", &text)],
+            );
+            assert!(ledger.validate(turn));
+        }
+        assert!(ledger.record("BELIEF-000003-01").is_none());
+    }
+
+    #[test]
+    fn unmatched_event_correction_does_not_replace_an_unrelated_record() {
+        let mut ledger = EpistemicLedgerIR::default();
+        let first = "수아는 서점에서 편지를 읽었어.";
+        ledger.apply_turn(1, first, &[], &[observation("P1", "USER", first)]);
+        let second = "아니, 공원이 아니라 학교에서 읽었어.";
+        ledger.apply_turn(2, second, &[], &[observation("P2", "USER", second)]);
+        assert_eq!(ledger.records[0].status, BeliefRecordStatusIR::Active);
+        assert!(ledger.records[1].content.events.is_empty());
+        assert!(ledger.validate(2));
+    }
+
+    #[test]
+    fn revision_force_does_not_leak_to_sibling_observations() {
+        use crate::proposition_content::ContentSlotIR;
+        for (source, correction, slot, expected) in [
+            (
+                "유림은 공원에서 편지를 읽었어.",
+                "공원이 아니고 집이야",
+                ContentSlotIR::Location,
+                "집",
+            ),
+            (
+                "유림은 공원에서 편지를 읽었어.",
+                "편지가 아니고 신문이야",
+                ContentSlotIR::Theme,
+                "신문",
+            ),
+            (
+                "유림은 공원에서 편지를 읽었어.",
+                "유림이 아니고 다원이야",
+                ContentSlotIR::Agent,
+                "다원",
+            ),
+            (
+                "Mira read a letter at the harbor.",
+                "It was the garden, not the harbor",
+                ContentSlotIR::Location,
+                "garden",
+            ),
+            (
+                "Mira read a letter at the harbor.",
+                "It was the newspaper, not the letter",
+                ContentSlotIR::Theme,
+                "newspaper",
+            ),
+        ] {
+            for correction_first in [false, true] {
+                let mut ledger = EpistemicLedgerIR::default();
+                ledger.apply_turn(1, source, &[], &[observation("P1", "USER", source)]);
+                let before = ledger.records[0].content.events[0].clone();
+                let preface = observation("P2-PREFACE", "USER", "앞의 설명을 잘못 말했네");
+                let replacement = observation("P2-REVISION", "USER", correction);
+                let observations = if correction_first {
+                    vec![replacement, preface]
+                } else {
+                    vec![preface, replacement]
+                };
+                let turn = observations
+                    .iter()
+                    .map(|o| o.proposition_surface.as_str())
+                    .collect::<Vec<_>>()
+                    .join(". ");
+                ledger.apply_turn(2, &turn, &[], &observations);
+                assert_eq!(
+                    ledger.records[0].status,
+                    BeliefRecordStatusIR::Superseded,
+                    "{turn}"
+                );
+                let current = ledger
+                    .records
+                    .iter()
+                    .find(|r| r.origin_referent_id == "P2-REVISION")
+                    .unwrap();
+                assert_eq!(current.status, BeliefRecordStatusIR::Active);
+                assert_eq!(current.content.events.len(), 1, "{turn}");
+                let event = &current.content.events[0];
+                assert_eq!(event.roles[&slot], expected);
+                assert_eq!(event.lexical_entry_ids, before.lexical_entry_ids);
+                for (role, value) in &before.roles {
+                    if *role != slot {
+                        assert_eq!(event.roles[role], *value);
+                    }
+                }
+                assert_eq!(
+                    current.content.context_sources[0].belief_id,
+                    "BELIEF-000001-01"
+                );
+                assert!(ledger.validate(2));
+            }
+        }
+    }
+
+    #[test]
+    fn nominal_revision_requires_unique_same_source_event_and_role() {
+        for (second_source, second_text, expected_events) in [
+            ("USER", "Sol read a newspaper at the harbor.", 0),
+            ("OTHER", "Sol read a newspaper at the harbor.", 1),
+        ] {
+            let mut ledger = EpistemicLedgerIR::default();
+            let first = "Mira read a letter at the harbor.";
+            ledger.apply_turn(1, first, &[], &[observation("P1", "USER", first)]);
+            ledger.apply_turn(
+                2,
+                second_text,
+                &[],
+                &[observation("P2", second_source, second_text)],
+            );
+            let correction = "It was the garden, not the harbor.";
+            ledger.apply_turn(3, correction, &[], &[observation("P3", "USER", correction)]);
+            assert_eq!(ledger.records[2].content.events.len(), expected_events);
+            assert_eq!(ledger.records[1].status, BeliefRecordStatusIR::Active);
+            if expected_events == 0 {
+                assert_eq!(ledger.records[0].status, BeliefRecordStatusIR::Active);
+            }
+            assert!(ledger.validate(3));
+        }
+    }
 
     fn observation(id: &str, source: &str, proposition: &str) -> EpistemicObservationIR {
         EpistemicObservationIR {
@@ -943,6 +1315,220 @@ mod tests {
             .records
             .iter()
             .all(|record| !record.dialogue_truth_established));
+    }
+
+    #[test]
+    fn same_turn_explicit_subject_reference_object_binds_in_source_order() {
+        let mut ledger = EpistemicLedgerIR::default();
+        let first = "Alice read a note.";
+        let second = "Bob read it.";
+        assert!(
+            crate::proposition_content::PropositionContentIR::compile(second).events[0]
+                .has_references()
+        );
+        assert!(
+            crate::proposition_content::PropositionContentIR::compile_contextual(
+                second,
+                &[crate::proposition_content::EventSourceIR {
+                    belief_id: "X".into(),
+                    source_actor: "USER".into(),
+                    source_proposition: first.into()
+                }]
+            )
+            .is_some()
+        );
+        ledger.apply_turn_with_event_focus(
+            1,
+            "Alice read a note and Bob read it.",
+            &[],
+            &[
+                observation("P1", "USER", first),
+                observation("P2", "USER", second),
+            ],
+            None,
+        );
+        assert_eq!(ledger.records.len(), 2);
+        assert_eq!(ledger.records[1].content.context_sources.len(), 1);
+        assert_eq!(
+            ledger.records[1].content.events[0].roles
+                [&crate::proposition_content::ContentSlotIR::Theme],
+            "note"
+        );
+        assert!(ledger.validate(1));
+    }
+
+    #[test]
+    fn korean_same_turn_source_preserves_literal_and_typed_object_identity() {
+        use crate::proposition_content::ContentSlotIR;
+
+        for (first, second, expected_theme) in [
+            (
+                "도윤은 책을 읽었어.",
+                "도윤은 그것을 민서에게 주었어.",
+                "책",
+            ),
+            (
+                "라온은 지도를 읽었어.",
+                "라온은 그것을 유나에게 주었어.",
+                "지도",
+            ),
+        ] {
+            let mut ledger = EpistemicLedgerIR::default();
+            ledger.apply_turn_with_event_focus(
+                1,
+                &format!("{first} {second}"),
+                &[],
+                &[
+                    observation("FIRST", "USER", first),
+                    observation("SECOND", "USER", second),
+                ],
+                None,
+            );
+            let record = &ledger.records[1];
+            assert_eq!(record.proposition_surface, second);
+            assert_eq!(record.content.context_sources.len(), 1);
+            assert_eq!(record.content.context_sources[0].source_proposition, first);
+            assert_eq!(
+                record.content.events[0].roles[&ContentSlotIR::Theme],
+                expected_theme
+            );
+            assert!(ledger.validate(1));
+        }
+    }
+
+    #[test]
+    fn same_turn_reference_stays_unresolved_without_or_with_ambiguous_sources() {
+        use crate::proposition_content::ContentSlotIR;
+
+        let mut absent = EpistemicLedgerIR::default();
+        let unresolved = "라온은 그것을 유나에게 주었어.";
+        absent.apply_turn(
+            1,
+            unresolved,
+            &[],
+            &[observation("ONLY", "USER", unresolved)],
+        );
+        assert_eq!(
+            absent.records[0].content.events[0].roles[&ContentSlotIR::Theme],
+            "그것"
+        );
+        assert!(absent.records[0].content.context_sources.is_empty());
+        assert!(absent.validate(1));
+
+        let mut ambiguous = EpistemicLedgerIR::default();
+        let first = "수아는 책을 읽었어.";
+        let second = "수아는 편지를 읽었어.";
+        let reference = "수아는 그것을 민서에게 주었어.";
+        ambiguous.apply_turn_with_event_focus(
+            1,
+            &format!("{first} {second} {reference}"),
+            &[],
+            &[
+                observation("FIRST", "USER", first),
+                observation("SECOND", "USER", second),
+                observation("REFERENCE", "USER", reference),
+            ],
+            None,
+        );
+        assert_eq!(
+            ambiguous.records[2].content.events[0].roles[&ContentSlotIR::Theme],
+            "그것"
+        );
+        assert!(ambiguous.records[2].content.context_sources.is_empty());
+        assert!(ambiguous.validate(1));
+    }
+
+    #[test]
+    fn contextual_source_order_rejects_future_self_and_cyclic_bindings() {
+        use crate::proposition_content::EventSourceIR;
+
+        let mut future = EpistemicLedgerIR::default();
+        let first = "Alice read a note.";
+        let second = "Bob read a letter.";
+        future.apply_turn(1, first, &[], &[observation("FIRST", "USER", first)]);
+        future.apply_turn(2, second, &[], &[observation("SECOND", "USER", second)]);
+        let later = future.records[1].clone();
+        future.records[0].content =
+            crate::proposition_content::PropositionContentIR::compile_contextual(
+                first,
+                &[EventSourceIR {
+                    belief_id: later.belief_id,
+                    source_actor: later.source_actor,
+                    source_proposition: later.proposition_surface,
+                }],
+            )
+            .expect("future source content compiles");
+        assert!(future.records[0].content.validate_source(first));
+        assert!(!future.validate(2));
+
+        let mut self_reference = EpistemicLedgerIR::default();
+        self_reference.apply_turn(1, first, &[], &[observation("FIRST", "USER", first)]);
+        let own = self_reference.records[0].clone();
+        self_reference.records[0].content =
+            crate::proposition_content::PropositionContentIR::compile_contextual(
+                first,
+                &[EventSourceIR {
+                    belief_id: own.belief_id,
+                    source_actor: own.source_actor,
+                    source_proposition: own.proposition_surface,
+                }],
+            )
+            .expect("self source content compiles");
+        assert!(self_reference.records[0].content.validate_source(first));
+        assert!(!self_reference.validate(1));
+
+        let mut cycle = EpistemicLedgerIR::default();
+        cycle.apply_turn(1, first, &[], &[observation("FIRST", "USER", first)]);
+        cycle.apply_turn(2, second, &[], &[observation("SECOND", "USER", second)]);
+        let left = cycle.records[0].clone();
+        let right = cycle.records[1].clone();
+        cycle.records[0].content =
+            crate::proposition_content::PropositionContentIR::compile_contextual(
+                first,
+                &[EventSourceIR {
+                    belief_id: right.belief_id,
+                    source_actor: right.source_actor,
+                    source_proposition: right.proposition_surface,
+                }],
+            )
+            .expect("left cycle source content compiles");
+        cycle.records[1].content =
+            crate::proposition_content::PropositionContentIR::compile_contextual(
+                second,
+                &[EventSourceIR {
+                    belief_id: left.belief_id,
+                    source_actor: left.source_actor,
+                    source_proposition: left.proposition_surface,
+                }],
+            )
+            .expect("right cycle source content compiles");
+        assert!(cycle.records[0].content.validate_source(first));
+        assert!(cycle.records[1].content.validate_source(second));
+        assert!(!cycle.validate(2));
+
+        let mut same_turn = EpistemicLedgerIR::default();
+        same_turn.apply_turn(
+            1,
+            first,
+            &[],
+            &[
+                observation("FIRST", "USER", first),
+                observation("SECOND", "USER", second),
+            ],
+        );
+        let later_same_turn = same_turn.records[1].clone();
+        same_turn.records[0].content =
+            crate::proposition_content::PropositionContentIR::compile_contextual(
+                first,
+                &[EventSourceIR {
+                    belief_id: later_same_turn.belief_id,
+                    source_actor: later_same_turn.source_actor,
+                    source_proposition: later_same_turn.proposition_surface,
+                }],
+            )
+            .expect("same-turn later source content compiles");
+        assert!(same_turn.records[0].content.validate_source(first));
+        assert!(!same_turn.validate(1));
     }
 
     #[test]

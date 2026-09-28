@@ -13,13 +13,15 @@ use serde::{Deserialize, Serialize};
 use crate::clause_graph::{ClauseGraphIR, ClauseRelationKindIR};
 use crate::compositional_semantics::{FrameMoodIR, PredicateFrameIR};
 
-pub const SEMANTIC_ROLE_GRAPH_SCHEMA: &str = "B_CORE_SEMANTIC_ROLE_GRAPH_IR_1";
+pub const SEMANTIC_ROLE_GRAPH_SCHEMA: &str = "B_CORE_SEMANTIC_ROLE_GRAPH_IR_5";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum SemanticNodeKindIR {
     Event,
     Entity,
+    /// An open role in an interrogative, not a remembered individual.
+    QueryVariable,
     ImplicitAgent,
 }
 
@@ -48,6 +50,7 @@ pub enum SemanticRoleKindIR {
     Recipient,
     Source,
     Destination,
+    Target,
     Instrument,
     Location,
     Result,
@@ -96,6 +99,7 @@ pub enum EventRelationKindIR {
     Purpose,
     TemporalBefore,
     Contrast,
+    ContentComplement,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -178,6 +182,22 @@ impl Default for SemanticRoleGraphIR {
 }
 
 impl SemanticRoleGraphIR {
+    /// A capability question cannot implicitly assign an explicitly different
+    /// actor to the conversational addressee. An unresolved explicit topic is
+    /// conservative here: it is not proof that the assistant is the actor.
+    pub(crate) fn has_non_addressee_actor(&self, frame_id: &str) -> bool {
+        self.arguments_for_frame(frame_id)
+            .iter()
+            .any(|(role, node)| {
+                matches!(role, SemanticRoleKindIR::Agent | SemanticRoleKindIR::Topic)
+                    && node.kind != SemanticNodeKindIR::ImplicitAgent
+                    && !matches!(
+                        node.normalized_label.as_str(),
+                        "you" | "너" | "당신" | "시스템" | "코어" | "the system" | "system"
+                    )
+            })
+    }
+
     pub fn event_node_for_frame(&self, frame_id: &str) -> Option<&SemanticNodeIR> {
         self.nodes.iter().find(|node| {
             node.kind == SemanticNodeKindIR::Event
@@ -217,6 +237,7 @@ impl SemanticRoleGraphIR {
             SemanticRoleKindIR::Patient,
             SemanticRoleKindIR::Result,
             SemanticRoleKindIR::Destination,
+            SemanticRoleKindIR::Target,
             SemanticRoleKindIR::Topic,
         ] {
             if let Some((_, node)) = self
@@ -388,6 +409,42 @@ impl SemanticRoleGraphIR {
                 evidence_surface: edge.marker_surface.clone(),
                 confidence_millis: edge.confidence_millis,
             });
+
+            if edge.relation == ClauseRelationKindIR::ContentComplement
+                && source_clause.source_start_byte < target_clause.source_start_byte
+                && frames
+                    .iter()
+                    .find(|frame| frame.frame_id == source_clause.anchor_frame_id)
+                    .is_some_and(|frame| frame.source_start_byte > target_clause.source_start_byte)
+            {
+                let prefix_end = target_clause.source_start_byte - source_clause.source_start_byte;
+                if let Some(prefix) = source_clause.source_text.get(..prefix_end) {
+                    let recipients = word_spans(prefix)
+                        .iter()
+                        .filter_map(|word| {
+                            let (base, particle) = strip_korean_particle(word.text)?;
+                            matches!(particle, "에게" | "한테" | "께")
+                                .then(|| normalize_argument(base))
+                        })
+                        .collect::<BTreeSet<_>>();
+                    let recipient_ids = self
+                        .nodes
+                        .iter()
+                        .filter(|node| recipients.contains(&node.normalized_label))
+                        .map(|node| node.node_id.clone())
+                        .collect::<BTreeSet<_>>();
+                    for role in &mut self.role_edges {
+                        if role.event_node_id == target_event
+                            && role.role == SemanticRoleKindIR::Recipient
+                            && recipient_ids.contains(&role.argument_node_id)
+                        {
+                            role.event_node_id.clone_from(&source_event);
+                            role.evidence_surface =
+                                "recipient precedes source-bounded interrogative complement".into();
+                        }
+                    }
+                }
+            }
 
             if relation_licenses_argument_sharing(edge.relation) {
                 let source_start = frames
@@ -589,7 +646,10 @@ impl SemanticRoleGraphIR {
             referenced.extend(attachment.dependent_node_ids.iter().cloned());
         }
         self.nodes.retain(|node| {
-            node.kind != SemanticNodeKindIR::Entity || referenced.contains(&node.node_id)
+            !matches!(
+                node.kind,
+                SemanticNodeKindIR::Entity | SemanticNodeKindIR::QueryVariable
+            ) || referenced.contains(&node.node_id)
         });
         let node_ids = self
             .nodes
@@ -630,6 +690,7 @@ fn semantic_event_relation(relation: ClauseRelationKindIR) -> EventRelationKindI
         ClauseRelationKindIR::Cause => EventRelationKindIR::Cause,
         ClauseRelationKindIR::Purpose => EventRelationKindIR::Purpose,
         ClauseRelationKindIR::Contrast => EventRelationKindIR::Contrast,
+        ClauseRelationKindIR::ContentComplement => EventRelationKindIR::ContentComplement,
     }
 }
 
@@ -665,6 +726,7 @@ fn has_resolved_primary_argument(
                     | SemanticRoleKindIR::Patient
                     | SemanticRoleKindIR::Result
                     | SemanticRoleKindIR::Destination
+                    | SemanticRoleKindIR::Target
                     | SemanticRoleKindIR::Topic
             ))
             || (edge.event_node_id == event_node_id
@@ -716,17 +778,31 @@ impl SemanticRoleAnalyzer {
             return SemanticRoleGraphIR::default();
         }
         let mut builder = GraphBuilder::default();
+        let information_statement = crate::grammatical_scope::embedded_information_statement(text);
         let mut ordered = frames.iter().collect::<Vec<_>>();
         ordered.sort_by_key(|frame| frame.source_start_byte);
         for (index, frame) in ordered.iter().enumerate() {
             let event_node_id = builder.add_event(frame);
             let (default_start, default_end) = clause_bounds(text, frame.source_start_byte);
-            let (clause_start, clause_end) = if frame.embedded_under_quote {
+            let (mut clause_start, mut clause_end) = if frame.embedded_under_quote {
                 enclosing_quote_bounds(text, frame.source_start_byte)
                     .unwrap_or((default_start, default_end))
             } else {
                 (default_start, default_end)
             };
+            // Argument extraction must inherit the content boundary before it
+            // inspects neighboring words. Otherwise a missing matrix predicate
+            // in the lexical frame inventory turns the entire matrix prefix
+            // into an agent of the embedded event.
+            if let Some(content) = information_statement.as_ref().filter(|content| {
+                !frame.embedded_under_quote
+                    && frame.source_start_byte >= content.content_start_byte
+                    && frame.source_start_byte + frame.predicate_surface.len()
+                        <= content.content_end_byte
+            }) {
+                clause_start = clause_start.max(content.content_start_byte);
+                clause_end = clause_end.min(content.content_end_byte);
+            }
             let prior_end = index
                 .checked_sub(1)
                 .and_then(|prior| ordered.get(prior))
@@ -913,12 +989,16 @@ struct GraphBuilder {
     relative_clause_attachments: Vec<RelativeClauseAttachmentIR>,
     unresolved_roles: BTreeSet<String>,
     frame_events: BTreeMap<String, String>,
+    query_events: BTreeSet<String>,
     next_argument: usize,
 }
 
 impl GraphBuilder {
     fn add_event(&mut self, frame: &PredicateFrameIR) -> String {
         let node_id = format!("EVENT-{}", frame.frame_id);
+        if frame.mood == FrameMoodIR::Interrogative {
+            self.query_events.insert(node_id.clone());
+        }
         self.nodes.push(SemanticNodeIR {
             node_id: node_id.clone(),
             kind: SemanticNodeKindIR::Event,
@@ -996,9 +1076,18 @@ impl GraphBuilder {
         }
         self.next_argument += 1;
         let node_id = format!("ARG-{:03}", self.next_argument);
+        let kind = if self.query_events.contains(event_node_id)
+            && matches!(
+                normalized.as_str(),
+                "who" | "whom" | "what" | "누구" | "무엇" | "뭐"
+            ) {
+            SemanticNodeKindIR::QueryVariable
+        } else {
+            SemanticNodeKindIR::Entity
+        };
         self.nodes.push(SemanticNodeIR {
             node_id: node_id.clone(),
-            kind: SemanticNodeKindIR::Entity,
+            kind,
             surface: surface.trim().to_string(),
             normalized_label: normalized.clone(),
             concept_id_hint: concept_hint(&normalized).map(ToString::to_string),
@@ -1294,6 +1383,17 @@ fn extract_english_arguments(
         .collect::<Vec<_>>();
     let after_spans = word_spans(after);
     let after_words = after_spans.iter().map(|word| word.text).collect::<Vec<_>>();
+    // Interrogative infinitives have no overt subject in this position. Keep
+    // that role unbound; neither 'to' nor the matrix knower names an agent here.
+    let subjectless_infinitive = before_words
+        .last()
+        .is_some_and(|w| w.eq_ignore_ascii_case("to"))
+        && before_words[..before_words.len() - 1].iter().all(|w| {
+            matches!(
+                w.to_lowercase().as_str(),
+                "how" | "what" | "when" | "where" | "whether" | "not"
+            )
+        });
     let passive_aux = before_words.iter().rposition(|word| {
         matches!(
             word.to_lowercase().as_str(),
@@ -1301,17 +1401,23 @@ fn extract_english_arguments(
         )
     });
     if let Some(auxiliary) = passive_aux {
-        let theme = word_span_surface(before, &before_spans, 0, auxiliary);
+        // Voice changes the subject's semantic role, not how its nominal
+        // phrase is delimited. Reuse active-subject extraction so clause
+        // introducers cannot become part of a passive patient identity.
+        let theme = clean_english_subject(&before_words[..auxiliary]);
         add_english_argument_group(
             builder,
             event_node_id,
             &frame.clause_id,
-            theme,
+            &theme,
             SemanticRoleKindIR::Patient,
             "passive subject before auxiliary",
             930,
         );
-    } else if frame.mood != FrameMoodIR::Imperative && !before_words.is_empty() {
+    } else if frame.mood != FrameMoodIR::Imperative
+        && !before_words.is_empty()
+        && !subjectless_infinitive
+    {
         let agent = clean_english_subject(&before_words);
         builder.add_argument(
             event_node_id,
@@ -1363,23 +1469,8 @@ fn extract_english_arguments(
         );
         index = end;
     }
-    if passive_aux.is_some() {
-        if let Some(by_index) = after_words
-            .iter()
-            .position(|word| word.eq_ignore_ascii_case("by"))
-        {
-            let agent = word_span_surface(after, &after_spans, by_index + 1, after_spans.len());
-            add_english_argument_group(
-                builder,
-                event_node_id,
-                &frame.clause_id,
-                agent,
-                SemanticRoleKindIR::Agent,
-                "by",
-                950,
-            );
-        }
-    }
+    // The preposition loop above owns every PP, including passive by-agents.
+    // A second by-to-end extraction would turn following adjuncts into people.
     if !builder.role_edges.iter().any(|edge| {
         edge.event_node_id == event_node_id
             && matches!(
@@ -1712,6 +1803,7 @@ fn primary_argument_id(builder: &GraphBuilder, frame_id: &str) -> Option<String>
         SemanticRoleKindIR::Patient,
         SemanticRoleKindIR::Result,
         SemanticRoleKindIR::Destination,
+        SemanticRoleKindIR::Target,
         SemanticRoleKindIR::Topic,
     ] {
         if let Some(edge) = builder
@@ -1834,10 +1926,13 @@ fn korean_particle_role(particle: &str, frame: &PredicateFrameIR) -> SemanticRol
             }
         }
         "에" | "까지" => {
-            if predicate_matches(
+            if predicate_matches(frame, &["도포", "발라", "바르", "적용", "부착", "붙여", "붙이", "확대", "늘려", "늘리", "apply", "attach", "expand"]) {
+                SemanticRoleKindIR::Target
+            } else if predicate_matches(
                 frame,
                 &[
-                    "저장", "배포", "옮", "보내", "save", "deploy", "move", "send",
+                    "저장", "배포", "옮", "보내", "전송", "발송", "업로드", "올려", "올리",
+                    "save", "deploy", "move", "send", "upload",
                 ],
             ) {
                 SemanticRoleKindIR::Destination
@@ -1848,7 +1943,18 @@ fn korean_particle_role(particle: &str, frame: &PredicateFrameIR) -> SemanticRol
         "으로" | "로" => {
             if predicate_matches(frame, &["변환", "convert", "transform"]) {
                 SemanticRoleKindIR::Result
-            } else if predicate_matches(frame, &["옮", "배포", "move", "deploy"]) {
+            } else if predicate_matches(
+                frame,
+                &["도포", "발라", "바르", "적용", "부착", "붙여", "붙이", "확대", "늘려", "늘리", "apply", "attach", "expand"],
+            ) {
+                SemanticRoleKindIR::Target
+            } else if predicate_matches(
+                frame,
+                &[
+                    "옮", "배포", "보내", "전송", "발송", "업로드", "올려", "올리", "move",
+                    "deploy", "send", "upload",
+                ],
+            ) {
                 SemanticRoleKindIR::Destination
             } else {
                 SemanticRoleKindIR::Instrument
@@ -1900,6 +2006,7 @@ fn korean_phrase(words: &[WordSpan<'_>], index: usize, base: &str) -> String {
     for prior in words[..index].iter().rev().take(3) {
         let token = prior.text;
         if strip_korean_particle(token).is_some()
+            || crate::compositional_semantics::korean_clause_adverb(token)
             || is_korean_boundary_word(token)
             || token.ends_with("지만")
             || token.ends_with(['고', '면'])
@@ -2135,7 +2242,7 @@ fn predicate_matches(frame: &PredicateFrameIR, needles: &[&str]) -> bool {
         .any(|needle| surface.contains(needle) || canonical.contains(needle))
 }
 
-fn normalize_argument(surface: &str) -> String {
+pub(crate) fn normalize_argument(surface: &str) -> String {
     surface
         .trim()
         .trim_matches(|character: char| {
@@ -2388,6 +2495,70 @@ mod tests {
     use super::*;
     use crate::compositional_semantics::CompositionalSemanticAnalyzer;
 
+    #[test]
+    fn passive_agent_and_adjunct_have_one_argument_owner() {
+        for (text, agents) in [
+            ("The window was opened by Sora in the studio.", vec!["sora"]),
+            (
+                "The file was repaired in the library by Mina.",
+                vec!["mina"],
+            ),
+            (
+                "The gate was repaired by Lior and Nara in the workshop.",
+                vec!["lior", "nara"],
+            ),
+            ("The file was repaired by Mina.", vec!["mina"]),
+        ] {
+            let g = graph(text);
+            let mut actual = g
+                .role_edges
+                .iter()
+                .filter(|e| e.role == SemanticRoleKindIR::Agent)
+                .map(|e| {
+                    g.nodes
+                        .iter()
+                        .find(|n| n.node_id == e.argument_node_id)
+                        .unwrap()
+                        .normalized_label
+                        .as_str()
+                })
+                .collect::<Vec<_>>();
+            actual.sort_unstable();
+            assert_eq!(actual, agents, "{text}: {g:?}");
+            assert!(g.validate());
+        }
+    }
+
+    #[test]
+    fn interrogative_arguments_remain_variables_not_entity_memories() {
+        for text in [
+            "Who opened the window?",
+            "Who repaired what?",
+            "What opened the window?",
+        ] {
+            let g = graph(text);
+            let variables = g
+                .nodes
+                .iter()
+                .filter(|n| n.kind == SemanticNodeKindIR::QueryVariable)
+                .collect::<Vec<_>>();
+            assert!(!variables.is_empty(), "{text}: {g:?}");
+            assert!(variables.iter().all(|n| n.concept_id_hint.is_none()));
+            let mut memory = Vec::new();
+            crate::typed_coreference::merge_typed_mentions(&mut memory, 1, Some(&g), None);
+            assert!(memory
+                .iter()
+                .all(|n| !matches!(n.normalized_label.as_str(), "who" | "what")));
+            assert!(g.validate());
+        }
+        // The surface alone is not a global ban on names or vocabulary.
+        let named = graph("WHO repaired the file.");
+        assert!(named
+            .nodes
+            .iter()
+            .any(|n| n.kind == SemanticNodeKindIR::Entity && n.normalized_label == "who"));
+    }
+
     fn graph(text: &str) -> SemanticRoleGraphIR {
         CompositionalSemanticAnalyzer
             .analyze(text)
@@ -2415,6 +2586,18 @@ mod tests {
             .quantifier_scopes
             .iter()
             .any(|scope| scope.quantifier == QuantifierKindIR::All));
+    }
+
+    #[test]
+    fn korean_target_particles_follow_apply_and_attach_valency() {
+        for (text, target) in [
+            ("보존팀이 보호제를 균열 부위에 도포해", "균열 부위"),
+            ("작업자가 표본 라벨을 보관 상자에 부착해", "보관 상자"),
+        ] {
+            let graph = graph(text);
+            assert!(graph.validate(), "{text}: {graph:?}");
+            assert!(has_role(&graph, SemanticRoleKindIR::Target, target), "{text}: {graph:?}");
+        }
     }
 
     #[test]
@@ -2532,8 +2715,10 @@ mod tests {
                 .primary_argument_for_frame("FRAME-02")
                 .expect("outer log")
                 .normalized_label,
-            "이제 로그"
+            "로그"
         );
+        // The concessive ending remains intact; the following temporal adverb
+        // is clause context, not part of the object being inspected.
         assert!(!graph.nodes.iter().any(|node| node.surface == "말했지"));
     }
 

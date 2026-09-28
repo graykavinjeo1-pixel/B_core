@@ -25,23 +25,25 @@ use crate::conversation::{
 use crate::definition_grounding::DefinitionGroundingIR;
 use crate::discourse_qa::DiscourseAnswerIR;
 use crate::discourse_relations::DialogueRelationAnswerIR;
+#[cfg(test)]
+use crate::generative_language::generate_plan_preview_from_knowledge;
 use crate::generative_language::{
-    generate_action_set_answer_from_knowledge, generate_affect_support_from_knowledge,
-    generate_clarification_from_knowledge, generate_conditional_guard_from_knowledge,
-    generate_continuation_gate_followup_from_knowledge, generate_continuation_gate_from_knowledge,
-    generate_definition_grounding_from_knowledge, generate_dialogue_relation_answer_from_knowledge,
-    generate_dialogue_response_from_knowledge, generate_discourse_answer_from_knowledge,
-    generate_discourse_group_update_from_knowledge, generate_inform_acknowledgement_from_knowledge,
-    generate_interaction_boundary_from_knowledge, generate_lifecycle_status_from_knowledge,
+    generate_acknowledgement_from_knowledge, generate_action_set_answer_from_knowledge,
+    generate_affect_support_from_knowledge, generate_clarification_from_knowledge,
+    generate_conditional_guard_from_knowledge, generate_continuation_gate_followup_from_knowledge,
+    generate_continuation_gate_from_knowledge, generate_definition_grounding_from_knowledge,
+    generate_dialogue_relation_answer_from_knowledge, generate_dialogue_response_from_knowledge,
+    generate_discourse_answer_from_knowledge, generate_discourse_group_update_from_knowledge,
+    generate_inform_acknowledgement_from_knowledge, generate_interaction_boundary_from_knowledge,
+    generate_lifecycle_status_from_knowledge, generate_lifecycle_status_with_action,
     generate_plan_exclusion_from_knowledge, generate_plan_interpretation_from_knowledge,
-    generate_plan_preview_from_knowledge, generate_plan_preview_from_knowledge_with_directive,
-    generate_temporal_answer_from_knowledge, generate_topic_transition_from_knowledge,
-    generate_user_feedback_from_knowledge, GenerationActionSetPredicateIR,
-    GenerationActionSetQuantifierIR, GenerationActionSetTruthIR, GenerationAffectKindIR,
-    GenerationClarificationKindIR, GenerationContinuationGateFollowupIR,
+    generate_plan_preview_with_predicate, generate_temporal_answer_from_knowledge,
+    generate_topic_transition_from_knowledge, generate_user_feedback_from_knowledge,
+    GenerationActionSetPredicateIR, GenerationActionSetQuantifierIR, GenerationActionSetTruthIR,
+    GenerationAffectKindIR, GenerationClarificationKindIR, GenerationContinuationGateFollowupIR,
     GenerationDialogueResponseKindIR, GenerationDiscourseGroupUpdateKindIR,
-    GenerationLifecycleClaimIR, GenerationPlanInterpretationKindIR, GenerationUserFeedbackKindIR,
-    GenerativeLanguageIR,
+    GenerationLifecycleClaimIR, GenerationPlanInterpretationKindIR, GenerationSettings,
+    GenerationUserFeedbackKindIR, GenerativeLanguageIR, PlanPreviewContentIR,
 };
 use crate::language_knowledge::LanguageCodeIR;
 use crate::native_language_circuit::{NativeResponseModeIR, NativeTurnIR};
@@ -56,8 +58,8 @@ use crate::pragmatics::{
 };
 use crate::temporal::TemporalAnswerIR;
 
-pub const NATURAL_REALIZATION_SCHEMA: &str = "B_CORE_NATURAL_REALIZATION_IR_5";
-pub const NATURAL_REALIZATION_COVERAGE_SCHEMA: &str = "B_CORE_NATURAL_REALIZATION_COVERAGE_IR_1";
+pub const NATURAL_REALIZATION_SCHEMA: &str = "B_CORE_NATURAL_REALIZATION_IR_41";
+pub const NATURAL_REALIZATION_COVERAGE_SCHEMA: &str = "B_CORE_NATURAL_REALIZATION_COVERAGE_IR_3";
 
 // A bounded dialogue-relation answer may carry up to 48 evidence clauses plus
 // typed path and safety boundaries. Retain every bounded clause.
@@ -97,6 +99,7 @@ pub enum NaturalResponseActIR {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum NaturalResponseSourceIR {
+    ResponseProhibition,
     InformationAnswer,
     NativeAnswer,
     DialogueDirective,
@@ -129,6 +132,7 @@ pub enum NaturalResponseSourceIR {
 impl NaturalResponseSourceIR {
     fn precedence(self) -> u16 {
         match self {
+            Self::ResponseProhibition => 260,
             Self::InformationAnswer => 245,
             Self::NativeAnswer => 240,
             Self::DialogueDirective => 235,
@@ -173,6 +177,30 @@ pub struct NaturalResponseCandidateIR {
     pub external_action_executed: bool,
 }
 
+/// Immutable semantic inputs to response arbitration.  Source precedence is
+/// only a deterministic tie-break; these fields describe what the current
+/// turn actually asks for and which typed payloads are available.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize, Default)]
+pub struct NaturalResponseDecisionContextIR {
+    pub typed: bool,
+    pub information_requested: bool,
+    pub assertion_only: bool,
+    pub temporal_answer_available: bool,
+    pub dialogue_relation_answer_available: bool,
+    pub discourse_answer_available: bool,
+    pub discourse_answer_eligible: bool,
+    pub native_answer_available: bool,
+    pub native_answer_act: Option<NaturalResponseActIR>,
+    pub plan_requested: bool,
+    pub plan_available: bool,
+    pub reference_resolved: bool,
+    pub resolved_reference_count: u32,
+    pub discourse_payload_sha256: Option<String>,
+    pub discourse_evidence_ids: Vec<String>,
+    pub ambiguity_required: bool,
+    pub prohibition_required: bool,
+}
+
 impl NaturalResponseCandidateIR {
     pub fn new(
         source: NaturalResponseSourceIR,
@@ -197,6 +225,8 @@ pub struct NaturalResponseArbitrationIR {
     pub semantic_authority: bool,
     pub language_can_execute: bool,
     pub arbitration_sha256: String,
+    #[serde(default)]
+    pub decision_context: NaturalResponseDecisionContextIR,
 }
 
 impl NaturalResponseArbitrationIR {
@@ -206,10 +236,7 @@ impl NaturalResponseArbitrationIR {
             .iter()
             .map(|candidate| candidate.source)
             .collect::<BTreeSet<_>>();
-        let selected = self
-            .candidates
-            .iter()
-            .max_by_key(|candidate| (candidate.source.precedence(), candidate.source));
+        let selected = select_candidate(&self.candidates, self.decision_context.clone());
         !self.candidates.is_empty()
             && self.candidates.len() <= 32
             && sources.len() == self.candidates.len()
@@ -237,13 +264,18 @@ impl NaturalResponseArbitrationIR {
 }
 
 pub fn arbitrate_natural_response(
+    candidates: Vec<NaturalResponseCandidateIR>,
+) -> NaturalResponseArbitrationIR {
+    arbitrate_natural_response_with_context(candidates, NaturalResponseDecisionContextIR::default())
+}
+
+pub fn arbitrate_natural_response_with_context(
     mut candidates: Vec<NaturalResponseCandidateIR>,
+    decision_context: NaturalResponseDecisionContextIR,
 ) -> NaturalResponseArbitrationIR {
     candidates.sort_by_key(|candidate| candidate.source);
     candidates.dedup_by_key(|candidate| candidate.source);
-    let selected = candidates
-        .iter()
-        .max_by_key(|candidate| (candidate.source.precedence(), candidate.source))
+    let selected = select_candidate(&candidates, decision_context.clone())
         .expect("response arbitration requires at least one candidate");
     let selected_source = selected.source;
     let selected_act = selected.response_act;
@@ -254,16 +286,58 @@ pub fn arbitrate_natural_response(
         semantic_authority: false,
         language_can_execute: false,
         arbitration_sha256: String::new(),
+        decision_context,
     };
     arbitration.arbitration_sha256 = natural_response_arbitration_sha256(&arbitration);
     debug_assert!(arbitration.validate());
     arbitration
 }
 
+fn select_candidate(
+    candidates: &[NaturalResponseCandidateIR],
+    context: NaturalResponseDecisionContextIR,
+) -> Option<&NaturalResponseCandidateIR> {
+    // Preserve the public standalone arbitration contract for callers that do
+    // not have a turn context. The cognitive pipeline always supplies a
+    // non-default typed context.
+    if !context.typed {
+        return candidates
+            .iter()
+            .max_by_key(|candidate| (candidate.source.precedence(), candidate.source));
+    }
+    let eligible = candidates.iter().filter(|candidate| {
+        if context.prohibition_required {
+            return candidate.source == NaturalResponseSourceIR::ResponseProhibition;
+        }
+        if context.ambiguity_required {
+            return candidate.source == NaturalResponseSourceIR::Clarification;
+        }
+        match candidate.response_act {
+            NaturalResponseActIR::TemporalAnswer => context.temporal_answer_available,
+            NaturalResponseActIR::DialogueRelationAnswer => {
+                context.dialogue_relation_answer_available
+            }
+            NaturalResponseActIR::DiscourseAnswer => {
+                context.discourse_answer_available && context.discourse_answer_eligible
+            }
+            NaturalResponseActIR::PlanPreview => context.plan_requested && context.plan_available,
+            _ => true,
+        }
+    });
+    // Once semantically ineligible candidates are removed, retain the
+    // established deterministic precedence as the tie-break among candidates
+    // that satisfy the same typed request.
+    eligible.max_by_key(|candidate| (candidate.source.precedence(), candidate.source))
+}
+
 pub fn natural_response_arbitration_sha256(arbitration: &NaturalResponseArbitrationIR) -> String {
     let mut canonical = arbitration.clone();
     canonical.arbitration_sha256.clear();
     content_sha256(&canonical)
+}
+
+pub fn natural_response_payload_sha256<T: Serialize>(payload: &T) -> String {
+    content_sha256(payload)
 }
 
 /// The role of one response move in a composed answer.  A turn may need to
@@ -273,6 +347,7 @@ pub fn natural_response_arbitration_sha256(arbitration: &NaturalResponseArbitrat
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum NaturalResponseMoveRoleIR {
+    RequiredContent,
     RelationalSupport,
     DiscourseBridge,
     PrimaryTask,
@@ -323,7 +398,12 @@ impl NaturalResponsePlanIR {
             .iter()
             .map(|response_move| response_move.response_act)
             .collect::<BTreeSet<_>>();
-        unique_acts.len() == self.moves.len()
+        (!evidence_answer_act(self.primary_act())
+            || self
+                .moves
+                .iter()
+                .all(|m| m.response_act != NaturalResponseActIR::AffectSupport))
+            && unique_acts.len() == self.moves.len()
             && self.moves.iter().enumerate().all(|(index, response_move)| {
                 response_move.move_index == index
                     && !response_move.evidence.is_empty()
@@ -339,6 +419,15 @@ impl NaturalResponsePlanIR {
     pub fn primary_act(&self) -> NaturalResponseActIR {
         self.moves[self.primary_move_index].response_act
     }
+}
+
+fn evidence_answer_act(act: NaturalResponseActIR) -> bool {
+    matches!(
+        act,
+        NaturalResponseActIR::DiscourseAnswer
+            | NaturalResponseActIR::TemporalAnswer
+            | NaturalResponseActIR::DialogueRelationAnswer
+    )
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -584,6 +673,32 @@ impl NaturalRealizationCoverageIR {
                     )
                     .is_some_and(|trace| {
                         trace_has_semantic_event_grounding(trace, event_id, &goal.semantic_sha256)
+                            && goal
+                                .events
+                                .iter()
+                                .find(|event| event.event_id == event_id)
+                                .is_some_and(|event| {
+                                    trace
+                                        .meaning
+                                        .nodes
+                                        .iter()
+                                        .find(|node| node.node_id == "E_ACTION")
+                                        .is_none_or(|node| {
+                                            trace.speech_intent.intents.iter().any(|speech| {
+                                                speech.event_node_id == node.node_id
+                                                    && speech.intent == crate::generative_language::GenerationSpeechIntentIR::DescribePlan
+                                            })
+                                            && !trace.speech_intent.intents.iter().any(|speech| {
+                                                speech.intent == crate::generative_language::GenerationSpeechIntentIR::CommitFutureAction
+                                            })
+                                            && node.concept_id
+                                                == crate::generative_language::plan_action_concept(
+                                                    trace.context.language,
+                                                    event.intent,
+                                                    &event.predicate_concept_id,
+                                                )
+                                        })
+                                })
                     })
             });
         let prohibited_event_bindings_valid = self
@@ -657,6 +772,32 @@ impl NaturalRealizationCoverageIR {
                         _ => false,
                     }
             });
+        let shared_status_prefix = format!("PLAN_SET_BOUNDARY:{}:", goal.semantic_sha256);
+        let shared_status_present = generation_traces.iter().any(|trace| {
+            trace.meaning.nodes.iter().any(|node| {
+                node.concept_id == "C_LIFECYCLE_NO_EXECUTION_OR_RESULT"
+                    && node
+                        .grounding_refs
+                        .iter()
+                        .any(|reference| reference.starts_with(&shared_status_prefix))
+            })
+        });
+        // Omitting per-action status is legitimate only when the enclosing
+        // selected plan owns the status statement. Rehashing a truncated set of
+        // action sentences must not silently remove that boundary.
+        let action_status_covered = generation_traces.iter().all(|trace| {
+            !trace
+                .meaning
+                .nodes
+                .iter()
+                .any(|node| node.node_id == "E_ACTION")
+                || trace
+                    .meaning
+                    .nodes
+                    .iter()
+                    .any(|node| node.node_id == "E_EXECUTED")
+                || shared_status_present
+        });
         self.semantic_goal_sha256.as_deref() == Some(goal.semantic_sha256.as_str())
             && selected_obligation_ids == selected_ids
             && prohibited_obligation_ids == prohibited_ids
@@ -664,6 +805,7 @@ impl NaturalRealizationCoverageIR {
             && selected_event_bindings_valid
             && prohibited_event_bindings_valid
             && relation_bindings_valid
+            && action_status_covered
     }
 }
 
@@ -719,8 +861,37 @@ pub struct NaturalRealizationIR {
     pub realization_sha256: String,
 }
 
+/// Ephemeral proof for one immutable completed realization. Not serializable,
+/// not an authority flag supplied by a caller, and never persisted in memory.
+pub(crate) struct NaturalRealizationCheck {
+    digest: String,
+    valid: bool,
+}
+
+impl NaturalRealizationCheck {
+    pub(crate) fn new(realization: &NaturalRealizationIR) -> Self {
+        Self {
+            digest: natural_realization_sha256(realization),
+            valid: realization.validate(),
+        }
+    }
+
+    pub(crate) fn accepts(&self, realization: &NaturalRealizationIR) -> bool {
+        self.valid
+            && self.digest == realization.realization_sha256
+            && self.digest == natural_realization_sha256(realization)
+    }
+}
+
+#[cfg(test)]
+thread_local! {
+    pub(crate) static FINAL_REALIZATION_CHECKS: std::cell::Cell<usize> = const { std::cell::Cell::new(0) };
+}
+
 impl NaturalRealizationIR {
     pub fn validate(&self) -> bool {
+        #[cfg(test)]
+        FINAL_REALIZATION_CHECKS.with(|checks| checks.set(checks.get() + 1));
         let indices = self
             .sentences
             .iter()
@@ -814,6 +985,7 @@ pub(crate) enum ContinuationGateRealizationSourceIR<'a> {
 
 #[derive(Clone, Copy)]
 pub(crate) struct NaturalRealizationSources<'a> {
+    pub acknowledgement_content: crate::generative_language::AcknowledgementContentIR<'a>,
     pub affective_policy: &'a crate::affective_field::AffectiveRealizationPolicyIR,
     pub response_arbitration: &'a NaturalResponseArbitrationIR,
     pub language: LanguageCodeIR,
@@ -843,7 +1015,14 @@ pub(crate) struct NaturalRealizationSources<'a> {
     pub temporal_answer: Option<&'a TemporalAnswerIR>,
     pub source_refs: &'a [String],
     pub dialogue_directives: &'a [DialogueDirectiveIR],
+    pub dialogue_directive_owns_turn: bool,
     pub unsupported_claims: usize,
+}
+
+impl NaturalRealizationSources<'_> {
+    fn generation_settings(&self) -> GenerationSettings {
+        GenerationSettings::with_policy(self.language, self.affective_policy)
+    }
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -860,18 +1039,28 @@ struct ResponseMoveTraceRangeIR {
 /// cannot replace, alter, or authorize the primary task move.
 fn compose_response_plan(sources: &NaturalRealizationSources<'_>) -> NaturalResponsePlanIR {
     let response_length_directive = active_response_length_directive(sources);
+    let local_manner = crate::proposition_content::interaction_preference(sources.raw_input)
+        .is_some_and(|p| {
+            p.response_manner == Some(crate::proposition_content::ResponseMannerIR::Concise)
+        });
     let directive_ref = response_length_directive
         .map(|directive| format!("DIALOGUE_DIRECTIVE:{}", directive.directive_id))
+        .or_else(|| local_manner.then(|| "SOURCE_REQUEST_MANNER:CONCISE".to_string()))
         .or_else(|| {
             (sources.affective_policy.brevity_millis > 150)
                 .then(|| "AFFECTIVE_POLICY:BOUNDED_AUXILIARY_MOVES".to_string())
         });
     // Explicit length instructions win over inferred tone. Concision removes
     // optional discourse moves before generation, never required answer facts.
-    let concise = response_length_directive
-        .map_or(sources.affective_policy.brevity_millis > 150, |directive| {
-            directive.value_key == "CONCISE"
-        });
+    let concise = response_length_directive.map_or(
+        local_manner || sources.affective_policy.brevity_millis > 150,
+        |_| {
+            crate::conversation::select_response_directive_value(
+                sources.dialogue_directives,
+                DialogueDirectiveKindIR::ResponseLength,
+            ) == Some("CONCISE")
+        },
+    );
     let mut plan = compose_response_plan_from_signals(
         sources.response_arbitration.selected_act,
         sources.user_feedback.is_some(),
@@ -882,11 +1071,47 @@ fn compose_response_plan(sources: &NaturalRealizationSources<'_>) -> NaturalResp
         concise,
         directive_ref.as_deref(),
     );
+    if plan.primary_act() == NaturalResponseActIR::PlanPreview
+        && sources
+            .discourse_answer
+            .is_some_and(|answer| !answer.response_parts.is_empty())
+    {
+        // Answer content and work are separate semantic obligations. Concision
+        // may remove optional support, never the already resolved answer.
+        plan.moves
+            .retain(|m| m.response_act != NaturalResponseActIR::AffectSupport);
+        let primary = plan
+            .moves
+            .iter()
+            .position(|m| m.role == NaturalResponseMoveRoleIR::PrimaryTask)
+            .expect("primary task is retained");
+        plan.moves.insert(
+            primary,
+            NaturalResponseMoveIR {
+                move_index: primary,
+                role: NaturalResponseMoveRoleIR::RequiredContent,
+                response_act: NaturalResponseActIR::DiscourseAnswer,
+                evidence: vec!["SOURCE_BOUND_RESPONSE_OPERATIONS".to_string()],
+                semantic_authority: false,
+                external_action_executed: false,
+            },
+        );
+        plan.primary_move_index = primary + 1;
+        for (index, response_move) in plan.moves.iter_mut().enumerate() {
+            response_move.move_index = index;
+        }
+    }
     if let Some(directive) = active_response_format_directive(sources) {
-        plan.response_format = response_format(directive);
+        plan.response_format = response_format(
+            crate::conversation::select_response_directive_value(
+                sources.dialogue_directives,
+                DialogueDirectiveKindIR::ResponseFormat,
+            )
+            .unwrap_or("PLAIN"),
+        );
         plan.moves[plan.primary_move_index].evidence.push(format!(
-            "DIALOGUE_DIRECTIVE_FORMAT:{}:{}",
-            directive.value_key, directive.directive_id
+            "DIALOGUE_DIRECTIVE_FORMAT:{}:{}:PROHIBITED={}",
+            directive.value_key, directive.directive_id, directive.prohibited
         ));
     }
     debug_assert!(plan.validate());
@@ -913,8 +1138,8 @@ fn active_response_format_directive<'a>(
     })
 }
 
-fn response_format(directive: &DialogueDirectiveIR) -> NaturalResponseFormatIR {
-    match directive.value_key.as_str() {
+fn response_format(value: &str) -> NaturalResponseFormatIR {
+    match value {
         "BULLETS" => NaturalResponseFormatIR::Bullets,
         "NUMBERED" => NaturalResponseFormatIR::Numbered,
         "TABLE" => NaturalResponseFormatIR::Table,
@@ -991,6 +1216,10 @@ fn compose_response_plan_from_signals(
         });
     } else if !concise
         && primary_is_task_bearing
+        // Tone can condition register/brevity, not append a generic scenario
+        // to an evidence answer. Explicit, source-bound user feedback remains
+        // a separate obligation; it is not inferred from an emotion word.
+        && !evidence_answer_act(primary_act)
         && primary_act != NaturalResponseActIR::AffectSupport
         && affect_present
     {
@@ -1008,6 +1237,7 @@ fn compose_response_plan_from_signals(
     }
     if !concise
         && primary_is_task_bearing
+        && !evidence_answer_act(primary_act)
         && primary_act != NaturalResponseActIR::TopicTransition
         && topic_transition_applied
     {
@@ -1047,6 +1277,32 @@ fn compose_response_plan_from_signals(
     plan
 }
 
+fn realize_discourse_parts(
+    sources: &NaturalRealizationSources<'_>,
+    traces: &mut Vec<GenerativeLanguageIR>,
+) -> String {
+    let answer = sources
+        .discourse_answer
+        .expect("discourse move retains its typed source");
+    let parts = if answer.response_parts.is_empty() {
+        std::slice::from_ref(answer)
+    } else {
+        answer.response_parts.as_slice()
+    };
+    let mut text = Vec::new();
+    for part in parts {
+        let generated = generate_discourse_answer_from_knowledge(
+            sources.generation_settings(),
+            part,
+            sources.source_refs,
+        )
+        .expect("typed discourse-answer realization knowledge must be complete");
+        text.push(generated.morphology.realized_text.clone());
+        traces.push(generated);
+    }
+    text.join(" ")
+}
+
 pub(crate) fn build_natural_realization(
     sources: NaturalRealizationSources<'_>,
 ) -> NaturalRealizationIR {
@@ -1061,13 +1317,23 @@ pub(crate) fn build_natural_realization(
         .filter(|response_move| response_move.role != NaturalResponseMoveRoleIR::PrimaryTask)
     {
         let trace_start = generation_traces.len();
+        if response_move.response_act == NaturalResponseActIR::DiscourseAnswer {
+            let text = realize_discourse_parts(&sources, &mut generation_traces);
+            move_texts.push((response_move.response_act, text));
+            move_trace_ranges.push(ResponseMoveTraceRangeIR {
+                move_index: response_move.move_index,
+                trace_start,
+                trace_end: generation_traces.len(),
+            });
+            continue;
+        }
         let generated = match response_move.response_act {
             NaturalResponseActIR::UserFeedback => {
                 let feedback = sources
                     .user_feedback
                     .expect("a feedback support move must retain its typed source");
                 generate_user_feedback_from_knowledge(
-                    sources.language,
+                    sources.generation_settings(),
                     map_user_feedback_kind(feedback.kind),
                     &feedback.target_surface,
                     &feedback.evidence_clause_ids,
@@ -1075,7 +1341,7 @@ pub(crate) fn build_natural_realization(
                 .expect("typed user-feedback realization knowledge must be complete")
             }
             NaturalResponseActIR::AffectSupport => generate_affect_support_from_knowledge(
-                sources.language,
+                sources.generation_settings(),
                 affect_kind(sources.raw_input),
             )
             .expect("built-in affect realization knowledge must be complete"),
@@ -1084,7 +1350,7 @@ pub(crate) fn build_natural_realization(
                     .topic_transition
                     .filter(|transition| transition.applied)
                     .expect("a discourse bridge must retain an applied topic transition");
-                generate_topic_transition_from_knowledge(sources.language, transition)
+                generate_topic_transition_from_knowledge(sources.generation_settings(), transition)
                     .expect("typed topic-transition realization knowledge must be complete")
             }
             _ => unreachable!("only composable auxiliary acts may precede the primary move"),
@@ -1121,14 +1387,14 @@ pub(crate) fn build_natural_realization(
         }
         NaturalResponseActIR::PlanResultStatus | NaturalResponseActIR::ResultAbsence => {
             let generated = generate_plan_result_boundary(
-                sources.language,
+                sources.generation_settings(),
                 primary_act,
                 sources.plan_result_boundary,
                 sources.action_ledger,
             )
             .unwrap_or_else(|| {
                 vec![generate_lifecycle_status_from_knowledge(
-                    sources.language,
+                    sources.generation_settings(),
                     native_evidence_subject(&sources),
                     &[
                         GenerationLifecycleClaimIR::ResultUnavailable,
@@ -1154,7 +1420,7 @@ pub(crate) fn build_natural_realization(
                 == NativeResponseModeIR::CompetingOutcomeReports
             {
                 vec![generate_lifecycle_status_from_knowledge(
-                    sources.language,
+                    sources.generation_settings(),
                     if sources.language == LanguageCodeIR::Korean {
                         "두 보고"
                     } else {
@@ -1172,13 +1438,13 @@ pub(crate) fn build_natural_realization(
                 .expect("conflicting-report realization knowledge must be complete")]
             } else {
                 generate_action_state_response(
-                    sources.language,
+                    sources.generation_settings(),
                     sources.action_analysis,
                     sources.action_ledger,
                 )
                 .unwrap_or_else(|| {
                     vec![generate_lifecycle_status_from_knowledge(
-                        sources.language,
+                        sources.generation_settings(),
                         native_evidence_subject(&sources),
                         &[
                             GenerationLifecycleClaimIR::UntrustedEvidenceMention,
@@ -1201,9 +1467,27 @@ pub(crate) fn build_natural_realization(
             generated_text
         }
         NaturalResponseActIR::InformAcknowledgement => {
-            let generated =
-                generate_inform_acknowledgement_from_knowledge(sources.language, sources.raw_input)
-                    .expect("built-in report/evidence realization knowledge must be complete");
+            let generated = if sources.dialogue_directive_owns_turn {
+                // The accepted semantic act is a style request, not an alleged
+                // fact. Preserve that decision instead of reparsing its words
+                // in the report-realization path.
+                generate_acknowledgement_from_knowledge(
+                    sources.generation_settings(),
+                    sources
+                        .dialogue_directives
+                        .iter()
+                        .filter(|d| d.is_active())
+                        .map(|d| format!("DIALOGUE_DIRECTIVE:{}", d.directive_id))
+                        .collect(),
+                )
+            } else {
+                generate_inform_acknowledgement_from_knowledge(
+                    sources.generation_settings(),
+                    sources.acknowledgement_content,
+                    sources.source_refs,
+                )
+            }
+            .expect("built-in acknowledgement realization knowledge must be complete");
             let generated_text = generated.morphology.realized_text.clone();
             generation_traces.push(generated);
             generated_text
@@ -1213,7 +1497,7 @@ pub(crate) fn build_natural_realization(
                 .user_feedback
                 .expect("a user-feedback response act must retain its typed feedback source");
             let generated = generate_user_feedback_from_knowledge(
-                sources.language,
+                sources.generation_settings(),
                 map_user_feedback_kind(feedback.kind),
                 &feedback.target_surface,
                 &feedback.evidence_clause_ids,
@@ -1225,7 +1509,7 @@ pub(crate) fn build_natural_realization(
         }
         NaturalResponseActIR::AffectSupport => {
             let generated = generate_affect_support_from_knowledge(
-                sources.language,
+                sources.generation_settings(),
                 affect_kind(sources.raw_input),
             )
             .expect("built-in affect realization knowledge must be complete");
@@ -1235,8 +1519,9 @@ pub(crate) fn build_natural_realization(
         }
         NaturalResponseActIR::HoldFloor | NaturalResponseActIR::SocialBackchannel => {
             let response = dialogue_response_kind(primary_act, sources.discourse_events);
-            let generated = generate_dialogue_response_from_knowledge(sources.language, response)
-                .expect("built-in dialogue-management knowledge must be complete");
+            let generated =
+                generate_dialogue_response_from_knowledge(sources.generation_settings(), response)
+                    .expect("built-in dialogue-management knowledge must be complete");
             let generated_text = generated.morphology.realized_text.clone();
             generation_traces.push(generated);
             generated_text
@@ -1248,7 +1533,7 @@ pub(crate) fn build_natural_realization(
             {
                 ContinuationGateRealizationSourceIR::Initial(gate) => {
                     generate_continuation_gate_from_knowledge(
-                        sources.language,
+                        sources.generation_settings(),
                         &gate.current_task,
                         &gate.required_benefit,
                         &gate.supporting_clause_ids,
@@ -1260,7 +1545,7 @@ pub(crate) fn build_natural_realization(
                         format!("PENDING_GATE:STATUS:{:?}", gate.status),
                     ];
                     generate_continuation_gate_followup_from_knowledge(
-                        sources.language,
+                        sources.generation_settings(),
                         &gate.task,
                         &gate.required_benefit,
                         &refs,
@@ -1273,7 +1558,7 @@ pub(crate) fn build_natural_realization(
                         format!("PENDING_GATE:STATUS:{:?}", gate.status),
                     ];
                     generate_continuation_gate_followup_from_knowledge(
-                        sources.language,
+                        sources.generation_settings(),
                         &gate.task,
                         &gate.required_benefit,
                         &refs,
@@ -1296,7 +1581,7 @@ pub(crate) fn build_natural_realization(
                 format!("DISCOURSE_GROUP_REVISION:{}", update.revision),
             ];
             let generated = generate_discourse_group_update_from_knowledge(
-                sources.language,
+                sources.generation_settings(),
                 map_discourse_group_update_kind(update.operation),
                 update.after_member_keys.len(),
                 &refs,
@@ -1308,7 +1593,7 @@ pub(crate) fn build_natural_realization(
         }
         NaturalResponseActIR::ClarificationRequest => {
             let generated = generate_clarification_from_knowledge(
-                sources.language,
+                sources.generation_settings(),
                 sources
                     .clarification_kind
                     .unwrap_or(GenerationClarificationKindIR::MissingDetails),
@@ -1322,7 +1607,7 @@ pub(crate) fn build_natural_realization(
         }
         NaturalResponseActIR::DefinitionGrounding => {
             let generated = generate_definition_grounding_from_knowledge(
-                sources.language,
+                sources.generation_settings(),
                 sources.definition_grounding,
                 sources.source_refs,
             )
@@ -1337,7 +1622,7 @@ pub(crate) fn build_natural_realization(
                 .iter()
                 .map(|evaluation| {
                     generate_conditional_guard_from_knowledge(
-                        sources.language,
+                        sources.generation_settings(),
                         evaluation,
                         sources.source_refs,
                     )
@@ -1358,7 +1643,7 @@ pub(crate) fn build_natural_realization(
         }
         NaturalResponseActIR::InteractionBoundary => {
             let generated = generate_interaction_boundary_from_knowledge(
-                sources.language,
+                sources.generation_settings(),
                 sources.illocutionary_commitments,
                 sources.withdrawn_goal_ids,
                 sources.withdrawn_deferred_ids,
@@ -1370,21 +1655,11 @@ pub(crate) fn build_natural_realization(
             generated_text
         }
         NaturalResponseActIR::DiscourseAnswer => {
-            let generated = generate_discourse_answer_from_knowledge(
-                sources.language,
-                sources
-                    .discourse_answer
-                    .expect("a discourse-answer response act must retain its typed answer"),
-                sources.source_refs,
-            )
-            .expect("typed discourse-answer realization knowledge must be complete");
-            let generated_text = generated.morphology.realized_text.clone();
-            generation_traces.push(generated);
-            generated_text
+            realize_discourse_parts(&sources, &mut generation_traces)
         }
         NaturalResponseActIR::DialogueRelationAnswer => {
             let generated = generate_dialogue_relation_answer_from_knowledge(
-                sources.language,
+                sources.generation_settings(),
                 sources
                     .dialogue_relation_answer
                     .expect("a dialogue-relation response act must retain its typed answer"),
@@ -1397,7 +1672,7 @@ pub(crate) fn build_natural_realization(
         }
         NaturalResponseActIR::TemporalAnswer => {
             let generated = generate_temporal_answer_from_knowledge(
-                sources.language,
+                sources.generation_settings(),
                 sources
                     .temporal_answer
                     .expect("a temporal-answer response act must retain its typed answer"),
@@ -1413,8 +1688,9 @@ pub(crate) fn build_natural_realization(
                 .topic_transition
                 .filter(|transition| transition.applied)
                 .expect("a topic-transition response act must retain an applied transition");
-            let generated = generate_topic_transition_from_knowledge(sources.language, transition)
-                .expect("typed topic-transition realization knowledge must be complete");
+            let generated =
+                generate_topic_transition_from_knowledge(sources.generation_settings(), transition)
+                    .expect("typed topic-transition realization knowledge must be complete");
             let generated_text = generated.morphology.realized_text.clone();
             generation_traces.push(generated);
             generated_text
@@ -1426,24 +1702,8 @@ pub(crate) fn build_natural_realization(
         trace_end: generation_traces.len(),
     });
     move_texts.push((primary_act, primary_text));
-    // Affect enters once, at realization, after all semantic obligations and
-    // trace ranges have been fixed. Reconstruct surfaces from the same graphs;
-    // never edit a completed answer string or feed tone back into reasoning.
-    for trace in &mut generation_traces {
-        trace.condition_realization(sources.affective_policy);
-    }
-    move_texts = move_trace_ranges
-        .iter()
-        .map(|range| {
-            let act = response_plan.moves[range.move_index].response_act;
-            let surface = generation_traces[range.trace_start..range.trace_end]
-                .iter()
-                .map(|trace| trace.morphology.realized_text.as_str())
-                .collect::<Vec<_>>()
-                .join(" ");
-            (act, surface)
-        })
-        .collect();
+    // Every response obligation received its surface policy before generation.
+    // Keep its first completed surface; there is no post-generation tone pass.
     let mut source_refs = sources
         .source_refs
         .iter()
@@ -1657,7 +1917,7 @@ fn generate_nonliteral_interpretation_response(
     if sources.nonliteral_analysis.has_sarcasm() {
         return Some(
             generate_plan_interpretation_from_knowledge(
-                sources.language,
+                sources.generation_settings(),
                 GenerationPlanInterpretationKindIR::SarcasmBoundary,
                 match sources.language {
                     LanguageCodeIR::Korean => "표면적인 칭찬과 앞서 말한 실패 상태",
@@ -1676,7 +1936,7 @@ fn generate_nonliteral_interpretation_response(
         .find(|expression| expression.selected_reading == ReadingSelectionIR::Figurative)?;
     Some(
         generate_plan_interpretation_from_knowledge(
-            sources.language,
+            sources.generation_settings(),
             GenerationPlanInterpretationKindIR::FigurativeBoundary,
             &expression.surface_text,
             Some(figurative_concept_surface(
@@ -1705,8 +1965,19 @@ fn generate_plan_preview_response(
         semantic_plan_bundle.validate_against(semantic_goal),
         "a plan preview may only realize a validated semantic plan bundle"
     );
-    let concise_directive = active_response_length_directive(sources)
-        .filter(|directive| directive.value_key == "CONCISE");
+    let length_directive = active_response_length_directive(sources);
+    let detailed = length_directive.is_some()
+        && crate::conversation::select_response_directive_value(
+            sources.dialogue_directives,
+            DialogueDirectiveKindIR::ResponseLength,
+        ) == Some("DETAILED");
+    let shared_boundary = semantic_goal.selected_live_event_ids.len() > 1;
+    let content = match (detailed, shared_boundary) {
+        (true, false) => PlanPreviewContentIR::Detailed,
+        (true, true) => PlanPreviewContentIR::DetailedAction,
+        (false, false) => PlanPreviewContentIR::Compact,
+        (false, true) => PlanPreviewContentIR::ActionOnly,
+    };
     let mut generated = Vec::new();
     for event_id in &semantic_goal.selected_live_event_ids {
         let event = semantic_goal
@@ -1756,7 +2027,7 @@ fn generate_plan_preview_response(
             refs.push(event_ref);
             generated.push(
                 generate_plan_interpretation_from_knowledge(
-                    sources.language,
+                    sources.generation_settings(),
                     kind,
                     &subject,
                     None,
@@ -1765,23 +2036,17 @@ fn generate_plan_preview_response(
                 .expect("an inferred semantic event must remain generatively realizable"),
             );
         } else {
-            let trace = if let Some(directive) = concise_directive {
-                generate_plan_preview_from_knowledge_with_directive(
-                    sources.language,
-                    &subject,
-                    event.intent,
-                    &event_ref,
-                    Some(&format!("DIALOGUE_DIRECTIVE:{}", directive.directive_id)),
-                    true,
-                )
-            } else {
-                generate_plan_preview_from_knowledge(
-                    sources.language,
-                    &subject,
-                    event.intent,
-                    &event_ref,
-                )
-            };
+            let directive_ref = length_directive
+                .map(|directive| format!("DIALOGUE_DIRECTIVE:{}", directive.directive_id));
+            let trace = generate_plan_preview_with_predicate(
+                sources.generation_settings(),
+                &subject,
+                event.intent,
+                &event_ref,
+                directive_ref.as_deref(),
+                content,
+                Some(&event.predicate_concept_id),
+            );
             generated
                 .push(trace.expect("selected semantic events must use known plan constructions"));
         }
@@ -1791,13 +2056,16 @@ fn generate_plan_preview_response(
     if plan_trace_count > 1 {
         generated.push(
             generate_lifecycle_status_from_knowledge(
-                sources.language,
+                sources.generation_settings(),
                 match sources.language {
                     LanguageCodeIR::Korean => "이 계획",
                     _ => "this plan",
                 },
                 &[GenerationLifecycleClaimIR::NoVerifiedExecutionOrResult],
-                &format!("PLAN_SET_BOUNDARY:{}", semantic_plan_bundle.bundle_sha256),
+                &format!(
+                    "PLAN_SET_BOUNDARY:{}:{}",
+                    semantic_goal.semantic_sha256, semantic_plan_bundle.bundle_sha256
+                ),
             )
             .expect("a multi-goal plan must retain a generated result boundary"),
         );
@@ -1821,7 +2089,7 @@ fn generate_plan_preview_response(
             format!("SEMANTIC_PLAN_GOAL:{}", semantic_goal.semantic_sha256),
         ];
         generated.push(
-            generate_plan_exclusion_from_knowledge(sources.language, subject, &refs)
+            generate_plan_exclusion_from_knowledge(sources.generation_settings(), subject, &refs)
                 .expect("a blocked typed goal must remain generatively excludable"),
         );
     }
@@ -2142,11 +2410,12 @@ fn korean_request_subject(raw_input: &str, intent: PlanIntentIR) -> Option<Strin
 }
 
 fn generate_plan_result_boundary(
-    language: LanguageCodeIR,
+    settings: impl Into<GenerationSettings>,
     act: NaturalResponseActIR,
     boundary: &PlanResultBoundaryIR,
     ledger: &ActionStateLedgerIR,
 ) -> Option<Vec<GenerativeLanguageIR>> {
+    let settings = settings.into();
     let rows = boundary
         .selected_action_ids
         .iter()
@@ -2163,9 +2432,10 @@ fn generate_plan_result_boundary(
                 .unwrap_or(snapshot.subject.as_str());
             let subject = restore_grounded_capitalization(&snapshot.subject, source);
             let claims = lifecycle_claims(act, boundary.query_focus, snapshot);
-            generate_lifecycle_status_from_knowledge(
-                language,
+            generate_lifecycle_status_with_action(
+                settings,
                 &subject,
+                Some(&snapshot.canonical_predicate),
                 &claims,
                 &format!("ACTION_LIFECYCLE_SNAPSHOT:{}", snapshot.snapshot_sha256),
             )
@@ -2176,17 +2446,34 @@ fn generate_plan_result_boundary(
 }
 
 fn generate_action_state_response(
-    language: LanguageCodeIR,
+    settings: impl Into<GenerationSettings>,
     analysis: &ActionStateAnalysisIR,
     ledger: &ActionStateLedgerIR,
 ) -> Option<Vec<GenerativeLanguageIR>> {
+    let settings = settings.into();
+    let language = settings.language();
+    if let Some(question) = &analysis.execution_capability_question {
+        return generate_lifecycle_status_with_action(
+            settings,
+            &question.subject,
+            Some(&question.canonical_predicate),
+            &[GenerationLifecycleClaimIR::ExternalExecutionUnavailable],
+            &format!(
+                "{}:QUERY:{}",
+                crate::action_state::CONVERSATION_EXECUTION_POLICY_REF,
+                content_sha256(question)
+            ),
+        )
+        .ok()
+        .map(|trace| vec![trace]);
+    }
     if analysis.untrusted_evidence_claim {
         let subject = match language {
             LanguageCodeIR::Korean => "텍스트의 영수증·터미널·콘솔 언급",
             _ => "the receipt, terminal, or console mention in the text",
         };
         return generate_lifecycle_status_from_knowledge(
-            language,
+            settings,
             subject,
             &[
                 GenerationLifecycleClaimIR::UntrustedEvidenceMention,
@@ -2201,7 +2488,7 @@ fn generate_action_state_response(
         query.quantifier.is_some() && query.predicate.is_some() && query.unresolved_terms.is_empty()
     }) {
         let trace = generate_action_set_answer_from_knowledge(
-            language,
+            settings,
             query.selected_action_ids.len(),
             map_action_set_quantifier(query.quantifier.expect("filtered quantifier")),
             map_action_set_predicate(query.predicate.expect("filtered predicate")),
@@ -2224,9 +2511,10 @@ fn generate_action_state_response(
         .map(|record| {
             let subject =
                 restore_grounded_capitalization(&record.subject, &record.source_semantic_text);
-            generate_lifecycle_status_from_knowledge(
-                language,
+            generate_lifecycle_status_with_action(
+                settings,
                 &subject,
+                Some(&record.canonical_predicate),
                 &action_record_claims(record),
                 &format!("ACTION_STATE_RECORD:{}", content_sha256(record)),
             )
@@ -2337,6 +2625,11 @@ fn lifecycle_claims(
     snapshot: &crate::plan_result_boundary::ActionLifecycleSnapshotIR,
 ) -> Vec<GenerationLifecycleClaimIR> {
     use GenerationLifecycleClaimIR as Claim;
+    if focus == PlanResultQueryFocusIR::UnverifiedEventPremise {
+        // Absence of observation is not proof of nonoccurrence, and a plan is
+        // not evidence of why/when/how an event actually occurred.
+        return vec![Claim::NoVerifiedExecutionOrResult];
+    }
     if act == NaturalResponseActIR::ResultAbsence
         && snapshot.result_availability == ResultAvailabilityIR::Unavailable
     {
@@ -2386,47 +2679,18 @@ fn report_claim(status: Option<ActionReportedStatusIR>) -> GenerationLifecycleCl
 }
 
 fn affect_kind(raw_input: &str) -> GenerationAffectKindIR {
-    let lower = raw_input.to_lowercase();
-    if lower.contains("화나") || lower.contains("화가 나") || lower.contains("angry") {
-        GenerationAffectKindIR::Angry
-    } else if lower.contains("걱정")
-        || lower.contains("불안")
-        || lower.contains("worried")
-        || lower.contains("worry")
-    {
-        GenerationAffectKindIR::Worried
-    } else if lower.contains("속상") || lower.contains("hurt") || lower.contains("upset") {
-        GenerationAffectKindIR::Hurt
-    } else if lower.contains("짜증") || lower.contains("킹받") || lower.contains("annoy") {
-        GenerationAffectKindIR::Annoyed
-    } else {
-        GenerationAffectKindIR::Frustrated
+    use crate::affective_field::ExpressedAffectIR as Affect;
+    match crate::affective_field::expressed_affect(raw_input) {
+        Some(Affect::Angry) => GenerationAffectKindIR::Angry,
+        Some(Affect::Hurt) => GenerationAffectKindIR::Hurt,
+        Some(Affect::Worried) => GenerationAffectKindIR::Worried,
+        Some(Affect::Annoyed) => GenerationAffectKindIR::Annoyed,
+        _ => GenerationAffectKindIR::Frustrated,
     }
 }
 
 fn affect_surface_present(raw_input: &str) -> bool {
-    let lower = raw_input.to_lowercase();
-    [
-        "답답",
-        "frustrating",
-        "frustrated",
-        "화나",
-        "화가 나",
-        "angry",
-        "속상",
-        "hurt",
-        "upset",
-        "불안",
-        "걱정",
-        "worried",
-        "worrying",
-        "짜증",
-        "킹받",
-        "annoying",
-        "annoyed",
-    ]
-    .iter()
-    .any(|surface| lower.contains(surface))
+    crate::affective_field::expressed_affect(raw_input).is_some()
 }
 
 fn split_sentences(text: &str) -> Vec<String> {
@@ -2732,6 +2996,22 @@ mod tests {
                             );
                             assert!(plan.validate(), "{plan:#?}");
                             assert_eq!(plan.primary_act(), primary_act, "{plan:#?}");
+                            if evidence_answer_act(primary_act) {
+                                assert!(
+                                    plan.moves
+                                        .iter()
+                                        .all(|m| m.response_act
+                                            != NaturalResponseActIR::AffectSupport),
+                                    "{plan:#?}"
+                                );
+                                assert!(
+                                    plan.moves
+                                        .iter()
+                                        .all(|m| m.response_act
+                                            != NaturalResponseActIR::TopicTransition),
+                                    "{plan:#?}"
+                                );
+                            }
                             assert_eq!(
                                 plan.moves
                                     .iter()
@@ -2839,5 +3119,97 @@ mod tests {
             .morphology
             .realized_text
             .contains("unchanged"));
+    }
+
+    #[test]
+    fn typed_context_requires_payload_and_hard_boundaries() {
+        let candidates = vec![
+            NaturalResponseCandidateIR::new(
+                NaturalResponseSourceIR::NativeAnswer,
+                NaturalResponseActIR::DiscourseAnswer,
+                "native",
+            ),
+            NaturalResponseCandidateIR::new(
+                NaturalResponseSourceIR::Fallback,
+                NaturalResponseActIR::InformAcknowledgement,
+                "fallback",
+            ),
+        ];
+        let context = NaturalResponseDecisionContextIR {
+            typed: true,
+            information_requested: true,
+            ..Default::default()
+        };
+        assert_eq!(
+            arbitrate_natural_response_with_context(candidates, context).selected_source,
+            NaturalResponseSourceIR::Fallback
+        );
+        let candidates = vec![
+            NaturalResponseCandidateIR::new(
+                NaturalResponseSourceIR::InformationAnswer,
+                NaturalResponseActIR::DiscourseAnswer,
+                "answer",
+            ),
+            NaturalResponseCandidateIR::new(
+                NaturalResponseSourceIR::Clarification,
+                NaturalResponseActIR::ClarificationRequest,
+                "ambiguous",
+            ),
+        ];
+        let context = NaturalResponseDecisionContextIR {
+            typed: true,
+            information_requested: true,
+            discourse_answer_available: true,
+            discourse_answer_eligible: true,
+            ambiguity_required: true,
+            ..Default::default()
+        };
+        assert_eq!(
+            arbitrate_natural_response_with_context(candidates, context).selected_source,
+            NaturalResponseSourceIR::Clarification
+        );
+    }
+
+    #[test]
+    fn typed_context_rejects_unrequested_plan() {
+        let candidates = vec![
+            NaturalResponseCandidateIR::new(
+                NaturalResponseSourceIR::NativePlan,
+                NaturalResponseActIR::PlanPreview,
+                "plan",
+            ),
+            NaturalResponseCandidateIR::new(
+                NaturalResponseSourceIR::Fallback,
+                NaturalResponseActIR::InformAcknowledgement,
+                "fallback",
+            ),
+        ];
+        let context = NaturalResponseDecisionContextIR {
+            typed: true,
+            plan_available: true,
+            ..Default::default()
+        };
+        assert_eq!(
+            arbitrate_natural_response_with_context(candidates, context).selected_source,
+            NaturalResponseSourceIR::Fallback
+        );
+    }
+
+    #[test]
+    fn resealed_arbitration_rejects_context_tampering() {
+        let candidates = vec![NaturalResponseCandidateIR::new(
+            NaturalResponseSourceIR::Fallback,
+            NaturalResponseActIR::InformAcknowledgement,
+            "fallback",
+        )];
+        let context = NaturalResponseDecisionContextIR {
+            typed: true,
+            assertion_only: true,
+            ..Default::default()
+        };
+        let mut receipt = arbitrate_natural_response_with_context(candidates, context);
+        assert!(receipt.validate());
+        receipt.decision_context.assertion_only = false;
+        assert!(!receipt.validate());
     }
 }

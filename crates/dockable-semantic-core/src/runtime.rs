@@ -20,7 +20,8 @@ use crate::{
         MechanismMemorySnapshotIR, MechanismQueryIR, RecalledMechanismIR,
     },
     planning::{
-        PlanGoalIR, PlanIR, Planner, PlanningError, SemanticPlanBundleIR, SemanticPlanGoalIR,
+        PlanGoalIR, PlanIR, Planner, PlanningError, SemanticPlanBundleIR, SemanticPlanGenerationTimingIR,
+        SemanticPlanGoalIR,
     },
     reasoning::{AdaptiveReasoner, ResourceBudget},
     state::{SemanticState, SparseIndex},
@@ -190,6 +191,16 @@ impl DockableCore {
     ) -> Result<SemanticPlanBundleIR, PlanningError> {
         self.planner
             .generate_semantic(goal, &self.experience_memory)
+    }
+
+    /// Executes the same semantic planning boundary while returning read-only
+    /// timing evidence. Timing has no authority over semantic plan contents.
+    pub fn generate_semantic_plan_profiled(
+        &self,
+        goal: &SemanticPlanGoalIR,
+    ) -> Result<(SemanticPlanBundleIR, SemanticPlanGenerationTimingIR), PlanningError> {
+        self.planner
+            .generate_semantic_profiled(goal, &self.experience_memory)
     }
 
     /// Runs a bounded internal panel. Worker roles are selected from typed

@@ -259,7 +259,17 @@ impl SixAxisIntegrationIR {
     }
 
     pub fn validate_against(&self, sources: SixAxisIntegrationSources<'_>) -> bool {
-        self.validate() && self == &build_six_axis_integration(sources)
+        let check =
+            crate::natural_realization::NaturalRealizationCheck::new(sources.natural_realization);
+        self.validate_with_realization_check(sources, &check)
+    }
+
+    pub(crate) fn validate_with_realization_check(
+        &self,
+        sources: SixAxisIntegrationSources<'_>,
+        check: &crate::natural_realization::NaturalRealizationCheck,
+    ) -> bool {
+        self.validate() && self == &build_six_axis_with_realization_check(sources, check)
     }
 }
 
@@ -303,6 +313,16 @@ pub fn language_cortex_package_boundary() -> LanguageCortexPackageBoundaryIR {
 }
 
 pub fn build_six_axis_integration(sources: SixAxisIntegrationSources<'_>) -> SixAxisIntegrationIR {
+    let check =
+        crate::natural_realization::NaturalRealizationCheck::new(sources.natural_realization);
+    build_six_axis_with_realization_check(sources, &check)
+}
+
+pub(crate) fn build_six_axis_with_realization_check(
+    sources: SixAxisIntegrationSources<'_>,
+    check: &crate::natural_realization::NaturalRealizationCheck,
+) -> SixAxisIntegrationIR {
+    let natural_valid = check.accepts(sources.natural_realization);
     let composition = &sources.pragmatic_interpretation.compositional_analysis;
     let intent = &sources.pragmatic_interpretation.pragmatic_intent_graph;
     let ledger = &sources.conversation_state.action_state_ledger;
@@ -350,7 +370,7 @@ pub fn build_six_axis_integration(sources: SixAxisIntegrationSources<'_>) -> Six
         && provenance_ok
         && reports_do_not_establish_results(ledger, sources.interaction_provenance);
     let realization_ok = sources.grounded_realization.validate()
-        && sources.natural_realization.validate()
+        && natural_valid
         && sources.natural_realization.realized_text == sources.realized_output
         && sources.grounded_realization.realized_text == sources.realized_output
         && sources.natural_realization.unsupported_claims
@@ -417,6 +437,7 @@ pub fn build_six_axis_integration(sources: SixAxisIntegrationSources<'_>) -> Six
             .as_ref()
             .is_some_and(|graph| !graph.nodes.is_empty());
     let intent_selected = sources.pragmatic_interpretation.inferred_goal.is_some()
+        || intent.utterance_intent.selected().is_some()
         || intent.primary.is_some()
         || intent
             .composition
@@ -506,7 +527,7 @@ pub fn build_six_axis_integration(sources: SixAxisIntegrationSources<'_>) -> Six
         sources.natural_realization.response_act,
         NaturalResponseActIR::PlanResultStatus | NaturalResponseActIR::ResultAbsence
     );
-    let natural_grounded_aligned = sources.natural_realization.validate()
+    let natural_grounded_aligned = natural_valid
         && sources.grounded_realization.validate()
         && sources.natural_realization.realized_text == sources.grounded_realization.realized_text
         && sources.natural_realization.unsupported_claims

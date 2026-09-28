@@ -7,6 +7,7 @@
 //! continuing the current work is conditional on a claimed payoff.
 
 use std::collections::BTreeSet;
+use std::time::Instant;
 
 use dockable_semantic_core::PlanIntentIR;
 use serde::{Deserialize, Serialize};
@@ -31,6 +32,17 @@ use crate::pragmatic_intent::{
 use crate::utterance_intent::{CommunicativeIntentIR, ExpectedResponseKindIR};
 
 pub const PRAGMATIC_INTERPRETATION_SCHEMA: &str = "B_CORE_PRAGMATIC_INTERPRETATION_IR_1";
+
+/// Read-only timing evidence for the profiled conversation path. It is never
+/// consulted by pragmatic interpretation and therefore cannot alter meaning.
+#[derive(Debug, Clone, Default)]
+pub(crate) struct PragmaticInterpretationTimingIR {
+    pub clause_and_nonliteral_micros: u64,
+    pub compositional_analysis_micros: u64,
+    pub intent_and_illocution_micros: u64,
+    pub language_center_micros: u64,
+    pub projection_and_resolution_micros: u64,
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -782,7 +794,7 @@ fn expected_response_outcome(response: ExpectedResponseKindIR, target: &str) -> 
         ExpectedResponseKindIR::Evidence => {
             format!("provide the available evidence supporting {target}")
         }
-        ExpectedResponseKindIR::Recommendation => {
+        ExpectedResponseKindIR::Recommendation | ExpectedResponseKindIR::DecisionSupport => {
             format!("compare the alternatives for {target} under the stated constraints")
         }
         ExpectedResponseKindIR::Explanation => {
@@ -833,6 +845,83 @@ impl PragmaticReasoner {
         context: &PragmaticContextIR,
         learned_predicates: &[PredicateLexemeIR],
     ) -> PragmaticInterpretationIR {
+        self.interpret_with_predicates_and_illocution_inner(
+            text,
+            illocutionary_surface,
+            context,
+            learned_predicates,
+            None,
+            None,
+        )
+    }
+
+    /// Uses a compositional analysis only when the caller has already proved
+    /// that its source and observed surface are byte-exactly this request and
+    /// that no learned predicates participated. The ordinary public path
+    /// always derives its own analysis.
+    pub(crate) fn interpret_exact_surface_with_compositional_analysis(
+        &self,
+        text: &str,
+        context: &PragmaticContextIR,
+        exact_source_analysis: &CompositionalAnalysisIR,
+    ) -> PragmaticInterpretationIR {
+        self.interpret_with_predicates_and_illocution_inner(
+            text,
+            text,
+            context,
+            &[],
+            Some(exact_source_analysis),
+            None,
+        )
+    }
+
+    pub(crate) fn interpret_with_predicates_and_illocution_profiled(
+        &self,
+        text: &str,
+        illocutionary_surface: &str,
+        context: &PragmaticContextIR,
+        learned_predicates: &[PredicateLexemeIR],
+    ) -> (PragmaticInterpretationIR, PragmaticInterpretationTimingIR) {
+        let mut timing = PragmaticInterpretationTimingIR::default();
+        let interpretation = self.interpret_with_predicates_and_illocution_inner(
+            text,
+            illocutionary_surface,
+            context,
+            learned_predicates,
+            None,
+            Some(&mut timing),
+        );
+        (interpretation, timing)
+    }
+
+    pub(crate) fn interpret_exact_surface_with_compositional_analysis_profiled(
+        &self,
+        text: &str,
+        context: &PragmaticContextIR,
+        exact_source_analysis: &CompositionalAnalysisIR,
+    ) -> (PragmaticInterpretationIR, PragmaticInterpretationTimingIR) {
+        let mut timing = PragmaticInterpretationTimingIR::default();
+        let interpretation = self.interpret_with_predicates_and_illocution_inner(
+            text,
+            text,
+            context,
+            &[],
+            Some(exact_source_analysis),
+            Some(&mut timing),
+        );
+        (interpretation, timing)
+    }
+
+    fn interpret_with_predicates_and_illocution_inner(
+        &self,
+        text: &str,
+        illocutionary_surface: &str,
+        context: &PragmaticContextIR,
+        learned_predicates: &[PredicateLexemeIR],
+        exact_source_analysis: Option<&CompositionalAnalysisIR>,
+        mut timing: Option<&mut PragmaticInterpretationTimingIR>,
+    ) -> PragmaticInterpretationIR {
+        let clause_and_nonliteral_started = timing.as_ref().map(|_| Instant::now());
         let clause_texts = segment_clauses(text);
         let clauses = clause_texts
             .iter()
@@ -844,8 +933,34 @@ impl PragmaticReasoner {
         let mut expected_benefits = benefits_from_clauses(&clauses);
         let evidence_policy = infer_evidence_policy(&clauses);
         let nonliteral_analysis = NonliteralAnalyzer.analyze(text, context);
-        let base_compositional_analysis =
-            CompositionalSemanticAnalyzer.analyze_with_predicates(text, learned_predicates);
+        if let (Some(timing), Some(started)) =
+            (timing.as_deref_mut(), clause_and_nonliteral_started)
+        {
+            timing.clause_and_nonliteral_micros = started.elapsed().as_micros().min(u128::from(u64::MAX)) as u64;
+        }
+        // Use observed spelling only when it is the same semantic token stream.
+        // A resolved reference or repair with different content cannot be
+        // overwritten by the original utterance merely to recover its casing.
+        let observed_tokens = crate::conversation::tokenize(illocutionary_surface).join(" ");
+        let composition_text = if observed_tokens.to_lowercase() == text.to_lowercase() {
+            observed_tokens.as_str()
+        } else {
+            text
+        };
+        let compositional_analysis_started = timing.as_ref().map(|_| Instant::now());
+        let base_compositional_analysis = exact_source_analysis.cloned().unwrap_or_else(|| {
+            CompositionalSemanticAnalyzer.analyze_with_observation(
+                composition_text,
+                learned_predicates,
+                illocutionary_surface,
+            )
+        });
+        if let (Some(timing), Some(started)) =
+            (timing.as_deref_mut(), compositional_analysis_started)
+        {
+            timing.compositional_analysis_micros = started.elapsed().as_micros().min(u128::from(u64::MAX)) as u64;
+        }
+        let intent_and_illocution_started = timing.as_ref().map(|_| Instant::now());
         let active_predicates = context
             .active_goals
             .iter()
@@ -897,6 +1012,12 @@ impl PragmaticReasoner {
             illocutionary_surface,
             &clauses,
         );
+        if let (Some(timing), Some(started)) =
+            (timing.as_deref_mut(), intent_and_illocution_started)
+        {
+            timing.intent_and_illocution_micros = started.elapsed().as_micros().min(u128::from(u64::MAX)) as u64;
+        }
+        let language_center_started = timing.as_ref().map(|_| Instant::now());
         let phenotype = if text.chars().any(|character| {
             ('\u{ac00}'..='\u{d7a3}').contains(&character)
                 || ('\u{3131}'..='\u{318e}').contains(&character)
@@ -917,6 +1038,11 @@ impl PragmaticReasoner {
             pragmatic_intent: &pragmatic_intent_graph,
             illocution: &illocutionary_commitments,
         });
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), language_center_started)
+        {
+            timing.language_center_micros = started.elapsed().as_micros().min(u128::from(u64::MAX)) as u64;
+        }
+        let projection_and_resolution_started = timing.as_ref().map(|_| Instant::now());
         let user_feedback = detect_user_feedback(text, &clauses);
         let explicit_task = infer_current_task(&clauses);
         let inferred_current_task = explicit_task
@@ -1107,9 +1233,11 @@ impl PragmaticReasoner {
                 )
             });
 
-        let inferred_goal = if pragmatic_intent_graph
-            .utterance_intent
-            .requires_clarification()
+        let inferred_goal = if crate::grammatical_scope::embedded_information_statement(text)
+            .is_some()
+            || pragmatic_intent_graph
+                .utterance_intent
+                .requires_clarification()
         {
             None
         } else if let Some(gate) = &continuation_gate {
@@ -1379,6 +1507,11 @@ impl PragmaticReasoner {
             (450 + structural_evidence * 35).min(780) as u16
         };
 
+        if let (Some(timing), Some(started)) =
+            (timing.as_deref_mut(), projection_and_resolution_started)
+        {
+            timing.projection_and_resolution_micros = started.elapsed().as_micros().min(u128::from(u64::MAX)) as u64;
+        }
         PragmaticInterpretationIR {
             schema: PRAGMATIC_INTERPRETATION_SCHEMA.to_string(),
             speech_act,
@@ -1979,11 +2112,12 @@ fn detect_outcome_claim_policy(text: &str) -> Option<OutcomeClaimPolicyIR> {
     })
 }
 
-fn detect_goal_withdrawal(text: &str) -> Option<GoalWithdrawalIR> {
+pub(crate) fn detect_goal_withdrawal(text: &str) -> Option<GoalWithdrawalIR> {
     let trimmed = text.trim().trim_end_matches(['.', '!', '?']).trim();
     let standalone_done =
         trimmed == "됐어" || trimmed.starts_with("됐어,") || trimmed.starts_with("됐어 ");
     let marker = standalone_done
+        || matches!(trimmed, "중지" | "중단" | "stop")
         || contains_any(
             text,
             &[
@@ -2377,8 +2511,11 @@ fn apply_illocutionary_authority(
             .candidates
             .iter()
             .filter(|candidate| {
-                candidate.intent != PlanIntentIR::Explain
-                    && candidate.disposition == CandidateDispositionIR::Viable
+                candidate.disposition == CandidateDispositionIR::Viable
+                    && analysis
+                        .clause_graph
+                        .node_for_frame(&candidate.source_frame_id)
+                        .is_none_or(|node| node.function.permits_independent_directive())
             })
             .max_by_key(|candidate| candidate.score_millis)
             .map(|candidate| candidate.candidate_id.clone());
@@ -2451,6 +2588,12 @@ fn apply_illocutionary_authority(
             .candidates
             .iter()
             .filter(|candidate| !removed.contains(&candidate.candidate_id))
+            .filter(|candidate| {
+                analysis
+                    .clause_graph
+                    .node_for_frame(&candidate.source_frame_id)
+                    .is_none_or(|node| node.function.permits_independent_directive())
+            })
             .filter(|candidate| {
                 matches!(
                     candidate.intent,
@@ -3900,6 +4043,26 @@ mod tests {
 
     fn interpret(text: &str) -> PragmaticInterpretationIR {
         PragmaticReasoner.interpret(text, &PragmaticContextIR::default())
+    }
+
+    #[test]
+    fn exact_source_compositional_analysis_preserves_pragmatic_interpretation() {
+        let source = "문서를 검토하고 오류가 있으면 수정해 줘.";
+        let analysis =
+            crate::compositional_semantics::CompositionalSemanticAnalyzer.analyze(source);
+        assert_eq!(
+            PragmaticReasoner.interpret_with_predicates_and_illocution(
+                source,
+                source,
+                &PragmaticContextIR::default(),
+                &[],
+            ),
+            PragmaticReasoner.interpret_exact_surface_with_compositional_analysis(
+                source,
+                &PragmaticContextIR::default(),
+                &analysis,
+            ),
+        );
     }
 
     #[test]

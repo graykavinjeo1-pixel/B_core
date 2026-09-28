@@ -6,7 +6,9 @@
 //! losing readings in an inspectable lattice. Only a structurally viable outer
 //! speech act may become a planning goal.
 
-use std::collections::BTreeSet;
+use std::collections::{BTreeSet, HashMap};
+use std::sync::OnceLock;
+use std::time::Instant;
 
 use dockable_semantic_core::PlanIntentIR;
 use serde::{Deserialize, Serialize};
@@ -21,7 +23,7 @@ use crate::language_knowledge::LanguageCodeIR;
 use crate::modality::{ModalScopeGraphIR, ModalSemanticAnalyzer};
 use crate::semantic_roles::{QuantifierKindIR, SemanticRoleAnalyzer, SemanticRoleGraphIR};
 
-pub const COMPOSITIONAL_ANALYSIS_SCHEMA: &str = "B_CORE_COMPOSITIONAL_ANALYSIS_IR_6";
+pub const COMPOSITIONAL_ANALYSIS_SCHEMA: &str = "B_CORE_COMPOSITIONAL_ANALYSIS_IR_11";
 pub const PREDICATE_LEXEME_SCHEMA: &str = "B_CORE_PREDICATE_LEXEME_IR_1";
 pub const PREDICATE_LEXICON_SNAPSHOT_SCHEMA: &str = "B_CORE_PREDICATE_LEXICON_SNAPSHOT_IR_1";
 const MAX_PERSISTED_PREDICATES: usize = 4096;
@@ -36,6 +38,7 @@ pub enum FrameMoodIR {
     Counterfactual,
     Reported,
     RelativeClause,
+    ContentComplement,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -88,11 +91,26 @@ pub struct PredicateFrameIR {
     pub intent_hint: PlanIntentIR,
     pub theme: String,
     pub mood: FrameMoodIR,
+    #[serde(default)]
+    pub temporal_reference: FrameTemporalReferenceIR,
+    /// Polarity of an ability construction, not evidence of actual capability
+    /// and not the polarity of an observed execution event.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ability_polarity: Option<FramePolarityIR>,
     pub modality: FrameModalityIR,
     pub polarity: FramePolarityIR,
     pub embedded_under_quote: bool,
     pub external_execution_authorized: bool,
     pub source_start_byte: usize,
+}
+
+/// Grammatical time reference is not evidence that an event occurred.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum FrameTemporalReferenceIR {
+    #[default]
+    Unspecified,
+    Past,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -208,6 +226,33 @@ impl CompositionalAnalysisIR {
 
 #[derive(Debug, Clone, Copy, Default)]
 pub struct CompositionalSemanticAnalyzer;
+
+/// Profile-only breakdown of compositional analysis. These values never affect
+/// a frame, graph, candidate, or semantic selection.
+#[derive(Debug, Clone, Copy, Default)]
+pub(crate) struct CompositionalAnalysisTimingIR {
+    pub source_and_clause_micros: u64,
+    pub frame_discovery_micros: u64,
+    pub action_occurrence_micros: u64,
+    pub action_occurrence_builtin_scan_micros: u64,
+    pub action_occurrence_structural_scan_micros: u64,
+    pub action_occurrence_learned_scan_micros: u64,
+    pub action_occurrence_normalization_micros: u64,
+    pub frame_annotation_micros: u64,
+    pub structural_graph_micros: u64,
+    pub structural_scope_normalization_micros: u64,
+    pub structural_clause_graph_micros: u64,
+    pub structural_attribution_micros: u64,
+    pub structural_semantic_roles_micros: u64,
+    pub structural_frame_scope_micros: u64,
+    pub structural_grammatical_scope_micros: u64,
+    pub structural_modal_scope_micros: u64,
+    pub candidate_selection_micros: u64,
+}
+
+fn compositional_duration_micros(duration: std::time::Duration) -> u64 {
+    u64::try_from(duration.as_micros()).unwrap_or(u64::MAX)
+}
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PredicateLexemeIR {
@@ -336,6 +381,61 @@ struct ActionFamily {
     forms: &'static [&'static str],
 }
 
+/// A process-wide compiled view of immutable built-in forms. Building Korean
+/// inflection variants per clause is allocation-only work: neither the input
+/// nor the built-in lexicon changes between calls. The source form is retained
+/// because boundary and dictionary licensing remain exact per occurrence.
+#[derive(Debug)]
+struct BuiltInActionVariant {
+    canonical: &'static str,
+    intent: PlanIntentIR,
+    source_form: &'static str,
+    variant: String,
+}
+
+/// Immutable exact-form index. The index only narrows candidates by their
+/// first Unicode scalar; every accepted occurrence still passes the existing
+/// substring, boundary, dictionary, and nominal-context contracts below.
+#[derive(Debug)]
+struct BuiltInActionVariantIndex {
+    variants: Vec<BuiltInActionVariant>,
+    variants_by_first_character: HashMap<char, Vec<usize>>,
+}
+
+fn built_in_action_variants() -> &'static BuiltInActionVariantIndex {
+    static VARIANTS: OnceLock<BuiltInActionVariantIndex> = OnceLock::new();
+    VARIANTS.get_or_init(|| {
+        let variants = ACTION_FAMILIES
+            .iter()
+            .flat_map(|family| {
+                family.forms.iter().flat_map(move |form| {
+                    action_form_variants(form).into_iter().map(move |variant| {
+                        BuiltInActionVariant {
+                            canonical: family.canonical,
+                            intent: family.intent,
+                            source_form: form,
+                            variant,
+                        }
+                    })
+                })
+            })
+            .collect::<Vec<_>>();
+        let mut variants_by_first_character = HashMap::<char, Vec<usize>>::new();
+        for (index, variant) in variants.iter().enumerate() {
+            if let Some(character) = variant.variant.chars().next() {
+                variants_by_first_character
+                    .entry(character)
+                    .or_default()
+                    .push(index);
+            }
+        }
+        BuiltInActionVariantIndex {
+            variants,
+            variants_by_first_character,
+        }
+    })
+}
+
 /// Event-denoting nouns are not interchangeable with verbs.  They become an
 /// action frame only when a surrounding construction contributes request or
 /// deontic force (for example, "draft recovery steps" or "the explanation
@@ -348,12 +448,19 @@ const ACTION_NOMINAL_FAMILIES: &[ActionFamily] = &[
         forms: &["explanation", "walkthrough", "briefing"],
     },
     ActionFamily {
+        canonical: "SUMMARIZE",
+        intent: PlanIntentIR::Explain,
+        forms: &["summary"],
+    },
+    ActionFamily {
         canonical: "INVESTIGATE",
         intent: PlanIntentIR::Investigate,
         forms: &[
             "assessment",
             "investigation",
             "inspection",
+            "inspect",
+            "inspected",
             "analysis",
             "examination",
             "evaluation",
@@ -404,24 +511,29 @@ const ACTION_FAMILIES: &[ActionFamily] = &[
         ],
     },
     ActionFamily {
+        canonical: "SUMMARIZE",
+        intent: PlanIntentIR::Explain,
+        forms: &["요약", "summarize", "summarized", "summarise", "summarised"],
+    },
+    ActionFamily {
         canonical: "INVESTIGATE",
         intent: PlanIntentIR::Investigate,
         forms: &[
             "확인",
-            "검사",
             "조사",
             "분석",
-            "요약",
+            "검사",
+            "점검",
             "검토",
             "진단",
             "비교",
             "검증",
-            "점검",
             "찾아",
             "살펴봐",
             "알아봐",
             "봐",
             "inspect",
+            "inspected",
             "investigate",
             "take a look",
             "have a look",
@@ -429,8 +541,6 @@ const ACTION_FAMILIES: &[ActionFamily] = &[
             "find out",
             "analyze",
             "check",
-            "summarize",
-            "summarized",
             "review",
             "reviewed",
             "recheck",
@@ -500,16 +610,17 @@ const ACTION_FAMILIES: &[ActionFamily] = &[
         intent: PlanIntentIR::Create,
         forms: &[
             "만들",
-            "작성",
             "문서화",
             "생성",
             "create",
             "created",
-            "write",
-            "document",
-            "documented",
             "generate",
         ],
+    },
+    ActionFamily {
+        canonical: "WRITE",
+        intent: PlanIntentIR::Create,
+        forms: &["작성", "써", "쓰", "write", "wrote", "written"],
     },
     ActionFamily {
         canonical: "DELETE",
@@ -546,35 +657,106 @@ const ACTION_FAMILIES: &[ActionFamily] = &[
         ],
     },
     ActionFamily {
+        canonical: "SAVE",
+        intent: PlanIntentIR::Execute,
+        forms: &["저장", "save", "saved", "saving"],
+    },
+    ActionFamily {
+        canonical: "READ",
+        intent: PlanIntentIR::Execute,
+        forms: &["읽", "읽다", "read", "reading"],
+    },
+    ActionFamily {
+        canonical: "OPEN",
+        intent: PlanIntentIR::Execute,
+        forms: &["열어", "열다", "open", "opened", "opening"],
+    },
+    ActionFamily {
+        canonical: "TRANSFORM",
+        intent: PlanIntentIR::Execute,
+        forms: &["변환", "transform", "transformed", "convert", "converted"],
+    },
+    ActionFamily {
+        canonical: "MOVE",
+        intent: PlanIntentIR::Execute,
+        forms: &["옮겨", "옮기다", "move", "moved", "moving"],
+    },
+    // This is a canonical predicate registration, not a Korean surface
+    // realization rule.  The downstream event codec may use it only when the
+    // semantic-role graph supplies the valency required by `UPLOAD`.
+    ActionFamily {
+        canonical: "UPLOAD",
+        intent: PlanIntentIR::Execute,
+        forms: &["업로드", "올려", "올리", "upload", "uploaded", "uploading"],
+    },
+    ActionFamily {
+        canonical: "SEND",
+        intent: PlanIntentIR::Communicate,
+        forms: &["전송", "발송", "send", "sent", "sending"],
+    },
+    ActionFamily {
+        canonical: "APPLY",
+        intent: PlanIntentIR::Execute,
+        forms: &["적용", "도포", "발라", "바르", "apply", "applied", "applying"],
+    },
+    ActionFamily {
+        canonical: "ATTACH",
+        intent: PlanIntentIR::Execute,
+        forms: &["부착", "붙여", "붙이", "attach", "attached", "attaching"],
+    },
+    ActionFamily {
+        canonical: "CHANGE",
+        intent: PlanIntentIR::Execute,
+        forms: &["변경", "바꿔", "바꾸", "change", "changed", "changing"],
+    },
+    ActionFamily {
+        canonical: "ACTIVATE",
+        intent: PlanIntentIR::Execute,
+        forms: &["활성화", "켜", "켜라", "enable", "enabled"],
+    },
+    ActionFamily {
+        canonical: "DEACTIVATE",
+        intent: PlanIntentIR::Execute,
+        forms: &["비활성화", "꺼", "끄", "disable", "disabled"],
+    },
+    ActionFamily {
+        canonical: "RESET",
+        intent: PlanIntentIR::Execute,
+        forms: &["재설정", "초기화", "reset", "resetting"],
+    },
+    ActionFamily {
+        canonical: "EXPAND",
+        intent: PlanIntentIR::Execute,
+        forms: &["확대", "늘려", "늘리", "expand", "expanded"],
+    },
+    ActionFamily {
+        canonical: "START",
+        intent: PlanIntentIR::Execute,
+        forms: &["시작", "개시", "begin", "start", "started"],
+    },
+    ActionFamily {
+        canonical: "COMPLETE",
+        intent: PlanIntentIR::Execute,
+        forms: &["마쳐", "마치", "끝내", "finish", "finished", "complete"],
+    },
+    ActionFamily {
+        canonical: "CLOSE",
+        intent: PlanIntentIR::Execute,
+        forms: &["닫아", "닫", "close", "closed", "closing"],
+    },
+    ActionFamily {
         canonical: "EXECUTE",
         intent: PlanIntentIR::Execute,
         forms: &[
             "실행",
-            "열어",
-            "읽",
-            "변환",
-            "저장",
-            "옮겨",
             "run",
             "execute",
             "executed",
             "perform",
-            "open",
-            "read",
-            "transform",
-            "convert",
-            "save",
-            "move",
-            "moved",
-            "apply",
             "set aside",
             "shelve",
-            "begin",
-            "start",
-            "적용",
             "보류",
             "접어",
-            "시작",
         ],
     },
     ActionFamily {
@@ -594,8 +776,8 @@ const ACTION_FAMILIES: &[ActionFamily] = &[
         canonical: "COMMUNICATE",
         intent: PlanIntentIR::Communicate,
         forms: &[
-            "기록", "보고", "전달", "보내", "말해", "record", "recorded", "report", "reported",
-            "send", "sent", "tell", "notify",
+            "기록", "보고", "전달", "보내", "말해", "말하", "record", "recorded", "report",
+            "reported", "tell", "notify",
         ],
     },
     ActionFamily {
@@ -623,7 +805,7 @@ struct ClauseSlice {
     start_byte: usize,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 struct ActionOccurrence {
     canonical_predicate: String,
     intent: PlanIntentIR,
@@ -652,7 +834,7 @@ pub(crate) fn pragmatic_action_mentions(text: &str) -> Vec<PragmaticActionMentio
                         mentions.push(PragmaticActionMentionIR {
                             canonical_predicate: family.canonical.to_string(),
                             intent: family.intent,
-                            surface: variant.clone(),
+                            surface: korean_dictionary_stem(form).unwrap_or(&variant).to_string(),
                             start_byte,
                         });
                     }
@@ -692,15 +874,89 @@ impl CompositionalSemanticAnalyzer {
         text: &str,
         learned_predicates: &[PredicateLexemeIR],
     ) -> CompositionalAnalysisIR {
+        self.analyze_with_observation(text, learned_predicates, text)
+    }
+
+    pub(crate) fn analyze_profiled(
+        &self,
+        text: &str,
+    ) -> (CompositionalAnalysisIR, CompositionalAnalysisTimingIR) {
+        self.analyze_with_observation_profiled(text, &[], text)
+    }
+
+    pub(crate) fn analyze_with_observation(
+        &self,
+        text: &str,
+        learned_predicates: &[PredicateLexemeIR],
+        observed_text: &str,
+    ) -> CompositionalAnalysisIR {
+        self.analyze_with_observation_internal(text, learned_predicates, observed_text, None)
+    }
+
+    fn analyze_with_observation_profiled(
+        &self,
+        text: &str,
+        learned_predicates: &[PredicateLexemeIR],
+        observed_text: &str,
+    ) -> (CompositionalAnalysisIR, CompositionalAnalysisTimingIR) {
+        let mut timing = CompositionalAnalysisTimingIR::default();
+        let analysis = self.analyze_with_observation_internal(
+            text,
+            learned_predicates,
+            observed_text,
+            Some(&mut timing),
+        );
+        (analysis, timing)
+    }
+
+    fn analyze_with_observation_internal(
+        &self,
+        text: &str,
+        learned_predicates: &[PredicateLexemeIR],
+        observed_text: &str,
+        mut timing: Option<&mut CompositionalAnalysisTimingIR>,
+    ) -> CompositionalAnalysisIR {
+        let source_and_clause_started = timing.as_ref().map(|_| Instant::now());
         let normalized = text.to_lowercase();
         let quote_ranges = quote_ranges(&normalized);
         let clauses = clause_slices(&normalized, &quote_ranges);
         let global_question = is_question(&normalized);
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), source_and_clause_started) {
+            timing.source_and_clause_micros = compositional_duration_micros(started.elapsed());
+        }
+        let frame_discovery_started = timing.as_ref().map(|_| Instant::now());
         let mut frames = Vec::new();
         let mut scopes = Vec::new();
 
         for clause in &clauses {
-            let occurrences = action_occurrences(&clause.text, learned_predicates);
+            let action_occurrence_started = timing.as_ref().map(|_| Instant::now());
+            let occurrences = if let Some(timing) = timing.as_deref_mut() {
+                let (occurrences, occurrence_timing) =
+                    action_occurrences_profiled(&clause.text, learned_predicates);
+                timing.action_occurrence_builtin_scan_micros = timing
+                    .action_occurrence_builtin_scan_micros
+                    .saturating_add(occurrence_timing.builtin_scan_micros);
+                timing.action_occurrence_structural_scan_micros = timing
+                    .action_occurrence_structural_scan_micros
+                    .saturating_add(occurrence_timing.structural_scan_micros);
+                timing.action_occurrence_learned_scan_micros = timing
+                    .action_occurrence_learned_scan_micros
+                    .saturating_add(occurrence_timing.learned_scan_micros);
+                timing.action_occurrence_normalization_micros = timing
+                    .action_occurrence_normalization_micros
+                    .saturating_add(occurrence_timing.normalization_micros);
+                occurrences
+            } else {
+                action_occurrences(&clause.text, learned_predicates)
+            };
+            if let (Some(timing), Some(started)) =
+                (timing.as_deref_mut(), action_occurrence_started)
+            {
+                timing.action_occurrence_micros = timing
+                    .action_occurrence_micros
+                    .saturating_add(compositional_duration_micros(started.elapsed()));
+            }
+            let frame_annotation_started = timing.as_ref().map(|_| Instant::now());
             for occurrence in occurrences {
                 let global_start = clause.start_byte + occurrence.local_start;
                 let quoted = byte_inside_ranges(global_start, &quote_ranges);
@@ -731,6 +987,7 @@ impl CompositionalSemanticAnalyzer {
                     match mood {
                         FrameMoodIR::Reported => FrameModalityIR::Reported,
                         FrameMoodIR::RelativeClause => FrameModalityIR::Descriptive,
+                        FrameMoodIR::ContentComplement => FrameModalityIR::Descriptive,
                         FrameMoodIR::Counterfactual => FrameModalityIR::Counterfactual,
                         FrameMoodIR::Conditional => FrameModalityIR::Hypothetical,
                         FrameMoodIR::Interrogative => FrameModalityIR::Possible,
@@ -784,10 +1041,12 @@ impl CompositionalSemanticAnalyzer {
                     frame_id,
                     clause_id: clause.clause_id.clone(),
                     predicate_surface: occurrence.form.clone(),
-                    canonical_predicate: occurrence.canonical_predicate,
+                    canonical_predicate: occurrence.canonical_predicate.clone(),
                     intent_hint: occurrence.intent,
                     theme,
                     mood,
+                    temporal_reference: temporal_reference(&clause.text, &occurrence),
+                    ability_polarity: ability_polarity(&clause.text, &occurrence),
                     modality,
                     polarity: if negated {
                         FramePolarityIR::Negative
@@ -799,20 +1058,69 @@ impl CompositionalSemanticAnalyzer {
                     source_start_byte: global_start,
                 });
             }
+            if let (Some(timing), Some(started)) = (timing.as_deref_mut(), frame_annotation_started)
+            {
+                timing.frame_annotation_micros = timing
+                    .frame_annotation_micros
+                    .saturating_add(compositional_duration_micros(started.elapsed()));
+            }
             scopes.extend(alternative_scopes(&clause.text, scopes.len()));
         }
 
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), frame_discovery_started) {
+            timing.frame_discovery_micros = compositional_duration_micros(started.elapsed());
+        }
+        let structural_graph_started = timing.as_ref().map(|_| Instant::now());
+        let structural_scope_normalization_started = timing.as_ref().map(|_| Instant::now());
         scopes.sort_by(|left, right| left.scope_id.cmp(&right.scope_id));
         scopes.dedup_by(|left, right| {
             left.kind == right.kind
                 && left.governor_frame_id == right.governor_frame_id
                 && left.surface_text == right.surface_text
         });
+        if let (Some(timing), Some(started)) =
+            (timing.as_deref_mut(), structural_scope_normalization_started)
+        {
+            timing.structural_scope_normalization_micros =
+                compositional_duration_micros(started.elapsed());
+        }
+        let structural_clause_graph_started = timing.as_ref().map(|_| Instant::now());
         let clause_graph = ClauseStructureAnalyzer.analyze(&normalized, &frames);
         revise_frames_from_clause_graph(&normalized, &mut frames, &clause_graph);
-        let attribution_graph = AttributionAnalyzer.analyze(&normalized, &frames);
+        if let (Some(timing), Some(started)) =
+            (timing.as_deref_mut(), structural_clause_graph_started)
+        {
+            timing.structural_clause_graph_micros = compositional_duration_micros(started.elapsed());
+        }
+        let structural_attribution_started = timing.as_ref().map(|_| Instant::now());
+        let attribution_graph =
+            AttributionAnalyzer.analyze_with_observation(text, &frames, observed_text);
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), structural_attribution_started) {
+            timing.structural_attribution_micros = compositional_duration_micros(started.elapsed());
+        }
+        let structural_semantic_roles_started = timing.as_ref().map(|_| Instant::now());
         let mut semantic_role_graph = SemanticRoleAnalyzer.analyze(&normalized, &frames);
         semantic_role_graph.apply_clause_graph(&clause_graph, &frames);
+        if let (Some(timing), Some(started)) =
+            (timing.as_deref_mut(), structural_semantic_roles_started)
+        {
+            timing.structural_semantic_roles_micros =
+                compositional_duration_micros(started.elapsed());
+        }
+        let structural_frame_scope_started = timing.as_ref().map(|_| Instant::now());
+        // Auxiliary morphology suggests an indirect request only when the
+        // actor can be the addressee. Resolve that force before projecting any
+        // candidate/goal; a third party's ability is not an instruction to us.
+        for frame in &mut frames {
+            if frame.ability_polarity.is_some()
+                && frame.modality == FrameModalityIR::Requested
+                && semantic_role_graph.has_non_addressee_actor(&frame.frame_id)
+            {
+                frame.mood = FrameMoodIR::Interrogative;
+                frame.modality = FrameModalityIR::Possible;
+                frame.external_execution_authorized = false;
+            }
+        }
         apply_negative_quantifier_scope(&mut frames, &semantic_role_graph, &mut scopes);
         scopes.sort_by(|left, right| left.scope_id.cmp(&right.scope_id));
         scopes.dedup_by(|left, right| {
@@ -820,9 +1128,31 @@ impl CompositionalSemanticAnalyzer {
                 && left.governor_frame_id == right.governor_frame_id
                 && left.surface_text == right.surface_text
         });
+        if let (Some(timing), Some(started)) =
+            (timing.as_deref_mut(), structural_frame_scope_started)
+        {
+            timing.structural_frame_scope_micros = compositional_duration_micros(started.elapsed());
+        }
+        let structural_grammatical_scope_started = timing.as_ref().map(|_| Instant::now());
         let grammatical_scope_graph =
             GrammaticalScopeAnalyzer.analyze(&normalized, &frames, &semantic_role_graph);
+        if let (Some(timing), Some(started)) =
+            (timing.as_deref_mut(), structural_grammatical_scope_started)
+        {
+            timing.structural_grammatical_scope_micros =
+                compositional_duration_micros(started.elapsed());
+        }
+        let structural_modal_scope_started = timing.as_ref().map(|_| Instant::now());
         let modal_scope_graph = ModalSemanticAnalyzer.analyze(&normalized);
+        if let (Some(timing), Some(started)) =
+            (timing.as_deref_mut(), structural_modal_scope_started)
+        {
+            timing.structural_modal_scope_micros = compositional_duration_micros(started.elapsed());
+        }
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), structural_graph_started) {
+            timing.structural_graph_micros = compositional_duration_micros(started.elapsed());
+        }
+        let candidate_selection_started = timing.as_ref().map(|_| Instant::now());
         let mut candidates = frames
             .iter()
             .enumerate()
@@ -920,7 +1250,7 @@ impl CompositionalSemanticAnalyzer {
         } else {
             u16::try_from(covered_clauses.saturating_mul(1000) / clauses.len()).unwrap_or(1000)
         };
-        CompositionalAnalysisIR {
+        let analysis = CompositionalAnalysisIR {
             schema: COMPOSITIONAL_ANALYSIS_SCHEMA.to_string(),
             frames,
             clause_graph,
@@ -936,7 +1266,12 @@ impl CompositionalSemanticAnalyzer {
             clarification_required,
             unresolved_competitions,
             structural_coverage_millis,
+        };
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), candidate_selection_started)
+        {
+            timing.candidate_selection_micros = compositional_duration_micros(started.elapsed());
         }
+        analysis
     }
 }
 
@@ -1041,6 +1376,12 @@ fn revise_frames_from_clause_graph(
         } else {
             revised_theme
         };
+        if node.function == ClauseFunctionIR::ContentComplement {
+            frame.mood = FrameMoodIR::ContentComplement;
+            frame.modality = FrameModalityIR::Descriptive;
+            frame.external_execution_authorized = false;
+            continue;
+        }
         if frame.embedded_under_quote
             || matches!(
                 frame.mood,
@@ -1068,7 +1409,11 @@ fn revise_frames_from_clause_graph(
             frame.external_execution_authorized = false;
         } else if is_directive(&node.source_text, &occurrence) {
             frame.mood = FrameMoodIR::Imperative;
-            frame.modality = FrameModalityIR::Requested;
+            frame.modality = if frame.polarity == FramePolarityIR::Negative {
+                FrameModalityIR::Prohibited
+            } else {
+                FrameModalityIR::Requested
+            };
             frame.external_execution_authorized = frame.polarity == FramePolarityIR::Positive;
         } else {
             frame.mood = FrameMoodIR::Declarative;
@@ -1121,6 +1466,7 @@ fn revise_frames_from_clause_graph(
                         .iter()
                         .find(|frame| frame.frame_id == target_node.anchor_frame_id),
                     target_node.source_start_byte,
+                    clause_graph,
                 )
             {
                 changed |= inherited_directives.insert(target_node.anchor_frame_id.clone());
@@ -1132,6 +1478,7 @@ fn revise_frames_from_clause_graph(
                         .iter()
                         .find(|frame| frame.frame_id == source_node.anchor_frame_id),
                     source_node.source_start_byte,
+                    clause_graph,
                 )
             {
                 changed |= inherited_directives.insert(source_node.anchor_frame_id.clone());
@@ -1147,7 +1494,9 @@ fn revise_frames_from_clause_graph(
             && !frame.embedded_under_quote
             && !matches!(
                 frame.mood,
-                FrameMoodIR::RelativeClause | FrameMoodIR::Counterfactual
+                FrameMoodIR::RelativeClause
+                    | FrameMoodIR::ContentComplement
+                    | FrameMoodIR::Counterfactual
             )
         {
             frame.mood = FrameMoodIR::Imperative;
@@ -1203,6 +1552,7 @@ fn has_explicit_clause_agent(
     source_text: &str,
     frame: Option<&PredicateFrameIR>,
     source_start_byte: usize,
+    clause_graph: &ClauseGraphIR,
 ) -> bool {
     let Some(frame) = frame else {
         return true;
@@ -1210,7 +1560,33 @@ fn has_explicit_clause_agent(
     let Some(local_start) = frame.source_start_byte.checked_sub(source_start_byte) else {
         return true;
     };
-    let prefix = source_text.get(..local_start).unwrap_or_default().trim();
+    // Embedded event participants are not subjects of the matrix request.
+    // Consult clause ownership before testing matrix-agent morphology; a
+    // manner adverb after the complement must not change that ownership.
+    let complement_spans = clause_graph
+        .nodes
+        .iter()
+        .filter(|node| {
+            node.function == crate::clause_graph::ClauseFunctionIR::ContentComplement
+                && clause_graph
+                    .owner_for_frame(&node.anchor_frame_id)
+                    .is_some_and(|owner| owner.anchor_frame_id == frame.frame_id)
+        })
+        .map(|node| (node.source_start_byte, node.source_end_byte))
+        .collect::<Vec<_>>();
+    let matrix_prefix = source_text
+        .get(..local_start)
+        .unwrap_or_default()
+        .char_indices()
+        .filter(|(offset, _)| {
+            let position = source_start_byte + offset;
+            !complement_spans
+                .iter()
+                .any(|(start, end)| *start <= position && position < *end)
+        })
+        .map(|(_, ch)| ch)
+        .collect::<String>();
+    let prefix = matrix_prefix.trim();
     if prefix.is_empty() {
         return false;
     }
@@ -1297,7 +1673,8 @@ fn build_goal_graph(
                 ClauseRelationKindIR::Condition
                 | ClauseRelationKindIR::Cause
                 | ClauseRelationKindIR::Purpose
-                | ClauseRelationKindIR::Contrast => None,
+                | ClauseRelationKindIR::Contrast
+                | ClauseRelationKindIR::ContentComplement => None,
             })
             .or_else(|| coordination_relation(evidence))?;
         edges.push(CompositionalGoalEdgeIR {
@@ -1427,6 +1804,9 @@ fn candidate_from_frame(
         (_, _, true) => CandidateDispositionIR::NonAuthoritativeMention,
         (_, FrameMoodIR::Reported, false) => CandidateDispositionIR::NonAuthoritativeMention,
         (_, FrameMoodIR::RelativeClause, false) => CandidateDispositionIR::NonAuthoritativeMention,
+        (_, FrameMoodIR::ContentComplement, false) => {
+            CandidateDispositionIR::NonAuthoritativeMention
+        }
         (_, FrameMoodIR::Interrogative, false) if polite_request => CandidateDispositionIR::Viable,
         (_, FrameMoodIR::Declarative, false) if modal_scope_graph.blocks_goal_projection() => {
             CandidateDispositionIR::NonAuthoritativeMention
@@ -1509,6 +1889,7 @@ fn candidate_from_frame(
         FrameMoodIR::Counterfactual => 220,
         FrameMoodIR::Reported => 180,
         FrameMoodIR::RelativeClause => 160,
+        FrameMoodIR::ContentComplement => 160,
     };
     let score_millis = if disposition == CandidateDispositionIR::Viable {
         (base + focus_boost).min(980)
@@ -1618,23 +1999,118 @@ fn byte_inside_ranges(position: usize, ranges: &[(usize, usize)]) -> bool {
         .any(|(start, end)| position >= *start && position < *end)
 }
 
+#[derive(Debug, Clone, Copy, Default)]
+struct ActionOccurrenceTimingIR {
+    builtin_scan_micros: u64,
+    structural_scan_micros: u64,
+    learned_scan_micros: u64,
+    normalization_micros: u64,
+}
+
 fn action_occurrences(
     text: &str,
     learned_predicates: &[PredicateLexemeIR],
 ) -> Vec<ActionOccurrence> {
+    action_occurrences_internal(text, learned_predicates, None)
+}
+
+fn action_occurrences_profiled(
+    text: &str,
+    learned_predicates: &[PredicateLexemeIR],
+) -> (Vec<ActionOccurrence>, ActionOccurrenceTimingIR) {
+    let mut timing = ActionOccurrenceTimingIR::default();
+    let occurrences = action_occurrences_internal(text, learned_predicates, Some(&mut timing));
+    (occurrences, timing)
+}
+
+fn action_occurrences_internal(
+    text: &str,
+    learned_predicates: &[PredicateLexemeIR],
+    mut timing: Option<&mut ActionOccurrenceTimingIR>,
+) -> Vec<ActionOccurrence> {
     let mut occurrences = Vec::new();
-    for family in ACTION_FAMILIES {
-        for form in family.forms {
-            for variant in action_form_variants(form) {
+    let builtin_scan_started = timing.as_ref().map(|_| Instant::now());
+    let builtin_variants = built_in_action_variants();
+    // `str::match_indices` reports non-overlapping matches per individual
+    // variant. Preserve that exact behavior while scanning only entries whose
+    // first character can occur at this source position.
+    let mut next_eligible_position = vec![0_usize; builtin_variants.variants.len()];
+    for (position, character) in text.char_indices() {
+        let Some(candidate_indices) = builtin_variants.variants_by_first_character.get(&character)
+        else {
+            continue;
+        };
+        for &entry_index in candidate_indices {
+            if position < next_eligible_position[entry_index] {
+                continue;
+            }
+            let entry = &builtin_variants.variants[entry_index];
+            if !text[position..].starts_with(&entry.variant) {
+                continue;
+            }
+            next_eligible_position[entry_index] = position.saturating_add(entry.variant.len());
+            let embedded_dictionary_stem = korean_dictionary_stem(entry.source_form).is_some()
+                && text[..position]
+                    .chars()
+                    .next_back()
+                    .is_some_and(is_korean_word_character);
+            if valid_form_boundary(text, position, &entry.variant)
+                && dictionary_variant_is_licensed(text, position, entry.source_form, &entry.variant)
+                && !embedded_dictionary_stem
+                && !ascii_nominal_context(text, position, &entry.variant)
+                && !korean_nominal_modifier_context(text, position, &entry.variant)
+            {
+                occurrences.push(ActionOccurrence {
+                    canonical_predicate: entry.canonical.to_string(),
+                    intent: entry.intent,
+                    form: korean_dictionary_stem(entry.source_form)
+                        .unwrap_or(&entry.variant)
+                        .to_string(),
+                    local_start: position,
+                });
+            }
+        }
+    }
+    if let (Some(timing), Some(started)) = (timing.as_deref_mut(), builtin_scan_started) {
+        timing.builtin_scan_micros = compositional_duration_micros(started.elapsed());
+    }
+
+    let structural_scan_started = timing.as_ref().map(|_| Instant::now());
+    occurrences.extend(structural_action_occurrences(text));
+    if let (Some(timing), Some(started)) = (timing.as_deref_mut(), structural_scan_started) {
+        timing.structural_scan_micros = compositional_duration_micros(started.elapsed());
+    }
+
+    let learned_scan_started = timing.as_ref().map(|_| Instant::now());
+    for predicate in learned_predicates {
+        if predicate.validate().is_err() {
+            continue;
+        }
+        for form in &predicate.surface_forms {
+            let normalized_form = form.to_lowercase();
+            for variant in action_form_variants(&normalized_form) {
                 for (position, _) in text.match_indices(&variant) {
+                    let embedded_dictionary_stem = korean_dictionary_stem(&normalized_form)
+                        .is_some()
+                        && text[..position]
+                            .chars()
+                            .next_back()
+                            .is_some_and(is_korean_word_character);
                     if valid_form_boundary(text, position, &variant)
-                        && !ascii_nominal_context(text, position, &variant)
-                        && !korean_nominal_modifier_context(text, position, &variant)
+                        && !embedded_dictionary_stem
+                        && dictionary_variant_is_licensed(
+                            text,
+                            position,
+                            &normalized_form,
+                            &variant,
+                        )
                     {
                         occurrences.push(ActionOccurrence {
-                            canonical_predicate: family.canonical.to_string(),
-                            intent: family.intent,
-                            form: variant.clone(),
+                            canonical_predicate: predicate.canonical_predicate.clone(),
+                            intent: predicate.intent_hint,
+                            form: korean_dictionary_stem(&normalized_form)
+                                .unwrap_or(&variant)
+                                .to_string(),
                             local_start: position,
                         });
                     }
@@ -1642,25 +2118,11 @@ fn action_occurrences(
             }
         }
     }
-    occurrences.extend(structural_action_occurrences(text));
-    for predicate in learned_predicates {
-        if predicate.validate().is_err() {
-            continue;
-        }
-        for form in &predicate.surface_forms {
-            let normalized_form = form.to_lowercase();
-            for (position, _) in text.match_indices(&normalized_form) {
-                if valid_form_boundary(text, position, &normalized_form) {
-                    occurrences.push(ActionOccurrence {
-                        canonical_predicate: predicate.canonical_predicate.clone(),
-                        intent: predicate.intent_hint,
-                        form: normalized_form.clone(),
-                        local_start: position,
-                    });
-                }
-            }
-        }
+    if let (Some(timing), Some(started)) = (timing.as_deref_mut(), learned_scan_started) {
+        timing.learned_scan_micros = compositional_duration_micros(started.elapsed());
     }
+
+    let normalization_started = timing.as_ref().map(|_| Instant::now());
     normalize_action_construction_occurrences(text, &mut occurrences);
     occurrences.sort_by(|left, right| {
         left.local_start
@@ -1670,13 +2132,16 @@ fn action_occurrences(
     let mut non_overlapping = Vec::<ActionOccurrence>::new();
     for occurrence in occurrences {
         let end = occurrence.local_start.saturating_add(occurrence.form.len());
-        let overlaps_same_predicate = non_overlapping.iter().any(|retained| {
+        let is_shadowed = non_overlapping.iter().any(|retained| {
             let retained_end = retained.local_start.saturating_add(retained.form.len());
-            retained.canonical_predicate == occurrence.canonical_predicate
-                && occurrence.local_start < retained_end
-                && retained.local_start < end
+            let overlap = occurrence.local_start < retained_end && retained.local_start < end;
+            let same_predicate = retained.canonical_predicate == occurrence.canonical_predicate;
+            let longer_containing_form = retained.form.len() > occurrence.form.len()
+                && retained.local_start <= occurrence.local_start
+                && end <= retained_end;
+            overlap && (same_predicate || longer_containing_form)
         });
-        if !overlaps_same_predicate {
+        if !is_shadowed {
             non_overlapping.push(occurrence);
         }
     }
@@ -1688,6 +2153,39 @@ fn action_occurrences(
             occurrence.canonical_predicate.clone(),
         ))
     });
+    if let (Some(timing), Some(started)) = (timing.as_deref_mut(), normalization_started) {
+        timing.normalization_micros = compositional_duration_micros(started.elapsed());
+    }
+    occurrences
+}
+
+#[cfg(test)]
+fn builtin_action_occurrences_linear_reference(text: &str) -> Vec<ActionOccurrence> {
+    let mut occurrences = Vec::new();
+    for entry in &built_in_action_variants().variants {
+        for (position, _) in text.match_indices(&entry.variant) {
+            let embedded_dictionary_stem = korean_dictionary_stem(entry.source_form).is_some()
+                && text[..position]
+                    .chars()
+                    .next_back()
+                    .is_some_and(is_korean_word_character);
+            if valid_form_boundary(text, position, &entry.variant)
+                && dictionary_variant_is_licensed(text, position, entry.source_form, &entry.variant)
+                && !embedded_dictionary_stem
+                && !ascii_nominal_context(text, position, &entry.variant)
+                && !korean_nominal_modifier_context(text, position, &entry.variant)
+            {
+                occurrences.push(ActionOccurrence {
+                    canonical_predicate: entry.canonical.to_string(),
+                    intent: entry.intent,
+                    form: korean_dictionary_stem(entry.source_form)
+                        .unwrap_or(&entry.variant)
+                        .to_string(),
+                    local_start: position,
+                });
+            }
+        }
+    }
     occurrences
 }
 
@@ -1752,6 +2250,20 @@ fn nominal_action_is_projectable(text: &str, start: usize, form: &str) -> bool {
         .saturating_sub(raw_clause.trim_start().len());
     let clause = raw_clause.trim();
     let local_start = start.saturating_sub(clause_start + leading);
+    let before = clause.get(..local_start).unwrap_or_default();
+    // In a nominal request, a second event noun can be the content of the
+    // first, not another action: [assessment [of recovery cost]]. Projection
+    // belongs to the head. Preserve uncoordinated PP-complement scope without
+    // relying on the nouns' domain or pretending that every event noun acts.
+    if let Some((head, _)) = before.rsplit_once(" of ") {
+        let prior_head = ACTION_NOMINAL_FAMILIES
+            .iter()
+            .flat_map(|f| f.forms.iter())
+            .any(|nominal| head.split_whitespace().any(|word| word == *nominal));
+        if prior_head && !before[head.len() + 4..].contains(" then ") {
+            return false;
+        }
+    }
     let after = clause
         .get(local_start.saturating_add(form.len())..)
         .unwrap_or_default()
@@ -1942,8 +2454,38 @@ fn is_action_nominal_form(form: &str) -> bool {
         .any(|nominal| *nominal == form)
 }
 
+fn korean_dictionary_stem(form: &str) -> Option<&str> {
+    form.strip_suffix('다')
+        .filter(|stem| !stem.is_empty() && stem.chars().all(is_korean_word_character))
+}
+
+fn dictionary_variant_is_licensed(text: &str, start: usize, form: &str, variant: &str) -> bool {
+    korean_dictionary_stem(form).is_none_or(|stem| {
+        let tail = &text[start + variant.len()..];
+        if variant == stem {
+            korean_past_inflection(tail) || korean_ability_inflection(tail).is_some()
+        } else {
+            variant != korean_potential_form(stem) || korean_ability_inflection(tail).is_some()
+        }
+    })
+}
+
 fn action_form_variants(form: &str) -> Vec<String> {
     let mut variants = vec![form.to_string()];
+    // A supplied dictionary verb contributes a stem, not a bare substring
+    // match. These endings preserve the stem; vowel contraction and irregular
+    // allomorphs remain lexical forms. Thus a connective need not be listed for
+    // each verb, while a noun or longer word containing the stem is not an act.
+    if let Some(stem) = korean_dictionary_stem(form) {
+        variants.push(stem.to_string());
+        variants.push(korean_potential_form(stem));
+        variants.extend(
+            ["고", "지", "면", "며", "면서", "던", "더", "자"]
+                .iter()
+                .map(|ending| format!("{stem}{ending}")),
+        );
+        return variants;
+    }
     if form == "assessment"
         || form.len() < 4
         || !form
@@ -2113,11 +2655,21 @@ fn korean_nominal_modifier_context(text: &str, start: usize, form: &str) -> bool
     if !tail.starts_with(char::is_whitespace) {
         return false;
     }
-    let head = tail
-        .split_whitespace()
-        .next()
-        .map(strip_korean_focus_and_case)
-        .unwrap_or_default();
+    let next_token = tail.split_whitespace().next().unwrap_or_default();
+    // A bare action-looking Korean noun followed by a case-marked nominal is
+    // a compound modifier, not an imperative.  This keeps role labels such as
+    // `기록 담당자가` from becoming a spurious `기록` action without naming an
+    // occupation or a domain object.
+    let verbal_modifier = ["하는", "할", "한", "된", "되는", "보는"]
+        .iter()
+        .any(|prefix| next_token.starts_with(prefix));
+    if !verbal_modifier
+        && next_token.chars().count() > 1
+        && next_token.ends_with(['이', '가', '은', '는'])
+    {
+        return true;
+    }
+    let head = strip_korean_focus_and_case(next_token);
     matches!(
         head,
         "비용"
@@ -2135,6 +2687,94 @@ fn korean_nominal_modifier_context(text: &str, start: usize, form: &str) -> bool
             | "추적"
             | "이력"
     )
+}
+
+fn korean_potential_form(stem: &str) -> String {
+    let Some(last) = stem.chars().last() else {
+        return String::new();
+    };
+    let code = last as u32;
+    if !(0xac00..=0xd7a3).contains(&code) {
+        return format!("{stem}을");
+    }
+    match (code - 0xac00) % 28 {
+        0 => format!(
+            "{}{}",
+            &stem[..stem.len() - last.len_utf8()],
+            char::from_u32(code + 8).unwrap()
+        ),
+        8 => stem.to_string(),
+        _ => format!("{stem}을"),
+    }
+}
+
+fn korean_ability_inflection(tail: &str) -> Option<FramePolarityIR> {
+    let tail = tail
+        .strip_prefix("을 ")
+        .or_else(|| tail.strip_prefix("할 "))
+        .unwrap_or(tail)
+        .trim_start();
+    let auxiliary = tail.strip_prefix("수 ")?.trim_start();
+    if auxiliary.starts_with('있') {
+        Some(FramePolarityIR::Positive)
+    } else if auxiliary.starts_with('없') {
+        Some(FramePolarityIR::Negative)
+    } else {
+        None
+    }
+}
+
+fn ability_polarity(text: &str, occurrence: &ActionOccurrence) -> Option<FramePolarityIR> {
+    let tail = &text[occurrence.local_start + occurrence.form.len()..];
+    if let Some(polarity) = korean_ability_inflection(tail) {
+        return Some(polarity);
+    }
+    if korean_benefactive_ability_request(tail)
+        .is_some_and(|connector| matches!(connector, "" | "해" | "어" | "아" | "여"))
+    {
+        return Some(FramePolarityIR::Positive);
+    }
+    if !occurrence.form.is_ascii() {
+        return None;
+    }
+    let before = text[..occurrence.local_start].trim();
+    if before.starts_with("cannot ") || before.starts_with("can't ") {
+        Some(FramePolarityIR::Negative)
+    } else if before.starts_with("can ") || before.starts_with("are you able to") {
+        Some(if before.split_whitespace().any(|word| word == "not") {
+            FramePolarityIR::Negative
+        } else {
+            FramePolarityIR::Positive
+        })
+    } else {
+        None
+    }
+}
+
+fn temporal_reference(text: &str, occurrence: &ActionOccurrence) -> FrameTemporalReferenceIR {
+    let tail = &text[occurrence.local_start + occurrence.form.len()..];
+    if korean_past_inflection(tail)
+        || occurrence.form.ends_with(['았', '었', '였', '했', '셨'])
+        || (occurrence.form.is_ascii()
+            && (occurrence.form.ends_with("ed")
+                || text[..occurrence.local_start]
+                    .split_whitespace()
+                    .find(|word| !matches!(*word, "why" | "when" | "where" | "how"))
+                    .is_some_and(|word| matches!(word, "did" | "didn't" | "have" | "has"))))
+    {
+        FrameTemporalReferenceIR::Past
+    } else {
+        FrameTemporalReferenceIR::Unspecified
+    }
+}
+
+fn korean_past_inflection(tail: &str) -> bool {
+    // Optional negative auxiliary and honorific precede the past marker.
+    // These morphemes attach to supplied stems; no action name is consulted.
+    let tail = tail.strip_prefix("지 않").unwrap_or(tail);
+    let tail = tail.strip_prefix('으').unwrap_or(tail);
+    let tail = tail.strip_prefix('시').unwrap_or(tail);
+    tail.starts_with(['았', '었', '였', '했', '셨'])
 }
 
 fn valid_form_boundary(text: &str, start: usize, form: &str) -> bool {
@@ -2163,12 +2803,14 @@ fn valid_form_boundary(text: &str, start: usize, form: &str) -> bool {
         if form.ends_with(['어', '아', '여']) && tail.starts_with('보') {
             return true;
         }
-        return [
-            "하", "해", "했", "한", "할", "되", "시", "고", "지", "면", "어", "아", "여", "줘",
-            "주", "줄", "줬", "세요", "자", "며", "면서", "던", "더", "기", "으", "만", "는",
-        ]
-        .iter()
-        .any(|suffix| tail.starts_with(suffix));
+        return korean_past_inflection(tail)
+            || korean_ability_inflection(tail).is_some()
+            || [
+                "하", "해", "했", "한", "할", "되", "시", "고", "지", "면", "어", "아", "여", "줘",
+                "주", "줄", "줬", "세요", "자", "며", "면서", "던", "더", "기", "으", "만", "는",
+            ]
+            .iter()
+            .any(|suffix| tail.starts_with(suffix));
     }
     let before = text[..start].chars().next_back();
     let after = text[start + form.len()..].chars().next();
@@ -2176,37 +2818,28 @@ fn valid_form_boundary(text: &str, start: usize, form: &str) -> bool {
         && !after.is_some_and(|character| character.is_ascii_alphanumeric() || character == '_')
 }
 
+fn korean_negative_adverb(token: &str) -> bool {
+    matches!(token, "안" | "못")
+}
+
 fn action_is_negated(text: &str, occurrence: &ActionOccurrence) -> bool {
     let form = occurrence.form.as_str();
-    let korean_patterns = [
-        format!("{form}지 마"),
-        format!("{form}지 말"),
-        format!("{form}면 안"),
-        format!("{form}하지 마"),
-        format!("{form}하지 말"),
-        format!("안 {form}"),
-        format!("못 {form}"),
-    ];
-    if korean_patterns.iter().any(|pattern| text.contains(pattern)) {
+    let prefix = &text[..occurrence.local_start];
+    let tail = &text[occurrence.local_start + form.len()..];
+    // Negation belongs to this predicate occurrence. Searching the whole
+    // clause for the same verb's spelling also negated unrelated occurrences.
+    if korean_prohibitive_tail(tail) {
         return true;
     }
-    let english_patterns = [
-        format!("don't {form}"),
-        format!("do not {form}"),
-        format!("not {form}"),
-        format!("never {form}"),
-    ];
-    if english_patterns
+    if ["지 마", "지 말", "면 안", "하지 마", "하지 말"]
         .iter()
-        .any(|pattern| text.contains(pattern))
+        .any(|ending| tail.starts_with(ending))
     {
         return true;
     }
-    let prefix = &text[..occurrence.local_start];
-    prefix
-        .split_whitespace()
-        .next_back()
-        .is_some_and(|token| matches!(token, "not" | "never" | "말고"))
+    prefix.split_whitespace().next_back().is_some_and(|token| {
+        korean_negative_adverb(token) || matches!(token, "not" | "never" | "don't" | "말고")
+    })
 }
 
 fn action_is_reported(text: &str, occurrence: &ActionOccurrence) -> bool {
@@ -2329,6 +2962,90 @@ fn is_question(text: &str) -> bool {
         .any(|marker| trimmed.starts_with(marker) || trimmed.ends_with(marker))
 }
 
+/// A benefactive auxiliary and its request ending. The returned prefix is not
+/// discarded: callers must validate it as either a local connector or the
+/// independently scoped clause. No target or requested action is supplied here.
+pub(crate) fn korean_benefactive_request(text: &str) -> Option<&str> {
+    if let Some(prefix) = korean_benefactive_ability_request(text) {
+        return Some(prefix);
+    }
+    let text = text.trim().trim_end_matches(['.', '?', '!']).trim_end();
+    [
+        "주시겠습니까",
+        "주시겠어요",
+        "주십시오",
+        "줄래요",
+        "주세요",
+        "주시겠어",
+        "줄래",
+        "줘",
+    ]
+    .iter()
+    .find_map(|ending| text.strip_suffix(ending).map(str::trim_end))
+}
+
+/// Benefactive 주 + potential ㄹ + 수 + interrogative 있다. The auxiliary
+/// supplies request force; the lexical event and its object remain elsewhere.
+pub(crate) fn korean_benefactive_ability_request(text: &str) -> Option<&str> {
+    let question_mark = text.trim_end().ends_with('?');
+    let text = text.trim().trim_end_matches(['.', '?', '!']).trim_end();
+    let before_auxiliary = ["있나요", "있습니까", "있어요", "있어"]
+        .iter()
+        .find_map(|ending| {
+            (question_mark || matches!(*ending, "있나요" | "있습니까"))
+                .then(|| text.strip_suffix(ending))
+                .flatten()
+        })?;
+    let before_bound_noun = before_auxiliary.trim_end().strip_suffix('수')?.trim_end();
+    before_bound_noun
+        .strip_suffix("주실")
+        .or_else(|| before_bound_noun.strip_suffix('줄'))
+        .map(str::trim_end)
+}
+
+pub(crate) fn korean_request_tail(text: &str) -> bool {
+    korean_benefactive_request(text)
+        .is_some_and(|connector| matches!(connector, "" | "해" | "어" | "아" | "여"))
+}
+
+/// Local predicate morphology: benefactive auxiliaries do not erase the
+/// negative imperative governing the predicate. No object vocabulary is used.
+pub(crate) fn korean_prohibitive_tail(text: &str) -> bool {
+    let text = text.trim().trim_end_matches(['.', '?', '!']).trim_end();
+    ["마세요", "마십시오", "말아주세요", "말아줘", "마"]
+        .iter()
+        .any(|ending| {
+            text.strip_suffix(ending).is_some_and(|prefix| {
+                matches!(
+                    prefix.split_whitespace().collect::<String>().as_str(),
+                    "지" | "하지" | "주지" | "해주지" | "어주지" | "아주지" | "여주지"
+                )
+            })
+        })
+}
+
+pub(crate) fn is_korean_benefactive_request(text: &str) -> bool {
+    if korean_benefactive_request(text).is_none() || text.contains(['"', '“', '”', '‘', '’', '`'])
+    {
+        return false;
+    }
+    // Require a known predicate followed by auxiliary morphology, not merely
+    // any sentence whose final word resembles a request ending.
+    action_occurrences(text, &[]).iter().any(|occurrence| {
+        !action_is_negated(text, occurrence)
+            && !action_is_reported(text, occurrence)
+            && korean_request_tail(&text[occurrence.local_start + occurrence.form.len()..])
+    })
+}
+
+pub(crate) fn formal_korean_benefactive(text: &str) -> bool {
+    let text = text.trim().trim_end_matches(['.', '?', '!']).trim_end();
+    korean_benefactive_request(text).is_some()
+        && ["요", "시오", "습니까"]
+            .iter()
+            .any(|ending| text.ends_with(ending))
+}
+
 fn is_directive(text: &str, occurrence: &ActionOccurrence) -> bool {
     let trimmed = text.trim();
     let directive_surface = strip_conversational_directive_lead_in(trimmed);
@@ -2359,6 +3076,13 @@ fn is_directive(text: &str, occurrence: &ActionOccurrence) -> bool {
         let benefactive = directive_surface
             .strip_prefix("please ")
             .unwrap_or(directive_surface);
+        // Prohibition is imperative mood with negative polarity, not an
+        // asserted event. Polarity still prevents any execution authority.
+        let prohibitive_directive = ["do not ", "don't ", "never "].iter().any(|prefix| {
+            benefactive
+                .strip_prefix(prefix)
+                .is_some_and(|tail| tail.starts_with(occurrence.form.as_str()))
+        });
         let help_directive = ["help me ", "help us "].iter().any(|prefix| {
             benefactive.strip_prefix(prefix).is_some_and(|tail| {
                 tail.split(['.', '?', '!', ';'])
@@ -2373,7 +3097,15 @@ fn is_directive(text: &str, occurrence: &ActionOccurrence) -> bool {
                     .strip_prefix(prefix)
                     .is_some_and(|tail| tail.contains(occurrence.form.as_str()))
             });
+        let mut manner = None;
+        let manner_directive =
+            crate::proposition_content::take_response_manner(directive_surface, &mut manner)
+                .is_some_and(|remainder| {
+                    manner.is_some() && remainder.starts_with(occurrence.form.as_str())
+                });
         return directive_surface.starts_with(occurrence.form.as_str())
+            || manner_directive
+            || prohibitive_directive
             || prefixed_directive
             || help_directive
             || help_by_directive
@@ -2408,10 +3140,14 @@ fn is_directive(text: &str, occurrence: &ActionOccurrence) -> bool {
             || character.is_ascii_punctuation()
             || matches!(character, '‘' | '’' | '“' | '”')
     });
+    if korean_request_tail(tail) || korean_prohibitive_tail(tail) {
+        return true;
+    }
     if [
         "어", "아", "여", "어줘", "아줘", "여줘", "어라", "아라", "세요",
     ]
     .contains(&inflection)
+        || (inflection.is_empty() && korean_bare_imperative_form(&occurrence.form))
         || (inflection.is_empty()
             && [
                 "열어",
@@ -2461,6 +3197,16 @@ fn is_directive(text: &str, occurrence: &ActionOccurrence) -> bool {
         .any(|suffix| directive_tail.starts_with(suffix))
 }
 
+/// A registered Korean action form may itself carry the final plain imperative
+/// ending (for example `닫아`, `마쳐`, or `끝내`).  At this point it has
+/// already passed lexical registration and construction-boundary checks, so
+/// this is a morphology decision rather than a sentence or domain exception.
+fn korean_bare_imperative_form(form: &str) -> bool {
+    ["아", "어", "여", "해", "줘", "쳐", "켜", "내", "래", "라"]
+        .iter()
+        .any(|ending| form.ends_with(ending))
+}
+
 fn korean_embedded_action_request(text: &str, occurrence: &ActionOccurrence) -> bool {
     if occurrence
         .form
@@ -2489,6 +3235,9 @@ fn korean_embedded_action_request(text: &str, occurrence: &ActionOccurrence) -> 
 }
 
 fn korean_nominal_light_directive(text: &str, occurrence: &ActionOccurrence) -> bool {
+    if korean_nominal_request_tail(&text[occurrence.local_start + occurrence.form.len()..]) {
+        return true;
+    }
     if !matches!(
         occurrence.form.as_str(),
         "계획" | "설계" | "준비" | "우선순위"
@@ -2532,7 +3281,29 @@ fn korean_clause_has_light_directive(text: &str) -> bool {
     .any(|ending| trimmed.ends_with(ending))
 }
 
-fn strip_conversational_directive_lead_in(mut text: &str) -> &str {
+/// A nominal operation may be requested through the light predicate 부탁하다
+/// or 부탁드리다. Consume its whole local tail: embedded/negative/conditional
+/// continuations cannot borrow the request mood.
+pub(crate) fn korean_nominal_request_tail(tail: &str) -> bool {
+    let tail = tail.trim().trim_end_matches(['.', '?', '!']);
+    let tail = tail
+        .strip_prefix('을')
+        .or_else(|| tail.strip_prefix('를'))
+        .unwrap_or(tail)
+        .trim();
+    matches!(
+        tail,
+        "부탁해"
+            | "부탁할게"
+            | "부탁해요"
+            | "부탁드려"
+            | "부탁드려요"
+            | "부탁합니다"
+            | "부탁드립니다"
+    )
+}
+
+pub(crate) fn strip_conversational_directive_lead_in(mut text: &str) -> &str {
     for _ in 0..3 {
         text = text.trim_start_matches(|character: char| {
             character.is_whitespace()
@@ -2548,9 +3319,11 @@ fn strip_conversational_directive_lead_in(mut text: &str) -> &str {
             "yeah",
             "yes",
             "ok",
+            "now",
             "아니",
             "잠깐",
             "그러면",
+            "이제",
             "음",
             "어",
         ]
@@ -2623,19 +3396,17 @@ fn extract_theme(text: &str, occurrence: &ActionOccurrence) -> String {
         before
     };
     let mut theme_tokens = corrected.split_whitespace().collect::<Vec<_>>();
-    while theme_tokens.last().is_some_and(|token| {
-        matches!(
-            token.trim_matches(|character: char| character.is_ascii_punctuation()),
-            "지금" | "먼저" | "우선" | "바로" | "다시" | "계속" | "이제" | "실제로" | "좀"
-        )
-    }) {
+    while theme_tokens
+        .last()
+        .is_some_and(|token| korean_clause_adverb(token))
+    {
         theme_tokens.pop();
     }
     let theme_prefix = theme_tokens.join(" ");
     let token = theme_prefix
         .split_whitespace()
         .next_back()
-        .unwrap_or(corrected)
+        .unwrap_or_default()
         .trim_matches(|character: char| {
             matches!(character, ',' | ':' | ';' | '"' | '\'' | '“' | '”')
         });
@@ -2850,6 +3621,27 @@ fn is_structural_argument_gap(theme: &str) -> bool {
         })
 }
 
+/// Clause-level adverbs are not nominal modifiers or object identities. Both
+/// predicate-theme extraction and particle-role grouping share this boundary.
+pub(crate) fn korean_clause_adverb(token: &str) -> bool {
+    korean_negative_adverb(token)
+        || matches!(
+            token.trim_matches(|c: char| c.is_ascii_punctuation()),
+            "지금"
+                | "먼저"
+                | "우선"
+                | "바로"
+                | "다시"
+                | "계속"
+                | "이제"
+                | "실제로"
+                | "좀"
+                | "왜"
+                | "언제"
+                | "어떻게"
+        )
+}
+
 fn korean_compound_theme(prefix: &str, head: &str) -> Option<String> {
     let semantic_compound_head = matches!(
         head,
@@ -2875,7 +3667,9 @@ fn korean_compound_theme(prefix: &str, head: &str) -> Option<String> {
         .checked_sub(2)
         .and_then(|index| tokens.get(index))
         .map(|token| strip_korean_focus_and_case(token))?;
-    if modifier.is_empty() || matches!(modifier, "그리고" | "하지만" | "그러나" | "이제" | "문서")
+    if modifier.is_empty()
+        || korean_clause_adverb(modifier)
+        || matches!(modifier, "그리고" | "하지만" | "그러나" | "이제" | "문서")
     {
         return None;
     }
@@ -2986,6 +3780,89 @@ fn has_focus_marker(text: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn negation_binds_predicate_occurrences_not_repeated_verb_spellings() {
+        for verb in ["read", "tell", "save", "explain", "inspect"] {
+            for marker in ["do not", "don't", "never"] {
+                for negative_first in [false, true] {
+                    let positive = format!("{verb} alpha");
+                    let negative = format!("{marker} {verb} beta");
+                    let text = if negative_first {
+                        format!("{negative} and {positive}")
+                    } else {
+                        format!("{positive} and {negative}")
+                    };
+                    for (index, (position, _)) in text.match_indices(verb).enumerate() {
+                        let occurrence = ActionOccurrence {
+                            canonical_predicate: "TEST-OPERATOR".into(),
+                            intent: PlanIntentIR::Execute,
+                            form: verb.into(),
+                            local_start: position,
+                        };
+                        assert_eq!(
+                            action_is_negated(&text, &occurrence),
+                            if index == 0 {
+                                negative_first
+                            } else {
+                                !negative_first
+                            },
+                            "{text}: {index}"
+                        );
+                    }
+                }
+            }
+        }
+        for (text, form, expected) in [
+            ("신문은 읽고 편지는 읽지 마", "읽", [false, true]),
+            ("편지는 읽지 말고 신문은 읽어", "읽", [true, false]),
+            ("파일은 저장하고 결과는 저장하지 마", "저장", [false, true]),
+        ] {
+            for (index, (position, _)) in text.match_indices(form).enumerate() {
+                let occurrence = ActionOccurrence {
+                    canonical_predicate: "TEST-OPERATOR".into(),
+                    intent: PlanIntentIR::Execute,
+                    form: form.into(),
+                    local_start: position,
+                };
+                assert_eq!(
+                    action_is_negated(text, &occurrence),
+                    expected[index],
+                    "{text}: {index}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn nominal_complement_is_content_not_a_second_requested_operation() {
+        for head in ["assessment", "explanation", "summary"] {
+            for dependent in ["recovery", "restoration", "remediation"] {
+                let text = format!("I am asking for an {head} of {dependent} costs.");
+                let result = CompositionalSemanticAnalyzer.analyze(&text);
+                assert!(
+                    result.frames.iter().any(|f| f.predicate_surface == head),
+                    "{text}"
+                );
+                assert!(
+                    !result.frames.iter().any(
+                        |f| f.predicate_surface == dependent && f.external_execution_authorized
+                    ),
+                    "{text}"
+                );
+            }
+        }
+        let coordinated =
+            CompositionalSemanticAnalyzer.analyze("I want a recovery and an assessment.");
+        assert!(coordinated
+            .frames
+            .iter()
+            .any(|f| f.predicate_surface == "recovery"));
+        assert!(coordinated
+            .frames
+            .iter()
+            .any(|f| f.predicate_surface == "assessment"));
+    }
 
     fn analyze(text: &str) -> CompositionalAnalysisIR {
         CompositionalSemanticAnalyzer.analyze(text)
@@ -3227,6 +4104,50 @@ mod tests {
     }
 
     #[test]
+    fn registered_plain_imperative_endings_remain_live_actions() {
+        for (text, predicate) in [
+            ("현장팀이 점검을 마쳐.", "COMPLETE"),
+            ("관리자가 보안문을 닫아.", "CLOSE"),
+        ] {
+            let analysis = analyze(text);
+            assert!(analysis
+                .frames
+                .iter()
+                .any(|frame| frame.canonical_predicate == predicate), "{text}: {analysis:?}");
+            assert!(analysis.candidates.iter().any(|candidate| {
+                analysis
+                    .frames
+                    .iter()
+                    .any(|frame| frame.frame_id == candidate.source_frame_id && frame.canonical_predicate == predicate)
+                    && candidate.external_execution_authorized
+            }), "{text}: {analysis:?}");
+        }
+    }
+
+    #[test]
+    fn korean_nominal_modifier_and_contained_lexeme_do_not_create_extra_events() {
+        let record_manager = analyze("기록 담당자가 회의록을 작성해.");
+        assert!(record_manager
+            .frames
+            .iter()
+            .any(|frame| frame.canonical_predicate == "WRITE"));
+        assert!(!record_manager
+            .frames
+            .iter()
+            .any(|frame| frame.canonical_predicate == "COMMUNICATE"));
+
+        let deactivate = analyze("관리자가 계정을 비활성화해.");
+        assert!(deactivate
+            .frames
+            .iter()
+            .any(|frame| frame.canonical_predicate == "DEACTIVATE"));
+        assert!(!deactivate
+            .frames
+            .iter()
+            .any(|frame| frame.canonical_predicate == "ACTIVATE"));
+    }
+
+    #[test]
     fn english_compound_request_preserves_sequence_and_delete_prohibition() {
         let analysis = analyze(
             "Read the file, transform each line, then save it. Do not delete the original.",
@@ -3353,6 +4274,59 @@ mod tests {
         assert!(!mentions
             .iter()
             .any(|mention| mention.canonical_predicate == "COMMUNICATE"));
+    }
+
+    #[test]
+    fn indexed_builtin_action_scan_matches_linear_contract() {
+        for source in [
+            "계속 진행해. 수리 계획을 세우고 결과를 보고해.",
+            "Repair the relay, then report the result and continue the review.",
+            "삭제하지 말고 수정한 뒤 배포해.",
+            "계속 계속 진행하고 다시 점검해.",
+            "The report describes a repair plan but does not request deployment.",
+        ] {
+            let indexed = action_occurrences_internal(source, &[], None)
+                .into_iter()
+                .filter(|occurrence| {
+                    builtin_action_occurrences_linear_reference(source).iter().any(|reference| {
+                        reference.canonical_predicate == occurrence.canonical_predicate
+                            && reference.intent == occurrence.intent
+                            && reference.form == occurrence.form
+                            && reference.local_start == occurrence.local_start
+                    })
+                })
+                .collect::<Vec<_>>();
+            let mut expected = builtin_action_occurrences_linear_reference(source);
+            expected.sort_by(|left, right| {
+                left.local_start
+                    .cmp(&right.local_start)
+                    .then_with(|| right.form.len().cmp(&left.form.len()))
+            });
+            let mut expected_non_overlapping = Vec::new();
+            for occurrence in expected {
+                let end = occurrence.local_start.saturating_add(occurrence.form.len());
+                if !expected_non_overlapping.iter().any(|retained: &ActionOccurrence| {
+                    let retained_end = retained.local_start.saturating_add(retained.form.len());
+                    let overlap = occurrence.local_start < retained_end
+                        && retained.local_start < end;
+                    let same_predicate = retained.canonical_predicate == occurrence.canonical_predicate;
+                    let longer_containing_form = retained.form.len() > occurrence.form.len()
+                        && retained.local_start <= occurrence.local_start
+                        && end <= retained_end;
+                    overlap && (same_predicate || longer_containing_form)
+                }) {
+                    expected_non_overlapping.push(occurrence);
+                }
+            }
+            let mut seen = BTreeSet::new();
+            expected_non_overlapping.retain(|occurrence| {
+                seen.insert((
+                    occurrence.local_start,
+                    occurrence.canonical_predicate.clone(),
+                ))
+            });
+            assert_eq!(indexed, expected_non_overlapping, "source={source}");
+        }
     }
 
     #[test]
@@ -3508,6 +4482,37 @@ mod tests {
     }
 
     #[test]
+    fn dictionary_stems_compose_connectives_without_matching_nouns() {
+        for (lemma, predicate) in [("열다", "OPEN"), ("읽다", "READ"), ("옮기다", "MOVE")] {
+            let stem = lemma.strip_suffix('다').unwrap();
+            for ending in ["고", "며", "면서"] {
+                let input = format!("기록을 {stem}{ending} 파일을 저장해.");
+                let analysis = analyze(&input);
+                let frames = &analysis.frames;
+                assert_eq!(frames.len(), 2, "{input}");
+                assert_eq!(frames[0].canonical_predicate, predicate, "{input}");
+                assert_eq!(frames[0].theme, "기록", "{input}");
+                assert_eq!(frames[1].canonical_predicate, "SAVE", "{input}");
+                assert_eq!(frames[1].theme, "파일", "{input}");
+            }
+        }
+        for input in [
+            "열이 높아.",
+            "열기를 느껴.",
+            "열심히 파일을 저장해.",
+            "과열고라는 이름이야.",
+        ] {
+            assert!(
+                !analyze(input)
+                    .frames
+                    .iter()
+                    .any(|f| f.canonical_predicate == "OPEN"),
+                "{input}"
+            );
+        }
+    }
+
+    #[test]
     fn korean_try_auxiliary_preserves_the_lexical_action_boundary() {
         let analysis = analyze("아카이브를 열어보고 복구해");
         assert_eq!(
@@ -3516,7 +4521,7 @@ mod tests {
                 .iter()
                 .map(|frame| frame.canonical_predicate.as_str())
                 .collect::<Vec<_>>(),
-            vec!["EXECUTE", "REPAIR"]
+            vec!["OPEN", "REPAIR"]
         );
         assert!(!analysis
             .frames

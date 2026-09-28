@@ -28,7 +28,7 @@ use crate::pragmatics::{
 };
 use crate::semantic_roles::SemanticRoleKindIR;
 
-pub const LANGUAGE_CENTER_SCHEMA: &str = "B_CORE_LANGUAGE_CENTER_IR_2";
+pub const LANGUAGE_CENTER_SCHEMA: &str = "B_CORE_LANGUAGE_CENTER_IR_3";
 pub const LANGUAGE_CENTER_GOAL_PROJECTION_SCHEMA: &str =
     "B_CORE_LANGUAGE_CENTER_GOAL_PROJECTION_IR_1";
 
@@ -448,11 +448,13 @@ impl LanguageCenterIR {
         let relations = self
             .relations
             .iter()
-            .map(|relation| SemanticPlanRelationIR {
-                relation_id: relation.relation_id.clone(),
-                source_event_id: relation.source_event_id.clone(),
-                target_event_id: relation.target_event_id.clone(),
-                relation: semantic_plan_relation(relation.relation),
+            .filter_map(|relation| {
+                Some(SemanticPlanRelationIR {
+                    relation_id: relation.relation_id.clone(),
+                    source_event_id: relation.source_event_id.clone(),
+                    target_event_id: relation.target_event_id.clone(),
+                    relation: semantic_plan_relation(relation.relation)?,
+                })
             })
             .collect();
         // The one-shot central materializer is authoritative for which
@@ -714,6 +716,7 @@ fn semantic_plan_role(role: SemanticRoleKindIR) -> SemanticPlanRoleIR {
         SemanticRoleKindIR::Recipient => SemanticPlanRoleIR::Recipient,
         SemanticRoleKindIR::Source => SemanticPlanRoleIR::Source,
         SemanticRoleKindIR::Destination => SemanticPlanRoleIR::Destination,
+        SemanticRoleKindIR::Target => SemanticPlanRoleIR::Target,
         SemanticRoleKindIR::Instrument => SemanticPlanRoleIR::Instrument,
         SemanticRoleKindIR::Location => SemanticPlanRoleIR::Location,
         SemanticRoleKindIR::Result => SemanticPlanRoleIR::Result,
@@ -736,8 +739,11 @@ fn semantic_plan_projection(projection: LanguageCenterProjectionIR) -> SemanticP
     }
 }
 
-fn semantic_plan_relation(relation: ClauseRelationKindIR) -> SemanticPlanRelationKindIR {
-    match relation {
+fn semantic_plan_relation(relation: ClauseRelationKindIR) -> Option<SemanticPlanRelationKindIR> {
+    Some(match relation {
+        // Argument subordination is retained by the Language Center, not
+        // reinterpreted as a task dependency in the language-independent core.
+        ClauseRelationKindIR::ContentComplement => return None,
         ClauseRelationKindIR::Coordination => SemanticPlanRelationKindIR::Coordination,
         ClauseRelationKindIR::Sequence => SemanticPlanRelationKindIR::Sequence,
         ClauseRelationKindIR::Condition => SemanticPlanRelationKindIR::Condition,
@@ -745,7 +751,7 @@ fn semantic_plan_relation(relation: ClauseRelationKindIR) -> SemanticPlanRelatio
         ClauseRelationKindIR::Purpose => SemanticPlanRelationKindIR::Purpose,
         ClauseRelationKindIR::Contrast => SemanticPlanRelationKindIR::Contrast,
         ClauseRelationKindIR::TemporalBefore => SemanticPlanRelationKindIR::TemporalBefore,
-    }
+    })
 }
 
 pub struct LanguageCenterSources<'a> {
@@ -797,7 +803,10 @@ impl LanguageCenterPipeline {
                     }
                     ClauseFunctionIR::Cause
                     | ClauseFunctionIR::Purpose
-                    | ClauseFunctionIR::Concession => LanguageCenterProjectionIR::Descriptive,
+                    | ClauseFunctionIR::Concession
+                    | ClauseFunctionIR::ContentComplement => {
+                        LanguageCenterProjectionIR::Descriptive
+                    }
                     ClauseFunctionIR::Main | ClauseFunctionIR::Coordinate => {
                         LanguageCenterProjectionIR::LiveRequest
                     }
@@ -955,6 +964,9 @@ impl LanguageCenterPipeline {
                     NativeEventScopeIR::Prohibited => LanguageCenterProjectionIR::Prohibited,
                     NativeEventScopeIR::Reported => LanguageCenterProjectionIR::Reported,
                     NativeEventScopeIR::Possible => LanguageCenterProjectionIR::Advisory,
+                    NativeEventScopeIR::ContentComplement => {
+                        LanguageCenterProjectionIR::Descriptive
+                    }
                 };
                 push_contribution(
                     &mut contributions,
@@ -1274,7 +1286,9 @@ fn frame_projection(frame: &PredicateFrameIR) -> LanguageCenterProjectionIR {
         FrameMoodIR::Reported | FrameMoodIR::RelativeClause => LanguageCenterProjectionIR::Reported,
         FrameMoodIR::Imperative => LanguageCenterProjectionIR::LiveRequest,
         FrameMoodIR::Interrogative => LanguageCenterProjectionIR::Inquiry,
-        FrameMoodIR::Declarative => LanguageCenterProjectionIR::Descriptive,
+        FrameMoodIR::Declarative | FrameMoodIR::ContentComplement => {
+            LanguageCenterProjectionIR::Descriptive
+        }
     }
 }
 
@@ -1569,7 +1583,7 @@ pub fn language_center_semantic_sha256(center: &LanguageCenterIR) -> String {
 fn semantic_role_priority(role: SemanticRoleKindIR) -> u8 {
     match role {
         SemanticRoleKindIR::Theme | SemanticRoleKindIR::Patient => 0,
-        SemanticRoleKindIR::Result | SemanticRoleKindIR::Destination => 1,
+        SemanticRoleKindIR::Result | SemanticRoleKindIR::Destination | SemanticRoleKindIR::Target => 1,
         SemanticRoleKindIR::Topic | SemanticRoleKindIR::Experiencer => 2,
         SemanticRoleKindIR::Recipient
         | SemanticRoleKindIR::Source

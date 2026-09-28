@@ -1,4 +1,7 @@
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    time::Instant,
+};
 
 use dockable_semantic_core::PlanIntentIR;
 use serde::{Deserialize, Serialize};
@@ -7,6 +10,22 @@ use crate::language_knowledge::LanguageCodeIR;
 
 pub const LEXEME_SCHEMA: &str = "B_CORE_LEXEME_IR_1";
 pub const LEXEME_SNAPSHOT_SCHEMA: &str = "B_CORE_LEXEME_SNAPSHOT_IR_1";
+
+/// Profile-only breakdown for one lexical activation. These durations are
+/// never persisted, routed, or used to select lexical meaning.
+#[derive(Debug, Clone, Copy, Default)]
+pub(crate) struct LexicalActivationTimingIR {
+    pub pack_lookup_micros: u64,
+    pub pack_injection_micros: u64,
+    pub pack_match_identity_micros: u64,
+    pub pack_lexeme_materialization_micros: u64,
+    pub pack_source_installation_micros: u64,
+    pub pack_source_install_validation_micros: u64,
+    pub pack_source_install_indexing_micros: u64,
+    pub candidate_index_micros: u64,
+    pub candidate_scoring_micros: u64,
+    pub semantic_spread_and_budget_micros: u64,
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -186,6 +205,12 @@ pub enum LexicalMemoryError {
     SnapshotConflict,
 }
 
+#[derive(Debug, Clone, Copy, Default)]
+struct SourceInstallationTimingIR {
+    validation_micros: u64,
+    indexing_micros: u64,
+}
+
 #[derive(Debug, Clone)]
 pub struct LexicalMemory {
     entries: BTreeMap<String, (LexemeIR, LexemeUsageIR)>,
@@ -261,10 +286,102 @@ impl LexicalMemory {
         Ok(true)
     }
 
+    /// Installs all language facets for a dictionary entry atomically. This
+    /// private path accepts only the sealed working set returned by the
+    /// immutable lexical pack lookup, so it preserves the public `inject`
+    /// conflict contract without rebuilding the same set once per facet.
+    fn ensure_source_linked_working_lexemes_timed(
+        &mut self,
+        candidates: &[LexemeIR],
+        mut timing: Option<&mut SourceInstallationTimingIR>,
+    ) -> Result<(), LexicalMemoryError> {
+        // `candidates` can only originate from LexicalKnowledgePack's sealed
+        // facet cache. That cache validates every generated LexemeIR while its
+        // immutable source pack is loaded. Keep identity-conflict checks here:
+        // mutable state may never replace a source-linked lexical record.
+        let validation_started = timing.as_ref().map(|_| Instant::now());
+        if candidates.is_empty()
+            || candidates
+                .iter()
+                .any(|candidate| !candidate.lexeme_id.starts_with("NIKL."))
+        {
+            return Err(LexicalMemoryError::IdentityConflict);
+        }
+        for candidate in candidates {
+            if self
+                .entries
+                .get(&candidate.lexeme_id)
+                .is_some_and(|(existing, _)| existing != candidate)
+            {
+                return Err(LexicalMemoryError::IdentityConflict);
+            }
+        }
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), validation_started) {
+            timing.validation_micros = duration_micros(started.elapsed());
+        }
+        let indexing_started = timing.as_ref().map(|_| Instant::now());
+        for candidate in candidates {
+            if !self.entries.contains_key(&candidate.lexeme_id) {
+                self.index_lexeme(candidate);
+                self.entries.insert(
+                    candidate.lexeme_id.clone(),
+                    (candidate.clone(), LexemeUsageIR::default()),
+                );
+            }
+        }
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), indexing_started) {
+            timing.indexing_micros = duration_micros(started.elapsed());
+        }
+        Ok(())
+    }
+
     /// Activates meanings from surface form, context, collocation, frequency and
     /// verified-use history. Encounter frequency is a prior, never sole authority.
     pub fn activate(&mut self, text: &str, context_tags: &[String]) -> Vec<ActivatedSenseIR> {
         self.activate_with_pack(text, context_tags, true)
+    }
+
+    pub(crate) fn activate_profiled(
+        &mut self,
+        text: &str,
+        context_tags: &[String],
+    ) -> (Vec<ActivatedSenseIR>, LexicalActivationTimingIR) {
+        let mut timing = LexicalActivationTimingIR::default();
+        let activations =
+            self.activate_with_pack_timed(text, context_tags, true, Some(&mut timing));
+        (activations, timing)
+    }
+
+    /// Reuses an immutable lexical lookup that was created from this exact
+    /// source during the same trusted turn. This crate-private path is not an
+    /// external lookup-import boundary; public activation always derives its
+    /// own source-bound receipt.
+    pub(crate) fn activate_with_precomputed_lookup(
+        &mut self,
+        text: &str,
+        context_tags: &[String],
+        lookup: &crate::lexical_knowledge_pack::LexicalKnowledgeLookupIR,
+    ) -> Vec<ActivatedSenseIR> {
+        self.activate_with_precomputed_lookup_timed(text, context_tags, Some(lookup), None)
+    }
+
+    /// Profiled counterpart of `activate_with_precomputed_lookup`. The lookup
+    /// duration belongs to the producer that prepared the shared receipt, so
+    /// this activation reports no local lookup time.
+    pub(crate) fn activate_profiled_with_precomputed_lookup(
+        &mut self,
+        text: &str,
+        context_tags: &[String],
+        lookup: &crate::lexical_knowledge_pack::LexicalKnowledgeLookupIR,
+    ) -> (Vec<ActivatedSenseIR>, LexicalActivationTimingIR) {
+        let mut timing = LexicalActivationTimingIR::default();
+        let activations = self.activate_with_precomputed_lookup_timed(
+            text,
+            context_tags,
+            Some(lookup),
+            Some(&mut timing),
+        );
+        (activations, timing)
     }
 
     fn index_lexeme(&mut self, lexeme: &LexemeIR) {
@@ -313,34 +430,125 @@ impl LexicalMemory {
         context_tags: &[String],
         enable_pack: bool,
     ) -> Vec<ActivatedSenseIR> {
+        self.activate_with_pack_timed(text, context_tags, enable_pack, None)
+    }
+
+    fn activate_with_pack_timed(
+        &mut self,
+        text: &str,
+        context_tags: &[String],
+        enable_pack: bool,
+        mut timing: Option<&mut LexicalActivationTimingIR>,
+    ) -> Vec<ActivatedSenseIR> {
+        let pack_lookup_started = timing.as_ref().map(|_| Instant::now());
+        let lookup = enable_pack.then(|| crate::lexical_knowledge_pack::builtin_pack().lookup(text));
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), pack_lookup_started) {
+            timing.pack_lookup_micros = duration_micros(started.elapsed());
+        }
+        self.activate_with_precomputed_lookup_timed(text, context_tags, lookup.as_ref(), timing)
+    }
+
+    fn activate_with_precomputed_lookup_timed(
+        &mut self,
+        text: &str,
+        context_tags: &[String],
+        lookup: Option<&crate::lexical_knowledge_pack::LexicalKnowledgeLookupIR>,
+        mut timing: Option<&mut LexicalActivationTimingIR>,
+    ) -> Vec<ActivatedSenseIR> {
         let mut pack_matches = BTreeMap::<String, (String, String)>::new();
-        if enable_pack {
-            let lookup = crate::lexical_knowledge_pack::builtin_pack().lookup(text);
-            for matched in lookup.matches {
+        if let Some(lookup) = lookup {
+            let pack_injection_started = timing.as_ref().map(|_| Instant::now());
+            for matched in &lookup.matches {
+                let match_identity_started = timing.as_ref().map(|_| Instant::now());
                 let english = matched.morphology.grammar_rule == "SOURCE_ENGLISH_EQUIVALENT";
-                for lexeme in matched.entry.working_lexemes() {
-                    let selected = matched
-                        .concept_ids
-                        .contains(&lexeme.senses[0].canonical_concept);
-                    let same_language = (lexeme.language == LanguageCodeIR::English) == english;
-                    let id = lexeme.lexeme_id.clone();
-                    // Both language facets enter working memory atomically from the
-                    // same immutable source sense, never from an invented translation.
-                    self.inject(lexeme)
-                        .expect("validated source-linked lexical entry");
-                    if selected && same_language {
-                        pack_matches.insert(
-                            id,
-                            (
-                                matched.matched_form.clone(),
-                                matched.morphology.grammar_rule.clone(),
-                            ),
-                        );
+                let selected_ids = matched
+                    .entry
+                    .senses
+                    .iter()
+                    .filter(|sense| {
+                        matched
+                            .concept_ids
+                            .contains(&matched.entry.concept_id(sense))
+                    })
+                    .map(|sense| {
+                        format!(
+                            "NIKL.{}.{}.{}",
+                            if english { "en" } else { "ko" },
+                            matched.entry.source_entry_id,
+                            sense.source_sense_id
+                        )
+                    })
+                    .collect::<Vec<_>>();
+                if let (Some(timing), Some(started)) =
+                    (timing.as_deref_mut(), match_identity_started)
+                {
+                    timing.pack_match_identity_micros = timing
+                        .pack_match_identity_micros
+                        .saturating_add(duration_micros(started.elapsed()));
+                }
+                // Immutable source-linked entries are installed atomically. Once
+                // present, public injection and snapshot import both guarantee
+                // exact source identity, so rebuilding every facet merely to
+                // validate it again cannot change the result.
+                if selected_ids
+                    .iter()
+                    .any(|lexeme_id| !self.entries.contains_key(lexeme_id))
+                {
+                    let materialization_started = timing.as_ref().map(|_| Instant::now());
+                    let working_lexemes = crate::lexical_knowledge_pack::builtin_pack()
+                        .sealed_working_lexemes(&matched.entry.source_entry_id)
+                        .expect("sealed lookup entry must have validated working facets");
+                    if let (Some(timing), Some(started)) =
+                        (timing.as_deref_mut(), materialization_started)
+                    {
+                        timing.pack_lexeme_materialization_micros = timing
+                            .pack_lexeme_materialization_micros
+                            .saturating_add(duration_micros(started.elapsed()));
+                    }
+                    let installation_started = timing.as_ref().map(|_| Instant::now());
+                    let mut installation_timing = SourceInstallationTimingIR::default();
+                    self.ensure_source_linked_working_lexemes_timed(
+                        &working_lexemes,
+                        timing.as_ref().map(|_| &mut installation_timing),
+                    )
+                    .expect("validated source-linked lexical entry");
+                    if let (Some(timing), Some(started)) =
+                        (timing.as_deref_mut(), installation_started)
+                    {
+                        timing.pack_source_installation_micros = timing
+                            .pack_source_installation_micros
+                            .saturating_add(duration_micros(started.elapsed()));
+                        timing.pack_source_install_validation_micros = timing
+                            .pack_source_install_validation_micros
+                            .saturating_add(installation_timing.validation_micros);
+                        timing.pack_source_install_indexing_micros = timing
+                            .pack_source_install_indexing_micros
+                            .saturating_add(installation_timing.indexing_micros);
                     }
                 }
+                let match_insert_started = timing.as_ref().map(|_| Instant::now());
+                for id in selected_ids {
+                    pack_matches.insert(
+                        id,
+                        (
+                            matched.matched_form.clone(),
+                            matched.morphology.grammar_rule.clone(),
+                        ),
+                    );
+                }
+                if let (Some(timing), Some(started)) = (timing.as_deref_mut(), match_insert_started)
+                {
+                    timing.pack_match_identity_micros = timing
+                        .pack_match_identity_micros
+                        .saturating_add(duration_micros(started.elapsed()));
+                }
+            }
+            if let (Some(timing), Some(started)) = (timing.as_deref_mut(), pack_injection_started) {
+                timing.pack_injection_micros = duration_micros(started.elapsed());
             }
         }
         self.sequence = self.sequence.saturating_add(1);
+        let candidate_index_started = timing.as_ref().map(|_| Instant::now());
         let normalized = normalize(text);
         let context = context_tags
             .iter()
@@ -349,6 +557,10 @@ impl LexicalMemory {
         let mut activated = Vec::new();
         let mut candidates = self.indexed_candidates(&normalized);
         candidates.extend(pack_matches.keys().cloned());
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), candidate_index_started) {
+            timing.candidate_index_micros = duration_micros(started.elapsed());
+        }
+        let candidate_scoring_started = timing.as_ref().map(|_| Instant::now());
         for lexeme_id in candidates {
             let Some((lexeme, usage)) = self.entries.get_mut(&lexeme_id) else {
                 continue;
@@ -451,8 +663,15 @@ impl LexicalMemory {
                 });
             }
         }
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), candidate_scoring_started) {
+            timing.candidate_scoring_micros = duration_micros(started.elapsed());
+        }
+        let semantic_spread_started = timing.as_ref().map(|_| Instant::now());
         activated = self.spread_semantic_relations(activated);
         budget_activations(&mut activated);
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), semantic_spread_started) {
+            timing.semantic_spread_and_budget_micros = duration_micros(started.elapsed());
+        }
         activated
     }
 
@@ -588,12 +807,33 @@ impl LexicalMemory {
         }
         for (lexeme, _) in candidate.values() {
             if lexeme.lexeme_id.starts_with("NIKL.") {
-                let counterpart = if lexeme.language == LanguageCodeIR::Korean {
-                    lexeme.lexeme_id.replacen("NIKL.ko.", "NIKL.en.", 1)
-                } else {
-                    lexeme.lexeme_id.replacen("NIKL.en.", "NIKL.ko.", 1)
+                let mut parts = lexeme.lexeme_id.split('.');
+                let (Some("NIKL"), Some(language), Some(entry_id), Some(sense_id), None) = (
+                    parts.next(),
+                    parts.next(),
+                    parts.next(),
+                    parts.next(),
+                    parts.next(),
+                ) else {
+                    return Err(LexicalMemoryError::SnapshotConflict);
                 };
-                if !candidate.contains_key(&counterpart) {
+                let expected = crate::lexical_knowledge_pack::builtin_pack()
+                    .entry(entry_id)
+                    .ok_or(LexicalMemoryError::SnapshotConflict)?
+                    .working_lexemes();
+                if !expected.iter().any(|source| source == lexeme) {
+                    return Err(LexicalMemoryError::SnapshotConflict);
+                }
+                let counterpart_language = match language {
+                    "ko" => "en",
+                    "en" => "ko",
+                    _ => return Err(LexicalMemoryError::SnapshotConflict),
+                };
+                let counterpart_id = format!("NIKL.{counterpart_language}.{entry_id}.{sense_id}");
+                let Some((counterpart, _)) = candidate.get(&counterpart_id) else {
+                    return Err(LexicalMemoryError::SnapshotConflict);
+                };
+                if !expected.iter().any(|source| source == counterpart) {
                     return Err(LexicalMemoryError::SnapshotConflict);
                 }
             }
@@ -638,13 +878,12 @@ impl LexicalMemory {
     }
 }
 
-fn validate_lexeme(lexeme: &LexemeIR) -> Result<(), LexicalMemoryError> {
-    if lexeme.schema != LEXEME_SCHEMA {
-        return Err(LexicalMemoryError::InvalidSchema);
-    }
-    if !valid_id(&lexeme.lexeme_id) {
-        return Err(LexicalMemoryError::InvalidIdentity);
-    }
+fn duration_micros(duration: std::time::Duration) -> u64 {
+    duration.as_micros().min(u128::from(u64::MAX)) as u64
+}
+
+pub(crate) fn validate_lexeme(lexeme: &LexemeIR) -> Result<(), LexicalMemoryError> {
+    validate_lexeme_structure(lexeme)?;
     if lexeme.lexeme_id.starts_with("NIKL.") {
         let parts = lexeme.lexeme_id.split('.').collect::<Vec<_>>();
         let canonical = parts
@@ -659,6 +898,19 @@ fn validate_lexeme(lexeme: &LexemeIR) -> Result<(), LexicalMemoryError> {
         if !canonical {
             return Err(LexicalMemoryError::IdentityConflict);
         }
+    }
+    Ok(())
+}
+
+/// Validates a LexemeIR's own bounded fields without querying source identity.
+/// The immutable pack loader uses this non-recursive form before its OnceLock
+/// is published; public/user-originating NIKL records still use `validate_lexeme`.
+pub(crate) fn validate_lexeme_structure(lexeme: &LexemeIR) -> Result<(), LexicalMemoryError> {
+    if lexeme.schema != LEXEME_SCHEMA {
+        return Err(LexicalMemoryError::InvalidSchema);
+    }
+    if !valid_id(&lexeme.lexeme_id) {
+        return Err(LexicalMemoryError::InvalidIdentity);
     }
     if lexeme.lemma.trim().is_empty()
         || lexeme.lemma.len() > 256
@@ -1112,6 +1364,20 @@ mod tests {
     use super::*;
 
     #[test]
+    fn precomputed_lookup_matches_fresh_source_activation() {
+        let source = "계약서를 검토하고 계획해";
+        let lookup = crate::lexical_knowledge_pack::builtin_pack().lookup(source);
+        let mut fresh = LexicalMemory::default();
+        let mut reused = LexicalMemory::default();
+
+        assert_eq!(
+            fresh.activate(source, &[]),
+            reused.activate_with_precomputed_lookup(source, &[], &lookup)
+        );
+        assert_eq!(fresh.snapshot(), reused.snapshot());
+    }
+
+    #[test]
     fn bilingual_pack_ablation_and_atomic_english_attachment() {
         let mut without = LexicalMemory::default();
         let baseline = without.activate_with_pack("먹었어 계약서를", &[], false);
@@ -1176,6 +1442,16 @@ mod tests {
             restored.inject(forged),
             Err(LexicalMemoryError::IdentityConflict)
         );
+        let mut forged_snapshot = snapshot.clone();
+        forged_snapshot
+            .entries
+            .iter_mut()
+            .find(|entry| entry.lexeme.lexeme_id.starts_with("NIKL.ko."))
+            .unwrap()
+            .lexeme
+            .senses[0]
+            .intent_hint = Some(PlanIntentIR::Create);
+        assert!(restored.import_snapshot(&forged_snapshot).is_err());
         let korean = snapshot
             .entries
             .iter()

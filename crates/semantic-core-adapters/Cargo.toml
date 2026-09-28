@@ -19,6 +19,14 @@ name = "generic-capability-canary"
 path = "src/generic_capability_canary.rs"
 
 [[bin]]
+name = "workplace-language-probe"
+path = "src/workplace_language_probe_main.rs"
+
+[[bin]]
+name = "workplace-dialogue-probe"
+path = "src/workplace_dialogue_probe_main.rs"
+
+[[bin]]
 name = "cognitive-api-canary"
 path = "src/cognitive_api_canary.rs"
 
@@ -561,6 +569,42 @@ path = "src/response_format_composition_blind_canary.rs"
 [[bin]]
 name = "b-core-cognitive-api"
 path = "src/cognitive_api_main.rs"
+
+[[bin]]
+name = "b-core-concurrency-canary"
+path = "src/concurrent_runtime_canary.rs"
+
+[[bin]]
+name = "b-core-standalone-latency-canary"
+path = "src/standalone_service_latency_canary.rs"
+
+[[bin]]
+name = "b-core-standalone-service"
+path = "src/standalone_service_main.rs"
+
+[[bin]]
+name = "canonical-response-codec-train"
+path = "src/canonical_response_training_main.rs"
+
+[[bin]]
+name = "canonical-response-codec-shadow-canary"
+path = "src/canonical_response_shadow_canary_main.rs"
+
+[[bin]]
+name = "structural-gap-anchor-acquire"
+path = "src/structural_gap_anchor_acquire_main.rs"
+
+[[bin]]
+name = "semantic-equivalence-causal-validate"
+path = "src/semantic_equivalence_causal_validate_main.rs"
+
+[[bin]]
+name = "canonical-persona-gold-ground"
+path = "src/canonical_persona_gold_ground_main.rs"
+
+[[bin]]
+name = "persona-contrastive-train"
+path = "src/persona_contrastive_train_main.rs"
 
 [features]
 # The adapter and semantic core remain Rust-only by default. PaddleOCR is an

@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::compositional_semantics::PredicateFrameIR;
 
-pub const CLAUSE_GRAPH_SCHEMA: &str = "B_CORE_CLAUSE_GRAPH_IR_1";
+pub const CLAUSE_GRAPH_SCHEMA: &str = "B_CORE_CLAUSE_GRAPH_IR_3";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -22,6 +22,7 @@ pub enum ClauseFunctionIR {
     Purpose,
     Concession,
     Temporal,
+    ContentComplement,
 }
 
 impl ClauseFunctionIR {
@@ -40,6 +41,7 @@ pub enum ClauseRelationKindIR {
     Purpose,
     Contrast,
     TemporalBefore,
+    ContentComplement,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -82,6 +84,14 @@ impl Default for ClauseGraphIR {
 }
 
 impl ClauseGraphIR {
+    /// Content clauses belong to their matrix clause, not to the nearest
+    /// predicate in surface order. All consumers use this ownership relation.
+    pub fn owner_for_frame(&self, frame_id: &str) -> Option<&ClauseNodeIR> {
+        let node = self.node_for_frame(frame_id)?;
+        let owner = content_owner(&self.nodes, &self.edges, &node.clause_id)?;
+        self.nodes.iter().find(|node| node.clause_id == owner)
+    }
+
     pub fn node_for_frame(&self, frame_id: &str) -> Option<&ClauseNodeIR> {
         self.nodes
             .iter()
@@ -129,6 +139,8 @@ impl ClauseGraphIR {
                     || node.source_end_byte > text.len()
                     || !text.is_char_boundary(node.source_start_byte)
                     || !text.is_char_boundary(node.source_end_byte)
+                    || text.get(node.source_start_byte..node.source_end_byte)
+                        != Some(node.source_text.as_str())
             })
         {
             return false;
@@ -171,6 +183,7 @@ impl ClauseStructureAnalyzer {
             .collect::<Vec<_>>();
         let mut edges = Vec::new();
         let mut unresolved = Vec::new();
+        let mut coordinate_boundaries = Vec::new();
 
         for index in 0..ordered.len().saturating_sub(1) {
             let left = ordered[index];
@@ -187,6 +200,61 @@ impl ClauseStructureAnalyzer {
             }
             let prefix = safe_slice(text, sentence_start, left.source_start_byte);
             let between = safe_slice(text, left_end, right.source_start_byte);
+            if let Some((governor, content, marker)) =
+                content_complement(left, right, between, index)
+            {
+                apply_function(
+                    &mut nodes[content].function,
+                    ClauseFunctionIR::ContentComplement,
+                );
+                // Matrix source keeps its argument clause: cutting at wh would
+                // erase the explanation target while fixing request authority.
+                if content > governor {
+                    nodes[content].source_start_byte = left_end;
+                } else {
+                    nodes[content].source_end_byte = right.source_start_byte;
+                    // A matrix recipient can precede a Korean wh-complement.
+                    // Its prefix belongs to the governor, not the inner event.
+                    let start = nodes[content].source_start_byte;
+                    let prefix = &text[start..left.source_start_byte];
+                    if let Some((offset, _)) = prefix
+                        .match_indices(|c: char| !c.is_whitespace())
+                        .find(|(offset, _)| {
+                            (*offset == 0
+                                || prefix[..*offset]
+                                    .chars()
+                                    .next_back()
+                                    .is_some_and(char::is_whitespace))
+                                && prefix[*offset..]
+                                    .split_whitespace()
+                                    .next()
+                                    .is_some_and(|word| {
+                                        matches!(
+                                            word,
+                                            "누가"
+                                                | "누구"
+                                                | "무엇을"
+                                                | "뭘"
+                                                | "언제"
+                                                | "어디서"
+                                                | "왜"
+                                                | "어떻게"
+                                        )
+                                    })
+                        })
+                    {
+                        nodes[content].source_start_byte = start + offset;
+                    }
+                }
+                edges.push(ClauseRelationEdgeIR {
+                    source_clause_id: nodes[governor].clause_id.clone(),
+                    target_clause_id: nodes[content].clause_id.clone(),
+                    relation: ClauseRelationKindIR::ContentComplement,
+                    marker_surface: marker,
+                    confidence_millis: 950,
+                });
+                continue;
+            }
             let Some(detection) = detect_relation(prefix, between, sentence_start, left_end) else {
                 let residue = between.trim();
                 if !residue.is_empty()
@@ -216,6 +284,17 @@ impl ClauseStructureAnalyzer {
                 nodes[index + 1].source_start_byte = nodes[index + 1]
                     .source_start_byte
                     .max(detection.marker_end_byte);
+                if matches!(
+                    detection.relation,
+                    ClauseRelationKindIR::Coordination | ClauseRelationKindIR::Sequence
+                ) {
+                    coordinate_boundaries.push((
+                        index,
+                        index + 1,
+                        detection.marker_start_byte,
+                        detection.marker_end_byte,
+                    ));
+                }
             }
             let (source, target) = if detection.source_is_left {
                 (index, index + 1)
@@ -231,6 +310,48 @@ impl ClauseStructureAnalyzer {
             });
         }
 
+        // Resolve ownership after all complements are known: English places a
+        // governor before its content, Korean can place it after the content.
+        // A peer boundary closes the entire owned subtree, not just its last
+        // surface predicate. No sentence-specific interpretation is done here.
+        let owners = nodes
+            .iter()
+            .map(|node| content_owner(&nodes, &edges, &node.clause_id))
+            .collect::<Vec<_>>();
+        for (left, right, end, start) in coordinate_boundaries {
+            if owners[left].is_none() || owners[right].is_none() || owners[left] == owners[right] {
+                continue;
+            }
+            for (index, node) in nodes.iter_mut().enumerate() {
+                if owners[index] == owners[left] {
+                    node.source_end_byte = node.source_end_byte.min(end);
+                }
+                if owners[index] == owners[right] {
+                    node.source_start_byte = node.source_start_byte.max(start);
+                }
+            }
+        }
+        for edge in &mut edges {
+            if matches!(
+                edge.relation,
+                ClauseRelationKindIR::Coordination | ClauseRelationKindIR::Sequence
+            ) {
+                let source = nodes
+                    .iter()
+                    .position(|n| n.clause_id == edge.source_clause_id);
+                let target = nodes
+                    .iter()
+                    .position(|n| n.clause_id == edge.target_clause_id);
+                if let (Some(source), Some(target)) = (source, target) {
+                    if let (Some(source), Some(target)) = (&owners[source], &owners[target]) {
+                        if source != target {
+                            edge.source_clause_id.clone_from(source);
+                            edge.target_clause_id.clone_from(target);
+                        }
+                    }
+                }
+            }
+        }
         for node in &mut nodes {
             trim_node_span(text, node);
         }
@@ -258,6 +379,29 @@ impl ClauseStructureAnalyzer {
     }
 }
 
+fn content_owner(
+    nodes: &[ClauseNodeIR],
+    edges: &[ClauseRelationEdgeIR],
+    clause_id: &str,
+) -> Option<String> {
+    let mut current = clause_id;
+    for _ in 0..=nodes.len() {
+        let parents = edges
+            .iter()
+            .filter(|edge| {
+                edge.relation == ClauseRelationKindIR::ContentComplement
+                    && edge.target_clause_id == current
+            })
+            .collect::<Vec<_>>();
+        match parents.as_slice() {
+            [] => return Some(current.to_string()),
+            [parent] => current = &parent.source_clause_id,
+            _ => return None,
+        }
+    }
+    None
+}
+
 #[derive(Debug)]
 struct RelationDetection {
     relation: ClauseRelationKindIR,
@@ -269,6 +413,62 @@ struct RelationDetection {
     marker_surface: String,
     prefix_marker: bool,
     confidence_millis: u16,
+}
+
+fn content_complement(
+    left: &PredicateFrameIR,
+    right: &PredicateFrameIR,
+    between: &str,
+    index: usize,
+) -> Option<(usize, usize, String)> {
+    use dockable_semantic_core::PlanIntentIR;
+    let takes_content = |f: &PredicateFrameIR| {
+        matches!(
+            f.intent_hint,
+            PlanIntentIR::Explain
+                | PlanIntentIR::Investigate
+                | PlanIntentIR::Learn
+                | PlanIntentIR::Communicate
+        )
+    };
+    if left.embedded_under_quote || right.embedded_under_quote {
+        return None;
+    }
+    let mut words = between.split_whitespace();
+    let mut first = words.next()?;
+    while matches!(first, "briefly" | "clearly" | "simply") {
+        first = words.next()?;
+    }
+    // A communication governor may place its pronominal recipient before the
+    // interrogative complement. It does not make the inner event a second root.
+    // Recipient authority is checked separately by the request/effect boundary.
+    if left.intent_hint == PlanIntentIR::Communicate
+        && matches!(first, "me" | "us" | "you" | "him" | "her" | "them")
+    {
+        first = words.next()?;
+    }
+    if takes_content(left)
+        && matches!(
+            first,
+            "why" | "how" | "whether" | "what" | "when" | "where" | "who"
+        )
+        && !between
+            .split_whitespace()
+            .any(|w| matches!(w, "and" | "then" | "but"))
+    {
+        return Some((index, index + 1, first.to_string()));
+    }
+    if takes_content(right) && !right.predicate_surface.is_ascii() {
+        let marker = between.split_whitespace().next()?;
+        if ["는지", "은지", "었는지", "았는지", "했는지", "인지", "을지"]
+            .iter()
+            .any(|ending| marker.ends_with(ending))
+            && !between.contains([',', ';', '?', '!'])
+        {
+            return Some((index + 1, index, marker.to_string()));
+        }
+    }
+    None
 }
 
 fn detect_relation(
@@ -595,6 +795,7 @@ fn function_priority(function: ClauseFunctionIR) -> u8 {
         ClauseFunctionIR::Purpose => 4,
         ClauseFunctionIR::Concession => 5,
         ClauseFunctionIR::Condition => 6,
+        ClauseFunctionIR::ContentComplement => 7,
     }
 }
 
@@ -653,6 +854,47 @@ fn safe_slice(text: &str, start: usize, end: usize) -> &str {
 mod tests {
     use super::*;
     use crate::compositional_semantics::CompositionalSemanticAnalyzer;
+
+    #[test]
+    fn coordinated_complement_subtrees_have_disjoint_matrix_spans() {
+        for text in [
+            "tell me who read the letter and tell me where rowan read the letter",
+            "explain who read the book then explain when rhea read the book",
+            "누가 잡지를 읽었는지 알려주고 언제 다예는 잡지를 읽었는지 알려줘",
+        ] {
+            let analysis = CompositionalSemanticAnalyzer.analyze(text);
+            let graph = &analysis.clause_graph;
+            let roots = graph
+                .nodes
+                .iter()
+                .filter(|n| n.function.permits_independent_directive())
+                .collect::<Vec<_>>();
+            assert_eq!(roots.len(), 2, "{text}: {graph:?}");
+            assert!(
+                roots[0].source_end_byte <= roots[1].source_start_byte,
+                "{text}: {graph:?}"
+            );
+            for node in &graph.nodes {
+                let owner = graph.owner_for_frame(&node.anchor_frame_id).unwrap();
+                assert!(node.source_start_byte >= owner.source_start_byte);
+                assert!(node.source_end_byte <= owner.source_end_byte);
+            }
+            assert!(graph
+                .edges
+                .iter()
+                .filter(|e| matches!(
+                    e.relation,
+                    ClauseRelationKindIR::Coordination | ClauseRelationKindIR::Sequence
+                ))
+                .all(|e| {
+                    e.source_clause_id == roots[0].clause_id
+                        && e.target_clause_id == roots[1].clause_id
+                }));
+            let mut forged = graph.clone();
+            forged.nodes[0].source_text.push_str(" invented");
+            assert!(!forged.validate(text));
+        }
+    }
 
     #[test]
     fn fronted_and_postposed_condition_have_the_same_direction() {

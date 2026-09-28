@@ -693,12 +693,14 @@ fn initial_draft(
                 .as_ref()
                 .is_none_or(|target| target == &planned.section_id)
         }) {
+            let directive_object =
+                crate::korean_nominal::mark_or_label(&directive.directive_id, "을", "를", "항목");
             paragraphs.push(derived_paragraph(
                 &planned.section_id,
                 paragraphs.len() + 1,
                 format!(
-                    "수정 요구 {}를 적용한다: {}",
-                    directive.directive_id, directive.instruction
+                    "수정 요구 {directive_object} 적용한다: {}",
+                    directive.instruction
                 ),
             ));
         }
@@ -938,7 +940,9 @@ fn check_consistency(
         }
     }
     for directive in &request.revision_directives {
-        let marker = format!("수정 요구 {}를 적용한다", directive.directive_id);
+        let directive_object =
+            crate::korean_nominal::mark_or_label(&directive.directive_id, "을", "를", "항목");
+        let marker = format!("수정 요구 {directive_object} 적용한다");
         if !sections
             .iter()
             .flat_map(|section| &section.paragraphs)

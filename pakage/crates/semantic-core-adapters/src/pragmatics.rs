@@ -782,7 +782,7 @@ fn expected_response_outcome(response: ExpectedResponseKindIR, target: &str) -> 
         ExpectedResponseKindIR::Evidence => {
             format!("provide the available evidence supporting {target}")
         }
-        ExpectedResponseKindIR::Recommendation => {
+        ExpectedResponseKindIR::Recommendation | ExpectedResponseKindIR::DecisionSupport => {
             format!("compare the alternatives for {target} under the stated constraints")
         }
         ExpectedResponseKindIR::Explanation => {
@@ -844,8 +844,20 @@ impl PragmaticReasoner {
         let mut expected_benefits = benefits_from_clauses(&clauses);
         let evidence_policy = infer_evidence_policy(&clauses);
         let nonliteral_analysis = NonliteralAnalyzer.analyze(text, context);
-        let base_compositional_analysis =
-            CompositionalSemanticAnalyzer.analyze_with_predicates(text, learned_predicates);
+        // Use observed spelling only when it is the same semantic token stream.
+        // A resolved reference or repair with different content cannot be
+        // overwritten by the original utterance merely to recover its casing.
+        let observed_tokens = crate::conversation::tokenize(illocutionary_surface).join(" ");
+        let composition_text = if observed_tokens.to_lowercase() == text.to_lowercase() {
+            observed_tokens.as_str()
+        } else {
+            text
+        };
+        let base_compositional_analysis = CompositionalSemanticAnalyzer.analyze_with_observation(
+            composition_text,
+            learned_predicates,
+            illocutionary_surface,
+        );
         let active_predicates = context
             .active_goals
             .iter()
@@ -1107,9 +1119,11 @@ impl PragmaticReasoner {
                 )
             });
 
-        let inferred_goal = if pragmatic_intent_graph
-            .utterance_intent
-            .requires_clarification()
+        let inferred_goal = if crate::grammatical_scope::embedded_information_statement(text)
+            .is_some()
+            || pragmatic_intent_graph
+                .utterance_intent
+                .requires_clarification()
         {
             None
         } else if let Some(gate) = &continuation_gate {
@@ -1979,11 +1993,12 @@ fn detect_outcome_claim_policy(text: &str) -> Option<OutcomeClaimPolicyIR> {
     })
 }
 
-fn detect_goal_withdrawal(text: &str) -> Option<GoalWithdrawalIR> {
+pub(crate) fn detect_goal_withdrawal(text: &str) -> Option<GoalWithdrawalIR> {
     let trimmed = text.trim().trim_end_matches(['.', '!', '?']).trim();
     let standalone_done =
         trimmed == "됐어" || trimmed.starts_with("됐어,") || trimmed.starts_with("됐어 ");
     let marker = standalone_done
+        || matches!(trimmed, "중지" | "중단" | "stop")
         || contains_any(
             text,
             &[
@@ -2377,8 +2392,11 @@ fn apply_illocutionary_authority(
             .candidates
             .iter()
             .filter(|candidate| {
-                candidate.intent != PlanIntentIR::Explain
-                    && candidate.disposition == CandidateDispositionIR::Viable
+                candidate.disposition == CandidateDispositionIR::Viable
+                    && analysis
+                        .clause_graph
+                        .node_for_frame(&candidate.source_frame_id)
+                        .is_none_or(|node| node.function.permits_independent_directive())
             })
             .max_by_key(|candidate| candidate.score_millis)
             .map(|candidate| candidate.candidate_id.clone());
@@ -2451,6 +2469,12 @@ fn apply_illocutionary_authority(
             .candidates
             .iter()
             .filter(|candidate| !removed.contains(&candidate.candidate_id))
+            .filter(|candidate| {
+                analysis
+                    .clause_graph
+                    .node_for_frame(&candidate.source_frame_id)
+                    .is_none_or(|node| node.function.permits_independent_directive())
+            })
             .filter(|candidate| {
                 matches!(
                     candidate.intent,

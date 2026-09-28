@@ -2438,7 +2438,13 @@ fn analyze_chart(chart: &ChartIR, korean: bool) -> Vec<KnowledgeFindingIR> {
             };
             findings.push(finding(
                 FindingKindIR::Trend,
-                if korean { format!("'{}' 계열은 첫 관측값 {}에서 마지막 관측값 {}으로 {}했습니다.", series.name, first.original, last.original, direction) } else { format!("Series '{}' {} from the first observed value {} to the last observed value {}.", series.name, direction, first.original, last.original) },
+                if korean {
+                    let last_value = crate::korean_nominal::mark_direction_or_label(
+                        &last.original,
+                        "값",
+                    );
+                    format!("'{}' 계열은 첫 관측값 {}에서 마지막 관측값 {last_value} {}했습니다.", series.name, first.original, direction)
+                } else { format!("Series '{}' {} from the first observed value {} to the last observed value {}.", series.name, direction, first.original, last.original) },
                 vec![(*first_location).clone(), (*last_location).clone()],
                 1_000,
             ));

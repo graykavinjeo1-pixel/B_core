@@ -9,7 +9,12 @@ use std::collections::BTreeSet;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
-pub const ACTION_STATE_ANALYSIS_SCHEMA: &str = "B_CORE_ACTION_STATE_ANALYSIS_IR_1";
+pub const ACTION_STATE_ANALYSIS_SCHEMA: &str = "B_CORE_ACTION_STATE_ANALYSIS_IR_4";
+/// The conversation entry point plans and accepts host receipts; it does not
+/// dispatch external effects. This is a contract reference, not an enable flag
+/// or a statement about what a downstream host may separately execute.
+pub const CONVERSATION_EXECUTION_POLICY_REF: &str =
+    "COGNITIVE_CONVERSATION_API:EXTERNAL_EXECUTOR_NOT_CONNECTED:1";
 pub const ACTION_SET_QUERY_SCHEMA: &str = "B_CORE_ACTION_SET_QUERY_IR_1";
 pub const ACTION_STATE_LEDGER_SCHEMA: &str = "B_CORE_ACTION_STATE_LEDGER_IR_1";
 pub const ACTION_EVIDENCE_REQUEST_SCHEMA: &str = "B_CORE_ACTION_EVIDENCE_REQUEST_1";
@@ -814,6 +819,14 @@ impl ActionSetQueryIR {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ExecutionCapabilityQuestionIR {
+    pub source_frame_id: String,
+    pub canonical_predicate: String,
+    pub subject: String,
+    pub source_text_sha256: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ActionStateAnalysisIR {
     pub schema: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -821,6 +834,14 @@ pub struct ActionStateAnalysisIR {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub detected_reports: Vec<ActionLanguageReportIR>,
     pub query_requested: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub execution_capability_question: Option<ExecutionCapabilityQuestionIR>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub event_question_frame_ids: Vec<String>,
+    /// Content requested about an event whose occurrence is not observed.
+    /// These slots remain obligations; a lifecycle answer only checks their premise.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub event_question_content_slots: Vec<crate::proposition_content::ContentSlotIR>,
     pub untrusted_evidence_claim: bool,
     #[serde(default)]
     pub target_action_ids: Vec<String>,
@@ -839,6 +860,9 @@ impl Default for ActionStateAnalysisIR {
             detected_report: None,
             detected_reports: Vec::new(),
             query_requested: false,
+            execution_capability_question: None,
+            event_question_frame_ids: Vec::new(),
+            event_question_content_slots: Vec::new(),
             untrusted_evidence_claim: false,
             target_action_ids: Vec::new(),
             unresolved_ambiguities: Vec::new(),
@@ -864,6 +888,7 @@ impl ActionStateAnalysisIR {
 
     pub fn consumes_turn(&self) -> bool {
         self.has_language_reports()
+            || self.execution_capability_question.is_some()
             || self.query_requested
             || self.untrusted_evidence_claim
             || !self.unresolved_ambiguities.is_empty()
@@ -904,11 +929,33 @@ impl ActionStateAnalyzer {
         ledger: &ActionStateLedgerIR,
         inherited_goal_ids: &[&str],
     ) -> ActionStateAnalysisIR {
+        self.analyze_with_composition(text, query_surface, ledger, inherited_goal_ids, None)
+    }
+
+    pub(crate) fn analyze_with_composition(
+        &self,
+        text: &str,
+        query_surface: &str,
+        ledger: &ActionStateLedgerIR,
+        inherited_goal_ids: &[&str],
+        composition: Option<&crate::compositional_semantics::CompositionalAnalysisIR>,
+    ) -> ActionStateAnalysisIR {
         let normalized = text.trim().to_lowercase();
+        if let Some(question) =
+            composition.and_then(|analysis| execution_capability_question(query_surface, analysis))
+        {
+            return ActionStateAnalysisIR {
+                execution_capability_question: Some(question),
+                ..Default::default()
+            };
+        }
         if normalized.is_empty() || ledger.records.is_empty() {
             return ActionStateAnalysisIR::default();
         }
-        let query_requested = is_action_state_query(&normalized)
+        let event_question = composition
+            .and_then(|analysis| bind_past_event_question(query_surface, analysis, ledger));
+        let query_requested = event_question.is_some()
+            || is_action_state_query(&normalized)
             || is_action_set_selection_query(&query_surface.trim().to_lowercase());
         let untrusted_evidence_claim = is_untrusted_evidence_claim(&normalized);
         let reported_status = (!query_requested
@@ -946,7 +993,21 @@ impl ActionStateAnalyzer {
                     || normalized.contains(&record.canonical_predicate.to_lowercase())
             })
             .collect::<Vec<_>>();
-        let mut targets = if !unique_hints.is_empty() && hinted.len() == unique_hints.len() {
+        let mut targets = if let Some(bound) = &event_question {
+            let matching = bound
+                .records
+                .iter()
+                .copied()
+                .filter(|record| {
+                    unique_hints.is_empty() || unique_hints.contains(record.goal_id.as_str())
+                })
+                .collect::<Vec<_>>();
+            if matching.len() == 1 {
+                matching
+            } else {
+                Vec::new()
+            }
+        } else if !unique_hints.is_empty() && hinted.len() == unique_hints.len() {
             hinted
         } else if !unique_hints.is_empty() {
             Vec::new()
@@ -1004,6 +1065,14 @@ impl ActionStateAnalyzer {
             detected_report,
             detected_reports,
             query_requested,
+            execution_capability_question: None,
+            event_question_content_slots: event_question
+                .as_ref()
+                .map(|bound| bound.content_slots.clone())
+                .unwrap_or_default(),
+            event_question_frame_ids: event_question
+                .map(|bound| vec![bound.frame_id])
+                .unwrap_or_default(),
             untrusted_evidence_claim,
             target_action_ids: targets
                 .iter()
@@ -1015,6 +1084,176 @@ impl ActionStateAnalyzer {
             external_action_executed: false,
         }
     }
+}
+
+fn execution_capability_question(
+    source: &str,
+    analysis: &crate::compositional_semantics::CompositionalAnalysisIR,
+) -> Option<ExecutionCapabilityQuestionIR> {
+    use crate::compositional_semantics::{FrameMoodIR, ScopeKindIR};
+    use crate::semantic_roles::SemanticRoleKindIR;
+    if analysis.frames.len() != 1
+        || !crate::proposition_content::requested_content_slots(source).is_empty()
+        || analysis.scopes.iter().any(|scope| {
+            matches!(
+                scope.kind,
+                ScopeKindIR::Quotation
+                    | ScopeKindIR::ReportedSpeech
+                    | ScopeKindIR::Hypothetical
+                    | ScopeKindIR::Counterfactual
+            )
+        })
+    {
+        return None;
+    }
+    let frame = &analysis.frames[0];
+    if frame.ability_polarity.is_none()
+        || frame.mood != FrameMoodIR::Interrogative
+        || frame.external_execution_authorized
+        || frame.embedded_under_quote
+        || frame.intent_hint != dockable_semantic_core::PlanIntentIR::Execute
+    {
+        return None;
+    }
+    let arguments = analysis
+        .semantic_role_graph
+        .arguments_for_frame(&frame.frame_id);
+    if arguments
+        .iter()
+        .any(|(role, _)| *role == SemanticRoleKindIR::CoTheme)
+    {
+        return None;
+    }
+    if analysis
+        .semantic_role_graph
+        .has_non_addressee_actor(&frame.frame_id)
+    {
+        return None;
+    }
+    let themes = arguments
+        .iter()
+        .filter(|(role, _)| {
+            matches!(
+                role,
+                SemanticRoleKindIR::Theme | SemanticRoleKindIR::Patient
+            )
+        })
+        .map(|(_, node)| node.normalized_label.as_str())
+        .collect::<BTreeSet<_>>();
+    if themes.len() != 1 {
+        return None;
+    }
+    let subject = *themes.first()?;
+    if subject.is_empty() || matches!(subject, "it" | "them" | "that" | "그것" | "그거") {
+        return None;
+    }
+    Some(ExecutionCapabilityQuestionIR {
+        source_frame_id: frame.frame_id.clone(),
+        canonical_predicate: frame.canonical_predicate.clone(),
+        subject: subject.to_string(),
+        source_text_sha256: format!("{:x}", Sha256::digest(source.as_bytes())),
+    })
+}
+
+struct BoundEventQuestion<'a> {
+    frame_id: String,
+    content_slots: Vec<crate::proposition_content::ContentSlotIR>,
+    records: Vec<&'a ActionStateRecordIR>,
+}
+
+/// Bind event identity before attempting to answer its details. An unobserved
+/// occurrence cannot establish its cause, time or manner. Observed events and
+/// negative-event explanations remain owned by discourse/world reasoning.
+/// Multiple matches remain ambiguous; no latest-event guess is permitted.
+fn bind_past_event_question<'a>(
+    source: &str,
+    analysis: &crate::compositional_semantics::CompositionalAnalysisIR,
+    ledger: &'a ActionStateLedgerIR,
+) -> Option<BoundEventQuestion<'a>> {
+    use crate::compositional_semantics::{
+        FrameMoodIR, FramePolarityIR, FrameTemporalReferenceIR, ScopeKindIR,
+    };
+    use crate::proposition_content::ContentSlotIR;
+    use crate::semantic_roles::{SemanticNodeKindIR, SemanticRoleKindIR};
+    let content_slots = crate::proposition_content::requested_content_slots(source);
+    if analysis.frames.len() != 1
+        || content_slots.iter().any(|slot| {
+            !matches!(
+                slot,
+                ContentSlotIR::Cause
+                    | ContentSlotIR::Time
+                    | ContentSlotIR::Manner
+                    | ContentSlotIR::Location
+                    | ContentSlotIR::Duration
+            )
+        })
+        || analysis.scopes.iter().any(|scope| {
+            matches!(
+                scope.kind,
+                ScopeKindIR::Quotation
+                    | ScopeKindIR::ReportedSpeech
+                    | ScopeKindIR::Hypothetical
+                    | ScopeKindIR::Counterfactual
+            )
+        })
+    {
+        return None;
+    }
+    let frame = &analysis.frames[0];
+    if frame.mood != FrameMoodIR::Interrogative
+        || frame.temporal_reference != FrameTemporalReferenceIR::Past
+        || frame.embedded_under_quote
+        || frame.external_execution_authorized
+        || (!content_slots.is_empty() && frame.polarity != FramePolarityIR::Positive)
+    {
+        return None;
+    }
+    let arguments = analysis
+        .semantic_role_graph
+        .arguments_for_frame(&frame.frame_id);
+    if arguments.iter().any(|(role, node)| {
+        *role == SemanticRoleKindIR::Agent
+            && node.kind != SemanticNodeKindIR::ImplicitAgent
+            && !matches!(node.normalized_label.as_str(), "you" | "너" | "당신")
+    }) {
+        return None;
+    }
+    let themes = arguments
+        .iter()
+        .filter(|(role, _)| {
+            matches!(
+                role,
+                SemanticRoleKindIR::Theme | SemanticRoleKindIR::Patient
+            )
+        })
+        .map(|(_, node)| node.normalized_label.to_lowercase())
+        .collect::<Vec<_>>();
+    let bound = ledger
+        .records
+        .iter()
+        .filter(|record| {
+            record.canonical_predicate == frame.canonical_predicate
+                && themes.iter().all(|theme| {
+                    let subject = record.subject.to_lowercase();
+                    theme.strip_prefix("the ").unwrap_or(theme)
+                        == subject.strip_prefix("the ").unwrap_or(&subject)
+                        || matches!(theme.as_str(), "it" | "that" | "그것" | "그거")
+                })
+        })
+        .collect::<Vec<_>>();
+    if bound.is_empty()
+        || (!content_slots.is_empty()
+            && bound
+                .iter()
+                .any(|record| record.execution_status != ActionExecutionStatusIR::NotObserved))
+    {
+        return None;
+    }
+    Some(BoundEventQuestion {
+        frame_id: frame.frame_id.clone(),
+        content_slots,
+        records: bound,
+    })
 }
 
 fn compose_action_set_query(
@@ -2365,6 +2604,268 @@ fn valid_digest(value: &str) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn ability_grammar_transfers_to_supplied_predicates_without_creating_plans() {
+        use crate::compositional_semantics::{
+            CompositionalSemanticAnalyzer, PredicateLexemeIR, PREDICATE_LEXEME_SCHEMA,
+        };
+        for (dictionary, form) in [
+            ("도루다", "도룰"),
+            ("루막다", "루막을"),
+            ("무룰다", "무룰"),
+            ("누마하다", "누마할"),
+        ] {
+            let predicate = PredicateLexemeIR {
+                schema: PREDICATE_LEXEME_SCHEMA.into(),
+                predicate_id: "TEST.ABILITY".into(),
+                language: crate::language_knowledge::LanguageCodeIR::Korean,
+                surface_forms: vec![dictionary.into()],
+                canonical_predicate: "C_TEST_OPERATION".into(),
+                intent_hint: dockable_semantic_core::PlanIntentIR::Execute,
+                definition: "supplied inspectable operation".into(),
+                confidence_millis: 1000,
+            };
+            for auxiliary in ["있나요?", "없나요?"] {
+                let source = format!("자료를 {form} 수 {auxiliary}");
+                let composition = CompositionalSemanticAnalyzer
+                    .analyze_with_predicates(&source, std::slice::from_ref(&predicate));
+                let analysis = ActionStateAnalyzer.analyze_with_composition(
+                    &source,
+                    &source,
+                    &ActionStateLedgerIR::default(),
+                    &[],
+                    Some(&composition),
+                );
+                assert!(
+                    analysis.execution_capability_question.is_some(),
+                    "{source}: {composition:?}"
+                );
+                assert!(!analysis.query_requested && !analysis.has_language_reports());
+                assert!(analysis.target_action_ids.is_empty());
+            }
+            let nominal = format!("{form} 비용을 설명해.");
+            let composition =
+                CompositionalSemanticAnalyzer.analyze_with_predicates(&nominal, &[predicate]);
+            assert!(
+                !composition
+                    .frames
+                    .iter()
+                    .any(|f| f.canonical_predicate == "C_TEST_OPERATION"),
+                "a potential-form noun substring is not a licensed ability: {nominal}"
+            );
+        }
+    }
+
+    #[test]
+    fn past_event_binding_preserves_actor_scope_and_ambiguity() {
+        use crate::compositional_semantics::CompositionalSemanticAnalyzer;
+        let mut plan = seed();
+        plan.canonical_predicate = "READ".into();
+        plan.predicate_surface = "읽".into();
+        plan.subject = "자료".into();
+        let mut ledger = ActionStateLedgerIR::default();
+        ledger.add_plans(&[plan.clone()]);
+        let analyze = |text: &str, ledger: &ActionStateLedgerIR| {
+            ActionStateAnalyzer.analyze_with_composition(
+                text,
+                text,
+                ledger,
+                &[],
+                Some(&CompositionalSemanticAnalyzer.analyze(text)),
+            )
+        };
+        for text in [
+            "읽었나요?",
+            "자료를 읽으셨나요?",
+            "읽었나요",
+            "안 읽었나요?",
+        ] {
+            let result = analyze(text, &ledger);
+            assert_eq!(
+                result.event_question_frame_ids.len(),
+                1,
+                "{text}: {result:?}"
+            );
+            assert_eq!(result.target_action_ids, vec![plan.action_id.clone()]);
+            assert!(!result.has_language_reports());
+        }
+        for text in [
+            "왜 안 읽었나요?",
+            "지수가 자료를 읽었나요?",
+            "자료를 읽을 수 있나요?",
+            "자료를 읽었으면 저장할까요?",
+            "자료를 읽었다고 말했나요?",
+            "‘읽었나요?’라는 문장을 읽어.",
+            "문서를 읽었나요?",
+        ] {
+            assert!(
+                analyze(text, &ledger).event_question_frame_ids.is_empty(),
+                "{text}"
+            );
+        }
+        plan.action_id = "GOAL-2".into();
+        plan.goal_id = "GOAL-2".into();
+        plan.subject = "문서".into();
+        ledger.add_plans(&[plan]);
+        let ambiguous = analyze("읽었나요?", &ledger);
+        assert!(ambiguous.query_requested);
+        assert!(ambiguous.target_action_ids.is_empty());
+        assert!(!ambiguous.unresolved_ambiguities.is_empty());
+        let boundary = crate::plan_result_boundary::build_plan_result_boundary(
+            "읽었나요?",
+            &ambiguous,
+            &ledger,
+        );
+        assert!(
+            boundary.selected_action_ids.is_empty(),
+            "an ambiguous question cannot fall back to the latest action"
+        );
+        assert!(boundary.validate());
+        let ambiguous_details = analyze("왜 읽었나요?", &ledger);
+        assert!(ambiguous_details.target_action_ids.is_empty());
+        assert!(!ambiguous_details.event_question_content_slots.is_empty());
+        assert!(crate::plan_result_boundary::build_plan_result_boundary(
+            "왜 읽었나요?",
+            &ambiguous_details,
+            &ledger
+        )
+        .selected_action_ids
+        .is_empty());
+    }
+
+    #[test]
+    fn event_detail_queries_check_occurrence_without_inventing_it() {
+        use crate::compositional_semantics::CompositionalSemanticAnalyzer;
+        use crate::proposition_content::ContentSlotIR;
+        let mut plan = seed();
+        plan.canonical_predicate = "READ".into();
+        plan.subject = "자료".into();
+        let mut ledger = ActionStateLedgerIR::default();
+        ledger.add_plans(&[plan]);
+        let analyze = |text: &str, ledger: &ActionStateLedgerIR| {
+            ActionStateAnalyzer.analyze_with_composition(
+                text,
+                text,
+                ledger,
+                &[],
+                Some(&CompositionalSemanticAnalyzer.analyze(text)),
+            )
+        };
+        for (text, slot) in [
+            ("왜 읽었나요?", ContentSlotIR::Cause),
+            ("자료를 언제 읽었나요?", ContentSlotIR::Time),
+            ("어떻게 읽었나요?", ContentSlotIR::Manner),
+        ] {
+            let analysis = analyze(text, &ledger);
+            assert_eq!(
+                analysis.event_question_content_slots,
+                vec![slot],
+                "{text}: {analysis:?}"
+            );
+            assert_eq!(analysis.target_action_ids, vec!["GOAL-1"]);
+            assert!(!analysis.has_language_reports());
+            let boundary =
+                crate::plan_result_boundary::build_plan_result_boundary(text, &analysis, &ledger);
+            assert_eq!(
+                boundary.query_focus,
+                crate::plan_result_boundary::PlanResultQueryFocusIR::UnverifiedEventPremise
+            );
+            assert!(boundary.validate_against(text, &analysis, &ledger));
+            let mut tampered = analysis.clone();
+            tampered.event_question_content_slots.clear();
+            assert!(!boundary.validate_against(text, &tampered, &ledger));
+        }
+        for text in [
+            "왜 안 읽었나요?",
+            "누가 읽었나요?",
+            "지수가 왜 자료를 읽었나요?",
+            "왜 문서를 읽었나요?",
+        ] {
+            assert!(
+                analyze(text, &ledger)
+                    .event_question_content_slots
+                    .is_empty(),
+                "{text}"
+            );
+        }
+        let report = ActionStateAnalyzer
+            .analyze("I completed it", &ledger)
+            .detected_report
+            .unwrap();
+        assert!(ledger.apply_language_report(&report, 2));
+        assert_eq!(
+            analyze("왜 읽었나요?", &ledger).event_question_content_slots,
+            vec![ContentSlotIR::Cause],
+            "a user report is not an occurrence receipt"
+        );
+        for status in [
+            ActionEvidenceStatusIR::ExecutionStarted,
+            ActionEvidenceStatusIR::Succeeded,
+        ] {
+            assert!(ledger
+                .apply_evidence(&request(status, &format!("{status:?}")), 3)
+                .is_some());
+            assert!(analyze("왜 읽었나요?", &ledger).event_question_frame_ids.is_empty(),
+                "observed-event causes must stay with content reasoning, not become an absence answer");
+        }
+    }
+
+    #[test]
+    fn supplied_dictionary_predicates_share_past_question_grammar_and_binding() {
+        use crate::compositional_semantics::{
+            CompositionalSemanticAnalyzer, FrameTemporalReferenceIR, PredicateLexemeIR,
+            PREDICATE_LEXEME_SCHEMA,
+        };
+        for root in ["도루", "누마"] {
+            let predicate = PredicateLexemeIR {
+                schema: PREDICATE_LEXEME_SCHEMA.into(),
+                predicate_id: "TEST.P".into(),
+                language: crate::language_knowledge::LanguageCodeIR::Korean,
+                surface_forms: vec![format!("{root}다")],
+                canonical_predicate: "C_TEST_OPERATION".into(),
+                intent_hint: dockable_semantic_core::PlanIntentIR::Execute,
+                definition: "supplied test operation".into(),
+                confidence_millis: 1000,
+            };
+            let mut plan = seed();
+            plan.canonical_predicate = predicate.canonical_predicate.clone();
+            plan.predicate_surface = root.into();
+            plan.subject = "자료".into();
+            let mut ledger = ActionStateLedgerIR::default();
+            ledger.add_plans(&[plan]);
+            for (prefix, suffix) in [
+                ("", "었나요?"),
+                ("", "았나요?"),
+                ("", "셨나요?"),
+                ("왜 ", "었나요?"),
+                ("언제 ", "셨나요?"),
+                ("어떻게 ", "았나요?"),
+            ] {
+                let source = format!("{prefix}자료를 {root}{suffix}");
+                let analysis = CompositionalSemanticAnalyzer
+                    .analyze_with_predicates(&source, std::slice::from_ref(&predicate));
+                assert_eq!(analysis.frames.len(), 1, "{source}");
+                assert_eq!(
+                    analysis.frames[0].temporal_reference,
+                    FrameTemporalReferenceIR::Past
+                );
+                let bound = ActionStateAnalyzer.analyze_with_composition(
+                    &source,
+                    &source,
+                    &ledger,
+                    &[],
+                    Some(&analysis),
+                );
+                assert_eq!(
+                    bound.target_action_ids,
+                    vec!["GOAL-1".to_string()],
+                    "{source}: {bound:?}; {analysis:?}"
+                );
+                assert!(!bound.has_language_reports());
+            }
+        }
+    }
 
     fn seed() -> ActionPlanSeedIR {
         ActionPlanSeedIR {

@@ -6,6 +6,126 @@ use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::collections::BTreeMap;
 
+/// A bounded linguistic cue for response selection, not a psychological fact.
+/// Field weights may still reflect tone; an unendorsed cue cannot justify an
+/// affirmative affect sentence or select a task on the user's behalf.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum ExpressedAffectIR {
+    Frustrated,
+    Angry,
+    Hurt,
+    Worried,
+    Annoyed,
+}
+
+pub(crate) fn expressed_affect(text: &str) -> Option<ExpressedAffectIR> {
+    use ExpressedAffectIR::*;
+    let mut unquoted = String::new();
+    let mut closing = None;
+    for c in text.chars() {
+        if let Some(end) = closing {
+            if c == end {
+                closing = None;
+            }
+            unquoted.push(' ');
+        } else {
+            closing = match c {
+                '‘' => Some('’'),
+                '“' => Some('”'),
+                '"' => Some('"'),
+                '`' => Some('`'),
+                _ => None,
+            };
+            unquoted.push(if closing.is_some() { ' ' } else { c });
+        }
+    }
+    let mut lower = unquoted.to_lowercase();
+    // Attribution already owns these proposition spans. A reported, denied,
+    // imagined or believed emotion is not an affect assertion by this speaker.
+    // Preserve independent matrix clauses outside the attributed spans.
+    let attribution = crate::attribution::AttributionAnalyzer.analyze(&lower, &[]);
+    for proposition in &attribution.propositions {
+        let start = proposition.source_start_byte;
+        let end = proposition.source_end_byte;
+        if start < end
+            && end <= lower.len()
+            && lower.is_char_boundary(start)
+            && lower.is_char_boundary(end)
+        {
+            lower.replace_range(start..end, &" ".repeat(end - start));
+        }
+    }
+    for clause in lower.split(['.', '!', '?', ';', '\n']) {
+        let words = clause.split_whitespace().collect::<Vec<_>>();
+        for (i, word) in words.iter().enumerate() {
+            let word = word.trim_matches(|c: char| c.is_ascii_punctuation());
+            let kind = if word.is_ascii() {
+                match word {
+                    "frustrating" | "frustrated" => Frustrated,
+                    "angry" => Angry,
+                    "upset" | "hurt" => Hurt,
+                    "worried" | "worrying" => Worried,
+                    "annoying" | "annoyed" => Annoyed,
+                    _ => continue,
+                }
+            } else if ["답답", "지친", "지쳤", "힘들어"]
+                .iter()
+                .any(|s| word.starts_with(s))
+                || word == "진이" && words.get(i + 1).is_some_and(|w| w.starts_with("빠"))
+            {
+                Frustrated
+            } else if word.starts_with("화나")
+                || word == "화가" && words.get(i + 1).is_some_and(|w| w.starts_with('나'))
+            {
+                Angry
+            } else if word.starts_with("속상") {
+                Hurt
+            } else if ["불안", "걱정"].iter().any(|s| word.starts_with(s)) {
+                Worried
+            } else if ["짜증", "킹받"].iter().any(|s| word.starts_with(s)) {
+                Annoyed
+            } else {
+                continue;
+            };
+            let before = words[..i].iter().rev().find(|w| {
+                !matches!(
+                    **w,
+                    "very" | "really" | "particularly" | "별로" | "정말" | "좀" | "전혀"
+                )
+            });
+            let prefix_negated = before.is_some_and(|w| {
+                matches!(
+                    *w,
+                    "not" | "never" | "isn't" | "wasn't" | "aren't" | "weren't" | "안" | "못"
+                )
+            });
+            let next = words.get(i + 1).copied().unwrap_or("");
+            let negation_host = ["는", "도", "만"]
+                .iter()
+                .find_map(|particle| word.strip_suffix(particle))
+                .unwrap_or(word);
+            let suffix_negated = negation_host.ends_with('지')
+                && (next.starts_with("않") || next.starts_with("못"))
+                || word.contains("없")
+                || next.starts_with("없");
+            let quoted_complement = word.ends_with("다고") || word.ends_with("다며");
+            if !prefix_negated && !suffix_negated && !quoted_complement {
+                // A complete attributed state already owns its bearer and
+                // predicate. Tone may shape delivery, not replace the meaning
+                // or transfer somebody else's state to the user. Only consult
+                // this boundary when there is an actual affect candidate.
+                if crate::proposition_content::described_event(text, false).is_some_and(|event| {
+                    event.kind == crate::proposition_content::DescriptionKindIR::State
+                }) {
+                    return None;
+                }
+                return Some(kind);
+            }
+        }
+    }
+    None
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum AffectAxisIR {
@@ -48,13 +168,171 @@ pub struct AffectiveFieldIR {
     pub field_sha256: String,
 }
 
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum KoreanDialectIR {
+    #[default]
+    Standard,
+    Gyeongsang,
+    Chungcheong,
+}
+
+/// The social distance explicitly selected for a character or a conversation.
+/// It is a language-realization constraint only: it cannot create a social
+/// fact, change an approved claim, or authorize an action.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum RoleplayRelationshipIR {
+    #[default]
+    Unspecified,
+    Professional,
+    Respectful,
+    Peer,
+    Close,
+    Caregiving,
+}
+
+/// A deliberately selected conversational voice. This is not an inference
+/// about a person from their age, region, or social background.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum RoleplayVoiceIR {
+    #[default]
+    Balanced,
+    Calm,
+    Gentle,
+    Direct,
+    Lively,
+}
+
+/// Optional, self-declared character metadata. It is retained separately so
+/// demographic information never becomes a shortcut for selecting a dialect,
+/// register, temperament, or factual claim.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum RoleplayAgeBandIR {
+    #[default]
+    Unspecified,
+    Young,
+    Adult,
+    Elder,
+}
+
+/// Optional, self-declared background metadata for roleplay continuity. The
+/// language codec may use an explicit voice or dialect preference, never this
+/// field alone, to avoid stereotyping a speaker.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum RoleplayBackgroundIR {
+    #[default]
+    Unspecified,
+    Academic,
+    Professional,
+    Community,
+    Creative,
+}
+
+/// The explicitly supplied interaction scene. It constrains social wording
+/// only; the semantic plan remains the authority for what is being said.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum RoleplaySceneIR {
+    #[default]
+    Everyday,
+    Service,
+    Companion,
+    Tense,
+}
+
+/// The non-semantic selector used by the language codec. All fields are
+/// caller-supplied character settings or runtime social context; none are
+/// inferred from demographic metadata or emitted as world knowledge.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct RoleplayPersonaIR {
+    pub relationship: RoleplayRelationshipIR,
+    pub voice: RoleplayVoiceIR,
+    pub scene: RoleplaySceneIR,
+    pub age_band: RoleplayAgeBandIR,
+    pub background: RoleplayBackgroundIR,
+}
+
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct AffectiveRealizationPolicyIR {
     pub formal: bool,
     pub warmth_millis: u16,
     pub playfulness_millis: u16,
     pub brevity_millis: u16,
     pub urgency_millis: u16,
+    #[serde(default)]
+    pub korean_dialect: KoreanDialectIR,
+    #[serde(default)]
+    pub relationship: RoleplayRelationshipIR,
+    #[serde(default)]
+    pub voice: RoleplayVoiceIR,
+    #[serde(default)]
+    pub age_band: RoleplayAgeBandIR,
+    #[serde(default)]
+    pub background: RoleplayBackgroundIR,
+    #[serde(default)]
+    pub scene: RoleplaySceneIR,
+}
+
+/// Host-configured expression tendencies, separate from observations about
+/// the user's tone. These are not beliefs, emotions experienced by the core,
+/// confidence in an answer, or permission to act.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DialoguePersonalityIR {
+    pub warmth_millis: u16,
+    pub playfulness_millis: u16,
+    pub formality_millis: u16,
+    pub concision_millis: u16,
+    #[serde(default)]
+    pub korean_dialect: KoreanDialectIR,
+    #[serde(default)]
+    pub relationship: RoleplayRelationshipIR,
+    #[serde(default)]
+    pub voice: RoleplayVoiceIR,
+    #[serde(default)]
+    pub age_band: RoleplayAgeBandIR,
+    #[serde(default)]
+    pub background: RoleplayBackgroundIR,
+    #[serde(default)]
+    pub scene: RoleplaySceneIR,
+}
+
+impl DialoguePersonalityIR {
+    pub fn validate(&self) -> bool {
+        [
+            self.warmth_millis,
+            self.playfulness_millis,
+            self.formality_millis,
+            self.concision_millis,
+        ]
+        .into_iter()
+        .all(|value| value <= 1_000)
+    }
+
+    pub fn persona(&self) -> RoleplayPersonaIR {
+        RoleplayPersonaIR {
+            relationship: self.relationship,
+            voice: self.voice,
+            scene: self.scene,
+            age_band: self.age_band,
+            background: self.background,
+        }
+    }
+}
+
+impl AffectiveRealizationPolicyIR {
+    pub fn persona(&self) -> RoleplayPersonaIR {
+        RoleplayPersonaIR {
+            relationship: self.relationship,
+            voice: self.voice,
+            scene: self.scene,
+            age_band: self.age_band,
+            background: self.background,
+        }
+    }
 }
 
 impl AffectiveFieldIR {
@@ -184,9 +462,10 @@ impl AffectiveFieldIR {
         }
         let tail =
             surface.trim_end_matches(|c: char| c.is_whitespace() || c.is_ascii_punctuation());
-        if ["습니다", "습니까", "주세요", "요"]
+        if (["습니다", "습니까", "주세요", "요"]
             .iter()
             .any(|suffix| tail.ends_with(suffix))
+            || crate::compositional_semantics::formal_korean_benefactive(tail))
             && field.observations.len() < 32
         {
             field.observations.push(AffectSignalIR {
@@ -236,7 +515,45 @@ impl AffectiveFieldIR {
             },
             brevity_millis: self.value(Urgency).max(self.value(Frustration)).max(0) as u16,
             urgency_millis: self.value(Urgency).max(0) as u16,
+            korean_dialect: KoreanDialectIR::Standard,
+            ..Default::default()
         }
+    }
+
+    pub fn policy_with_personality(
+        &self,
+        personality: &DialoguePersonalityIR,
+    ) -> AffectiveRealizationPolicyIR {
+        let mut policy = self.policy();
+        // Invalid host configuration cannot participate in realization.
+        if !personality.validate() {
+            return policy;
+        }
+        let blend = |observed: u16, tendency: u16| observed.saturating_add(tendency).min(1_000);
+        policy.formal |= personality.formality_millis >= 150;
+        policy.warmth_millis = blend(policy.warmth_millis, personality.warmth_millis);
+        policy.brevity_millis = blend(policy.brevity_millis, personality.concision_millis);
+        policy.korean_dialect = personality.korean_dialect;
+        policy.relationship = personality.relationship;
+        policy.voice = personality.voice;
+        policy.age_band = personality.age_band;
+        policy.background = personality.background;
+        policy.scene = personality.scene;
+        // Directness reduces optional discourse through the existing bounded
+        // brevity path; it never removes an approved claim or simulates
+        // urgency.
+        if personality.voice == RoleplayVoiceIR::Direct {
+            policy.brevity_millis = policy.brevity_millis.max(500);
+        }
+        // A playful personality must not override current distress or urgency.
+        policy.playfulness_millis = if self.value(AffectAxisIR::Urgency) > 150
+            || self.value(AffectAxisIR::Frustration) > 150
+        {
+            0
+        } else {
+            blend(policy.playfulness_millis, personality.playfulness_millis)
+        };
+        policy
     }
 
     pub fn validate(&self) -> bool {
@@ -281,5 +598,35 @@ mod tests {
                 AffectiveFieldIR::observe(Some(&b), "급해 ".repeat(1000).as_str(), None).validate()
             );
         }
+    }
+
+    #[test]
+    fn roleplay_profile_is_explicit_and_demographics_do_not_imply_a_voice() {
+        let field = AffectiveFieldIR::observe(None, "확인했어", None);
+        let profile = DialoguePersonalityIR {
+            relationship: RoleplayRelationshipIR::Close,
+            voice: RoleplayVoiceIR::Direct,
+            age_band: RoleplayAgeBandIR::Elder,
+            background: RoleplayBackgroundIR::Academic,
+            ..Default::default()
+        };
+        let policy = field.policy_with_personality(&profile);
+        assert_eq!(policy.relationship, RoleplayRelationshipIR::Close);
+        assert_eq!(policy.voice, RoleplayVoiceIR::Direct);
+        assert_eq!(policy.age_band, RoleplayAgeBandIR::Elder);
+        assert_eq!(policy.background, RoleplayBackgroundIR::Academic);
+        assert!(policy.brevity_millis >= 500);
+
+        let demographic_only = field.policy_with_personality(&DialoguePersonalityIR {
+            age_band: RoleplayAgeBandIR::Young,
+            background: RoleplayBackgroundIR::Community,
+            ..Default::default()
+        });
+        assert_eq!(
+            demographic_only.relationship,
+            RoleplayRelationshipIR::Unspecified
+        );
+        assert_eq!(demographic_only.voice, RoleplayVoiceIR::Balanced);
+        assert_eq!(demographic_only.korean_dialect, KoreanDialectIR::Standard);
     }
 }

@@ -486,6 +486,7 @@ pub fn merge_ontology_mentions(referents: &mut Vec<TypedEntityReferentIR>, turn:
             .count()
             + 1;
         referents.push(TypedEntityReferentIR {
+            korean_nominal_forms: Vec::new(),
             entity_id: format!("TREF-{turn:06}-{suffix:02}"),
             canonical_surface: surface,
             normalized_label: normalized,

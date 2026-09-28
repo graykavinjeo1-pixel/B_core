@@ -293,7 +293,9 @@ fn definition_candidate(text: &str) -> Option<DefinitionCandidate> {
     let alias = extract_first_quoted(trimmed).or_else(|| {
         english_marker
             .map(|(index, _)| extract_unquoted_english_alias(&lower[..index]))
-            .or_else(|| korean_marker.map(|index| extract_unquoted_korean_alias(&trimmed[..index])))
+            .or_else(|| {
+                korean_marker.and_then(|index| extract_unquoted_korean_alias(&trimmed[..index]))
+            })
     })?;
     let definition = if let Some((index, marker_len)) = english_marker {
         trimmed[index + marker_len..]
@@ -391,18 +393,19 @@ fn extract_unquoted_english_alias(prefix: &str) -> String {
         .to_string()
 }
 
-fn extract_unquoted_korean_alias(prefix: &str) -> String {
-    let tail = prefix
-        .split(|character: char| character.is_whitespace() || ",;:".contains(character))
-        .rfind(|token| !token.is_empty())
-        .unwrap_or_default()
-        .trim_matches(|character: char| "'\"‘’“”".contains(character));
-    for particle in ["이라는", "라는", "은", "는", "을", "를"] {
-        if let Some(alias) = tail.strip_suffix(particle) {
-            return alias.to_string();
+fn extract_unquoted_korean_alias(prefix: &str) -> Option<String> {
+    // A lexical definition requires a topic noun to define. The adnominal
+    // verb before 뜻 describes an utterance's meaning; it is not an alias.
+    prefix.split_whitespace().find_map(|token| {
+        if token.ends_with("다는") || token.ends_with("라는") {
+            return None;
         }
-    }
-    tail.to_string()
+        ["은", "는"]
+            .iter()
+            .find_map(|p| token.strip_suffix(p))
+            .filter(|alias| valid_alias(alias))
+            .map(str::to_string)
+    })
 }
 
 fn find_alias_end(text: &str, alias: &str) -> Option<usize> {
@@ -520,6 +523,26 @@ mod tests {
 
     fn ground(text: &str) -> DefinitionGroundingIR {
         DefinitionGrounder.ground(text, 1, &[])
+    }
+
+    #[test]
+    fn utterance_meaning_is_not_a_new_lexical_alias() {
+        for action in ["실행", "삭제", "저장", "수정"] {
+            let result = ground(&format!("응, {action}하라는 뜻은 아니었어."));
+            assert_eq!(
+                result.disposition,
+                DefinitionGroundingDispositionIR::NoDefinition
+            );
+            assert!(!result.lexical_store_changed);
+        }
+        let result = ground("누루는 검사하라는 뜻이야.");
+        assert_eq!(
+            result
+                .binding
+                .expect("explicit lexical subject")
+                .alias_surface,
+            "누루"
+        );
     }
 
     #[test]

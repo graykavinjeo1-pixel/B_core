@@ -1,0 +1,1684 @@
+{
+  "schema": "B_CORE_ENGLISH_FINAL_STRESS_LEXICON_1",
+  "source_url": "https://raw.githubusercontent.com/cmusphinx/cmudict/74790861f652b15e4ac49015a90074ad62a27690/cmudict.dict",
+  "source_revision": "74790861f652b15e4ac49015a90074ad62a27690",
+  "source_sha256": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22",
+  "selection": "All single-word lowercase English aliases of existing Korean verb entries, ending in orthographic CVC excluding w/x/y and with more than one written vowel; no task/outcome selection.",
+  "base_dictionary_sha256": "d614048f9df99ac9104cf0206ace8cb9238f0f6a7490bfb06980d6fbf69d23c8",
+  "candidate_aliases": 217,
+  "entry_count": 212,
+  "entries": {
+    "abandon": {
+      "pronunciations": [
+        "AH0 B AE1 N D AH0 N"
+      ],
+      "attested_forms": [
+        "abandoned"
+      ]
+    },
+    "abet": {
+      "pronunciations": [
+        "AH0 B EH1 T"
+      ],
+      "attested_forms": [
+        "abetted"
+      ]
+    },
+    "abut": {
+      "pronunciations": [
+        "AH0 B AH1 T"
+      ],
+      "attested_forms": [
+        "abutted"
+      ]
+    },
+    "admit": {
+      "pronunciations": [
+        "AH0 D M IH1 T"
+      ],
+      "attested_forms": [
+        "admitted"
+      ]
+    },
+    "airdrop": {
+      "pronunciations": [
+        "EH1 R D R AA0 P"
+      ],
+      "attested_forms": []
+    },
+    "allot": {
+      "pronunciations": [
+        "AH0 L AA1 T"
+      ],
+      "attested_forms": [
+        "alloted",
+        "allotted"
+      ]
+    },
+    "alter": {
+      "pronunciations": [
+        "AO1 L T ER0"
+      ],
+      "attested_forms": [
+        "altered"
+      ]
+    },
+    "anchor": {
+      "pronunciations": [
+        "AE1 NG K ER0"
+      ],
+      "attested_forms": [
+        "anchored"
+      ]
+    },
+    "answer": {
+      "pronunciations": [
+        "AE1 N S ER0"
+      ],
+      "attested_forms": [
+        "answered"
+      ]
+    },
+    "armor": {
+      "pronunciations": [
+        "AA1 R M ER0"
+      ],
+      "attested_forms": [
+        "armored"
+      ]
+    },
+    "arson": {
+      "pronunciations": [
+        "AA1 R S AH0 N"
+      ],
+      "attested_forms": []
+    },
+    "audit": {
+      "pronunciations": [
+        "AO1 D IH0 T"
+      ],
+      "attested_forms": [
+        "audited"
+      ]
+    },
+    "awaken": {
+      "pronunciations": [
+        "AH0 W EY1 K AH0 N"
+      ],
+      "attested_forms": [
+        "awakened"
+      ]
+    },
+    "beckon": {
+      "pronunciations": [
+        "B EH1 K AH0 N"
+      ],
+      "attested_forms": [
+        "beckoned"
+      ]
+    },
+    "begin": {
+      "pronunciations": [
+        "B IH0 G IH1 N"
+      ],
+      "attested_forms": []
+    },
+    "benefit": {
+      "pronunciations": [
+        "B EH1 N AH0 F IH0 T"
+      ],
+      "attested_forms": [
+        "benefited",
+        "benefitted"
+      ]
+    },
+    "bewildered": {
+      "pronunciations": [
+        "B IH0 W IH1 L D ER0 D"
+      ],
+      "attested_forms": []
+    },
+    "blossom": {
+      "pronunciations": [
+        "B L AA1 S AH0 M"
+      ],
+      "attested_forms": [
+        "blossomed"
+      ]
+    },
+    "blubber": {
+      "pronunciations": [
+        "B L AH1 B ER0"
+      ],
+      "attested_forms": []
+    },
+    "blunder": {
+      "pronunciations": [
+        "B L AH1 N D ER0"
+      ],
+      "attested_forms": [
+        "blundered"
+      ]
+    },
+    "border": {
+      "pronunciations": [
+        "B AO1 R D ER0"
+      ],
+      "attested_forms": [
+        "bordered"
+      ]
+    },
+    "bother": {
+      "pronunciations": [
+        "B AA1 DH ER0"
+      ],
+      "attested_forms": [
+        "bothered"
+      ]
+    },
+    "brighten": {
+      "pronunciations": [
+        "B R AY1 T AH0 N"
+      ],
+      "attested_forms": [
+        "brightened"
+      ]
+    },
+    "broaden": {
+      "pronunciations": [
+        "B R AO1 D AH0 N"
+      ],
+      "attested_forms": [
+        "broadened"
+      ]
+    },
+    "burden": {
+      "pronunciations": [
+        "B ER1 D AH0 N"
+      ],
+      "attested_forms": [
+        "burdened"
+      ]
+    },
+    "butcher": {
+      "pronunciations": [
+        "B UH1 CH ER0"
+      ],
+      "attested_forms": [
+        "butchered"
+      ]
+    },
+    "button": {
+      "pronunciations": [
+        "B AH1 T AH0 N"
+      ],
+      "attested_forms": [
+        "buttoned"
+      ]
+    },
+    "cancel": {
+      "pronunciations": [
+        "K AE1 N S AH0 L"
+      ],
+      "attested_forms": [
+        "canceled",
+        "cancelled"
+      ]
+    },
+    "cannot": {
+      "pronunciations": [
+        "K AE1 N AA0 T",
+        "K AH0 N AA1 T"
+      ],
+      "attested_forms": []
+    },
+    "censor": {
+      "pronunciations": [
+        "S EH1 N S ER0"
+      ],
+      "attested_forms": [
+        "censored"
+      ]
+    },
+    "charter": {
+      "pronunciations": [
+        "CH AA1 R T ER0"
+      ],
+      "attested_forms": [
+        "chartered"
+      ]
+    },
+    "clamor": {
+      "pronunciations": [
+        "K L AE1 M ER0"
+      ],
+      "attested_forms": [
+        "clamored"
+      ]
+    },
+    "closed": {
+      "pronunciations": [
+        "K L OW1 Z D"
+      ],
+      "attested_forms": []
+    },
+    "cluster": {
+      "pronunciations": [
+        "K L AH1 S T ER0"
+      ],
+      "attested_forms": [
+        "clustered"
+      ]
+    },
+    "color": {
+      "pronunciations": [
+        "K AH1 L ER0",
+        "K AO1 L ER0"
+      ],
+      "attested_forms": [
+        "colored"
+      ]
+    },
+    "commit": {
+      "pronunciations": [
+        "K AH0 M IH1 T"
+      ],
+      "attested_forms": [
+        "committed"
+      ]
+    },
+    "consider": {
+      "pronunciations": [
+        "K AH0 N S IH1 D ER0"
+      ],
+      "attested_forms": [
+        "considered"
+      ]
+    },
+    "control": {
+      "pronunciations": [
+        "K AH0 N T R OW1 L"
+      ],
+      "attested_forms": [
+        "controlled"
+      ]
+    },
+    "corner": {
+      "pronunciations": [
+        "K AO1 R N ER0"
+      ],
+      "attested_forms": [
+        "cornered"
+      ]
+    },
+    "counsel": {
+      "pronunciations": [
+        "K AW1 N S AH0 L"
+      ],
+      "attested_forms": [
+        "counseled"
+      ]
+    },
+    "cover": {
+      "pronunciations": [
+        "K AH1 V ER0"
+      ],
+      "attested_forms": [
+        "covered"
+      ]
+    },
+    "covet": {
+      "pronunciations": [
+        "K AH1 V AH0 T"
+      ],
+      "attested_forms": [
+        "coveted"
+      ]
+    },
+    "darken": {
+      "pronunciations": [
+        "D AA1 R K AH0 N"
+      ],
+      "attested_forms": [
+        "darkened"
+      ]
+    },
+    "defer": {
+      "pronunciations": [
+        "D IH0 F ER1"
+      ],
+      "attested_forms": [
+        "deferred"
+      ]
+    },
+    "deliver": {
+      "pronunciations": [
+        "D IH0 L IH1 V ER0"
+      ],
+      "attested_forms": [
+        "delivered"
+      ]
+    },
+    "deposit": {
+      "pronunciations": [
+        "D AH0 P AA1 Z IH0 T",
+        "D IH0 P AA1 Z AH0 T"
+      ],
+      "attested_forms": [
+        "deposited"
+      ]
+    },
+    "develop": {
+      "pronunciations": [
+        "D IH0 V EH1 L AH0 P"
+      ],
+      "attested_forms": [
+        "developed"
+      ]
+    },
+    "discolor": {
+      "pronunciations": [
+        "D IH0 S K AH1 L ER0"
+      ],
+      "attested_forms": [
+        "discolored"
+      ]
+    },
+    "discover": {
+      "pronunciations": [
+        "D IH0 S K AH1 V ER0"
+      ],
+      "attested_forms": [
+        "discovered"
+      ]
+    },
+    "eavesdrop": {
+      "pronunciations": [
+        "IY1 V Z D R AA2 P"
+      ],
+      "attested_forms": []
+    },
+    "embarrassed": {
+      "pronunciations": [
+        "IH0 M B EH1 R AH0 S T"
+      ],
+      "attested_forms": []
+    },
+    "embed": {
+      "pronunciations": [
+        "IH0 M B EH1 D"
+      ],
+      "attested_forms": [
+        "embedded"
+      ]
+    },
+    "embroider": {
+      "pronunciations": [
+        "IH0 M B R OY1 D ER0"
+      ],
+      "attested_forms": [
+        "embroidered"
+      ]
+    },
+    "emit": {
+      "pronunciations": [
+        "IH0 M IH1 T"
+      ],
+      "attested_forms": [
+        "emitted"
+      ]
+    },
+    "encounter": {
+      "pronunciations": [
+        "IH0 N K AW1 N T ER0",
+        "IH0 N K AW1 N ER0"
+      ],
+      "attested_forms": [
+        "encountered"
+      ]
+    },
+    "endeavor": {
+      "pronunciations": [
+        "IH0 N D EH1 V ER0"
+      ],
+      "attested_forms": [
+        "endeavored"
+      ]
+    },
+    "enter": {
+      "pronunciations": [
+        "EH1 N T ER0",
+        "EH1 N ER0"
+      ],
+      "attested_forms": [
+        "entered"
+      ]
+    },
+    "envelop": {
+      "pronunciations": [
+        "IH0 N V EH1 L AH0 P"
+      ],
+      "attested_forms": [
+        "enveloped"
+      ]
+    },
+    "excel": {
+      "pronunciations": [
+        "IH0 K S EH1 L"
+      ],
+      "attested_forms": [
+        "excelled"
+      ]
+    },
+    "exhibit": {
+      "pronunciations": [
+        "IH0 G Z IH1 B IH0 T"
+      ],
+      "attested_forms": [
+        "exhibited"
+      ]
+    },
+    "expel": {
+      "pronunciations": [
+        "IH0 K S P EH1 L"
+      ],
+      "attested_forms": [
+        "expelled"
+      ]
+    },
+    "falter": {
+      "pronunciations": [
+        "F AO1 L T ER0"
+      ],
+      "attested_forms": [
+        "faltered"
+      ]
+    },
+    "fasten": {
+      "pronunciations": [
+        "F AE1 S AH0 N"
+      ],
+      "attested_forms": [
+        "fastened"
+      ]
+    },
+    "fathom": {
+      "pronunciations": [
+        "F AE1 DH AH0 M"
+      ],
+      "attested_forms": []
+    },
+    "fatten": {
+      "pronunciations": [
+        "F AE1 T AH0 N"
+      ],
+      "attested_forms": [
+        "fattened"
+      ]
+    },
+    "favor": {
+      "pronunciations": [
+        "F EY1 V ER0"
+      ],
+      "attested_forms": [
+        "favored"
+      ]
+    },
+    "flatten": {
+      "pronunciations": [
+        "F L AE1 T AH0 N"
+      ],
+      "attested_forms": [
+        "flattened"
+      ]
+    },
+    "flatter": {
+      "pronunciations": [
+        "F L AE1 T ER0"
+      ],
+      "attested_forms": [
+        "flattered"
+      ]
+    },
+    "flicker": {
+      "pronunciations": [
+        "F L IH1 K ER0"
+      ],
+      "attested_forms": [
+        "flickered"
+      ]
+    },
+    "flower": {
+      "pronunciations": [
+        "F L AW1 ER0"
+      ],
+      "attested_forms": [
+        "flowered"
+      ]
+    },
+    "flutter": {
+      "pronunciations": [
+        "F L AH1 T ER0"
+      ],
+      "attested_forms": [
+        "fluttered"
+      ]
+    },
+    "focus": {
+      "pronunciations": [
+        "F OW1 K AH0 S",
+        "F OW1 K IH0 S"
+      ],
+      "attested_forms": [
+        "focused",
+        "focussed"
+      ]
+    },
+    "forget": {
+      "pronunciations": [
+        "F ER0 G EH1 T",
+        "F AO0 R G EH1 T"
+      ],
+      "attested_forms": []
+    },
+    "frighten": {
+      "pronunciations": [
+        "F R AY1 T AH0 N"
+      ],
+      "attested_forms": [
+        "frightened"
+      ]
+    },
+    "gather": {
+      "pronunciations": [
+        "G AE1 DH ER0"
+      ],
+      "attested_forms": [
+        "gathered"
+      ]
+    },
+    "glimmer": {
+      "pronunciations": [
+        "G L IH1 M ER0"
+      ],
+      "attested_forms": []
+    },
+    "glitter": {
+      "pronunciations": [
+        "G L IH1 T ER0"
+      ],
+      "attested_forms": [
+        "glittered"
+      ]
+    },
+    "gossip": {
+      "pronunciations": [
+        "G AA1 S AH0 P"
+      ],
+      "attested_forms": []
+    },
+    "grovel": {
+      "pronunciations": [
+        "G R AA1 V AH0 L"
+      ],
+      "attested_forms": []
+    },
+    "hammer": {
+      "pronunciations": [
+        "HH AE1 M ER0"
+      ],
+      "attested_forms": [
+        "hammered"
+      ]
+    },
+    "happen": {
+      "pronunciations": [
+        "HH AE1 P AH0 N"
+      ],
+      "attested_forms": [
+        "happened"
+      ]
+    },
+    "harbor": {
+      "pronunciations": [
+        "HH AA1 R B ER0"
+      ],
+      "attested_forms": [
+        "harbored"
+      ]
+    },
+    "harden": {
+      "pronunciations": [
+        "HH AA1 R D AH0 N"
+      ],
+      "attested_forms": [
+        "hardened"
+      ]
+    },
+    "harder": {
+      "pronunciations": [
+        "HH AA1 R D ER0"
+      ],
+      "attested_forms": []
+    },
+    "hasten": {
+      "pronunciations": [
+        "HH EY1 S AH0 N"
+      ],
+      "attested_forms": [
+        "hastened"
+      ]
+    },
+    "hinder": {
+      "pronunciations": [
+        "HH IH1 N D ER0"
+      ],
+      "attested_forms": [
+        "hindered"
+      ]
+    },
+    "honor": {
+      "pronunciations": [
+        "AA1 N ER0"
+      ],
+      "attested_forms": [
+        "honored"
+      ]
+    },
+    "imprison": {
+      "pronunciations": [
+        "IH2 M P R IH1 Z AH0 N"
+      ],
+      "attested_forms": [
+        "imprisoned"
+      ]
+    },
+    "infer": {
+      "pronunciations": [
+        "IH2 N F ER1"
+      ],
+      "attested_forms": [
+        "inferred"
+      ]
+    },
+    "inherit": {
+      "pronunciations": [
+        "IH2 N HH EH1 R AH0 T"
+      ],
+      "attested_forms": [
+        "inherited"
+      ]
+    },
+    "input": {
+      "pronunciations": [
+        "IH1 N P UH2 T"
+      ],
+      "attested_forms": []
+    },
+    "interpret": {
+      "pronunciations": [
+        "IH2 N T ER1 P R AH0 T"
+      ],
+      "attested_forms": [
+        "interpreted"
+      ]
+    },
+    "iron": {
+      "pronunciations": [
+        "AY1 ER0 N"
+      ],
+      "attested_forms": [
+        "ironed"
+      ]
+    },
+    "kidnap": {
+      "pronunciations": [
+        "K IH1 D N AE2 P"
+      ],
+      "attested_forms": [
+        "kidnaped",
+        "kidnapped"
+      ]
+    },
+    "labor": {
+      "pronunciations": [
+        "L EY1 B ER0"
+      ],
+      "attested_forms": [
+        "labored"
+      ]
+    },
+    "lengthen": {
+      "pronunciations": [
+        "L EH1 NG TH AH0 N",
+        "L EH1 NG K TH AH0 N"
+      ],
+      "attested_forms": [
+        "lengthened"
+      ]
+    },
+    "lessen": {
+      "pronunciations": [
+        "L EH1 S AH0 N"
+      ],
+      "attested_forms": [
+        "lessened"
+      ]
+    },
+    "level": {
+      "pronunciations": [
+        "L EH1 V AH0 L"
+      ],
+      "attested_forms": [
+        "leveled",
+        "levelled"
+      ]
+    },
+    "lighten": {
+      "pronunciations": [
+        "L AY1 T AH0 N"
+      ],
+      "attested_forms": [
+        "lightened"
+      ]
+    },
+    "liken": {
+      "pronunciations": [
+        "L AY1 K AH0 N"
+      ],
+      "attested_forms": [
+        "likened"
+      ]
+    },
+    "limit": {
+      "pronunciations": [
+        "L IH1 M AH0 T"
+      ],
+      "attested_forms": [
+        "limited"
+      ]
+    },
+    "linger": {
+      "pronunciations": [
+        "L IH1 NG G ER0",
+        "L IH1 NG ER0"
+      ],
+      "attested_forms": [
+        "lingered"
+      ]
+    },
+    "loosen": {
+      "pronunciations": [
+        "L UW1 S AH0 N"
+      ],
+      "attested_forms": [
+        "loosened"
+      ]
+    },
+    "lower": {
+      "pronunciations": [
+        "L OW1 ER0"
+      ],
+      "attested_forms": [
+        "lowered"
+      ]
+    },
+    "lumber": {
+      "pronunciations": [
+        "L AH1 M B ER0"
+      ],
+      "attested_forms": []
+    },
+    "maneuver": {
+      "pronunciations": [
+        "M AH0 N UW1 V ER0"
+      ],
+      "attested_forms": [
+        "maneuvered"
+      ]
+    },
+    "master": {
+      "pronunciations": [
+        "M AE1 S T ER0"
+      ],
+      "attested_forms": [
+        "mastered"
+      ]
+    },
+    "mirror": {
+      "pronunciations": [
+        "M IH1 R ER0"
+      ],
+      "attested_forms": [
+        "mirrored"
+      ]
+    },
+    "monitor": {
+      "pronunciations": [
+        "M AA1 N AH0 T ER0"
+      ],
+      "attested_forms": [
+        "monitored"
+      ]
+    },
+    "murder": {
+      "pronunciations": [
+        "M ER1 D ER0"
+      ],
+      "attested_forms": [
+        "murdered"
+      ]
+    },
+    "murmur": {
+      "pronunciations": [
+        "M ER1 M ER0"
+      ],
+      "attested_forms": [
+        "murmured"
+      ]
+    },
+    "occur": {
+      "pronunciations": [
+        "AH0 K ER1"
+      ],
+      "attested_forms": [
+        "occurred"
+      ]
+    },
+    "offer": {
+      "pronunciations": [
+        "AO1 F ER0"
+      ],
+      "attested_forms": [
+        "offered"
+      ]
+    },
+    "omit": {
+      "pronunciations": [
+        "OW0 M IH1 T"
+      ],
+      "attested_forms": [
+        "omitted"
+      ]
+    },
+    "open": {
+      "pronunciations": [
+        "OW1 P AH0 N"
+      ],
+      "attested_forms": [
+        "opened"
+      ]
+    },
+    "orbit": {
+      "pronunciations": [
+        "AO1 R B AH0 T"
+      ],
+      "attested_forms": [
+        "orbited"
+      ]
+    },
+    "order": {
+      "pronunciations": [
+        "AO1 R D ER0"
+      ],
+      "attested_forms": [
+        "ordered"
+      ]
+    },
+    "outdated": {
+      "pronunciations": [
+        "AW1 T D EY2 T IH0 D"
+      ],
+      "attested_forms": []
+    },
+    "outstrip": {
+      "pronunciations": [
+        "AW0 T S T R IH1 P"
+      ],
+      "attested_forms": [
+        "outstripped"
+      ]
+    },
+    "overlap": {
+      "pronunciations": [
+        "OW1 V ER0 L AE2 P"
+      ],
+      "attested_forms": [
+        "overlapped"
+      ]
+    },
+    "overpower": {
+      "pronunciations": [
+        "OW2 V ER0 P AW1 ER0"
+      ],
+      "attested_forms": [
+        "overpowered"
+      ]
+    },
+    "pamper": {
+      "pronunciations": [
+        "P AE1 M P ER0"
+      ],
+      "attested_forms": [
+        "pampered"
+      ]
+    },
+    "paper": {
+      "pronunciations": [
+        "P EY1 P ER0"
+      ],
+      "attested_forms": [
+        "papered"
+      ]
+    },
+    "pardon": {
+      "pronunciations": [
+        "P AA1 R D AH0 N"
+      ],
+      "attested_forms": [
+        "pardoned"
+      ]
+    },
+    "patrol": {
+      "pronunciations": [
+        "P AH0 T R OW1 L"
+      ],
+      "attested_forms": [
+        "patrolled"
+      ]
+    },
+    "permit": {
+      "pronunciations": [
+        "P ER0 M IH1 T",
+        "P ER1 M IH2 T"
+      ],
+      "attested_forms": [
+        "permitted"
+      ]
+    },
+    "pester": {
+      "pronunciations": [
+        "P EH1 S T ER0"
+      ],
+      "attested_forms": [
+        "pestered"
+      ]
+    },
+    "plaster": {
+      "pronunciations": [
+        "P L AE1 S T ER0"
+      ],
+      "attested_forms": [
+        "plastered"
+      ]
+    },
+    "plummet": {
+      "pronunciations": [
+        "P L AH1 M AH0 T"
+      ],
+      "attested_forms": [
+        "plummeted"
+      ]
+    },
+    "plunder": {
+      "pronunciations": [
+        "P L AH1 N D ER0"
+      ],
+      "attested_forms": [
+        "plundered"
+      ]
+    },
+    "pocket": {
+      "pronunciations": [
+        "P AA1 K AH0 T"
+      ],
+      "attested_forms": [
+        "pocketed"
+      ]
+    },
+    "prefer": {
+      "pronunciations": [
+        "P R AH0 F ER1",
+        "P R IH0 F ER1",
+        "P R IY0 F ER1"
+      ],
+      "attested_forms": [
+        "prefered",
+        "preferred"
+      ]
+    },
+    "profit": {
+      "pronunciations": [
+        "P R AA1 F AH0 T",
+        "P R AA1 F IH0 T"
+      ],
+      "attested_forms": [
+        "profited"
+      ]
+    },
+    "prohibit": {
+      "pronunciations": [
+        "P R OW0 HH IH1 B AH0 T"
+      ],
+      "attested_forms": [
+        "prohibited"
+      ]
+    },
+    "propel": {
+      "pronunciations": [
+        "P R AH0 P EH1 L"
+      ],
+      "attested_forms": [
+        "propelled"
+      ]
+    },
+    "prosper": {
+      "pronunciations": [
+        "P R AA1 S P ER0"
+      ],
+      "attested_forms": [
+        "prospered"
+      ]
+    },
+    "pucker": {
+      "pronunciations": [
+        "P AH1 K ER0"
+      ],
+      "attested_forms": []
+    },
+    "quarrel": {
+      "pronunciations": [
+        "K W AO1 R AH0 L"
+      ],
+      "attested_forms": [
+        "quarreled"
+      ]
+    },
+    "quicken": {
+      "pronunciations": [
+        "K W IH1 K AH0 N"
+      ],
+      "attested_forms": [
+        "quickened"
+      ]
+    },
+    "reckon": {
+      "pronunciations": [
+        "R EH1 K AH0 N"
+      ],
+      "attested_forms": [
+        "reckoned"
+      ]
+    },
+    "reconnoiter": {
+      "pronunciations": [
+        "R IY2 K AH0 N OY1 T ER0"
+      ],
+      "attested_forms": []
+    },
+    "recover": {
+      "pronunciations": [
+        "R IH0 K AH1 V ER0"
+      ],
+      "attested_forms": [
+        "recovered"
+      ]
+    },
+    "redden": {
+      "pronunciations": [
+        "R EH1 D AH0 N"
+      ],
+      "attested_forms": []
+    },
+    "refer": {
+      "pronunciations": [
+        "R AH0 F ER1",
+        "R IH0 F ER1"
+      ],
+      "attested_forms": [
+        "referred"
+      ]
+    },
+    "register": {
+      "pronunciations": [
+        "R EH1 JH IH0 S T ER0"
+      ],
+      "attested_forms": [
+        "registered"
+      ]
+    },
+    "regret": {
+      "pronunciations": [
+        "R AH0 G R EH1 T",
+        "R IH0 G R EH1 T"
+      ],
+      "attested_forms": [
+        "regretted"
+      ]
+    },
+    "remember": {
+      "pronunciations": [
+        "R IH0 M EH1 M B ER0",
+        "R IY0 M EH1 M B ER0"
+      ],
+      "attested_forms": [
+        "remembered"
+      ]
+    },
+    "remit": {
+      "pronunciations": [
+        "R IY0 M IH1 T"
+      ],
+      "attested_forms": [
+        "remitted"
+      ]
+    },
+    "render": {
+      "pronunciations": [
+        "R EH1 N D ER0"
+      ],
+      "attested_forms": [
+        "rendered"
+      ]
+    },
+    "repel": {
+      "pronunciations": [
+        "R IH0 P EH1 L"
+      ],
+      "attested_forms": [
+        "repelled"
+      ]
+    },
+    "ripen": {
+      "pronunciations": [
+        "R AY1 P AH0 N"
+      ],
+      "attested_forms": [
+        "ripened"
+      ]
+    },
+    "rumor": {
+      "pronunciations": [
+        "R UW1 M ER0"
+      ],
+      "attested_forms": [
+        "rumored"
+      ]
+    },
+    "scatter": {
+      "pronunciations": [
+        "S K AE1 T ER0"
+      ],
+      "attested_forms": [
+        "scattered"
+      ]
+    },
+    "season": {
+      "pronunciations": [
+        "S IY1 Z AH0 N"
+      ],
+      "attested_forms": [
+        "seasoned"
+      ]
+    },
+    "sever": {
+      "pronunciations": [
+        "S EH1 V ER0"
+      ],
+      "attested_forms": [
+        "severed"
+      ]
+    },
+    "sharpen": {
+      "pronunciations": [
+        "SH AA1 R P AH0 N"
+      ],
+      "attested_forms": [
+        "sharpened"
+      ]
+    },
+    "shimmer": {
+      "pronunciations": [
+        "SH IH1 M ER0"
+      ],
+      "attested_forms": [
+        "shimmered"
+      ]
+    },
+    "shiver": {
+      "pronunciations": [
+        "SH IH1 V ER0"
+      ],
+      "attested_forms": [
+        "shivered"
+      ]
+    },
+    "shorten": {
+      "pronunciations": [
+        "SH AO1 R T AH0 N"
+      ],
+      "attested_forms": [
+        "shortened"
+      ]
+    },
+    "shoulder": {
+      "pronunciations": [
+        "SH OW1 L D ER0"
+      ],
+      "attested_forms": [
+        "shouldered"
+      ]
+    },
+    "shovel": {
+      "pronunciations": [
+        "SH AH1 V AH0 L"
+      ],
+      "attested_forms": [
+        "shoveled"
+      ]
+    },
+    "shower": {
+      "pronunciations": [
+        "SH AW1 ER0"
+      ],
+      "attested_forms": [
+        "showered"
+      ]
+    },
+    "shrivel": {
+      "pronunciations": [
+        "SH R IH1 V AH0 L"
+      ],
+      "attested_forms": [
+        "shriveled"
+      ]
+    },
+    "shudder": {
+      "pronunciations": [
+        "SH AH1 D ER0"
+      ],
+      "attested_forms": [
+        "shuddered"
+      ]
+    },
+    "signal": {
+      "pronunciations": [
+        "S IH1 G N AH0 L"
+      ],
+      "attested_forms": [
+        "signaled",
+        "signalled"
+      ]
+    },
+    "skyrocket": {
+      "pronunciations": [
+        "S K AY1 R AA2 K AH0 T"
+      ],
+      "attested_forms": [
+        "skyrocketed"
+      ]
+    },
+    "slander": {
+      "pronunciations": [
+        "S L AE1 N D ER0"
+      ],
+      "attested_forms": [
+        "slandered"
+      ]
+    },
+    "slaughter": {
+      "pronunciations": [
+        "S L AO1 T ER0"
+      ],
+      "attested_forms": [
+        "slaughtered"
+      ]
+    },
+    "smolder": {
+      "pronunciations": [
+        "S M OW1 L D ER0"
+      ],
+      "attested_forms": []
+    },
+    "smother": {
+      "pronunciations": [
+        "S M AH1 DH ER0"
+      ],
+      "attested_forms": [
+        "smothered"
+      ]
+    },
+    "snicker": {
+      "pronunciations": [
+        "S N IH1 K ER0"
+      ],
+      "attested_forms": [
+        "snickered"
+      ]
+    },
+    "sodden": {
+      "pronunciations": [
+        "S AA1 D AH0 N"
+      ],
+      "attested_forms": []
+    },
+    "soften": {
+      "pronunciations": [
+        "S AA1 F AH0 N",
+        "S AO1 F AH0 N"
+      ],
+      "attested_forms": [
+        "softened"
+      ]
+    },
+    "solicit": {
+      "pronunciations": [
+        "S AH0 L IH1 S IH0 T"
+      ],
+      "attested_forms": [
+        "solicited"
+      ]
+    },
+    "spatter": {
+      "pronunciations": [
+        "S P AE1 T ER0"
+      ],
+      "attested_forms": [
+        "spattered"
+      ]
+    },
+    "sponsor": {
+      "pronunciations": [
+        "S P AA1 N S ER0"
+      ],
+      "attested_forms": [
+        "sponsored"
+      ]
+    },
+    "squander": {
+      "pronunciations": [
+        "S K W AA1 N D ER0"
+      ],
+      "attested_forms": [
+        "squandered"
+      ]
+    },
+    "stiffen": {
+      "pronunciations": [
+        "S T IH1 F AH0 N"
+      ],
+      "attested_forms": [
+        "stiffened"
+      ]
+    },
+    "straighten": {
+      "pronunciations": [
+        "S T R EY1 T AH0 N"
+      ],
+      "attested_forms": [
+        "straightened"
+      ]
+    },
+    "strengthen": {
+      "pronunciations": [
+        "S T R EH1 NG TH AH0 N"
+      ],
+      "attested_forms": [
+        "strengthened"
+      ]
+    },
+    "stupid": {
+      "pronunciations": [
+        "S T UW1 P AH0 D",
+        "S T UW1 P IH0 D"
+      ],
+      "attested_forms": []
+    },
+    "submit": {
+      "pronunciations": [
+        "S AH0 B M IH1 T"
+      ],
+      "attested_forms": [
+        "submitted"
+      ]
+    },
+    "suffer": {
+      "pronunciations": [
+        "S AH1 F ER0"
+      ],
+      "attested_forms": [
+        "suffered"
+      ]
+    },
+    "summon": {
+      "pronunciations": [
+        "S AH1 M AH0 N"
+      ],
+      "attested_forms": [
+        "summoned"
+      ]
+    },
+    "surrender": {
+      "pronunciations": [
+        "S ER0 EH1 N D ER0"
+      ],
+      "attested_forms": [
+        "surrendered"
+      ]
+    },
+    "target": {
+      "pronunciations": [
+        "T AA1 R G AH0 T",
+        "T ER1 G AH0 T"
+      ],
+      "attested_forms": [
+        "targeted"
+      ]
+    },
+    "temper": {
+      "pronunciations": [
+        "T EH1 M P ER0"
+      ],
+      "attested_forms": [
+        "tempered"
+      ]
+    },
+    "thicken": {
+      "pronunciations": [
+        "TH IH1 K AH0 N"
+      ],
+      "attested_forms": [
+        "thickened"
+      ]
+    },
+    "threaten": {
+      "pronunciations": [
+        "TH R EH1 T AH0 N"
+      ],
+      "attested_forms": [
+        "threatened"
+      ]
+    },
+    "thunder": {
+      "pronunciations": [
+        "TH AH1 N D ER0"
+      ],
+      "attested_forms": [
+        "thundered"
+      ]
+    },
+    "tighten": {
+      "pronunciations": [
+        "T AY1 T AH0 N"
+      ],
+      "attested_forms": [
+        "tightened"
+      ]
+    },
+    "total": {
+      "pronunciations": [
+        "T OW1 T AH0 L"
+      ],
+      "attested_forms": [
+        "totaled",
+        "totalled"
+      ]
+    },
+    "totter": {
+      "pronunciations": [
+        "T AA1 T ER0"
+      ],
+      "attested_forms": []
+    },
+    "tougher": {
+      "pronunciations": [
+        "T AH1 F ER0"
+      ],
+      "attested_forms": []
+    },
+    "tower": {
+      "pronunciations": [
+        "T AW1 ER0"
+      ],
+      "attested_forms": [
+        "towered"
+      ]
+    },
+    "traffic": {
+      "pronunciations": [
+        "T R AE1 F IH0 K"
+      ],
+      "attested_forms": []
+    },
+    "transfer": {
+      "pronunciations": [
+        "T R AE0 N S F ER1",
+        "T R AE1 N S F ER0"
+      ],
+      "attested_forms": [
+        "transfered",
+        "transferred"
+      ]
+    },
+    "transmit": {
+      "pronunciations": [
+        "T R AE0 N Z M IH1 T"
+      ],
+      "attested_forms": [
+        "transmitted"
+      ]
+    },
+    "travel": {
+      "pronunciations": [
+        "T R AE1 V AH0 L"
+      ],
+      "attested_forms": [
+        "traveled",
+        "travelled"
+      ]
+    },
+    "unburden": {
+      "pronunciations": [
+        "AH0 N B ER1 D AH0 N"
+      ],
+      "attested_forms": [
+        "unburdened"
+      ]
+    },
+    "uncover": {
+      "pronunciations": [
+        "AH0 N K AH1 V ER0"
+      ],
+      "attested_forms": [
+        "uncovered"
+      ]
+    },
+    "usher": {
+      "pronunciations": [
+        "AH1 SH ER0"
+      ],
+      "attested_forms": [
+        "ushered"
+      ]
+    },
+    "visit": {
+      "pronunciations": [
+        "V IH1 Z IH0 T"
+      ],
+      "attested_forms": [
+        "visited"
+      ]
+    },
+    "vomit": {
+      "pronunciations": [
+        "V AA1 M AH0 T"
+      ],
+      "attested_forms": []
+    },
+    "wander": {
+      "pronunciations": [
+        "W AA1 N D ER0"
+      ],
+      "attested_forms": [
+        "wandered"
+      ]
+    },
+    "waver": {
+      "pronunciations": [
+        "W EY1 V ER0"
+      ],
+      "attested_forms": [
+        "wavered"
+      ]
+    },
+    "weaken": {
+      "pronunciations": [
+        "W IY1 K AH0 N"
+      ],
+      "attested_forms": [
+        "weakened"
+      ]
+    },
+    "whimper": {
+      "pronunciations": [
+        "W IH1 M P ER0",
+        "HH W IH1 M P ER0"
+      ],
+      "attested_forms": []
+    },
+    "widen": {
+      "pronunciations": [
+        "W AY1 D AH0 N"
+      ],
+      "attested_forms": [
+        "widened"
+      ]
+    },
+    "wither": {
+      "pronunciations": [
+        "W IH1 DH ER0"
+      ],
+      "attested_forms": [
+        "withered"
+      ]
+    },
+    "worsen": {
+      "pronunciations": [
+        "W ER1 S AH0 N"
+      ],
+      "attested_forms": [
+        "worsened"
+      ]
+    },
+    "worship": {
+      "pronunciations": [
+        "W ER1 SH AH0 P",
+        "W ER1 SH IH0 P"
+      ],
+      "attested_forms": [
+        "worshiped",
+        "worshipped"
+      ]
+    }
+  }
+}

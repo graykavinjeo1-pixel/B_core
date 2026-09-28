@@ -1,0 +1,52 @@
+{
+  "schema": "B_CORE_SUPERVISED_WORLD_LEXICAL_REPLAY_1",
+  "authorship": "SUPPLIED_BY_SUPERVISOR_NOT_AUTONOMOUS",
+  "source_batch": "reports/language-cortex-completion/meaning-learning-2026-09-09/supervised_lexical_batch.json",
+  "source_batch_sha256": "36572D97F2483D9E8D22B37F7F37E48FB0181D55854607E8099B7E7595197BBF",
+  "phase": "EXPLICIT_HOST_REPLAY_ONLY",
+  "scope": "Eight supplied boolean or ordered binary predicate contracts with Korean and English lexical aliases. Registration adds no facts, definitions, transitivity, causation, diagnosis, execution authority, or whole-sentence meaning.",
+  "startup_policy": "The host must explicitly load this artifact and issue UPDATE_WORLD_VOCABULARY for a chosen conversation. The runtime does not load it as a global default and does not mutate the built-in vocabulary.",
+  "update": {
+    "predicates": [
+      { "predicate_id": "W_USER_710001", "arity": "UNARY" },
+      { "predicate_id": "W_USER_710002", "arity": "UNARY" },
+      { "predicate_id": "W_USER_710003", "arity": "UNARY" },
+      { "predicate_id": "W_USER_710004", "arity": "UNARY" },
+      { "predicate_id": "W_USER_710005", "arity": "BINARY" },
+      { "predicate_id": "W_USER_710006", "arity": "BINARY" },
+      { "predicate_id": "W_USER_710007", "arity": "BINARY" },
+      { "predicate_id": "W_USER_710008", "arity": "BINARY" }
+    ],
+    "aliases": [
+      { "alias_id": "G3.0.en", "predicate_id": "W_USER_710001", "language": "ENGLISH", "root": "busy", "grammar": "COPULAR" },
+      { "alias_id": "G3.0.ko", "predicate_id": "W_USER_710001", "language": "KOREAN", "root": "분주", "grammar": "KOREAN_HADA_EXPERIENCER" },
+      { "alias_id": "G3.1.en", "predicate_id": "W_USER_710002", "language": "ENGLISH", "root": "calm", "grammar": "COPULAR" },
+      { "alias_id": "G3.1.ko", "predicate_id": "W_USER_710002", "language": "KOREAN", "root": "차분", "grammar": "KOREAN_HADA_EXPERIENCER" },
+      { "alias_id": "G3.2.en", "predicate_id": "W_USER_710003", "language": "ENGLISH", "root": "anxious", "grammar": "COPULAR" },
+      { "alias_id": "G3.2.ko", "predicate_id": "W_USER_710003", "language": "KOREAN", "root": "불안", "grammar": "KOREAN_HADA_EXPERIENCER" },
+      { "alias_id": "G3.3.en", "predicate_id": "W_USER_710004", "language": "ENGLISH", "root": "happy", "grammar": "COPULAR" },
+      { "alias_id": "G3.3.ko", "predicate_id": "W_USER_710004", "language": "KOREAN", "root": "행복", "grammar": "KOREAN_HADA_EXPERIENCER" },
+      { "alias_id": "G3.4.en", "predicate_id": "W_USER_710005", "language": "ENGLISH", "root": "trust", "grammar": "ENGLISH_REGULAR_VERB" },
+      { "alias_id": "G3.4.ko", "predicate_id": "W_USER_710005", "language": "KOREAN", "root": "신뢰", "grammar": "KOREAN_HADA_ACCUSATIVE" },
+      { "alias_id": "G3.5.en", "predicate_id": "W_USER_710006", "language": "ENGLISH", "root": "support", "grammar": "ENGLISH_REGULAR_VERB" },
+      { "alias_id": "G3.5.ko", "predicate_id": "W_USER_710006", "language": "KOREAN", "root": "지원", "grammar": "KOREAN_HADA_ACCUSATIVE" },
+      { "alias_id": "G3.6.en", "predicate_id": "W_USER_710007", "language": "ENGLISH", "root": "depend on", "grammar": "ENGLISH_REGULAR_VERB" },
+      { "alias_id": "G3.6.ko", "predicate_id": "W_USER_710007", "language": "KOREAN", "root": "의존", "grammar": "KOREAN_HADA_LOCATIVE" },
+      { "alias_id": "G3.7.en", "predicate_id": "W_USER_710008", "language": "ENGLISH", "root": "contribute to", "grammar": "ENGLISH_REGULAR_VERB" },
+      { "alias_id": "G3.7.ko", "predicate_id": "W_USER_710008", "language": "KOREAN", "root": "기여", "grammar": "KOREAN_HADA_LOCATIVE" }
+    ],
+    "remove_alias_ids": []
+  },
+  "replay_command": {
+    "operation": "UPDATE_WORLD_VOCABULARY",
+    "conversation_id": "<host-selected-conversation-id>",
+    "update": "$.update"
+  },
+  "rollback": "Issue UPDATE_WORLD_VOCABULARY with remove_alias_ids for the exact alias IDs in the current conversation. Predicate contracts remain immutable; discard the conversation state to remove its supplied predicate set.",
+  "limitations": [
+    "Aliases are supplied lexical labels, not autonomous discoveries.",
+    "Unary predicates have one subject; binary predicates preserve ordered subject/object roles.",
+    "No inference follows from a label without an explicit user premise.",
+    "This artifact is not a general dictionary or a language-learning model."
+  ]
+}

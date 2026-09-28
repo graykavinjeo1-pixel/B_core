@@ -6,65 +6,414 @@ use super::*;
 use crate::world_dialogue::{WorldAtomIR, WorldMemoryUpdateIR, WorldReasoningIR};
 use crate::world_vocabulary::{english_third_person, WorldLexicalGrammarIR, WorldVocabularyIR};
 
-pub(crate) fn generate_world_clarification(
-    language: LanguageCodeIR,
-    c: &crate::world_dialogue::WorldClarificationIR,
+pub(crate) fn generate_decision_inquiry(
+    settings: impl Into<GenerationSettings>,
+    inquiry: &crate::utterance_intent::DecisionInquiryIR,
 ) -> Result<GenerativeLanguageIR, String> {
-    if !c.validate() {
-        return Err("INVALID_REFERENCE_GAP".into());
+    let settings = settings.into();
+    let language = settings.language;
+    use crate::utterance_intent::DecisionInputIR;
+    if !inquiry.validate() {
+        return Err("INVALID_DECISION_INQUIRY".into());
     }
-    let candidates = c.gap.candidates();
+    if let Some(assessment) = &inquiry.assessment {
+        return generate_action_benefit(settings, assessment, inquiry.explanation_of.is_some());
+    }
+    if let Some(reply) = inquiry
+        .clarification_reply
+        .as_ref()
+        .filter(|r| r.abstention.is_some() && !r.explains_question)
+    {
+        return generate_optional_clarification_response(settings, reply);
+    }
+    if inquiry.explanation_of.is_none() {
+        if let Some((gap, query)) = inquiry.knowledge_gap.as_ref().and_then(|g| {
+            g.state_question(inquiry.proposed_action.as_ref()?, inquiry.continues_context)
+                .map(|q| (g, q))
+        }) {
+            let world = crate::world_dialogue::deliberate_world(&gap.basis, &query)?;
+            return generate_world_decision(settings, &world);
+        }
+    }
+    use crate::world_dialogue::ActionBenefitGapReasonIR as G;
+    let gap = inquiry.knowledge_gap.as_ref().map(|g| g.reason);
+    let ask_gap = gap.is_some_and(|g| {
+        matches!(
+            g,
+            G::Actor | G::CurrentState | G::ConflictingState | G::RecentState
+        )
+    });
+    let (ko, en) = if let Some(reason) = gap {
+        match reason {
+            G::Actor => ("누가 행동할지", "who would act"),
+            G::CurrentState => ("지금 어떤 상태인지", "what the current state is"),
+            G::ConflictingState => (
+                "어느 상태 정보가 맞는지",
+                "which state information is correct",
+            ),
+            G::RecentState => ("지금도 같은 상태인지", "whether that state still holds"),
+            G::NegatedActionEffect => (
+                "행동하지 않을 때의 효과에 관한 근거",
+                "evidence about the effects of not acting",
+            ),
+            G::ActionRoles => (
+                "이 행동 구조에 적용할 판단 근거",
+                "reasoning support for this action structure",
+            ),
+            G::EffectKnowledge => (
+                "이 행동의 효과에 관한 근거",
+                "evidence about this action's effects",
+            ),
+            G::InapplicableState => (
+                "현재 조건에 적용할 효과 근거",
+                "effect evidence applicable to these conditions",
+            ),
+            G::AmbiguousEffect => (
+                "가능한 효과들을 구분할 근거",
+                "evidence distinguishing the possible effects",
+            ),
+            G::InvalidContext => ("유효한 문맥 정보", "valid context information"),
+        }
+    } else {
+        match inquiry.missing_input {
+            DecisionInputIR::DesiredOutcome => ("원하는 결과", "desired outcome"),
+            DecisionInputIR::Deadline => ("기한", "deadline"),
+            DecisionInputIR::Constraints => ("제약 조건", "constraints"),
+            DecisionInputIR::Preference => ("선호하는 조건", "preferences"),
+            DecisionInputIR::ExpectedBenefit => ("기대하는 이득", "expected benefit"),
+        }
+    };
+    let korean = language == LanguageCodeIR::Korean;
     let mut store = ExpressionNodeStore::default();
     let mut nodes = Vec::new();
     for (id, concept, root, kind, pos) in [
         (
-            "R".to_string(),
-            "C_WORLD_CLAUSE_REFERENCE".to_string(),
-            if language == LanguageCodeIR::Korean {
-                "말하다"
+            "D",
+            if gap.is_some() {
+                if ask_gap {
+                    if inquiry.explanation_of.is_some() {
+                        "C_WORLD_CLAUSE_GAP_ASK_REASON"
+                    } else {
+                        "C_WORLD_CLAUSE_GAP_ASK"
+                    }
+                } else if inquiry.explanation_of.is_some() {
+                    "C_WORLD_CLAUSE_GAP_LIMIT_REASON"
+                } else {
+                    "C_WORLD_CLAUSE_GAP_LIMIT"
+                }
+            } else if inquiry.explanation_of.is_some() {
+                "C_WORLD_CLAUSE_DECISION_REASON"
             } else {
-                "mean"
+                "C_WORLD_CLAUSE_DECISION_GAP"
             }
-            .to_string(),
+            .into(),
+            if gap.is_some() && !ask_gap {
+                if korean {
+                    "부족하다"
+                } else {
+                    "lack"
+                }
+            } else if inquiry.explanation_of.is_some() {
+                if korean {
+                    "필요하다"
+                } else {
+                    "require"
+                }
+            } else if korean {
+                "알려주다"
+            } else {
+                "tell"
+            },
             GenerationMeaningNodeKindIR::Event,
             ExpressionPartOfSpeechIR::Verb,
         ),
         (
-            "A".into(),
-            format!("C_ENTITY_{}", candidates[0]),
-            world_entity_root(&candidates[0], language),
-            GenerationMeaningNodeKindIR::Entity,
-            ExpressionPartOfSpeechIR::Noun,
-        ),
-        (
-            "B".into(),
-            format!("C_ENTITY_{}", candidates[1]),
-            world_entity_root(&candidates[1], language),
+            "I",
+            gap.map_or_else(
+                || format!("C_DECISION_INPUT_{:?}", inquiry.missing_input),
+                |g| format!("C_DECISION_KNOWLEDGE_GAP_{g:?}"),
+            ),
+            if korean { ko } else { en },
             GenerationMeaningNodeKindIR::Entity,
             ExpressionPartOfSpeechIR::Noun,
         ),
     ] {
         store.attach_alias(
-            &format!("EXPR.REF.{id}"),
+            &format!("EXPR.DECISION.{id}"),
             language,
             &concept,
-            &root,
+            root,
             pos,
-            "RUNTIME_REFERENT_SURFACE:WORLD_REFERENCE",
+            "RUNTIME_REFERENT_SURFACE:DECISION_INPUT",
         )?;
         nodes.push(GenerationMeaningNodeIR {
-            node_id: id,
+            node_id: id.into(),
             concept_id: concept,
             kind,
-            grounding_refs: vec![format!("WORLD_REFERENCE_GAP:{}", c.gap.source_sha256)],
+            grounding_refs: vec![gap.map_or_else(
+                || format!("DECISION_INPUT:{:?}", inquiry.missing_input),
+                |g| format!("REPLAYED_DECISION_GAP:{g:?}"),
+            )],
         });
     }
-    GenerativeLanguageCortex.generate(GenerativeLanguageRequestIR {
+    let mut edges = vec![meaning_edge(
+        "DI",
+        "D",
+        "I",
+        GenerationMeaningRelationIR::Theme,
+    )];
+    if let Some(action) = &inquiry.proposed_action {
+        let concept = format!(
+            "C_PROPOSED_ACTION:{:x}",
+            Sha256::digest(
+                serde_json::to_vec(&(
+                    &action.predicate_entry_ids,
+                    action.negated,
+                    &action.event.roles,
+                ))
+                .map_err(|_| "INVALID_PROPOSAL_ROLES")?
+            )
+        );
+        store.attach_alias(
+            "EXPR.DECISION.ACTION",
+            language,
+            &concept,
+            // This is a source-language mention of the user's proposal, not a
+            // newly asserted event. Preserve articles/prepositions and focus
+            // markers that the current role graph does not yet fully encode.
+            &action.surface,
+            ExpressionPartOfSpeechIR::Noun,
+            "RUNTIME_REFERENT_SURFACE:PROPOSED_ACTION",
+        )?;
+        nodes.push(GenerationMeaningNodeIR {
+            node_id: "A".into(),
+            concept_id: concept,
+            kind: GenerationMeaningNodeKindIR::Entity,
+            grounding_refs: std::iter::once(format!(
+                "PROPOSAL_SOURCE_SHA256:{:x}",
+                Sha256::digest(inquiry.source_text.as_bytes())
+            ))
+            .chain(
+                action
+                    .event
+                    .roles
+                    .iter()
+                    .map(|(role, value)| format!("PROPOSAL_ROLE:{role:?}:{value}")),
+            )
+            .collect(),
+        });
+        edges.push(meaning_edge(
+            "DA",
+            "D",
+            "A",
+            GenerationMeaningRelationIR::Goal,
+        ));
+    }
+    settings.generate(GenerativeLanguageRequestIR {
+        meaning: GenerationMeaningGraphIR::new(nodes, edges),
+        context: GenerationContextIR {
+            language,
+            register: LanguageRegisterIR::Informal,
+            tense: GenerationTenseIR::Present,
+            emotion: GenerationEmotionIR::Neutral,
+            urgency_millis: 0,
+            default_speech_intent: if inquiry.explanation_of.is_some()
+                || (gap.is_some() && !ask_gap)
+            {
+                GenerationSpeechIntentIR::Inform
+            } else {
+                GenerationSpeechIntentIR::Ask
+            },
+        },
+        expressions: &store,
+    })
+}
+
+fn generate_optional_clarification_response(
+    settings: GenerationSettings,
+    reply: &crate::utterance_intent::DecisionClarificationReplyIR,
+) -> Result<GenerativeLanguageIR, String> {
+    let language = settings.language;
+    let ko = language == LanguageCodeIR::Korean;
+    let explain =
+        reply.kind == crate::world_dialogue::WorldClarificationFollowupKindIR::ReasonRequest;
+    let mut store = ExpressionNodeStore::default();
+    let mut nodes = Vec::new();
+    for (id, concept, root, kind, pos) in [
+        (
+            "R",
+            if explain {
+                "C_WORLD_CLAUSE_REFERENCE_RESPONSE_CHOICE"
+            } else {
+                "C_WORLD_CLAUSE_REFERENCE_OPTIONAL_RESPONSE"
+            },
+            if explain {
+                if ko {
+                    "선택"
+                } else {
+                    "choice"
+                }
+            } else if ko {
+                "답하다"
+            } else {
+                "answer"
+            },
+            GenerationMeaningNodeKindIR::Event,
+            if explain {
+                ExpressionPartOfSpeechIR::Noun
+            } else {
+                ExpressionPartOfSpeechIR::Verb
+            },
+        ),
+        (
+            "A",
+            if explain {
+                "C_DIALOGUE_RESPONSE_DECISION"
+            } else {
+                "C_DIALOGUE_CLARIFICATION"
+            },
+            if explain {
+                if ko {
+                    "대답 여부"
+                } else {
+                    "whether to answer"
+                }
+            } else if ko {
+                "그 질문"
+            } else {
+                "that question"
+            },
+            GenerationMeaningNodeKindIR::Entity,
+            ExpressionPartOfSpeechIR::Noun,
+        ),
+    ] {
+        store.attach_alias(
+            &format!("EXPR.REPLY.{id}"),
+            language,
+            concept,
+            root,
+            pos,
+            "RUNTIME_REFERENT_SURFACE:CLARIFICATION_RESPONSE",
+        )?;
+        nodes.push(GenerationMeaningNodeIR {
+            node_id: id.into(),
+            concept_id: concept.into(),
+            kind,
+            grounding_refs: vec![
+                format!("QUESTION_REPLY:{:?}:{}", reply.kind, reply.turn),
+                format!("QUESTION_ORIGIN:{}", reply.question_turn),
+            ],
+        });
+    }
+    settings.generate(GenerativeLanguageRequestIR {
+        meaning: GenerationMeaningGraphIR::new(
+            nodes,
+            vec![meaning_edge(
+                "RA",
+                "R",
+                "A",
+                GenerationMeaningRelationIR::Theme,
+            )],
+        ),
+        context: GenerationContextIR {
+            language,
+            register: LanguageRegisterIR::Informal,
+            tense: GenerationTenseIR::Present,
+            emotion: GenerationEmotionIR::Neutral,
+            urgency_millis: 0,
+            default_speech_intent: GenerationSpeechIntentIR::Inform,
+        },
+        expressions: &store,
+    })
+}
+
+fn generate_action_benefit(
+    settings: GenerationSettings,
+    assessment: &crate::world_dialogue::ActionBenefitAssessmentIR,
+    explain: bool,
+) -> Result<GenerativeLanguageIR, String> {
+    let p = assessment
+        .primitive()
+        .ok_or("MISSING_ACTION_BENEFIT_PRIMITIVE")?;
+    let expression = assessment
+        .expression()
+        .ok_or("MISSING_ACTION_BENEFIT_EXPRESSION")?;
+    let language = settings.language;
+    let ko = language == LanguageCodeIR::Korean;
+    let mut store = ExpressionNodeStore::default();
+    let actor = world_entity_root(&assessment.actor, language);
+    let mut nodes = Vec::new();
+    for (id, concept, root, kind, pos) in [
+        (
+            "B",
+            if explain {
+                "C_WORLD_CLAUSE_BENEFIT_BASIS"
+            } else {
+                "C_WORLD_CLAUSE_POSSIBLE_BENEFIT"
+            },
+            if ko { "돕다" } else { "help" },
+            GenerationMeaningNodeKindIR::Event,
+            ExpressionPartOfSpeechIR::Verb,
+        ),
+        (
+            "E",
+            p.possible_effect_id.as_str(),
+            if ko {
+                &expression.effect_ko
+            } else {
+                &expression.effect_en
+            },
+            GenerationMeaningNodeKindIR::Entity,
+            ExpressionPartOfSpeechIR::Noun,
+        ),
+        (
+            "A",
+            p.id.as_str(),
+            if ko {
+                &expression.action_ko
+            } else {
+                &expression.action_en
+            },
+            GenerationMeaningNodeKindIR::Entity,
+            ExpressionPartOfSpeechIR::Noun,
+        ),
+        (
+            "P",
+            assessment.actor.as_str(),
+            actor.as_str(),
+            GenerationMeaningNodeKindIR::Entity,
+            ExpressionPartOfSpeechIR::Noun,
+        ),
+    ] {
+        store.attach_alias(
+            &format!("EXPR.BENEFIT.{id}"),
+            language,
+            concept,
+            root,
+            pos,
+            "RUNTIME_REFERENT_SURFACE:CONDITIONAL_BENEFIT",
+        )?;
+        nodes.push(GenerationMeaningNodeIR {
+            node_id: id.into(),
+            concept_id: concept.into(),
+            kind,
+            grounding_refs: vec![
+                format!(
+                    "CORE_DERIVATION:{}",
+                    assessment.derivation.deliberation_sha256
+                ),
+                p.source_ref.clone(),
+                "CONDITIONAL_INTERPRETATION_POSSIBLE_EFFECT_NOT_EXECUTED".into(),
+            ],
+        });
+    }
+    settings.generate(GenerativeLanguageRequestIR {
         meaning: GenerationMeaningGraphIR::new(
             nodes,
             vec![
-                meaning_edge("RA", "R", "A", GenerationMeaningRelationIR::Theme),
-                meaning_edge("RB", "R", "B", GenerationMeaningRelationIR::Goal),
+                meaning_edge("BE", "B", "E", GenerationMeaningRelationIR::Theme),
+                meaning_edge("BA", "B", "A", GenerationMeaningRelationIR::Goal),
+                meaning_edge("BP", "B", "P", GenerationMeaningRelationIR::Agent),
             ],
         ),
         context: GenerationContextIR {
@@ -73,20 +422,195 @@ pub(crate) fn generate_world_clarification(
             tense: GenerationTenseIR::Present,
             emotion: GenerationEmotionIR::Neutral,
             urgency_millis: 0,
-            default_speech_intent: GenerationSpeechIntentIR::Ask,
+            default_speech_intent: GenerationSpeechIntentIR::Inform,
+        },
+        expressions: &store,
+    })
+}
+
+pub(crate) fn generate_world_clarification(
+    settings: impl Into<GenerationSettings>,
+    c: &crate::world_dialogue::WorldClarificationIR,
+) -> Result<GenerativeLanguageIR, String> {
+    let settings = settings.into();
+    let language = settings.language;
+    if !c.validate() {
+        return Err("INVALID_REFERENCE_GAP".into());
+    }
+    let candidates = c.gap.candidates();
+    let mut store = ExpressionNodeStore::default();
+    let mut nodes = Vec::new();
+    let open_argument = c.gap.argument.as_ref();
+    use crate::world_dialogue::WorldClarificationActKindIR;
+    let act = c.response_act();
+    let followup = act.kind != WorldClarificationActKindIR::RequestIdentity;
+    let abstention = act.kind == WorldClarificationActKindIR::AllowAbstention;
+    let choice = act.kind == WorldClarificationActKindIR::ExplainChoice;
+    let mut parts = vec![
+        (
+            "R".to_string(),
+            if choice {
+                "C_WORLD_CLAUSE_REFERENCE_RESPONSE_CHOICE"
+            } else if abstention {
+                "C_WORLD_CLAUSE_REFERENCE_OPTIONAL_RESPONSE"
+            } else if followup {
+                "C_WORLD_CLAUSE_REFERENCE_REQUIREMENT"
+            } else {
+                "C_WORLD_CLAUSE_REFERENCE"
+            }
+            .to_string(),
+            if choice && language == LanguageCodeIR::Korean {
+                "선택"
+            } else if choice {
+                "choice"
+            } else if abstention && language == LanguageCodeIR::Korean {
+                "답하다"
+            } else if abstention {
+                "answer"
+            } else if followup && language == LanguageCodeIR::Korean {
+                "식별하다"
+            } else if followup {
+                "identify"
+            } else if language == LanguageCodeIR::Korean {
+                "말하다"
+            } else {
+                "mean"
+            }
+            .to_string(),
+            GenerationMeaningNodeKindIR::Event,
+            if choice {
+                ExpressionPartOfSpeechIR::Noun
+            } else {
+                ExpressionPartOfSpeechIR::Verb
+            },
+        ),
+        (
+            "A".into(),
+            if choice {
+                "C_DIALOGUE_RESPONSE_DECISION".into()
+            } else if abstention {
+                "C_DIALOGUE_CLARIFICATION".into()
+            } else if followup {
+                "C_DIALOGUE_REFERENT".into()
+            } else {
+                open_argument.map_or_else(
+                    || format!("C_ENTITY_{}", candidates[0]),
+                    |gap| format!("C_WORLD_OPEN_{:?}", gap.missing_role),
+                )
+            },
+            if choice {
+                if language == LanguageCodeIR::Korean {
+                    "대답 여부".into()
+                } else {
+                    "whether to answer".into()
+                }
+            } else if abstention {
+                if language == LanguageCodeIR::Korean {
+                    "그 질문".into()
+                } else {
+                    "that question".into()
+                }
+            } else if followup {
+                if language == LanguageCodeIR::Korean {
+                    "대상".into()
+                } else {
+                    "the intended referent".into()
+                }
+            } else {
+                open_argument.map_or_else(
+                    || world_entity_root(&candidates[0], language),
+                    |_| {
+                        if language == LanguageCodeIR::Korean {
+                            "대상".into()
+                        } else {
+                            "person or thing".into()
+                        }
+                    },
+                )
+            },
+            GenerationMeaningNodeKindIR::Entity,
+            ExpressionPartOfSpeechIR::Noun,
+        ),
+    ];
+    if open_argument.is_none() && !followup {
+        parts.push((
+            "B".into(),
+            format!("C_ENTITY_{}", candidates[1]),
+            world_entity_root(&candidates[1], language),
+            GenerationMeaningNodeKindIR::Entity,
+            ExpressionPartOfSpeechIR::Noun,
+        ));
+    }
+    for (id, concept, root, kind, pos) in parts {
+        store.attach_alias(
+            &format!("EXPR.REF.{id}"),
+            language,
+            &concept,
+            &root,
+            pos,
+            "RUNTIME_REFERENT_SURFACE:WORLD_REFERENCE",
+        )?;
+        let mut grounding_refs = vec![format!("WORLD_REFERENCE_GAP:{}", c.gap.source_sha256)];
+        if let Some(r) = &c.followup {
+            grounding_refs.push(format!("CLARIFICATION_FOLLOWUP:{:?}:{}", r.kind, r.turn));
+        }
+        nodes.push(GenerationMeaningNodeIR {
+            node_id: id,
+            concept_id: concept,
+            kind,
+            grounding_refs,
+        });
+    }
+    let mut edges = vec![meaning_edge(
+        "RA",
+        "R",
+        "A",
+        GenerationMeaningRelationIR::Theme,
+    )];
+    if open_argument.is_none() && !followup {
+        edges.push(meaning_edge(
+            "RB",
+            "R",
+            "B",
+            GenerationMeaningRelationIR::Goal,
+        ));
+    }
+    settings.generate(GenerativeLanguageRequestIR {
+        meaning: GenerationMeaningGraphIR::new(nodes, edges),
+        context: GenerationContextIR {
+            language,
+            register: LanguageRegisterIR::Informal,
+            tense: GenerationTenseIR::Present,
+            emotion: GenerationEmotionIR::Neutral,
+            urgency_millis: 0,
+            default_speech_intent: if followup {
+                GenerationSpeechIntentIR::Inform
+            } else {
+                GenerationSpeechIntentIR::Ask
+            },
         },
         expressions: &store,
     })
 }
 
 pub(crate) fn generate_world_decision(
-    language: LanguageCodeIR,
+    settings: impl Into<GenerationSettings>,
     world: &WorldReasoningIR,
 ) -> Result<GenerativeLanguageIR, String> {
+    generate_world_clauses(
+        settings,
+        world_decision_clauses(world)?,
+        &world.memory.vocabulary,
+    )
+}
+
+type WorldClause = (WorldAtomIR, bool, &'static str, Vec<String>);
+
+fn world_decision_clauses(world: &WorldReasoningIR) -> Result<Vec<WorldClause>, String> {
     if !world.validate() {
         return Err("INVALID_WORLD_DECISION".into());
     }
-    let clauses = world
+    world
         .utterance_plan
         .moves
         .iter()
@@ -108,26 +632,36 @@ pub(crate) fn generate_world_decision(
             );
             Ok((atom, literal.value, item.purpose.mode(), refs))
         })
-        .collect::<Result<Vec<_>, String>>()?;
-    generate_world_clauses(language, clauses, &world.memory.vocabulary)
+        .collect::<Result<Vec<_>, String>>()
 }
 
 pub(crate) fn generate_world_memory_update(
-    language: LanguageCodeIR,
+    settings: impl Into<GenerationSettings>,
     update: &WorldMemoryUpdateIR,
 ) -> Result<GenerativeLanguageIR, String> {
+    generate_world_clauses(
+        settings,
+        world_update_clauses(update)?,
+        &update.memory.vocabulary,
+    )
+}
+
+fn world_update_clauses(update: &WorldMemoryUpdateIR) -> Result<Vec<WorldClause>, String> {
     if !update.validate() {
         return Err("INVALID_WORLD_MEMORY_UPDATE".into());
     }
     let mut clauses = Vec::new();
     let refs = vec![format!("WORLD_MEMORY_TURN:{}", update.turn)];
-    if let Some(p) = update
+    let premises = update
         .memory
         .premises
         .iter()
-        .find(|p| p.introduced_turn == update.turn)
-    {
-        clauses.push((p.atom.clone(), p.value, "REMEMBER", refs));
+        .filter(|p| p.introduced_turn == update.turn)
+        .collect::<Vec<_>>();
+    if !premises.is_empty() {
+        for p in premises {
+            clauses.push((p.atom.clone(), p.value, "REMEMBER", refs.clone()));
+        }
     } else {
         let rule = update
             .memory
@@ -146,17 +680,56 @@ pub(crate) fn generate_world_memory_update(
         }
         clauses.push((rule.effect.0.clone(), rule.effect.1, "THEN", refs));
     }
-    generate_world_clauses(language, clauses, &update.memory.vocabulary)
+    Ok(clauses)
+}
+
+// Preflight checks capabilities and bounds without constructing a sentence.
+// Clause selection is shared with final realization; it is not a second policy.
+fn world_clauses_available(
+    language: LanguageCodeIR,
+    clauses: &[WorldClause],
+    vocabulary: &WorldVocabularyIR,
+) -> bool {
+    matches!(language, LanguageCodeIR::Korean | LanguageCodeIR::English)
+        && !clauses.is_empty()
+        && clauses.len() <= 30
+        && clauses.iter().all(|(atom, _, _, _)| {
+            !matches!(
+                atom.property,
+                crate::world_dialogue::WorldPropertyIR::Registered(_)
+            ) || vocabulary.expression(&atom.property, language).is_some()
+        })
+}
+
+pub(crate) fn world_decision_language_available(
+    language: LanguageCodeIR,
+    world: &WorldReasoningIR,
+) -> bool {
+    world_decision_clauses(world)
+        .is_ok_and(|clauses| world_clauses_available(language, &clauses, &world.memory.vocabulary))
+}
+
+pub(crate) fn world_update_language_available(
+    language: LanguageCodeIR,
+    update: &WorldMemoryUpdateIR,
+) -> bool {
+    world_update_clauses(update)
+        .is_ok_and(|clauses| world_clauses_available(language, &clauses, &update.memory.vocabulary))
 }
 
 fn generate_world_clauses(
-    language: LanguageCodeIR,
-    clauses: Vec<(WorldAtomIR, bool, &str, Vec<String>)>,
+    settings: impl Into<GenerationSettings>,
+    clauses: Vec<WorldClause>,
     vocabulary: &WorldVocabularyIR,
 ) -> Result<GenerativeLanguageIR, String> {
+    let settings = settings.into();
+    let language = settings.language;
     // The underlying proof depth is bounded. Do not silently truncate its explanation.
     if clauses.len() > 30 {
         return Err("WORLD_EXPLANATION_BOUND".into());
+    }
+    if !world_clauses_available(language, &clauses, vocabulary) {
+        return Err("WORLD_EXPRESSION_UNAVAILABLE".into());
     }
     let mut store = ExpressionNodeStore::default();
     let mut nodes = Vec::new();
@@ -280,7 +853,8 @@ fn generate_world_clauses(
                         .ok_or("MISSING_WORLD_EXPRESSION")?;
                     expression.morphology = match lexeme.grammar {
                         WorldLexicalGrammarIR::Copular => expression.morphology,
-                        WorldLexicalGrammarIR::KoreanHadaState => {
+                        WorldLexicalGrammarIR::KoreanHadaState
+                        | WorldLexicalGrammarIR::KoreanHadaExperiencer => {
                             ExpressionMorphologyClassIR::KoreanHada
                         }
                         WorldLexicalGrammarIR::EnglishRegularVerb => {
@@ -303,7 +877,7 @@ fn generate_world_clauses(
             });
         }
     }
-    GenerativeLanguageCortex.generate(GenerativeLanguageRequestIR {
+    settings.generate(GenerativeLanguageRequestIR {
         meaning: GenerationMeaningGraphIR::new(nodes, edges),
         context: GenerationContextIR {
             language,
@@ -328,9 +902,582 @@ pub(super) fn realize_world_clause(
     else {
         return output;
     };
+    if predicate.expression.concept_id == "C_WORLD_CLAUSE_BENEFIT_BASIS" {
+        let Some(action) = constituent_selection(clause, SyntaxConstituentRoleIR::Goal, selected)
+        else {
+            return output;
+        };
+        let Some(actor) = constituent_selection(clause, SyntaxConstituentRoleIR::Agent, selected)
+        else {
+            return output;
+        };
+        if context.language == LanguageCodeIR::Korean {
+            push_expression_token(
+                &mut output,
+                action,
+                format!(
+                    "{}{}",
+                    action.expression.lexical_root,
+                    korean_particle(&action.expression.lexical_root, "은", "는")
+                ),
+            );
+            push_expression_token(
+                &mut output,
+                subject,
+                format!(
+                    "{}{}",
+                    subject.expression.lexical_root,
+                    korean_particle(&subject.expression.lexical_root, "을", "를")
+                ),
+            );
+            push_grammar_token(
+                &mut output,
+                "위한 행동이니까, 그 뜻이라면 말해 준 상태에서",
+                "KO.ACTION_PURPOSE_AND_CONDITIONAL_PREMISE",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                actor,
+                format!("{}에게", actor.expression.lexical_root),
+            );
+            push_expression_token(
+                &mut output,
+                predicate,
+                if context.register == LanguageRegisterIR::Formal {
+                    "도움이 될 수 있다고 판단했습니다."
+                } else {
+                    "도움이 될 수 있다고 본 거야."
+                }
+                .into(),
+            );
+        } else {
+            push_grammar_token(
+                &mut output,
+                "If you mean",
+                "EN.CONDITIONAL_SENSE",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                action,
+                format!("{},", action.expression.lexical_root),
+            );
+            push_grammar_token(
+                &mut output,
+                "its purpose is",
+                "EN.ACTION_PURPOSE",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                subject,
+                format!("{}.", subject.expression.lexical_root),
+            );
+            push_grammar_token(
+                &mut output,
+                "Given the state you described, I thought it may",
+                "EN.JUDGEMENT_BASIS",
+                &clause.event_node_id,
+            );
+            push_expression_token(&mut output, predicate, "help".into());
+            push_expression_token(
+                &mut output,
+                actor,
+                format!("{}.", actor.expression.lexical_root),
+            );
+        }
+        return output;
+    }
+    if predicate.expression.concept_id == "C_WORLD_CLAUSE_POSSIBLE_BENEFIT" {
+        let Some(action) = constituent_selection(clause, SyntaxConstituentRoleIR::Goal, selected)
+        else {
+            return output;
+        };
+        let Some(actor) = constituent_selection(clause, SyntaxConstituentRoleIR::Agent, selected)
+        else {
+            return output;
+        };
+        if context.language == LanguageCodeIR::Korean {
+            push_expression_token(
+                &mut output,
+                action,
+                format!(
+                    "{}{}",
+                    action.expression.lexical_root,
+                    korean_particle(&action.expression.lexical_root, "을", "를")
+                ),
+            );
+            push_grammar_token(
+                &mut output,
+                "뜻한다면, 말해 준 상태에서는",
+                "KO.CONDITIONAL_SENSE_AND_PREMISE",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                actor,
+                format!("{}의", actor.expression.lexical_root),
+            );
+            push_expression_token(
+                &mut output,
+                subject,
+                format!("{}에", subject.expression.lexical_root),
+            );
+            push_expression_token(
+                &mut output,
+                predicate,
+                if context.register == LanguageRegisterIR::Formal {
+                    "도움이 될 수 있습니다."
+                } else {
+                    "도움이 될 수 있어."
+                }
+                .into(),
+            );
+        } else {
+            push_grammar_token(
+                &mut output,
+                "If you mean",
+                "EN.CONDITIONAL_SENSE",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                action,
+                format!("{},", action.expression.lexical_root),
+            );
+            push_grammar_token(
+                &mut output,
+                "it may",
+                "EN.POSSIBLE_EFFECT",
+                &clause.event_node_id,
+            );
+            push_expression_token(&mut output, predicate, "help".into());
+            push_expression_token(&mut output, actor, actor.expression.lexical_root.clone());
+            push_grammar_token(
+                &mut output,
+                "with",
+                "EN.BENEFIT_RELATION",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                subject,
+                format!("{},", subject.expression.lexical_root),
+            );
+            push_grammar_token(
+                &mut output,
+                "given the state you described.",
+                "EN.CONDITIONAL_PREMISE",
+                &clause.event_node_id,
+            );
+        }
+        return output;
+    }
+    if matches!(
+        predicate.expression.concept_id.as_str(),
+        "C_WORLD_CLAUSE_GAP_ASK"
+            | "C_WORLD_CLAUSE_GAP_ASK_REASON"
+            | "C_WORLD_CLAUSE_GAP_LIMIT"
+            | "C_WORLD_CLAUSE_GAP_LIMIT_REASON"
+    ) {
+        let ko = context.language == LanguageCodeIR::Korean;
+        let formal = context.register == LanguageRegisterIR::Formal;
+        let asking = predicate.expression.concept_id.contains("GAP_ASK");
+        let why = predicate.expression.concept_id.ends_with("_REASON");
+        if let Some(action) = constituent_selection(clause, SyntaxConstituentRoleIR::Goal, selected)
+        {
+            push_expression_token(
+                &mut output,
+                action,
+                if ko {
+                    format!("‘{}’에 관해서는,", action.expression.lexical_root)
+                } else {
+                    format!("Regarding ‘{}’,", action.expression.lexical_root)
+                },
+            );
+        }
+        if !ko {
+            push_grammar_token(
+                &mut output,
+                match (asking, why) {
+                    (true, false) => "could you tell me",
+                    (true, true) => "I asked because I need to know",
+                    (false, false) => "I don't yet have enough",
+                    (false, true) => "I cannot judge it yet because I need more",
+                },
+                "EN.EPISTEMIC_GAP",
+                &clause.event_node_id,
+            );
+        }
+        let root = &subject.expression.lexical_root;
+        push_expression_token(
+            &mut output,
+            subject,
+            if ko {
+                if asking {
+                    if why {
+                        format!("{root}에 관한 정보가")
+                    } else {
+                        root.clone()
+                    }
+                } else {
+                    format!("{root}{}", korean_particle(root, "이", "가"))
+                }
+            } else {
+                format!("{root}{}", if asking && !why { "?" } else { "." })
+            },
+        );
+        if ko {
+            push_grammar_token(
+                &mut output,
+                match (asking, why, formal) {
+                    (true, false, false) => "알려줄래?",
+                    (true, false, true) => "알려주시겠어요?",
+                    (true, true, false) => "필요해서 물었어.",
+                    (true, true, true) => "필요해서 여쭤봤습니다.",
+                    (false, false, false) => "아직 부족해.",
+                    (false, false, true) => "아직 부족합니다.",
+                    (false, true, false) => "부족해서 아직 판단하기 어려워.",
+                    (false, true, true) => "부족해서 아직 판단하기 어렵습니다.",
+                },
+                "KO.EPISTEMIC_GAP",
+                &clause.event_node_id,
+            );
+        }
+        return output;
+    }
+    if predicate.expression.concept_id == "C_WORLD_CLAUSE_DECISION_REASON" {
+        let action = constituent_selection(clause, SyntaxConstituentRoleIR::Goal, selected);
+        if context.language == LanguageCodeIR::Korean {
+            if let Some(action) = action {
+                push_expression_token(
+                    &mut output,
+                    action,
+                    format!(
+                        "{}{}",
+                        action.expression.lexical_root,
+                        korean_particle(&action.expression.lexical_root, "을", "를")
+                    ),
+                );
+            }
+            push_grammar_token(
+                &mut output,
+                "판단하려면",
+                "KO.DECISION.REQUIREMENT",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                subject,
+                format!(
+                    "{}{}",
+                    subject.expression.lexical_root,
+                    korean_particle(&subject.expression.lexical_root, "이", "가")
+                ),
+            );
+            push_expression_token(&mut output, predicate, "필요해서".into());
+            push_grammar_token(
+                &mut output,
+                if context.register == LanguageRegisterIR::Formal {
+                    "여쭤봤습니다."
+                } else {
+                    "물었어."
+                },
+                "KO.PRIOR_QUESTION.REASON",
+                &clause.event_node_id,
+            );
+        } else {
+            push_grammar_token(
+                &mut output,
+                "I asked because",
+                "EN.PRIOR_QUESTION.REASON",
+                &clause.event_node_id,
+            );
+            push_grammar_token(
+                &mut output,
+                "a decision",
+                "EN.DECISION.SUBJECT",
+                &clause.event_node_id,
+            );
+            if let Some(action) = action {
+                push_grammar_token(
+                    &mut output,
+                    "on the proposal to",
+                    "EN.DECISION.TARGET",
+                    &action.meaning_node_id,
+                );
+                push_expression_token(&mut output, action, action.expression.lexical_root.clone());
+            }
+            push_expression_token(&mut output, predicate, "requires".into());
+            push_grammar_token(
+                &mut output,
+                "knowing the",
+                "EN.DECISION.MISSING_INPUT",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                subject,
+                format!("{}.", subject.expression.lexical_root),
+            );
+        }
+        return output;
+    }
+    if predicate.expression.concept_id == "C_WORLD_CLAUSE_DECISION_GAP" {
+        let root = &subject.expression.lexical_root;
+        if let Some(action) = constituent_selection(clause, SyntaxConstituentRoleIR::Goal, selected)
+        {
+            if context.language == LanguageCodeIR::Korean {
+                push_expression_token(
+                    &mut output,
+                    action,
+                    format!("{}으로", action.expression.lexical_root),
+                );
+            } else {
+                push_grammar_token(
+                    &mut output,
+                    "For the proposal to",
+                    "EN.PROPOSED_ACTION.NOMINAL_INFINITIVE",
+                    &action.meaning_node_id,
+                );
+                push_expression_token(
+                    &mut output,
+                    action,
+                    format!("{},", action.expression.lexical_root),
+                );
+            }
+        }
+        if context.language == LanguageCodeIR::Korean {
+            push_expression_token(
+                &mut output,
+                subject,
+                format!("{root}{}", korean_particle(root, "을", "를")),
+            );
+            let stem = predicate
+                .expression
+                .lexical_root
+                .strip_suffix('다')
+                .unwrap_or(&predicate.expression.lexical_root);
+            push_expression_token(
+                &mut output,
+                predicate,
+                if context.register == LanguageRegisterIR::Formal {
+                    format!("{stem}시겠어요?")
+                } else {
+                    format!(
+                        "{}래?",
+                        korean_future_commitment(stem).trim_end_matches('게')
+                    )
+                },
+            );
+        } else {
+            push_grammar_token(
+                &mut output,
+                if constituent_selection(clause, SyntaxConstituentRoleIR::Goal, selected).is_some()
+                {
+                    "could you"
+                } else {
+                    "Could you"
+                },
+                "EN.INQUIRY",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                predicate,
+                predicate.expression.lexical_root.clone(),
+            );
+            push_grammar_token(
+                &mut output,
+                "me your",
+                "EN.REQUESTED_INPUT",
+                &clause.event_node_id,
+            );
+            push_expression_token(&mut output, subject, format!("{root}?"));
+        }
+        return output;
+    }
+    if predicate.expression.concept_id == "C_WORLD_CLAUSE_REFERENCE_RESPONSE_CHOICE" {
+        // A dialogue choice, not evidence about the unresolved world predicate.
+        let topic = &subject.expression.lexical_root;
+        let root = &predicate.expression.lexical_root;
+        if context.language == LanguageCodeIR::Korean {
+            push_expression_token(
+                &mut output,
+                subject,
+                format!("{topic}{}", korean_particle(topic, "은", "는")),
+            );
+            push_grammar_token(
+                &mut output,
+                if context.register == LanguageRegisterIR::Formal {
+                    "본인의"
+                } else {
+                    "네"
+                },
+                "KO.INTERLOCUTOR.POSSESSIVE",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                predicate,
+                format!(
+                    "{root}{}",
+                    if context.register == LanguageRegisterIR::Formal {
+                        "이니까요."
+                    } else {
+                        "이니까."
+                    }
+                ),
+            );
+        } else {
+            push_expression_token(&mut output, subject, topic.clone());
+            push_grammar_token(
+                &mut output,
+                "is your",
+                "EN.COPULA.INTERLOCUTOR.POSSESSIVE",
+                &clause.event_node_id,
+            );
+            push_expression_token(&mut output, predicate, format!("{root}."));
+        }
+        return output;
+    }
+    if predicate.expression.concept_id == "C_WORLD_CLAUSE_REFERENCE_OPTIONAL_RESPONSE" {
+        let root = &subject.expression.lexical_root;
+        if context.language == LanguageCodeIR::Korean {
+            push_expression_token(&mut output, subject, format!("{root}에"));
+            let stem = predicate
+                .expression
+                .lexical_root
+                .strip_suffix('다')
+                .unwrap_or(&predicate.expression.lexical_root);
+            push_expression_token(&mut output, predicate, format!("{stem}지"));
+            push_grammar_token(
+                &mut output,
+                if context.register == LanguageRegisterIR::Formal {
+                    "않으셔도 됩니다."
+                } else {
+                    "않아도 돼."
+                },
+                "KO.PERMISSION.NOT_REQUIRED",
+                &clause.event_node_id,
+            );
+        } else {
+            push_grammar_token(
+                &mut output,
+                "You don't have to",
+                "EN.PERMISSION.NOT_REQUIRED",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                predicate,
+                predicate.expression.lexical_root.clone(),
+            );
+            push_expression_token(&mut output, subject, format!("{root}."));
+        }
+        return output;
+    }
+    if predicate.expression.concept_id == "C_WORLD_CLAUSE_REFERENCE_REQUIREMENT" {
+        let root = &subject.expression.lexical_root;
+        if context.language == LanguageCodeIR::Korean {
+            push_grammar_token(
+                &mut output,
+                "답하려면",
+                "KO.DIALOGUE.ANSWER_DEPENDENCY",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                subject,
+                format!("{root}{}", korean_particle(root, "을", "를")),
+            );
+            let stem = predicate
+                .expression
+                .lexical_root
+                .strip_suffix('다')
+                .unwrap_or(&predicate.expression.lexical_root);
+            push_expression_token(
+                &mut output,
+                predicate,
+                format!(
+                    "{} 필요가 {}.",
+                    korean_future_commitment(stem).trim_end_matches('게'),
+                    if context.register == LanguageRegisterIR::Formal {
+                        "있습니다"
+                    } else {
+                        "있어"
+                    }
+                ),
+            );
+        } else {
+            push_grammar_token(
+                &mut output,
+                "To answer, I need to",
+                "EN.DIALOGUE.ANSWER_DEPENDENCY",
+                &clause.event_node_id,
+            );
+            push_expression_token(
+                &mut output,
+                predicate,
+                predicate.expression.lexical_root.clone(),
+            );
+            push_expression_token(&mut output, subject, format!("{root}."));
+        }
+        return output;
+    }
     if predicate.expression.concept_id == "C_WORLD_CLAUSE_REFERENCE" {
         let Some(other) = constituent_selection(clause, SyntaxConstituentRoleIR::Goal, selected)
         else {
+            // Open referent: request an identity, not the truth of the open
+            // predicate. The partial predicate remains in the source-bound gap.
+            if context.language == LanguageCodeIR::Korean {
+                push_grammar_token(
+                    &mut output,
+                    "어느",
+                    "KO.WH.REFERENCE",
+                    &clause.event_node_id,
+                );
+                let root = &subject.expression.lexical_root;
+                push_expression_token(
+                    &mut output,
+                    subject,
+                    format!("{root}{}", korean_particle(root, "을", "를")),
+                );
+                push_expression_token(
+                    &mut output,
+                    predicate,
+                    if context.register == LanguageRegisterIR::Formal {
+                        "말씀하시는 건가요?"
+                    } else {
+                        "말하는 거야?"
+                    }
+                    .into(),
+                );
+            } else {
+                push_grammar_token(
+                    &mut output,
+                    "Which",
+                    "EN.WH.REFERENCE",
+                    &clause.event_node_id,
+                );
+                push_expression_token(
+                    &mut output,
+                    subject,
+                    subject.expression.lexical_root.clone(),
+                );
+                push_grammar_token(
+                    &mut output,
+                    "do you",
+                    "EN.INTERLOCUTOR_QUESTION",
+                    &clause.event_node_id,
+                );
+                push_expression_token(
+                    &mut output,
+                    predicate,
+                    format!("{}?", predicate.expression.lexical_root),
+                );
+            }
             return output;
         };
         let a = &subject.expression.lexical_root;
@@ -402,6 +1549,11 @@ pub(super) fn realize_world_clause(
         .trim_start_matches("C_WORLD_CLAUSE_");
     let korean = context.language == LanguageCodeIR::Korean;
     let formal = context.register == LanguageRegisterIR::Formal;
+    let acknowledgement = if korean && matches!(mode, "REMEMBER" | "IF" | "IF_AND") {
+        format!("{},", korean_acknowledgement(context.register))
+    } else {
+        String::new()
+    };
     let prefix = match (korean, mode) {
         (true, "CAUSE_UNKNOWN") => "말해 준 내용만으로는,",
         (false, "CAUSE_UNKNOWN") => "From what you've told me, I don't know why",
@@ -413,8 +1565,7 @@ pub(super) fn realize_world_clause(
         (true, "BOUND") => "탐색 한도 안에서는,",
         (true, "UNKNOWN") => "아직은,",
         (true, "ASK") => "그러면,",
-        (true, "REMEMBER") => "알겠어,",
-        (true, "IF" | "IF_AND") => "알겠어,",
+        (true, "REMEMBER" | "IF" | "IF_AND") => acknowledgement.as_str(),
         (true, "AND" | "AND_IF") => "그리고",
         (true, "THEN") => "",
         (false, "PREMISE") => "You said",
@@ -467,62 +1618,70 @@ pub(super) fn realize_world_clause(
                 push_expression_token(&mut output, object, format!("{o}{marker}"));
             }
             push_expression_token(&mut output, property, root.clone());
-            let ending = if negation.is_some() {
-                "하지"
-            } else if conditional {
-                "하면,"
+            use crate::korean_hada::KoreanHadaFormIR as F;
+            let state_hada =
+                property.expression.morphology == ExpressionMorphologyClassIR::KoreanHada;
+            let form = if conditional {
+                F::Conditional
             } else if conjunction {
-                "하고,"
+                F::Coordinate
             } else if epistemic {
-                if property.expression.morphology == ExpressionMorphologyClassIR::KoreanHada {
-                    "한지"
+                if state_hada {
+                    F::StateEmbeddedQuestion
                 } else {
-                    "하는지"
+                    F::ActionEmbeddedQuestion
                 }
             } else if mode == "CAUSE_UNKNOWN" {
-                if property.expression.morphology == ExpressionMorphologyClassIR::KoreanHada {
-                    "한"
+                if state_hada {
+                    F::StateAttributive
                 } else {
-                    "하는"
+                    F::ActionAttributive
                 }
             } else if mode == "ASK" {
-                "하나요?"
-            } else if formal {
-                "합니다."
-            } else if mode == "REMEMBER" {
-                "하구나."
-            } else {
-                "해."
-            };
-            push_expression_token(&mut output, predicate, ending.into());
-            if let Some(token) = output.last_mut() {
-                token.attach_left = true;
-            }
-            if let Some(negation) = negation {
-                let ending = if conditional {
-                    "않으면,"
-                } else if conjunction {
-                    "않고,"
-                } else if epistemic {
-                    if property.expression.morphology == ExpressionMorphologyClassIR::KoreanHada {
-                        "않은지"
-                    } else {
-                        "않는지"
-                    }
-                } else if mode == "CAUSE_UNKNOWN" {
-                    if property.expression.morphology == ExpressionMorphologyClassIR::KoreanHada {
-                        "않은"
-                    } else {
-                        "않는"
-                    }
-                } else if mode == "ASK" {
-                    "않나요?"
-                } else if formal {
-                    "않습니다."
+                if formal {
+                    F::FormalQuestion
                 } else {
-                    "않아."
+                    F::PoliteQuestion
+                }
+            } else if formal {
+                F::FormalStatement
+            } else if mode == "REMEMBER" {
+                F::RememberInformal
+            } else {
+                F::InformalStatement
+            };
+            let punctuation = if conditional || conjunction {
+                ","
+            } else if mode == "ASK" {
+                "?"
+            } else if epistemic || mode == "CAUSE_UNKNOWN" {
+                ""
+            } else {
+                "."
+            };
+            if let Some(negation) = negation {
+                // Preserve the existing neutral negative acknowledgement while
+                // sharing every productive HADA ending with the input parser.
+                let negative_form = if mode == "REMEMBER" {
+                    F::InformalStatement
+                } else {
+                    form
                 };
-                push_expression_token(&mut output, negation, ending.into());
+                let (connective, auxiliary) =
+                    crate::korean_hada::negative_components(negative_form)
+                        .expect("productive Korean HADA negative form");
+                push_expression_token(&mut output, predicate, connective.into());
+                if let Some(token) = output.last_mut() {
+                    token.attach_left = true;
+                }
+                push_expression_token(&mut output, negation, format!("{auxiliary}{punctuation}"));
+            } else {
+                let ending = crate::korean_hada::suffix(form, true)
+                    .expect("productive Korean HADA positive form");
+                push_expression_token(&mut output, predicate, format!("{ending}{punctuation}"));
+                if let Some(token) = output.last_mut() {
+                    token.attach_left = true;
+                }
             }
             if epistemic {
                 push_grammar_token(
@@ -644,50 +1803,54 @@ pub(super) fn realize_world_clause(
     );
     if korean {
         let epistemic = matches!(mode, "CONFLICT" | "UNKNOWN" | "BOUND");
+        use crate::korean_copula::KoreanCopulaFormIR as F;
+        let form = if matches!(mode, "IF" | "AND_IF") {
+            F::Conditional
+        } else if matches!(mode, "IF_AND" | "AND") {
+            F::Coordinate
+        } else if epistemic {
+            F::EmbeddedQuestion
+        } else if mode == "CAUSE_UNKNOWN" {
+            F::Attributive
+        } else if mode == "ASK" {
+            if formal {
+                F::FormalQuestion
+            } else {
+                F::PoliteQuestion
+            }
+        } else if formal {
+            F::FormalStatement
+        } else if mode == "REMEMBER" {
+            F::RememberInformal
+        } else {
+            F::InformalStatement
+        };
+        let punctuation = if matches!(mode, "IF" | "AND_IF" | "IF_AND" | "AND") {
+            ","
+        } else if mode == "ASK" {
+            "?"
+        } else if epistemic || mode == "CAUSE_UNKNOWN" {
+            ""
+        } else {
+            "."
+        };
+        let final_coda = has_korean_final_consonant(&property.expression.lexical_root);
         if let Some(negation) = negation {
-            push_expression_token(
-                &mut output,
-                predicate,
-                korean_particle(&property.expression.lexical_root, "이", "가").into(),
-            );
+            let negative_form = if mode == "REMEMBER" {
+                F::InformalStatement
+            } else {
+                form
+            };
+            let (particle, auxiliary) =
+                crate::korean_copula::negative_components(negative_form, final_coda);
+            push_expression_token(&mut output, predicate, particle.into());
             if let Some(token) = output.last_mut() {
                 token.attach_left = true;
             }
-            let ending = if matches!(mode, "IF" | "AND_IF") {
-                "아니면,"
-            } else if matches!(mode, "IF_AND" | "AND") {
-                "아니고,"
-            } else if epistemic {
-                "아닌지"
-            } else if mode == "CAUSE_UNKNOWN" {
-                "아닌"
-            } else if mode == "ASK" {
-                "아닌가요?"
-            } else if formal {
-                "아닙니다."
-            } else {
-                "아니야."
-            };
-            push_expression_token(&mut output, negation, ending.into());
+            push_expression_token(&mut output, negation, format!("{auxiliary}{punctuation}"));
         } else {
-            let ending = if matches!(mode, "IF" | "AND_IF") {
-                "이면,"
-            } else if matches!(mode, "IF_AND" | "AND") {
-                "이고,"
-            } else if epistemic {
-                "인지"
-            } else if mode == "CAUSE_UNKNOWN" {
-                "인"
-            } else if mode == "ASK" {
-                "인가요?"
-            } else if formal {
-                "입니다."
-            } else if mode == "REMEMBER" {
-                korean_particle(&property.expression.lexical_root, "이구나.", "구나.")
-            } else {
-                korean_particle(&property.expression.lexical_root, "이야.", "야.")
-            };
-            push_expression_token(&mut output, predicate, ending.into());
+            let ending = crate::korean_copula::positive_suffix(form, final_coda);
+            push_expression_token(&mut output, predicate, format!("{ending}{punctuation}"));
             if let Some(token) = output.last_mut() {
                 token.attach_left = true;
             }
@@ -753,5 +1916,64 @@ fn world_korean_subject(root: &str, nominative: bool) -> String {
         "저" => "제가".into(),
         "너" => "네가".into(),
         _ => format!("{root}{}", korean_particle(root, "이", "가")),
+    }
+}
+
+#[cfg(test)]
+mod register_tests {
+    use super::*;
+
+    #[test]
+    fn receipt_register_composes_with_each_world_clause_family() {
+        for modes in [
+            vec!["REMEMBER"],
+            vec!["IF", "THEN"],
+            vec!["IF_AND", "AND_IF", "THEN"],
+        ] {
+            for value in [true, false] {
+                let clauses = modes
+                    .iter()
+                    .enumerate()
+                    .map(|(index, &mode)| {
+                        (
+                            WorldAtomIR {
+                                entity: format!("Zev{index}"),
+                                property: crate::world_dialogue::WorldPropertyIR::Active,
+                                object: None,
+                            },
+                            value,
+                            mode,
+                            vec![format!("REGISTER_SOURCE:{index}")],
+                        )
+                    })
+                    .collect::<Vec<_>>();
+                let baseline = generate_world_clauses(
+                    LanguageCodeIR::Korean,
+                    clauses.clone(),
+                    &WorldVocabularyIR::default(),
+                )
+                .unwrap();
+                MORPHOLOGY_PASSES.with(|c| c.set(0));
+                let formal = generate_world_clauses(
+                    GenerationSettings::with_policy(
+                        LanguageCodeIR::Korean,
+                        &crate::affective_field::AffectiveRealizationPolicyIR {
+                            formal: true,
+                            ..Default::default()
+                        },
+                    ),
+                    clauses,
+                    &WorldVocabularyIR::default(),
+                )
+                .unwrap();
+                assert_eq!(MORPHOLOGY_PASSES.with(|c| c.get()), 1);
+                assert_eq!(baseline.meaning, formal.meaning);
+                assert_eq!(baseline.verification, formal.verification);
+                assert!(formal.validate());
+                assert!(baseline.morphology.realized_text.starts_with("알겠어,"));
+                assert!(formal.morphology.realized_text.starts_with("알겠습니다,"));
+                assert!(!formal.morphology.realized_text.contains("알겠어,"));
+            }
+        }
     }
 }

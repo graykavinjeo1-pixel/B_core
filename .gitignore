@@ -1,3 +1,15 @@
 target/
 *.log
 *.tmp
+__pycache__/
+*.obj
+--output
+--scenario
+_g3_rollback_scratch_*/
+# Reproducible local observations and model-training material.  Keep the
+# small, reviewed corpus fixtures in this directory trackable.
+research/BCORE_SPARSE_BLOCK_LANGUAGE/ir_builder/
+research/BCORE_SPARSE_BLOCK_LANGUAGE/mtp_operational_observations/
+research/BCORE_SPARSE_BLOCK_LANGUAGE/.pydeps/
+research/BCORE_SPARSE_BLOCK_LANGUAGE/mtp_hidden_observations/
+research/BCORE_SPARSE_BLOCK_LANGUAGE/mtp_adaptation/

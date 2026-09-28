@@ -486,6 +486,7 @@ pub fn merge_ontology_mentions(referents: &mut Vec<TypedEntityReferentIR>, turn:
             .count()
             + 1;
         referents.push(TypedEntityReferentIR {
+            korean_nominal_forms: Vec::new(),
             entity_id: format!("TREF-{turn:06}-{suffix:02}"),
             canonical_surface: surface,
             normalized_label: normalized,
@@ -975,10 +976,7 @@ fn case_adjusted_replacement(text: &str, marker: &str, replacement: &str) -> (St
 }
 
 fn has_final_consonant(value: &str) -> bool {
-    value.chars().next_back().is_some_and(|character| {
-        let code = u32::from(character);
-        (0xac00..=0xd7a3).contains(&code) && (code - 0xac00) % 28 != 0
-    })
+    crate::korean_nominal::surface_coda(value).unwrap_or(false)
 }
 
 fn object_particle(value: &str) -> &'static str {

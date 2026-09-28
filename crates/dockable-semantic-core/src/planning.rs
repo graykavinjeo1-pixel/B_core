@@ -1,4 +1,4 @@
-use std::collections::BTreeSet;
+use std::{collections::BTreeSet, time::Instant};
 
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
@@ -11,6 +11,21 @@ pub const PLAN_GOAL_SCHEMA: &str = "B_CORE_PLAN_GOAL_IR_1";
 pub const PLAN_SCHEMA: &str = "B_CORE_PLAN_IR_1";
 pub const SEMANTIC_PLAN_GOAL_SCHEMA: &str = "B_CORE_SEMANTIC_PLAN_GOAL_IR_1";
 pub const SEMANTIC_PLAN_BUNDLE_SCHEMA: &str = "B_CORE_SEMANTIC_PLAN_BUNDLE_IR_1";
+
+/// Read-only timing evidence for semantic planning. It is never persisted or
+/// consulted when generating, validating, or selecting a plan.
+#[derive(Debug, Clone, Copy, Default)]
+pub struct SemanticPlanGenerationTimingIR {
+    pub goal_validation_micros: u64,
+    pub event_compatibility_micros: u64,
+    pub plan_generation_micros: u64,
+    pub bundle_sealing_micros: u64,
+    pub bundle_validation_micros: u64,
+}
+
+fn planning_duration_micros(duration: std::time::Duration) -> u64 {
+    duration.as_micros().min(u128::from(u64::MAX)) as u64
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -52,6 +67,7 @@ pub enum SemanticPlanRoleIR {
     Recipient,
     Source,
     Destination,
+    Target,
     Instrument,
     Location,
     Result,
@@ -171,6 +187,16 @@ impl SemanticPlanBundleIR {
     }
 
     pub fn validate_against(&self, goal: &SemanticPlanGoalIR) -> bool {
+        goal.validate()
+            && self.validate_against_prevalidated_goal_and_sealed_bundle(goal)
+    }
+
+    /// Internal construction-path validation. The planner has already validated
+    /// `goal` at its authority boundary and computed `bundle_sha256` directly
+    /// before this call; neither borrowed value can mutate in between. Public
+    /// callers must continue through `validate_against`, which rederives both
+    /// integrity receipts from untrusted or persisted inputs.
+    fn validate_against_prevalidated_goal_and_sealed_bundle(&self, goal: &SemanticPlanGoalIR) -> bool {
         let selected = goal.selected_live_event_ids.iter().collect::<BTreeSet<_>>();
         let bound = self
             .event_plan_bindings
@@ -178,7 +204,6 @@ impl SemanticPlanBundleIR {
             .map(|binding| &binding.event_id)
             .collect::<BTreeSet<_>>();
         self.schema == SEMANTIC_PLAN_BUNDLE_SCHEMA
-            && goal.validate()
             && self.semantic_goal_sha256 == goal.semantic_sha256
             && !self.semantic_authority
             && !self.external_action_executed
@@ -196,7 +221,6 @@ impl SemanticPlanBundleIR {
                 .iter()
                 .zip(&self.plans)
                 .all(|(binding, plan)| binding.plan_sha256 == plan.plan_sha256)
-            && self.bundle_sha256 == semantic_plan_bundle_sha256(self)
     }
 }
 
@@ -356,23 +380,61 @@ impl Planner {
         goal: &SemanticPlanGoalIR,
         experience_memory: &ExperienceMemory,
     ) -> Result<SemanticPlanBundleIR, PlanningError> {
+        self.generate_semantic_inner(goal, experience_memory, None)
+    }
+
+    pub fn generate_semantic_profiled(
+        &self,
+        goal: &SemanticPlanGoalIR,
+        experience_memory: &ExperienceMemory,
+    ) -> Result<(SemanticPlanBundleIR, SemanticPlanGenerationTimingIR), PlanningError> {
+        let mut timing = SemanticPlanGenerationTimingIR::default();
+        let bundle = self.generate_semantic_inner(goal, experience_memory, Some(&mut timing))?;
+        Ok((bundle, timing))
+    }
+
+    fn generate_semantic_inner(
+        &self,
+        goal: &SemanticPlanGoalIR,
+        experience_memory: &ExperienceMemory,
+        mut timing: Option<&mut SemanticPlanGenerationTimingIR>,
+    ) -> Result<SemanticPlanBundleIR, PlanningError> {
+        let goal_validation_started = timing.as_ref().map(|_| Instant::now());
         validate_semantic_goal(goal)?;
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), goal_validation_started) {
+            timing.goal_validation_micros = planning_duration_micros(started.elapsed());
+        }
         let mut plans = Vec::with_capacity(goal.selected_live_event_ids.len());
         let mut event_plan_bindings = Vec::with_capacity(goal.selected_live_event_ids.len());
         for event_id in &goal.selected_live_event_ids {
+            let event_compatibility_started = timing.as_ref().map(|_| Instant::now());
             let event = goal
                 .events
                 .iter()
                 .find(|event| &event.event_id == event_id)
                 .ok_or(PlanningError::InvalidGoal)?;
             let compatibility_goal = semantic_event_compatibility_goal(goal, event)?;
+            if let (Some(timing), Some(started)) =
+                (timing.as_deref_mut(), event_compatibility_started)
+            {
+                timing.event_compatibility_micros = timing
+                    .event_compatibility_micros
+                    .saturating_add(planning_duration_micros(started.elapsed()));
+            }
+            let plan_generation_started = timing.as_ref().map(|_| Instant::now());
             let plan = self.generate(&compatibility_goal, experience_memory)?;
+            if let (Some(timing), Some(started)) = (timing.as_deref_mut(), plan_generation_started) {
+                timing.plan_generation_micros = timing
+                    .plan_generation_micros
+                    .saturating_add(planning_duration_micros(started.elapsed()));
+            }
             event_plan_bindings.push(SemanticEventPlanBindingIR {
                 event_id: event_id.clone(),
                 plan_sha256: plan.plan_sha256.clone(),
             });
             plans.push(plan);
         }
+        let bundle_sealing_started = timing.as_ref().map(|_| Instant::now());
         let mut bundle = SemanticPlanBundleIR {
             schema: SEMANTIC_PLAN_BUNDLE_SCHEMA.to_string(),
             semantic_goal_sha256: goal.semantic_sha256.clone(),
@@ -384,8 +446,19 @@ impl Planner {
             bundle_sha256: String::new(),
         };
         bundle.bundle_sha256 = semantic_plan_bundle_sha256(&bundle);
-        if !bundle.validate_against(goal) {
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), bundle_sealing_started) {
+            timing.bundle_sealing_micros = planning_duration_micros(started.elapsed());
+        }
+        let bundle_validation_started = timing.as_ref().map(|_| Instant::now());
+        // The authority boundary above validated the immutable goal, and this
+        // method just sealed the bundle receipt. Re-deriving both SHA-256
+        // receipts here would be redundant; external/persisted bundle inputs
+        // still use the public full `validate_against` contract.
+        if !bundle.validate_against_prevalidated_goal_and_sealed_bundle(goal) {
             return Err(PlanningError::InvalidPlanGraph);
+        }
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), bundle_validation_started) {
+            timing.bundle_validation_micros = planning_duration_micros(started.elapsed());
         }
         Ok(bundle)
     }

@@ -26,6 +26,10 @@ path = "src/cognitive_api_canary.rs"
 name = "b-core-cognitive-api"
 path = "src/cognitive_api_main.rs"
 
+[[bin]]
+name = "b-core-standalone-service"
+path = "src/standalone_service_main.rs"
+
 [features]
 # The adapter and semantic core remain Rust-only by default. PaddleOCR is an
 # optional compatibility bridge for deployments that explicitly opt in to a

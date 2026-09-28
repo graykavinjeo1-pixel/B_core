@@ -11,10 +11,10 @@ use crate::action_state::ActionStateAnalysisIR;
 use crate::cognitive::{ConversationalOutputIR, NaturalLanguageResponseIR};
 use crate::conditional_guard::ConditionalGuardEvaluationIR;
 use crate::conversation::{
-    validate_conversation_state, ConversationStateIR, ConversationTurnDispositionIR,
-    ConversationTurnRequestIR, DiscourseGroupUpdateIR, NormalizedUtteranceIR,
-    ReferenceResolutionIR, TopicTransitionIR, CONVERSATION_FRONTEND_SCHEMA,
-    CONVERSATION_TURN_REQUEST_SCHEMA,
+    validate_conversation_state, ConversationStateIR, ConversationStateValidationReceipt,
+    ConversationTurnDispositionIR, ConversationTurnRequestIR, DiscourseGroupUpdateIR,
+    NormalizedUtteranceIR, ReferenceResolutionIR, TopicTransitionIR,
+    CONVERSATION_FRONTEND_SCHEMA, CONVERSATION_TURN_REQUEST_SCHEMA,
 };
 use crate::definition_grounding::DefinitionGroundingIR;
 use crate::discourse_qa::DiscourseAnswerIR;
@@ -66,6 +66,17 @@ pub struct LanguageCortexResponseIntegrationIR {
     pub integration_sha256: String,
 }
 
+/// Read-only timing evidence for the profiled conversation path. It is never
+/// used to select, validate, or seal a language-cortex integration.
+#[derive(Debug, Clone, Default)]
+pub(crate) struct LanguageCortexIntegrationTimingIR {
+    pub source_component_validation_micros: u64,
+    pub conversation_state_validation_micros: u64,
+    pub six_axis_source_validation_micros: u64,
+    pub component_hashing_micros: u64,
+    pub receipt_sealing_micros: u64,
+}
+
 impl LanguageCortexResponseIntegrationIR {
     pub fn validate(&self) -> bool {
         self.schema == LANGUAGE_CORTEX_RESPONSE_INTEGRATION_SCHEMA
@@ -111,7 +122,17 @@ impl LanguageCortexResponseIntegrationIR {
     }
 
     pub fn validate_against(&self, sources: LanguageCortexResponseSources<'_>) -> bool {
-        self.validate() && self == &build_language_cortex_response_integration(sources)
+        let check =
+            crate::natural_realization::NaturalRealizationCheck::new(sources.natural_realization);
+        self.validate_with_realization_check(sources, &check)
+    }
+
+    pub(crate) fn validate_with_realization_check(
+        &self,
+        sources: LanguageCortexResponseSources<'_>,
+        check: &crate::natural_realization::NaturalRealizationCheck,
+    ) -> bool {
+        self.validate() && self == &build_language_cortex_with_realization_check(sources, check)
     }
 }
 
@@ -182,6 +203,52 @@ struct ResponsePayloadView<'a> {
 pub fn build_language_cortex_response_integration(
     sources: LanguageCortexResponseSources<'_>,
 ) -> LanguageCortexResponseIntegrationIR {
+    let check =
+        crate::natural_realization::NaturalRealizationCheck::new(sources.natural_realization);
+    build_language_cortex_with_realization_check(sources, &check)
+}
+
+pub(crate) fn build_language_cortex_with_realization_check(
+    sources: LanguageCortexResponseSources<'_>,
+    check: &crate::natural_realization::NaturalRealizationCheck,
+) -> LanguageCortexResponseIntegrationIR {
+    build_language_cortex_with_realization_check_inner(sources, check, None, None)
+}
+
+pub(crate) fn build_language_cortex_with_realization_check_and_trusted_state(
+    sources: LanguageCortexResponseSources<'_>,
+    check: &crate::natural_realization::NaturalRealizationCheck,
+    trusted_conversation_state: &ConversationStateValidationReceipt,
+) -> LanguageCortexResponseIntegrationIR {
+    build_language_cortex_with_realization_check_inner(
+        sources,
+        check,
+        Some(trusted_conversation_state),
+        None,
+    )
+}
+
+pub(crate) fn build_language_cortex_with_realization_check_profiled_and_trusted_state(
+    sources: LanguageCortexResponseSources<'_>,
+    check: &crate::natural_realization::NaturalRealizationCheck,
+    trusted_conversation_state: &ConversationStateValidationReceipt,
+) -> (LanguageCortexResponseIntegrationIR, LanguageCortexIntegrationTimingIR) {
+    let mut timing = LanguageCortexIntegrationTimingIR::default();
+    let integration = build_language_cortex_with_realization_check_inner(
+        sources,
+        check,
+        Some(trusted_conversation_state),
+        Some(&mut timing),
+    );
+    (integration, timing)
+}
+
+fn build_language_cortex_with_realization_check_inner(
+    sources: LanguageCortexResponseSources<'_>,
+    check: &crate::natural_realization::NaturalRealizationCheck,
+    trusted_conversation_state: Option<&ConversationStateValidationReceipt>,
+    mut timing: Option<&mut LanguageCortexIntegrationTimingIR>,
+) -> LanguageCortexResponseIntegrationIR {
     let discourse_outputs = DiscourseOutputsView {
         discourse_group_update: sources.discourse_group_update,
         topic_transition: sources.topic_transition,
@@ -216,7 +283,18 @@ pub fn build_language_cortex_response_integration(
         six_axis_integration: sources.six_axis_integration,
         output: sources.output,
     };
-    let violations = source_component_violations(sources);
+    let validation_started = timing.as_ref().map(|_| std::time::Instant::now());
+    let violations = source_component_violations(
+        sources,
+        check,
+        trusted_conversation_state,
+        timing.as_deref_mut(),
+    );
+    if let (Some(timing), Some(started)) = (timing.as_deref_mut(), validation_started) {
+        timing.source_component_validation_micros =
+            started.elapsed().as_micros().min(u128::from(u64::MAX)) as u64;
+    }
+    let component_hashing_started = timing.as_ref().map(|_| std::time::Instant::now());
     let complete = violations.is_empty();
     let mut integration = LanguageCortexResponseIntegrationIR {
         schema: LANGUAGE_CORTEX_RESPONSE_INTEGRATION_SCHEMA.to_string(),
@@ -251,7 +329,16 @@ pub fn build_language_cortex_response_integration(
         complete,
         integration_sha256: String::new(),
     };
+    if let (Some(timing), Some(started)) = (timing.as_deref_mut(), component_hashing_started) {
+        timing.component_hashing_micros =
+            started.elapsed().as_micros().min(u128::from(u64::MAX)) as u64;
+    }
+    let receipt_sealing_started = timing.as_ref().map(|_| std::time::Instant::now());
     integration.integration_sha256 = language_cortex_response_integration_sha256(&integration);
+    if let (Some(timing), Some(started)) = (timing.as_deref_mut(), receipt_sealing_started) {
+        timing.receipt_sealing_micros =
+            started.elapsed().as_micros().min(u128::from(u64::MAX)) as u64;
+    }
     integration
 }
 
@@ -263,7 +350,12 @@ pub fn language_cortex_response_integration_sha256(
     content_sha256(&canonical)
 }
 
-fn source_component_violations(sources: LanguageCortexResponseSources<'_>) -> Vec<String> {
+fn source_component_violations(
+    sources: LanguageCortexResponseSources<'_>,
+    check: &crate::natural_realization::NaturalRealizationCheck,
+    trusted_conversation_state: Option<&ConversationStateValidationReceipt>,
+    mut timing: Option<&mut LanguageCortexIntegrationTimingIR>,
+) -> Vec<String> {
     let mut violations = Vec::new();
     let request_valid = sources.request.schema == CONVERSATION_TURN_REQUEST_SCHEMA
         && valid_id(&sources.request.conversation_id)
@@ -288,22 +380,40 @@ fn source_component_violations(sources: LanguageCortexResponseSources<'_>) -> Ve
         && sources
             .topic_transition
             .is_none_or(TopicTransitionIR::validate);
+    let six_axis_validation_started = timing.as_ref().map(|_| std::time::Instant::now());
     let six_axis_valid = sources
         .six_axis_integration
-        .validate_against(SixAxisIntegrationSources {
-            request_id: &sources.request.request_id,
-            turn_index: sources.request.turn_index,
-            pragmatic_interpretation: sources.pragmatic_interpretation,
-            conversation_state: sources.conversation_state,
-            reference_resolution: sources.reference_resolution,
-            action_state_analysis: sources.action_state_analysis,
-            plan_result_boundary: sources.plan_result_boundary,
-            grounded_plan: sources.grounded_response.map(|response| &response.plan),
-            natural_realization: sources.natural_realization,
-            grounded_realization: sources.grounded_realization,
-            interaction_provenance: sources.interaction_provenance,
-            realized_output: &sources.output.text,
-        });
+        .validate_with_realization_check(
+            SixAxisIntegrationSources {
+                request_id: &sources.request.request_id,
+                turn_index: sources.request.turn_index,
+                pragmatic_interpretation: sources.pragmatic_interpretation,
+                conversation_state: sources.conversation_state,
+                reference_resolution: sources.reference_resolution,
+                action_state_analysis: sources.action_state_analysis,
+                plan_result_boundary: sources.plan_result_boundary,
+                grounded_plan: sources.grounded_response.map(|response| &response.plan),
+                natural_realization: sources.natural_realization,
+                grounded_realization: sources.grounded_realization,
+                interaction_provenance: sources.interaction_provenance,
+                realized_output: &sources.output.text,
+            },
+            check,
+        );
+    if let (Some(timing), Some(started)) = (timing.as_deref_mut(), six_axis_validation_started) {
+        timing.six_axis_source_validation_micros =
+            started.elapsed().as_micros().min(u128::from(u64::MAX)) as u64;
+    }
+    let conversation_state_validation_started = timing.as_ref().map(|_| std::time::Instant::now());
+    let conversation_state_valid = trusted_conversation_state
+        .is_some_and(|receipt| receipt.matches(sources.conversation_state))
+        || validate_conversation_state(sources.conversation_state).is_ok();
+    if let (Some(timing), Some(started)) =
+        (timing.as_deref_mut(), conversation_state_validation_started)
+    {
+        timing.conversation_state_validation_micros =
+            started.elapsed().as_micros().min(u128::from(u64::MAX)) as u64;
+    }
     let checks = [
         (request_valid, "REQUEST_INVALID"),
         (turn_aligned, "TURN_STATE_MISALIGNED"),
@@ -316,7 +426,7 @@ fn source_component_violations(sources: LanguageCortexResponseSources<'_>) -> Ve
             "PRAGMATIC_STATE_INVALID",
         ),
         (
-            validate_conversation_state(sources.conversation_state).is_ok(),
+            conversation_state_valid,
             "CONVERSATION_STATE_INVALID",
         ),
         (
@@ -337,11 +447,11 @@ fn source_component_violations(sources: LanguageCortexResponseSources<'_>) -> Ve
             "PLAN_RESULT_BOUNDARY_INVALID",
         ),
         (
-            sources.natural_realization.validate_output(
-                sources.output.language,
-                &sources.output.text,
-                sources.output.unsupported_freeform_claims,
-            ),
+            check.accepts(sources.natural_realization)
+                && sources.natural_realization.language == sources.output.language
+                && sources.natural_realization.realized_text == sources.output.text
+                && sources.natural_realization.unsupported_claims
+                    == sources.output.unsupported_freeform_claims,
             "NATURAL_REALIZATION_INVALID",
         ),
         (

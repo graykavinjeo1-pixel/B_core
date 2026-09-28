@@ -2,11 +2,19 @@
 
 pub mod action_state;
 pub mod affective_field;
+pub mod approved_response;
 pub mod attribution;
+pub mod canonical_persona_grounding;
+pub mod canonical_response_bridge;
+pub mod canonical_response_dataset;
+pub mod canonical_response_training;
+pub mod causal_dialogue_topology;
 pub mod clause_graph;
 pub mod cognitive;
 pub mod compositional_semantics;
+pub mod concurrent_runtime;
 pub mod conditional_guard;
+pub mod construction_runtime;
 pub mod conversation;
 pub mod deferred_commitment;
 pub mod definition_grounding;
@@ -16,6 +24,7 @@ pub mod discourse_ontology;
 pub mod discourse_qa;
 pub mod discourse_relations;
 mod document_design;
+pub mod document_response;
 pub mod document_swarm;
 pub mod epistemic;
 pub mod generative_language;
@@ -24,6 +33,9 @@ pub mod grammatical_scope;
 pub mod grounded_realization;
 pub mod interaction_provenance;
 pub mod knowledge_work;
+mod korean_copula;
+mod korean_hada;
+pub mod korean_nominal;
 pub mod language;
 pub mod language_center;
 pub mod language_cortex_integration;
@@ -34,9 +46,13 @@ pub mod long_term_repair;
 mod long_term_repair_catalog;
 pub mod mechanism_induction;
 pub mod modality;
+pub mod mtp_efficiency;
 pub mod native_language_circuit;
 pub mod natural_realization;
 pub mod nonliteral;
+pub mod persona_contrastive_training;
+pub mod persona_corpus;
+pub mod persona_corpus_ingest;
 pub mod plan_result_boundary;
 pub mod pragmatic_intent;
 pub mod pragmatic_memory;
@@ -47,10 +63,13 @@ pub mod raw_mechanism_induction;
 pub mod reference_resolution_graph;
 pub mod semantic_roles;
 pub mod six_axis_integration;
+pub mod sparse_semantic_activation;
+pub mod standalone_service;
 pub mod temporal;
 pub mod topic_context;
 pub mod typed_coreference;
 pub mod utterance_intent;
+pub mod workplace_language;
 pub mod world_dialogue;
 pub mod world_vocabulary;
 
@@ -66,11 +85,51 @@ pub use action_state::{
     ACTION_LANGUAGE_REPORT_RECORD_SCHEMA, ACTION_SET_QUERY_SCHEMA, ACTION_STATE_ANALYSIS_SCHEMA,
     ACTION_STATE_LEDGER_SCHEMA,
 };
+pub use affective_field::{
+    AffectiveRealizationPolicyIR, DialoguePersonalityIR, KoreanDialectIR, RoleplayAgeBandIR,
+    RoleplayBackgroundIR, RoleplayPersonaIR, RoleplayRelationshipIR, RoleplaySceneIR,
+    RoleplayVoiceIR,
+};
+pub use approved_response::{
+    approved_response_sha256, compositional_response_sha256, ApprovedActionEventArgumentIR,
+    ApprovedActionEventFrameIR, ApprovedActionProcedureDependencyIR, ApprovedActionProcedureIR,
+    ApprovedClaimBindingIR,
+    ApprovedClauseUnitIR, ApprovedCompositionalClaimIR, ApprovedCompositionalResponseBuilder,
+    ApprovedConfigurationStateIR,
+    ApprovedCompositionalResponseIR, ApprovedDiscourseRelationIR, ApprovedEventDiscourseStateIR,
+    ApprovedEventExpressionPreferenceIR, ApprovedEventFocusIR, ApprovedEventInformationRoleIR,
+    ApprovedEventInformationStructureIR, ApprovedEventPerspectiveIR, ApprovedEventPhaseIR,
+    ApprovedEventPragmaticContextIR, ApprovedEventPredicateSenseIR,
+    ApprovedEventRealizationClassIR, ApprovedEventRealizationIR, ApprovedEventVoiceIR,
+    ApprovedLexicalNodeIR, ApprovedModalityIR, ApprovedOpenValueIR, ApprovedOperationIR,
+    ApprovedRelationTypeIR, ApprovedResponseBuilder, ApprovedResponseCandidateIR,
+    ApprovedResponseIR, ApprovedResponseStyleIR, ApprovedSemanticTypeIR, ApprovedSpeechActIR,
+    ApprovedStatusFrameIR,
+    ApprovedValueIR, ApprovedVerbosityIR, APPROVED_EVENT_DISCOURSE_STATE_SCHEMA,
+    APPROVED_EVENT_PRAGMATIC_CONTEXT_SCHEMA, APPROVED_RESPONSE_SCHEMA,
+    COMPOSITIONAL_APPROVED_RESPONSE_SCHEMA, MAX_APPROVED_RESPONSE_CLAIMS,
+};
 pub use attribution::{
     AttributedPropositionIR, AttributedPropositionPolarityIR, AttributionAnalyzer,
     AttributionAttitudeIR, AttributionEdgeIR, AttributionEvidenceKindIR, AttributionGraphIR,
     AttributionStanceIR, DiscourseActorIR, DiscourseActorKindIR, EpistemicStatusIR,
     ATTRIBUTION_GRAPH_SCHEMA,
+};
+pub use canonical_persona_grounding::{
+    canonical_persona_gold_record_sha256, ground_synthetic_persona_gold_row,
+    CanonicalPersonaGoldRecordIR, CANONICAL_PERSONA_GOLD_RECORD_SCHEMA,
+};
+pub use canonical_response_bridge::CanonicalResponseBridge;
+pub use canonical_response_dataset::{
+    canonical_response_training_record_sha256, CanonicalResponseDatasetSplitIR,
+    CanonicalResponseTrainingRecordIR, CANONICAL_RESPONSE_TRAINING_RECORD_SCHEMA,
+};
+pub use canonical_response_training::{
+    canonical_response_codec_model_sha256, canonical_response_training_campaign_sha256,
+    CanonicalResponseCodecModelIR, CanonicalResponseConstructionIR,
+    CanonicalResponseConstructionKeyIR, CanonicalResponseTrainingCampaignIR,
+    SyntheticPlanStateSeedIR, CANONICAL_RESPONSE_CODEC_MODEL_SCHEMA,
+    CANONICAL_RESPONSE_TRAINING_CAMPAIGN_SCHEMA,
 };
 pub use clause_graph::{
     ClauseFunctionIR, ClauseGraphIR, ClauseNodeIR, ClauseRelationEdgeIR, ClauseRelationKindIR,
@@ -78,11 +137,11 @@ pub use clause_graph::{
 };
 pub use cognitive::{
     CognitiveApi, CognitiveApiCommandIR, CognitiveApiError, CognitiveApiPayloadIR,
-    CognitiveApiResponseIR, ConversationTurnResponseIR, ConversationalOutputIR,
-    KnowledgeWorkResponseIR, MechanismInductionResponseIR, NaturalLanguageOutputIR,
-    NaturalLanguageRequestIR, NaturalLanguageResponseIR, RawMechanismInductionResponseIR,
-    CONVERSATION_TURN_RESPONSE_SCHEMA, NATURAL_LANGUAGE_REQUEST_SCHEMA,
-    NATURAL_LANGUAGE_RESPONSE_SCHEMA,
+    CognitiveApiResponseIR, ConversationTurnResponseIR, ConversationTurnStageTimingIR,
+    ConversationTurnTimingIR, ConversationalOutputIR, KnowledgeWorkResponseIR,
+    MechanismInductionResponseIR, NaturalLanguageOutputIR, NaturalLanguageRequestIR,
+    NaturalLanguageResponseIR, RawMechanismInductionResponseIR, CONVERSATION_TURN_RESPONSE_SCHEMA,
+    NATURAL_LANGUAGE_REQUEST_SCHEMA, NATURAL_LANGUAGE_RESPONSE_SCHEMA,
 };
 pub use compositional_semantics::{
     CandidateDispositionIR, CompositionalAnalysisIR, CompositionalGoalEdgeIR,
@@ -92,10 +151,20 @@ pub use compositional_semantics::{
     PredicateLexiconSnapshotIR, ScopeConstraintIR, ScopeKindIR, COMPOSITIONAL_ANALYSIS_SCHEMA,
     PREDICATE_LEXEME_SCHEMA, PREDICATE_LEXICON_SNAPSHOT_SCHEMA,
 };
+pub use concurrent_runtime::{
+    ConcurrentConversationRuntime, ConcurrentRuntimeError, ConcurrentRuntimeStatsIR,
+    CONCURRENT_RUNTIME_STATS_SCHEMA, DEFAULT_CONVERSATION_SHARDS, DEFAULT_MAX_IN_FLIGHT,
+    MAX_CONVERSATION_SHARDS, MAX_IN_FLIGHT_LIMIT,
+};
 pub use conditional_guard::{
     ConditionalGuardEvaluationIR, ConditionalGuardIR, ConditionalGuardStoreIR, GuardEvidenceIR,
     GuardEvidencePolarityIR, GuardStatusIR, CONDITIONAL_GUARD_EVALUATION_SCHEMA,
     CONDITIONAL_GUARD_STORE_SCHEMA,
+};
+pub use construction_runtime::{
+    persona_construction_output_sha256, same_authoritative_meaning, ConstructionRuntime,
+    LanguageStateConditionIR, PersonaConstructionContextIR, PersonaConstructionModeIR,
+    PersonaConstructionOutputIR, PersonaDiscourseMarkerIR, PERSONA_CONSTRUCTION_OUTPUT_SCHEMA,
 };
 pub use conversation::{
     conversational_concept_catalog, detect_topic_transition, discourse_program_sha256,
@@ -154,6 +223,20 @@ pub use discourse_relations::{
     DialogueRelationPathIR, DialogueRelationQaEngine, DialogueRelationQueryIR,
     DialogueRelationQueryKindIR, DialogueRelationStatusIR, DIALOGUE_RELATION_ANSWER_SCHEMA,
     DIALOGUE_RELATION_GRAPH_SCHEMA, MAX_DIALOGUE_RELATION_PATHS, MAX_DIALOGUE_RELATION_PATH_HOPS,
+};
+pub use document_response::{
+    build_document_response_plan, document_response_output_sha256, document_response_plan_sha256,
+    document_semantic_interpretation_sha256, document_surface_structure_sha256,
+    interpret_document_semantics, interpret_document_surface, realize_document_response,
+    DocumentClauseFusionIR, DocumentClauseFusionKindIR, DocumentEventArgumentIR,
+    DocumentEventArgumentRoleIR, DocumentEventPredicateIR, DocumentEventPredicateKindIR,
+    DocumentResponseBlockIR, DocumentResponseBlockKindIR, DocumentResponseOutputIR,
+    DocumentResponsePlanIR, DocumentResponseRoleIR, DocumentResponseSectionIR,
+    DocumentRhetoricalMoveIR, DocumentRhetoricalUnitIR, DocumentSemanticClaimIR,
+    DocumentSemanticEvidenceKindIR, DocumentSemanticInterpretationIR, DocumentSurfaceNodeIR,
+    DocumentSurfaceNodeKindIR, DocumentSurfaceStructureIR, DOCUMENT_RESPONSE_OUTPUT_SCHEMA,
+    DOCUMENT_RESPONSE_PLAN_SCHEMA, DOCUMENT_SEMANTIC_INTERPRETATION_SCHEMA,
+    DOCUMENT_SURFACE_STRUCTURE_SCHEMA,
 };
 pub use document_swarm::{DocumentDeliberationIR, DOCUMENT_DELIBERATION_SCHEMA};
 pub use epistemic::{
@@ -253,6 +336,10 @@ pub use modality::{
     ModalOperatorIR, ModalOperatorKindIR, ModalPropositionIR, ModalScopeGraphIR,
     ModalSemanticAnalyzer, ModalWorldIR, MODAL_SCOPE_GRAPH_SCHEMA,
 };
+pub use mtp_efficiency::{
+    select_mtp_speculation, MtpConditioningSignalsIR, MtpSelectionReasonIR,
+    MtpSpeculationDecisionIR, MtpSpeculationModeIR, MTP_SPECULATION_DECISION_SCHEMA,
+};
 pub use native_language_circuit::{
     NativeContextEntityIR, NativeContextGoalIR, NativeContextReferentIR, NativeDialogueContextIR,
     NativeDiscourseRelationIR, NativeEntityIR, NativeEventIR, NativeEventScopeIR, NativeGoalIR,
@@ -271,6 +358,24 @@ pub use natural_realization::{
 pub use nonliteral::{
     NonliteralAnalysisIR, NonliteralAnalyzer, NonliteralExpressionIR, NonliteralKindIR,
     ReadingSelectionIR, NONLITERAL_ANALYSIS_SCHEMA,
+};
+pub use persona_contrastive_training::{
+    construction_key_sha256_for_response, persona_contrastive_model_sha256,
+    ExpressionConstructionInventoryArtifactIR, ExpressionConstructionRuleIR,
+    LanguageStateControllerArtifactIR, LanguageStateControllerEntryIR, LanguageStateProjectionIR,
+    PersonaContrastiveConstructionModelIR, PersonaContrastiveFamilyIR, PersonaContrastiveProfileIR,
+    PersonaLatentOperatorArtifactIR, LANGUAGE_STATE_CONTROLLER_SCHEMA,
+    PERSONA_CONTRASTIVE_MODEL_SCHEMA, PERSONA_LATENT_OPERATOR_SCHEMA,
+};
+pub use persona_corpus::{
+    persona_corpus_record_sha256, PersonaCorpusProvenanceIR, PersonaCorpusRecordDraftIR,
+    PersonaCorpusRecordIR, PersonaCorpusRightsIR, PERSONA_CORPUS_RECORD_SCHEMA,
+};
+pub use persona_corpus_ingest::{
+    persona_corpus_import_manifest_sha256, stream_pippa_deduped, PersonaCorpusAudienceIR,
+    PersonaCorpusImportManifestIR, PersonaCorpusReviewObservationIR, PersonaCorpusSourceIR,
+    PippaIngestReportIR, NIKL_EVERYONES_CORPUS_SOURCE_ID, PERSONA_CORPUS_IMPORT_MANIFEST_SCHEMA,
+    PIPPA_DEDUPED_SOURCE_ID,
 };
 pub use plan_result_boundary::{
     boundary_sha256 as plan_result_boundary_sha256, build_plan_result_boundary,
@@ -331,6 +436,14 @@ pub use six_axis_integration::{
     LanguageCortexPackageBoundaryIR, SixAxisIntegrationIR, SixAxisIntegrationSources,
     LANGUAGE_CORTEX_PACKAGE_BOUNDARY_SCHEMA, SIX_AXIS_INTEGRATION_SCHEMA,
 };
+pub use standalone_service::{
+    ApprovedDocumentInterpretRequestIR, ApprovedDocumentRequestIR,
+    PersonaConstructionDocumentRequestIR, StandaloneHttpService, StandaloneHttpServiceConfig,
+    StandaloneServiceError, StandaloneServiceRunReportIR, StandaloneServiceStatsIR,
+    DEFAULT_HTTP_QUEUE_CAPACITY, DEFAULT_HTTP_WORKERS, DEFAULT_IO_TIMEOUT_MILLIS,
+    DEFAULT_MAX_HTTP_BODY_BYTES, MAX_HTTP_QUEUE_CAPACITY, MAX_HTTP_WORKERS,
+    STANDALONE_SERVICE_STATS_SCHEMA,
+};
 pub use temporal::{
     TemporalAnswerDispositionIR, TemporalAnswerIR, TemporalConflictIR, TemporalEventIR,
     TemporalExpressionIR, TemporalExpressionKindIR, TemporalGraphIR, TemporalQaEngine,
@@ -354,5 +467,13 @@ pub use utterance_intent::{
     UtteranceIntentCandidateIR, UtteranceIntentGraphIR, UtteranceIntentSignalIR,
     UtteranceSignalKindIR, UtteranceSurfaceFormIR, MAX_UTTERANCE_INTENT_CANDIDATES,
     MAX_UTTERANCE_INTENT_SIGNALS, UTTERANCE_INTENT_GRAPH_SCHEMA,
+};
+pub use workplace_language::{
+    realize_workplace_dialogue_response, realize_workplace_response,
+    opaque_action_claim_count, workplace_action_realization_completeness, workplace_dialogue_output_sha256,
+    workplace_language_output_sha256, WorkplaceActionRealizationCompletenessIR, WorkplaceAudienceIR,
+    WorkplaceCommunicationContextIR, WorkplaceCommunicationFormatIR, WorkplaceDialogueContextIR,
+    WorkplaceDialogueDispositionIR, WorkplaceDialogueLanguageOutputIR, WorkplaceLanguageOutputIR,
+    WORKPLACE_DIALOGUE_LANGUAGE_OUTPUT_SCHEMA, WORKPLACE_LANGUAGE_OUTPUT_SCHEMA,
 };
 pub mod conversation_contract;

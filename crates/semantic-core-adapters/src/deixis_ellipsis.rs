@@ -410,10 +410,7 @@ fn clean_ascii_token(token: &str) -> String {
 }
 
 fn has_final_consonant(value: &str) -> bool {
-    value.chars().next_back().is_some_and(|character| {
-        let code = u32::from(character);
-        (0xac00..=0xd7a3).contains(&code) && (code - 0xac00) % 28 != 0
-    })
+    crate::korean_nominal::surface_coda(value).unwrap_or(false)
 }
 
 fn object_particle(value: &str) -> &'static str {

@@ -22,7 +22,7 @@ use crate::utterance_intent::{
 };
 
 pub const PRAGMATIC_INTENT_GRAPH_SCHEMA: &str = "B_CORE_PRAGMATIC_INTENT_GRAPH_IR_1";
-pub const COMPOSITIONAL_PRAGMATIC_GRAPH_SCHEMA: &str = "B_CORE_COMPOSITIONAL_PRAGMATIC_GRAPH_IR_1";
+pub const COMPOSITIONAL_PRAGMATIC_GRAPH_SCHEMA: &str = "B_CORE_COMPOSITIONAL_PRAGMATIC_GRAPH_IR_2";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -93,6 +93,7 @@ pub enum PragmaticIntentRelationKindIR {
     Alternative,
     Sequences,
     Coordinates,
+    ContentComplement,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -484,7 +485,20 @@ impl PragmaticIntentAnalyzer {
             &normalized,
             !active_predicates.is_empty(),
             !mentions.is_empty(),
-        );
+        )
+        .or_else(|| {
+            ((analysis.modal_scope_graph.illocution
+                == crate::modality::ModalIllocutionIR::WhQuestion
+                || crate::discourse_qa::non_actual_world_question(&normalized))
+                && analysis.frames.iter().any(|frame| {
+                    !frame.embedded_under_quote
+                        && analysis
+                            .clause_graph
+                            .node_for_frame(&frame.frame_id)
+                            .is_some_and(|clause| clause.function == ClauseFunctionIR::Main)
+                }))
+            .then_some(PragmaticIntentKindIR::InformationQuestion)
+        });
         let Some(kind) = kind else {
             let composition = build_compositional_pragmatic_graph(
                 &normalized,
@@ -613,6 +627,7 @@ impl PragmaticIntentAnalyzer {
                 .as_ref()
                 .is_some_and(CompositionalPragmaticGraphIR::has_selected_unconditioned_request);
         if explicit_action_selected
+            && selected.expected_response != ExpectedResponseKindIR::DecisionSupport
             && !matches!(
                 selected.communicative_intent,
                 CommunicativeIntentIR::ResponseGoalCorrection
@@ -816,14 +831,25 @@ fn build_compositional_pragmatic_graph(
             let clause_function = clause
                 .map(|clause| clause.function)
                 .unwrap_or(ClauseFunctionIR::Main);
-            let force = clause_force(
-                text,
-                &source_text,
-                frame,
-                capability_question,
-                correction,
-                active_predicates,
-            );
+            let force = if clause_function == ClauseFunctionIR::ContentComplement {
+                PragmaticClauseForceIR::DescriptiveMention
+            } else {
+                clause_force(
+                    text,
+                    &source_text,
+                    frame,
+                    analysis.modal_scope_graph.illocution
+                        == crate::modality::ModalIllocutionIR::WhQuestion
+                        && clause_function == ClauseFunctionIR::Main,
+                    capability_question
+                        || (frame.ability_polarity.is_some()
+                            && analysis
+                                .semantic_role_graph
+                                .has_non_addressee_actor(&frame.frame_id)),
+                    correction,
+                    active_predicates,
+                )
+            };
             let projection = projection_for_force(force);
             let inherited_subject = legacy_primary
                 .filter(|primary| primary.source_frame_id.as_deref() == Some(&frame.frame_id))
@@ -1161,12 +1187,18 @@ fn clause_force(
     whole_text: &str,
     clause_text: &str,
     frame: &PredicateFrameIR,
+    matrix_question: bool,
     capability_question: bool,
     correction: bool,
     active_predicates: &[String],
 ) -> PragmaticClauseForceIR {
     if frame.embedded_under_quote || frame_inside_quoted_span(whole_text, frame) {
         return PragmaticClauseForceIR::MetalinguisticMention;
+    }
+    // Closing a quote restores live speech scope, not positive polarity.
+    // A following negative imperative remains a prohibition.
+    if frame.polarity == crate::compositional_semantics::FramePolarityIR::Negative {
+        return PragmaticClauseForceIR::Prohibition;
     }
     // An independent directive after a closed quotation belongs to the live
     // speech act even when an earlier clause talks about the quoted sentence
@@ -1215,7 +1247,10 @@ fn clause_force(
     {
         return PragmaticClauseForceIR::DirectRequest;
     }
-    if matches!(frame.mood, FrameMoodIR::Interrogative) || clause_text.contains('?') {
+    if matrix_question
+        || matches!(frame.mood, FrameMoodIR::Interrogative)
+        || clause_text.contains('?')
+    {
         return PragmaticClauseForceIR::InformationQuestion;
     }
     PragmaticClauseForceIR::DescriptiveMention
@@ -1422,6 +1457,7 @@ fn map_clause_relation(relation: ClauseRelationKindIR) -> PragmaticIntentRelatio
             PragmaticIntentRelationKindIR::Sequences
         }
         ClauseRelationKindIR::Coordination => PragmaticIntentRelationKindIR::Coordinates,
+        ClauseRelationKindIR::ContentComplement => PragmaticIntentRelationKindIR::ContentComplement,
     }
 }
 
@@ -2178,18 +2214,21 @@ fn is_advisory_suggestion(text: &str) -> bool {
 }
 
 fn is_conventional_indirect_request(text: &str) -> bool {
-    let korean = contains_any(
-        text,
-        &[
-            "해줄래",
-            "해 줄래",
-            "줄래",
-            "주면 안 될까",
-            "주면 안될까",
-            "주시겠",
-            "해줘?",
-        ],
-    );
+    let korean = (crate::compositional_semantics::korean_benefactive_ability_request(text)
+        .is_some()
+        && crate::compositional_semantics::is_korean_benefactive_request(text))
+        || contains_any(
+            text,
+            &[
+                "해줄래",
+                "해 줄래",
+                "줄래",
+                "주면 안 될까",
+                "주면 안될까",
+                "주시겠",
+                "해줘?",
+            ],
+        );
     let english_addressee = contains_any(
         text,
         &[
@@ -2428,6 +2467,8 @@ fn ensure_frame(
         frame_id: frame_id.clone(),
         clause_id: "PRAGMATIC-CLAUSE-01".to_string(),
         predicate_surface: canonical.to_lowercase(),
+        temporal_reference: crate::compositional_semantics::FrameTemporalReferenceIR::Unspecified,
+        ability_polarity: None,
         canonical_predicate: canonical.to_string(),
         intent_hint: intent,
         theme: subject.to_string(),

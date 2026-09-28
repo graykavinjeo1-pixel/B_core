@@ -84,12 +84,13 @@ JSON-line cognitive API additions:
 {"operation":"LOOKUP_LEXICAL_KNOWLEDGE","text":"계약서를 먹었어?"}
 ```
 
-Conversation response schema is now `B_CORE_CONVERSATION_TURN_RESPONSE_23` and
+Conversation response schema is now `B_CORE_CONVERSATION_TURN_RESPONSE_24` and
 includes a replay-validated `lexical_knowledge` receipt. This is evidence, not a
 second response owner. `lexical_activations` in the existing language path now
 includes matched source senses; those are not merely report-only inventory.
 
-Conversation state remains schema 32 from the preceding extension. Consumers of
+Conversation state is now schema 33; see [utterance understanding](UTTERANCE_UNDERSTANDING.md).
+Consumers of
 older conversation states need migration or new sessions. Lexical snapshot
 schema stays 1; only touched facets/usage are serialized, with indexes rebuilt
 on restore. Future source-pack revisions require an explicit migration of old

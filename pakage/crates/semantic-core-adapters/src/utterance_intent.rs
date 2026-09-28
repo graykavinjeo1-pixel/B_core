@@ -9,9 +9,797 @@ use dockable_semantic_core::PlanIntentIR;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
-pub const UTTERANCE_INTENT_GRAPH_SCHEMA: &str = "B_CORE_UTTERANCE_INTENT_GRAPH_IR_1";
+pub const UTTERANCE_INTENT_GRAPH_SCHEMA: &str = "B_CORE_UTTERANCE_INTENT_GRAPH_IR_10";
 pub const MAX_UTTERANCE_INTENT_SIGNALS: usize = 32;
 pub const MAX_UTTERANCE_INTENT_CANDIDATES: usize = 8;
+
+/// Missing input for a decision. These are dialogue roles, not world facts or
+/// task-specific solution templates. Source replay prevents a later layer from
+/// replacing a requested choice with a factual lookup or an execution promise.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum DecisionInputIR {
+    DesiredOutcome,
+    Deadline,
+    Constraints,
+    Preference,
+    ExpectedBenefit,
+}
+
+/// A proposed action is an evaluation target, not an asserted event or an
+/// execution grant. Lexical senses remain alternatives until world evidence
+/// disambiguates them; their labels do not establish the action's benefit.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ProposedActionIR {
+    pub surface: String,
+    pub predicate_entry_ids: Vec<String>,
+    pub negated: bool,
+    /// Shared event-role grammar under a PROPOSAL scope, never an observation.
+    pub event: crate::proposition_content::DescribedEventIR,
+    /// Dictionary senses remain alternatives. Frame compatibility is not
+    /// semantic sense selection, a benefit claim, or permission to execute.
+    pub frame_candidates: Vec<ProposedFrameCandidateIR>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ProposedFrameCandidateIR {
+    pub entry_id: String,
+    pub sense_id: String,
+    pub source_pattern: Option<String>,
+    pub pattern_understood: bool,
+    pub required_roles: Vec<crate::proposition_content::ContentSlotIR>,
+    pub missing_roles: Vec<crate::proposition_content::ContentSlotIR>,
+    pub incompatible_roles: Vec<crate::proposition_content::ContentSlotIR>,
+}
+
+fn proposed_frames(
+    event: &crate::proposition_content::DescribedEventIR,
+) -> Option<Vec<ProposedFrameCandidateIR>> {
+    use crate::proposition_content::ContentSlotIR as R;
+    use std::collections::BTreeSet;
+    let pack = crate::lexical_knowledge_pack::builtin_pack();
+    let korean = event
+        .predicate_surface
+        .chars()
+        .any(|c| ('가'..='힣').contains(&c));
+    let mut result = Vec::new();
+    // Direct entry lookup only. Neither the dictionary nor the world catalogue
+    // is scanned to search for a convenient sense that supports an answer.
+    for id in &event.lexical_entry_ids {
+        let entry = pack.entry(id)?;
+        for sense in &entry.senses {
+            // Korean headwords share their listed senses; English aliases are
+            // attached per sense. An entry hit must not import every unrelated
+            // translation of that Korean headword into an English proposal.
+            // The proposal envelope requires an infinitive, not a finite form.
+            if !korean
+                && !sense
+                    .english
+                    .split(';')
+                    .any(|alias| alias.trim().eq_ignore_ascii_case(&event.predicate_surface))
+            {
+                continue;
+            }
+            if result.len() >= 128 {
+                return None;
+            }
+            let pattern = sense.grammar.get("syntacticPattern").cloned();
+            let mut required = BTreeSet::new();
+            let mut allowed = BTreeSet::new();
+            let mut understood = pattern
+                .as_ref()
+                .is_some_and(|p| p.split_whitespace().any(|w| w == entry.lemma));
+            if let Some(pattern) = &pattern {
+                for word in pattern.split_whitespace() {
+                    let optional = word.starts_with('(') && word.ends_with(')');
+                    let token = word.trim_matches(['(', ')']);
+                    if token == entry.lemma {
+                        continue;
+                    }
+                    let suffix = token.trim_start_matches(|c: char| c.is_ascii_digit());
+                    let role = match suffix {
+                        "이" | "가" => Some(R::Agent),
+                        "을" | "를" => Some(R::Theme),
+                        "에게" | "한테" => Some(R::Recipient),
+                        "에게서" | "한테서" => Some(R::Source),
+                        "에서" => Some(R::Location),
+                        _ => None,
+                    };
+                    if suffix == token || role.is_none() {
+                        understood = false;
+                    } else if let Some(role) = role {
+                        allowed.insert(role);
+                        if !optional {
+                            required.insert(role);
+                        }
+                    }
+                }
+            }
+            // A partially understood source pattern licenses nothing. Keep the
+            // original pattern visible instead of quietly treating it as free
+            // valency. Actor omission also stays a gap, not 'the tired person'.
+            if !understood {
+                required.clear();
+                allowed.clear();
+            }
+            let missing_roles = required
+                .iter()
+                .filter(|r| !event.roles.contains_key(r))
+                .copied()
+                .collect();
+            let incompatible_roles = if understood {
+                event
+                    .roles
+                    .keys()
+                    .filter(|r| {
+                        !allowed.contains(r) && !matches!(r, R::Location | R::Time | R::Duration)
+                    })
+                    .copied()
+                    .collect()
+            } else {
+                vec![]
+            };
+            result.push(ProposedFrameCandidateIR {
+                entry_id: id.clone(),
+                sense_id: sense.source_sense_id.clone(),
+                source_pattern: pattern,
+                pattern_understood: understood,
+                required_roles: required.into_iter().collect(),
+                missing_roles,
+                incompatible_roles,
+            });
+        }
+    }
+    (!result.is_empty()).then_some(result)
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DecisionInquiryIR {
+    pub source_text: String,
+    pub missing_input: DecisionInputIR,
+    pub continues_context: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub proposed_action: Option<ProposedActionIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub explanation_of: Option<DecisionInquiryOriginIR>,
+    /// When present, the requested expected-benefit input has a conditional,
+    /// core-derived answer. Kept in the same dialogue owner, not a new route.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub assessment: Option<Box<crate::world_dialogue::ActionBenefitAssessmentIR>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub knowledge_gap: Option<Box<crate::world_dialogue::ActionBenefitGapIR>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub resumption: Option<Box<crate::world_dialogue::ActionBenefitResumptionIR>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub clarification_reply: Option<Box<DecisionClarificationReplyIR>>,
+}
+
+/// A response to an emitted information request, not an observation of the
+/// world. Retains a flat question origin; followups never extend its lifetime.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DecisionClarificationReplyIR {
+    pub original_source: String,
+    pub question_turn: u64,
+    pub turn: u64,
+    pub kind: crate::world_dialogue::WorldClarificationFollowupKindIR,
+    /// Explicit asking predicates refer to the original question; bare why
+    /// after an abstention refers to the latest response-choice act.
+    pub explains_question: bool,
+    pub abstention: Option<crate::world_dialogue::WorldClarificationAbstentionIR>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DecisionInquiryOriginIR {
+    pub source_text: String,
+    pub asked_turn: u64,
+}
+
+impl DecisionInquiryIR {
+    pub fn validate(&self) -> bool {
+        if let Some(reply) = &self.clarification_reply {
+            use crate::world_dialogue::WorldClarificationFollowupKindIR as K;
+            let Some(original) = decision_inquiry(&reply.original_source) else {
+                return false;
+            };
+            let Some(gap) = &self.knowledge_gap else {
+                return false;
+            };
+            let mut base = original.clone();
+            base.knowledge_gap = self.knowledge_gap.clone();
+            return base.validate()
+                && self.assessment.is_none()
+                && self.resumption.is_none()
+                && self.proposed_action == original.proposed_action
+                && self.missing_input == original.missing_input
+                && self.continues_context == original.continues_context
+                && reply.question_turn > 0
+                && reply.question_turn == gap.evaluated_turn
+                && reply.turn > reply.question_turn
+                && reply.turn - reply.question_turn <= 3
+                && gap_requests_information(gap)
+                && reply.explains_question
+                    == (reply.kind == K::ReasonRequest
+                        && (reply.abstention.is_none()
+                            || explicit_question_reason(&self.source_text)))
+                && (crate::world_dialogue::clarification_followup(&self.source_text)
+                    == Some(reply.kind)
+                    || (reply.kind == K::ReasonRequest
+                        && decision_reason_request(&self.source_text)))
+                && self
+                    .explanation_of
+                    .as_ref()
+                    .map_or(reply.kind != K::ReasonRequest, |o| {
+                        reply.kind == K::ReasonRequest
+                            && o.source_text == reply.original_source
+                            && o.asked_turn == reply.question_turn
+                    })
+                && reply.abstention.as_ref().is_none_or(|a| {
+                    matches!(a.kind, K::UnknownAnswer | K::DeclinedAnswer)
+                        && a.turn > reply.question_turn
+                        && a.turn <= reply.turn
+                        && crate::world_dialogue::clarification_followup(&a.source_text)
+                            == Some(a.kind)
+                })
+                && (!matches!(reply.kind, K::UnknownAnswer | K::DeclinedAnswer)
+                    || reply.abstention.as_ref().is_some_and(|a| {
+                        a.kind == reply.kind
+                            && a.source_text == self.source_text
+                            && a.turn == reply.turn
+                    }));
+        }
+        if let Some(resumption) = &self.resumption {
+            let Some(original) = decision_inquiry(&resumption.original_source) else {
+                return false;
+            };
+            let Some(action) = &self.proposed_action else {
+                return false;
+            };
+            return resumption.validate()
+                && self.missing_input == original.missing_input
+                && self.proposed_action == original.proposed_action
+                && if let Some(origin) = &self.explanation_of {
+                    decision_reason_request(&self.source_text)
+                        && self.continues_context
+                        && origin.source_text == resumption.original_source
+                        && origin.asked_turn == resumption.question_turn
+                } else {
+                    self.source_text == resumption.update.source_text
+                        && self.continues_context == original.continues_context
+                }
+                && match (&self.assessment, &self.knowledge_gap) {
+                    (Some(a), None) => {
+                        a.current_clarification
+                            && a.evaluated_turn == resumption.update.turn
+                            && a.matches_world(&resumption.update.memory)
+                            && a.validate(action, original.continues_context)
+                    }
+                    (None, Some(g)) => {
+                        g.current_clarification
+                            && g.evaluated_turn == resumption.update.turn
+                            && g.matches_world(&resumption.update.memory)
+                            && g.validate(action, original.continues_context)
+                    }
+                    _ => false,
+                };
+        }
+        let original_continuation = self
+            .explanation_of
+            .as_ref()
+            .and_then(|o| decision_inquiry(&o.source_text))
+            .map_or(self.continues_context, |i| i.continues_context);
+        if let Some(gap) = &self.knowledge_gap {
+            let mut request = self.clone();
+            request.knowledge_gap = None;
+            return !gap.current_clarification
+                && self.assessment.is_none()
+                && request.validate()
+                && self.missing_input == DecisionInputIR::ExpectedBenefit
+                && self
+                    .proposed_action
+                    .as_ref()
+                    .is_some_and(|action| gap.validate(action, original_continuation));
+        }
+        if let Some(assessment) = &self.assessment {
+            let mut request = self.clone();
+            request.assessment = None;
+            return !assessment.current_clarification
+                && request.validate()
+                && self.missing_input == DecisionInputIR::ExpectedBenefit
+                && self
+                    .proposed_action
+                    .as_ref()
+                    .is_some_and(|action| assessment.validate(action, original_continuation));
+        }
+        if let Some(origin) = &self.explanation_of {
+            return origin.asked_turn > 0
+                && decision_reason_request(&self.source_text)
+                && decision_inquiry(&origin.source_text).is_some_and(|prior| {
+                    prior.missing_input == self.missing_input
+                        && prior.proposed_action == self.proposed_action
+                })
+                && self.continues_context;
+        }
+        decision_inquiry(&self.source_text).as_ref() == Some(self)
+    }
+
+    pub(crate) fn explain_from(
+        source: &str,
+        prior: &Self,
+        answered_turn: u64,
+        turn: u64,
+    ) -> Option<Self> {
+        if answered_turn == 0 || turn <= answered_turn || turn - answered_turn > 3 {
+            return None;
+        }
+        if let Some(reply) = Self::clarification_from(source, prior, turn) {
+            return Some(reply);
+        }
+        if !prior.validate()
+            || !decision_reason_request(source)
+            || answered_turn == 0
+            || turn <= answered_turn
+            || turn - answered_turn > 3
+        {
+            return None;
+        }
+        let origin = prior.explanation_of.clone().unwrap_or_else(|| {
+            prior.resumption.as_ref().map_or_else(
+                || DecisionInquiryOriginIR {
+                    source_text: prior.source_text.clone(),
+                    asked_turn: answered_turn,
+                },
+                |r| DecisionInquiryOriginIR {
+                    source_text: r.original_source.clone(),
+                    asked_turn: r.question_turn,
+                },
+            )
+        });
+        if turn <= origin.asked_turn || turn - origin.asked_turn > 3 {
+            return None;
+        }
+        Some(Self {
+            source_text: source.into(),
+            continues_context: true,
+            missing_input: prior.missing_input,
+            proposed_action: prior.proposed_action.clone(),
+            explanation_of: Some(origin),
+            assessment: prior.assessment.clone(),
+            knowledge_gap: prior.knowledge_gap.clone(),
+            resumption: prior.resumption.clone(),
+            clarification_reply: None,
+        })
+    }
+
+    fn clarification_from(source: &str, prior: &Self, turn: u64) -> Option<Self> {
+        use crate::world_dialogue::WorldClarificationFollowupKindIR as K;
+        if !prior.validate() || prior.resumption.is_some() {
+            return None;
+        }
+        let gap = prior.knowledge_gap.as_ref()?;
+        if !gap_requests_information(gap)
+            || turn <= gap.evaluated_turn
+            || turn - gap.evaluated_turn > 3
+        {
+            return None;
+        }
+        let kind = crate::world_dialogue::clarification_followup(source)
+            .or_else(|| decision_reason_request(source).then_some(K::ReasonRequest))?;
+        let original_source = prior
+            .clarification_reply
+            .as_ref()
+            .map(|r| &r.original_source)
+            .or_else(|| prior.explanation_of.as_ref().map(|o| &o.source_text))
+            .unwrap_or(&prior.source_text)
+            .clone();
+        let original = decision_inquiry(&original_source)?;
+        let abstention = if matches!(kind, K::UnknownAnswer | K::DeclinedAnswer) {
+            Some(crate::world_dialogue::WorldClarificationAbstentionIR {
+                source_text: source.into(),
+                turn,
+                kind,
+            })
+        } else {
+            prior
+                .clarification_reply
+                .as_ref()
+                .and_then(|r| r.abstention.clone())
+        };
+        let mut result = original;
+        result.source_text = source.into();
+        result.knowledge_gap = Some(gap.clone());
+        if kind == K::ReasonRequest {
+            result.explanation_of = Some(DecisionInquiryOriginIR {
+                source_text: original_source.clone(),
+                asked_turn: gap.evaluated_turn,
+            });
+        }
+        result.clarification_reply = Some(Box::new(DecisionClarificationReplyIR {
+            original_source,
+            question_turn: gap.evaluated_turn,
+            turn,
+            kind,
+            explains_question: kind == K::ReasonRequest
+                && (abstention.is_none() || explicit_question_reason(source)),
+            abstention,
+        }));
+        result.validate().then_some(result)
+    }
+
+    pub(crate) fn resume_with_update(
+        prior: &Self,
+        update: crate::world_dialogue::WorldMemoryUpdateIR,
+    ) -> Option<Self> {
+        if !prior.validate()
+            || prior.resumption.is_some()
+            || prior
+                .clarification_reply
+                .as_ref()
+                .is_some_and(|r| r.abstention.is_some())
+        {
+            return None;
+        }
+        let gap = prior.knowledge_gap.as_ref()?;
+        let original_source = prior
+            .clarification_reply
+            .as_ref()
+            .map(|r| &r.original_source)
+            .or_else(|| prior.explanation_of.as_ref().map(|o| &o.source_text))
+            .unwrap_or(&prior.source_text)
+            .clone();
+        let original = decision_inquiry(&original_source)?;
+        let resumption = crate::world_dialogue::ActionBenefitResumptionIR {
+            original_source,
+            question_turn: gap.evaluated_turn,
+            prior_gap: gap.clone(),
+            update: Box::new(update),
+        };
+        if !resumption.validate() {
+            return None;
+        }
+        let action = original.proposed_action.as_ref()?;
+        let assessment = crate::world_dialogue::assess_action_benefit_scoped(
+            action,
+            original.continues_context,
+            &resumption.update.memory,
+            resumption.update.turn,
+            true,
+        )
+        .map(Box::new);
+        let knowledge_gap = if assessment.is_none() {
+            crate::world_dialogue::action_benefit_gap_scoped(
+                action,
+                original.continues_context,
+                &resumption.update.memory,
+                resumption.update.turn,
+                true,
+            )
+            .map(Box::new)
+        } else {
+            None
+        };
+        let result = Self {
+            source_text: resumption.update.source_text.clone(),
+            assessment,
+            knowledge_gap,
+            resumption: Some(Box::new(resumption)),
+            ..original
+        };
+        result.validate().then_some(result)
+    }
+
+    pub(crate) fn evaluation_turn(&self, current_turn: u64) -> u64 {
+        if let Some(reply) = &self.clarification_reply {
+            return reply.question_turn;
+        }
+        self.resumption.as_ref().map_or_else(
+            || {
+                self.explanation_of
+                    .as_ref()
+                    .map_or(current_turn, |o| o.asked_turn)
+            },
+            |r| r.update.turn,
+        )
+    }
+}
+
+fn gap_requests_information(gap: &crate::world_dialogue::ActionBenefitGapIR) -> bool {
+    use crate::world_dialogue::ActionBenefitGapReasonIR as G;
+    !gap.current_clarification
+        && matches!(
+            gap.reason,
+            G::Actor | G::CurrentState | G::ConflictingState | G::RecentState
+        )
+}
+
+fn explicit_question_reason(source: &str) -> bool {
+    crate::world_dialogue::clarification_reason_request(source)
+        && source.split_whitespace().count() > 1
+}
+
+/// A causal question referring to the interlocutor's preceding dialogue act,
+/// not a cause attributed to a world event or a named third party.
+fn decision_reason_request(source: &str) -> bool {
+    if source.chars().count() > 256 || source.contains(['"', '“', '”', '`', '\n', ';']) {
+        return false;
+    }
+    if crate::world_dialogue::clarification_reason_request(source) {
+        return true;
+    }
+    let normalized = source
+        .trim()
+        .trim_end_matches(['?', '.', '!'])
+        .to_lowercase();
+    let words = normalized.split_whitespace().collect::<Vec<_>>();
+    if matches!(words.as_slice(), ["why", "do", "you", "think", "that"]) {
+        return true;
+    }
+    let Some((predicate, prefix)) = words.split_last() else {
+        return false;
+    };
+    if !matches!(
+        prefix,
+        ["왜", "그렇게"] | ["왜", "너는", "그렇게"] | ["왜", "넌", "그렇게"]
+    ) {
+        return false;
+    }
+    let lexical = crate::lexical_knowledge_pack::builtin_pack().lookup(predicate);
+    !lexical.truncated
+        && lexical
+            .matches
+            .iter()
+            .any(|m| m.entry.lemma == "생각하다" && !m.morphology.grammar_rule.contains("PAST"))
+}
+
+/// Controlled interrogative/imperative composition. Question word + deliberative
+/// mood is required; quoted, reported, historical and compound requests are not
+/// consumed by this bounded path. Unknown content is not interpreted as a fact.
+pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
+    if source.chars().count() > 2048 || source.contains(['"', '“', '”', '‘', '’', '`', '\n', ';'])
+    {
+        return None;
+    }
+    let normalized = source.trim().to_lowercase();
+    let mut text = normalized.trim_end_matches(['?', '.', '!']).trim();
+    if text.contains(['?', '.', '!']) {
+        return None;
+    }
+    // Multi-clause requests require the full composition graph. A final advice
+    // verb must never suppress an independent action elsewhere in the turn.
+    if ["하고 ", "한 뒤 ", "하고나서 ", " and ", " then "]
+        .iter()
+        .any(|c| text.contains(c))
+    {
+        return None;
+    }
+    let mut continues_context = false;
+    let mut context_prefix_bytes = 0;
+    for prefix in ["그럼 ", "그러면 ", "then, ", "then ", "so, ", "so "] {
+        if let Some(rest) = text.strip_prefix(prefix) {
+            text = rest;
+            continues_context = true;
+            context_prefix_bytes = prefix.len();
+            break;
+        }
+    }
+    let words = text.split_whitespace().collect::<Vec<_>>();
+    if source.trim().ends_with('?') {
+        // Case folding is only for the envelope. Named arguments must retain
+        // their original spelling through memory, follow-up and realization.
+        let original = source.trim().trim_end_matches(['?', '.', '!']).trim();
+        let original_body = original.get(context_prefix_bytes..)?;
+        if let Some(proposed_action) = action_evaluation_target(original_body) {
+            return Some(DecisionInquiryIR {
+                source_text: source.into(),
+                missing_input: DecisionInputIR::ExpectedBenefit,
+                continues_context,
+                proposed_action: Some(proposed_action),
+                explanation_of: None,
+                assessment: None,
+                knowledge_gap: None,
+                resumption: None,
+                clarification_reply: None,
+            });
+        }
+    }
+    let korean_wh = words.iter().copied().find(|w| {
+        matches!(
+            *w,
+            "언제" | "어떻게" | "뭘" | "뭐" | "무엇을" | "어느" | "어떤"
+        )
+    });
+    let mut ko_deliberative = ["까", "까요", "지", "죠"]
+        .iter()
+        .any(|ending| text.ends_with(ending))
+        && !["았", "었", "했", "였", "는", "인"].iter().any(|tense| {
+            ["지", "죠", "을까", "을까요"]
+                .iter()
+                .any(|ending| text.ends_with(&format!("{tense}{ending}")))
+        });
+    if ko_deliberative && korean_wh.is_some() {
+        // Mood alone cannot turn a recollection into a decision request.
+        // Shared lexical morphology covers vowel-contracted past stems too;
+        // no task verb or complete question is used as a dispatch key.
+        let predicate = words.last().copied().unwrap_or_default();
+        let lexical = crate::lexical_knowledge_pack::builtin_pack().lookup(predicate);
+        ko_deliberative = !lexical.truncated
+            && !lexical
+                .matches
+                .iter()
+                .any(|m| m.matched_form == predicate && m.morphology.grammar_rule.contains("PAST"));
+    }
+    let english_wh = words.first().copied().filter(|w| {
+        matches!(*w, "what" | "when" | "how" | "which")
+            && matches!(words.get(1).copied(), Some("should" | "could"))
+            && matches!(words.get(2).copied(), Some("i" | "we"))
+            && words.len() >= 4
+    });
+    // A bare deliberative light verb leaves the action's content unfilled.
+    // It can continue a discourse situation without an explicit "then" marker;
+    // a lexical action or an added complement still names a separate target.
+    continues_context |=
+        english_wh.is_some() && words.len() == 4 && words.get(3).copied() == Some("do");
+    let recommendation_imperative = ["추천해줘", "추천해 줘", "추천해주세요", "추천해 주세요"]
+        .iter()
+        .any(|ending| text.ends_with(ending))
+        || text.starts_with("recommend ")
+        || text.starts_with("please recommend ");
+    let wh = korean_wh.filter(|_| ko_deliberative).or(english_wh);
+    let missing_input = match wh {
+        Some("언제" | "when") => DecisionInputIR::Deadline,
+        Some("어떻게" | "how") => DecisionInputIR::Constraints,
+        Some(_) if text.contains("하는") || text.ends_with(" do") => {
+            DecisionInputIR::DesiredOutcome
+        }
+        Some(_) => DecisionInputIR::Preference,
+        None if recommendation_imperative => DecisionInputIR::Preference,
+        _ => return None,
+    };
+    Some(DecisionInquiryIR {
+        source_text: source.to_string(),
+        missing_input,
+        continues_context,
+        proposed_action: None,
+        explanation_of: None,
+        assessment: None,
+        knowledge_gap: None,
+        resumption: None,
+        clarification_reply: None,
+    })
+}
+
+fn action_evaluation_target(text: &str) -> Option<ProposedActionIR> {
+    // A self-deliberative modal supplies an explicit Agent, not an execution
+    // grant. Parse its infinitive through the same role/sense path as an
+    // evaluative proposal; no verb-specific answer or synthetic assertion.
+    let modal = "should i ";
+    if text
+        .get(..modal.len())
+        .is_some_and(|s| s.eq_ignore_ascii_case(modal))
+    {
+        let action = &text[modal.len()..];
+        let mut proposed = infinitival_action_target(action)?;
+        proposed
+            .event
+            .roles
+            .insert(crate::proposition_content::ContentSlotIR::Agent, "I".into());
+        proposed.event.event_id = format!("DESCRIBED_EVENT_{:x}", Sha256::digest(text.as_bytes()));
+        proposed.frame_candidates = proposed_frames(&proposed.event)?;
+        return Some(proposed);
+    }
+    let korean = text.chars().any(|c| ('가'..='힣').contains(&c));
+    let (surface, predicate, negated) = if korean {
+        let (nominal, evaluation) = text.rsplit_once(' ')?;
+        let lexical = crate::lexical_knowledge_pack::builtin_pack().lookup(evaluation);
+        if lexical.truncated
+            || !lexical.matches.iter().any(|m| {
+                m.entry.lemma == "좋다"
+                    && m.entry.pos == "형용사"
+                    && m.morphology.grammar_rule == "KO_STEM_MODAL_FINITE"
+            })
+        {
+            return None;
+        }
+        let action = nominal
+            .strip_suffix(" 게")
+            .or_else(|| nominal.strip_suffix(" 것이"))?;
+        let predicate = action.split_whitespace().last()?;
+        // Inability is not choosing not to act.
+        if action.split_whitespace().any(|w| w == "못") {
+            return None;
+        }
+        let negated = action.split_whitespace().any(|w| w == "안");
+        (format!("{action} 것"), predicate, negated)
+    } else {
+        let prefix = "would it be good to ";
+        if !text.get(..prefix.len())?.eq_ignore_ascii_case(prefix) {
+            return None;
+        }
+        return infinitival_action_target(&text[prefix.len()..]);
+    };
+    let lexical = crate::lexical_knowledge_pack::builtin_pack().lookup(predicate);
+    if lexical.truncated {
+        return None;
+    }
+    let mut predicate_entry_ids = lexical
+        .matches
+        .into_iter()
+        .filter(|m| {
+            m.entry.pos == "동사"
+                && (!korean
+                    || m.morphology.grammar_rule == "KO_ADNOMINAL_PRESENT"
+                    || (m.morphology.grammar_rule == "SOURCE_KOREAN_PRINCIPAL_FORM"
+                        && predicate.ends_with('는')))
+        })
+        .map(|m| m.entry.source_entry_id)
+        .collect::<Vec<_>>();
+    predicate_entry_ids.sort();
+    predicate_entry_ids.dedup();
+    if predicate_entry_ids.is_empty() || surface.split_whitespace().count() > 12 {
+        return None;
+    }
+    let action_source = if korean {
+        surface.strip_suffix(" 것")?
+    } else {
+        &surface
+    };
+    let event = crate::proposition_content::proposed_event(action_source)?;
+    if event.lexical_entry_ids != predicate_entry_ids || event.negated != negated {
+        return None;
+    }
+    let frame_candidates = proposed_frames(&event)?;
+    Some(ProposedActionIR {
+        surface,
+        predicate_entry_ids,
+        negated,
+        event,
+        frame_candidates,
+    })
+}
+
+fn infinitival_action_target(action: &str) -> Option<ProposedActionIR> {
+    if action.chars().any(|c| ('가'..='힣').contains(&c)) || action.split_whitespace().count() > 12
+    {
+        return None;
+    }
+    let (body, negated) = if action
+        .get(..4)
+        .is_some_and(|s| s.eq_ignore_ascii_case("not "))
+    {
+        (&action[4..], true)
+    } else {
+        (action, false)
+    };
+    let predicate = body.split_whitespace().next()?;
+    let lexical = crate::lexical_knowledge_pack::builtin_pack().lookup(predicate);
+    if lexical.truncated {
+        return None;
+    }
+    let mut predicate_entry_ids = lexical
+        .matches
+        .into_iter()
+        .filter(|m| m.entry.pos == "동사")
+        .map(|m| m.entry.source_entry_id)
+        .collect::<Vec<_>>();
+    predicate_entry_ids.sort();
+    predicate_entry_ids.dedup();
+    let event = crate::proposition_content::proposed_event(action)?;
+    if predicate_entry_ids.is_empty()
+        || event.lexical_entry_ids != predicate_entry_ids
+        || event.negated != negated
+    {
+        return None;
+    }
+    let frame_candidates = proposed_frames(&event)?;
+    // English sense bindings accept a base-form predicate only. Empty sense
+    // matches must not turn finite/past/gerund forms into licensed proposals.
+    Some(ProposedActionIR {
+        surface: action.into(),
+        predicate_entry_ids: event.lexical_entry_ids.clone(),
+        negated: event.negated,
+        event,
+        frame_candidates,
+    })
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -37,6 +825,7 @@ pub enum UtteranceSignalKindIR {
     BenefitCriterion,
     PreservationConstraint,
     InterrogativeForm,
+    DeliberativeQuestion,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -59,6 +848,8 @@ pub enum ExpectedResponseKindIR {
     Assessment,
     Evidence,
     Recommendation,
+    /// A request to help choose, not a request to execute or report a fact.
+    DecisionSupport,
     Explanation,
     Summary,
     VerifyThenDecide,
@@ -100,7 +891,7 @@ impl UtteranceIntentCandidateIR {
             | ExpectedResponseKindIR::Explanation
             | ExpectedResponseKindIR::Summary => Some(PlanIntentIR::Explain),
             ExpectedResponseKindIR::Recommendation => Some(PlanIntentIR::Plan),
-            ExpectedResponseKindIR::Clarification => None,
+            ExpectedResponseKindIR::Clarification | ExpectedResponseKindIR::DecisionSupport => None,
         }
     }
 }
@@ -252,8 +1043,20 @@ fn analyze_utterance_intent(
 ) -> UtteranceIntentGraphIR {
     let trimmed = text.trim();
     let normalized = trimmed.to_lowercase();
-    let surface_form = surface_form(&normalized);
-    let mut signals = collect_signals(&normalized);
+    let matrix_statement =
+        crate::grammatical_scope::embedded_information_statement(&normalized).is_some();
+    let surface_form = if matrix_statement {
+        UtteranceSurfaceFormIR::Declarative
+    } else {
+        surface_form(&normalized)
+    };
+    // The embedded content is not an independent problem/explanation demand.
+    // Retain the whole observation hash, but do not nominate goals from it.
+    let mut signals = if matrix_statement {
+        Vec::new()
+    } else {
+        collect_signals(&normalized)
+    };
     signals.truncate(MAX_UTTERANCE_INTENT_SIGNALS);
     let has_context = active_subject.is_some_and(|value| !value.trim().is_empty())
         || !active_predicates.is_empty();
@@ -340,6 +1143,19 @@ fn infer_candidates(
     };
 
     let mut candidates = Vec::new();
+
+    if has(UtteranceSignalKindIR::DeliberativeQuestion) {
+        candidates.push(make(
+            CommunicativeIntentIR::RecommendationRequest,
+            ExpectedResponseKindIR::DecisionSupport,
+            text.to_string(),
+            vec!["identify the missing decision input; do not invent advice or execute".into()],
+            signal_ids(&[UtteranceSignalKindIR::DeliberativeQuestion]),
+            975,
+            false,
+            has_context,
+        ));
+    }
 
     if has(UtteranceSignalKindIR::ResponseGoalCorrection)
         && has(UtteranceSignalKindIR::ExplanationDemand)
@@ -539,6 +1355,16 @@ fn intent_precedence(intent: CommunicativeIntentIR) -> u8 {
 
 fn collect_signals(text: &str) -> Vec<UtteranceIntentSignalIR> {
     let mut signals = Vec::new();
+    if decision_inquiry(text).is_some() {
+        signals.push(UtteranceIntentSignalIR {
+            signal_id: "UTTERANCE-SIGNAL-01".into(),
+            kind: UtteranceSignalKindIR::DeliberativeQuestion,
+            evidence_surface: text.to_string(),
+            byte_start: 0,
+            byte_end: text.len(),
+            confidence_millis: 975,
+        });
+    }
     add_signal(
         &mut signals,
         text,
@@ -958,6 +1784,99 @@ fn hash_bytes(bytes: &[u8]) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn decision_inquiry_uses_question_role_and_mood_not_task_verbs() {
+        for modal in ["should", "could"] {
+            for subject in ["I", "we"] {
+                let text = format!("What {modal} {subject} do?");
+                let inquiry = decision_inquiry(&text).unwrap();
+                assert!(inquiry.continues_context && inquiry.validate());
+                let mut forged = inquiry;
+                forged.continues_context = false;
+                assert!(!forged.validate());
+            }
+        }
+        for text in ["What should I read?", "What should I do about entropy?"] {
+            assert!(!decision_inquiry(text).unwrap().continues_context);
+        }
+        for (stem, prospective) in [
+            ("먹", "먹을"),
+            ("읽", "읽을"),
+            ("옮기", "옮길"),
+            ("무루하", "무루할"),
+        ] {
+            for ending in ["까?", "까요?", "지?"] {
+                let base = if ending == "지?" { stem } else { prospective };
+                let text = format!("그럼 뭘 {base}{ending}");
+                let inquiry = decision_inquiry(&text).unwrap();
+                assert!(inquiry.validate() && inquiry.continues_context);
+                assert_eq!(inquiry.missing_input, DecisionInputIR::Preference);
+                let graph = UtteranceIntentAnalyzer.analyze(&text, None, &[]);
+                let selected = graph.selected().unwrap();
+                assert_eq!(
+                    selected.expected_response,
+                    ExpectedResponseKindIR::DecisionSupport
+                );
+                assert_eq!(selected.plan_intent(), None);
+                assert!(!selected.external_execution_authorized && !selected.semantic_authority);
+            }
+        }
+        for (text, expected) in [
+            ("언제 시작할까?", DecisionInputIR::Deadline),
+            ("Then, when should I start?", DecisionInputIR::Deadline),
+            ("지금 뭘 하는 게 좋을까?", DecisionInputIR::DesiredOutcome),
+            ("What should I do?", DecisionInputIR::DesiredOutcome),
+            ("그럼 어떻게 하지?", DecisionInputIR::Constraints),
+            ("How should we proceed?", DecisionInputIR::Constraints),
+            ("하나만 추천해줘.", DecisionInputIR::Preference),
+            ("Please recommend a book.", DecisionInputIR::Preference),
+        ] {
+            let inquiry = decision_inquiry(text).unwrap();
+            assert_eq!(inquiry.missing_input, expected, "{text}");
+            for language in [
+                crate::language_knowledge::LanguageCodeIR::Korean,
+                crate::language_knowledge::LanguageCodeIR::English,
+            ] {
+                let generated =
+                    crate::generative_language::generate_decision_inquiry(language, &inquiry)
+                        .unwrap();
+                assert!(generated.morphology.realized_text.ends_with('?'));
+            }
+            let mut tampered = inquiry;
+            tampered.source_text = "파일을 삭제해.".into();
+            assert!(!tampered.validate());
+        }
+    }
+
+    #[test]
+    fn decision_inquiry_does_not_consume_reports_negated_requests_or_compound_actions() {
+        for past in ["잃어버렸", "썼", "샀", "왔", "봤", "먹었"] {
+            for ending in ["지", "죠", "을까", "을까요"] {
+                for wh in ["뭘", "언제", "어떻게"] {
+                    let text = format!("{wh} {past}{ending}?");
+                    assert!(decision_inquiry(&text).is_none(), "{text}");
+                }
+            }
+        }
+        for text in [
+            "뭘 먹었지?",
+            "언제 준비했을까?",
+            "어떻게 하는지.",
+            "What did I eat?",
+            "When is the meeting?",
+            "파일을 삭제해.",
+            "책을 추천하지 마.",
+            "Don't recommend a book.",
+            "삭제하고 하나 추천해줘.",
+            "Delete the file and recommend a book.",
+            "그가 ‘뭘 먹을까?’라고 물었어.",
+            "\"What should I do?\"",
+            "한가해?",
+        ] {
+            assert!(decision_inquiry(text).is_none(), "{text}");
+        }
+    }
 
     fn selected(text: &str) -> UtteranceIntentCandidateIR {
         UtteranceIntentAnalyzer

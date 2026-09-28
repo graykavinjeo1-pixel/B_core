@@ -5,6 +5,7 @@
 //! response-goal IR before any planner or surface realizer is consulted.
 
 use std::collections::BTreeSet;
+use std::time::Instant;
 
 use dockable_semantic_core::PlanIntentIR;
 use serde::{Deserialize, Serialize};
@@ -15,7 +16,7 @@ use crate::compositional_semantics::{
 };
 use crate::language_knowledge::LanguageCodeIR;
 
-pub const NATIVE_LANGUAGE_CIRCUIT_SCHEMA: &str = "B_CORE_NATIVE_LANGUAGE_CIRCUIT_IR_1";
+pub const NATIVE_LANGUAGE_CIRCUIT_SCHEMA: &str = "B_CORE_NATIVE_LANGUAGE_CIRCUIT_IR_6";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -25,6 +26,7 @@ pub enum NativeEventScopeIR {
     Prohibited,
     Reported,
     Possible,
+    ContentComplement,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -132,6 +134,57 @@ pub struct NativeGoalIR {
     pub selection_reasons: Vec<String>,
     pub semantic_authority: bool,
     pub external_execution_authorized: bool,
+}
+
+/// Keep a Korean multi-entity theme in the source span that established it.
+/// Entity extraction can intentionally retain only the two lexical anchors of
+/// a compound noun (for example, a proper name and its head noun). Rejoining
+/// those anchors with a coordinator changes that source-grounded target into
+/// a different noun phrase. This helper never creates a role or fact: it
+/// merely preserves the contiguous, explicit theme span when every selected
+/// theme anchor is inside it.
+fn goal_subject_surface(
+    source: &str,
+    language: LanguageCodeIR,
+    selected_entities: &[&NativeEntityIR],
+) -> String {
+    if language == LanguageCodeIR::Korean && selected_entities.len() >= 2 {
+        let start = selected_entities.iter().map(|entity| entity.start_byte).min();
+        let end = selected_entities.iter().map(|entity| entity.end_byte).max();
+        if let (Some(start), Some(end)) = (start, end) {
+            let anchors_are_explicit = selected_entities.iter().all(|entity| {
+                entity.start_byte < entity.end_byte
+                    && entity.end_byte <= source.len()
+                    && source
+                        .get(entity.start_byte..entity.end_byte)
+                        .is_some_and(|span| span == entity.surface)
+            });
+            if anchors_are_explicit {
+                if let Some(compound) = source.get(start..end).map(str::trim) {
+                    let has_all_anchors = selected_entities
+                        .iter()
+                        .all(|entity| compound.contains(&entity.surface));
+                    let has_only_nominal_characters = compound.chars().all(|character| {
+                        character.is_alphanumeric()
+                            || character.is_whitespace()
+                            || matches!(character, '-' | '_' | '/' | '·' | '&' | '(' | ')')
+                    });
+                    if has_all_anchors && has_only_nominal_characters && !compound.is_empty() {
+                        return compound.to_string();
+                    }
+                }
+            }
+        }
+    }
+    selected_entities
+        .iter()
+        .map(|entity| entity.surface.as_str())
+        .collect::<Vec<_>>()
+        .join(if language == LanguageCodeIR::Korean {
+            "와 "
+        } else {
+            " and "
+        })
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -336,6 +389,79 @@ impl NativeTurnIR {
         debug_assert!(self.validate_for_source(source));
     }
 
+    /// Lexical nominations do not override a source-aligned argument boundary.
+    /// Retain the event and its evidence; withdraw only its live goal status.
+    pub(crate) fn apply_content_complement_boundary(
+        &mut self,
+        source: &str,
+        analysis_source: &str,
+        analysis: &CompositionalAnalysisIR,
+    ) -> bool {
+        if source.len() != analysis_source.len()
+            || source.to_lowercase() != analysis_source.to_lowercase()
+        {
+            return false;
+        }
+        let information_statement =
+            crate::grammatical_scope::embedded_information_statement(source);
+        let mut changed = false;
+        for event in &mut self.events {
+            let content_frame = analysis.frames.iter().find(|frame| {
+                frame.mood == crate::compositional_semantics::FrameMoodIR::ContentComplement
+                    && frame.canonical_predicate == event.canonical_predicate
+                    && frame.source_start_byte == event.start_byte
+                    && source
+                        .get(event.start_byte..event.end_byte)
+                        .is_some_and(|s| s.to_lowercase() == event.predicate_surface.to_lowercase())
+            });
+            let matrix_evidence = content_frame
+                .map(|frame| format!("CONTENT_ARGUMENT_OF_MATRIX:{}", frame.frame_id))
+                .or_else(|| {
+                    information_statement
+                        .as_ref()
+                        .filter(|statement| {
+                            event.start_byte >= statement.content_start_byte
+                                && event.end_byte <= statement.content_end_byte
+                                && source.get(event.start_byte..event.end_byte).is_some_and(
+                                    |surface| {
+                                        surface.to_lowercase()
+                                            == event.predicate_surface.to_lowercase()
+                                    },
+                                )
+                        })
+                        .map(|statement| {
+                            format!(
+                                "CONTENT_ARGUMENT_OF_MATRIX_GRAMMAR:{}",
+                                statement.grammar_rule
+                            )
+                        })
+                });
+            if let Some(evidence) = matrix_evidence {
+                if event.scope != NativeEventScopeIR::ContentComplement {
+                    event.scope = NativeEventScopeIR::ContentComplement;
+                    event.evidence.push(evidence);
+                    changed = true;
+                }
+            }
+        }
+        if !changed {
+            return false;
+        }
+        self.selected_live_goals.retain(|goal| {
+            self.events.iter().any(|event| {
+                event.event_id == goal.source_event_id && event.scope == NativeEventScopeIR::Live
+            })
+        });
+        if self.selected_live_goals.is_empty() && self.unresolved.is_empty() {
+            self.response_goal = NativeResponseGoalIR::Acknowledge;
+            self.response_mode = NativeResponseModeIR::Acknowledgement;
+        }
+        self.selected_semantic_sha256 = selected_semantic_sha256(self);
+        self.circuit_sha256 = native_turn_sha256(self);
+        debug_assert!(self.validate_for_source(source));
+        true
+    }
+
     /// Materialize a request selected by the compositional grammar into the
     /// native event/goal IR when the native lexical path found no competing
     /// goal. This is a one-way, fill-only arbitration step: an existing native
@@ -479,15 +605,7 @@ impl NativeTurnIR {
                 source_event_id: event_id,
                 canonical_predicate: frame.canonical_predicate.clone(),
                 intent: candidate.intent,
-                subject: selected_entities
-                    .iter()
-                    .map(|entity| entity.surface.as_str())
-                    .collect::<Vec<_>>()
-                    .join(if self.language == LanguageCodeIR::Korean {
-                        "와 "
-                    } else {
-                        " and "
-                    }),
+                subject: goal_subject_surface(source, self.language, &selected_entities),
                 subject_concepts: selected_entities
                     .iter()
                     .map(|entity| entity.canonical_concept.clone())
@@ -760,6 +878,12 @@ impl NativeTurnIR {
                             || item.starts_with("DIALOGUE_CONTEXT_ENTITY:")
                     }) && (entity.start_byte != 0 || entity.end_byte != 0))
                     || entity.confidence_millis > 1_000
+                    || (entity
+                        .evidence
+                        .iter()
+                        .any(|e| e.starts_with("CLAUSE_OWNED_THEME:"))
+                        && source.get(entity.start_byte..entity.end_byte)
+                            != Some(entity.surface.as_str()))
                     || entity.evidence.is_empty()
             })
         {
@@ -1241,6 +1365,24 @@ struct ContextEntityCandidate {
 
 pub struct NativeLanguageCircuit;
 
+/// Profile-only breakdown of one native circuit pass. It is never serialized,
+/// persisted, or consulted by semantic selection.
+#[derive(Debug, Clone, Copy, Default)]
+pub(crate) struct NativeAnalysisTimingIR {
+    pub preparation_micros: u64,
+    pub source_views_micros: u64,
+    pub entity_extraction_micros: u64,
+    pub discourse_context_micros: u64,
+    pub action_and_response_mode_micros: u64,
+    pub argument_context_micros: u64,
+    pub event_binding_micros: u64,
+    pub finalization_micros: u64,
+}
+
+fn native_duration_micros(duration: std::time::Duration) -> u64 {
+    u64::try_from(duration.as_micros()).unwrap_or(u64::MAX)
+}
+
 impl NativeLanguageCircuit {
     pub fn analyze(&self, source: &str) -> NativeTurnIR {
         self.analyze_with_context(source, &NativeDialogueContextIR::default())
@@ -1251,6 +1393,41 @@ impl NativeLanguageCircuit {
         source: &str,
         context: &NativeDialogueContextIR,
     ) -> NativeTurnIR {
+        self.analyze_with_context_and_compositional_analysis(source, context, None)
+    }
+
+    /// Reuses an analysis produced immediately from the exact same source.
+    /// This is crate-visible so the conversation pipeline can avoid analyzing
+    /// one immutable source twice; callers still own source equality.
+    pub(crate) fn analyze_with_context_and_compositional_analysis(
+        &self,
+        source: &str,
+        context: &NativeDialogueContextIR,
+        exact_source_analysis: Option<&crate::compositional_semantics::CompositionalAnalysisIR>,
+    ) -> NativeTurnIR {
+        self.analyze_internal(source, context, exact_source_analysis, None)
+    }
+
+    pub(crate) fn analyze_profiled_with_context_and_compositional_analysis(
+        &self,
+        source: &str,
+        context: &NativeDialogueContextIR,
+        exact_source_analysis: Option<&crate::compositional_semantics::CompositionalAnalysisIR>,
+    ) -> (NativeTurnIR, NativeAnalysisTimingIR) {
+        let mut timing = NativeAnalysisTimingIR::default();
+        let turn = self.analyze_internal(source, context, exact_source_analysis, Some(&mut timing));
+        (turn, timing)
+    }
+
+    fn analyze_internal(
+        &self,
+        source: &str,
+        context: &NativeDialogueContextIR,
+        exact_source_analysis: Option<&crate::compositional_semantics::CompositionalAnalysisIR>,
+        mut timing: Option<&mut NativeAnalysisTimingIR>,
+    ) -> NativeTurnIR {
+        let preparation_started = timing.as_ref().map(|_| Instant::now());
+        let source_views_started = timing.as_ref().map(|_| Instant::now());
         let language = if source
             .chars()
             .any(|character| ('\u{ac00}'..='\u{d7a3}').contains(&character))
@@ -1260,19 +1437,37 @@ impl NativeLanguageCircuit {
             LanguageCodeIR::English
         };
         let lower = source.to_lowercase();
-        let mut entities = extract_entities(source, &lower);
+        // Native entity extraction uses original source spans, while action
+        // filtering uses the lower-cased analysis surface.  Preserve both
+        // views, but tokenize each exactly once instead of tokenizing the
+        // entire long input again for every lexical action candidate.
+        let source_tokens = token_spans(source);
+        let lower_tokens = token_spans(&lower);
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), source_views_started) {
+            timing.source_views_micros = native_duration_micros(started.elapsed());
+        }
+        let entity_extraction_started = timing.as_ref().map(|_| Instant::now());
+        let mut entities = extract_entities_with_tokens(&source_tokens, &lower);
         let context_entities = recent_context_entities(context);
-        let ordinal_reference = ordinal_goal_index(&lower).is_some();
-        let set_member_reference = set_member_selection(&lower).is_some();
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), entity_extraction_started) {
+            timing.entity_extraction_micros = native_duration_micros(started.elapsed());
+        }
+        let discourse_context_started = timing.as_ref().map(|_| Instant::now());
+        let ordinal_goal = ordinal_goal_index(&lower);
+        let ordinal_reference = ordinal_goal.is_some();
+        let set_member_choice = set_member_selection(&lower);
+        let set_member_reference = set_member_choice.is_some();
         let plural_context_reference = contains_plural_context_reference_marker(&lower);
         let unique_context_goal = uniquely_recent_replayable_context_goal(&context.active_goals);
+        let continuation_marker = continuation_constraint_marker(&lower);
+        let source_certainty_query = asks_what_is_certain(&lower);
+        let outcome_alternative_query = asks_outcome_alternative(&lower);
         let task_continuation_reference = !set_member_reference
             && !ordinal_reference
             && !plural_context_reference
             && (operation_ellipsis_marker(&lower).is_some()
-                || continuation_constraint_marker(&lower).is_some());
-        let discourse_level_answer_query =
-            asks_what_is_certain(&lower) || asks_outcome_alternative(&lower);
+                || continuation_marker.is_some());
+        let discourse_level_answer_query = source_certainty_query || outcome_alternative_query;
         let context_entity_ambiguity = entities.is_empty()
             && contains_context_reference_marker(&lower)
             && !ordinal_reference
@@ -1348,7 +1543,14 @@ impl NativeLanguageCircuit {
         } else {
             Vec::new()
         };
-        let mut actions = action_matches(&lower);
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), discourse_context_started) {
+            timing.discourse_context_micros = native_duration_micros(started.elapsed());
+        }
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), preparation_started) {
+            timing.preparation_micros = native_duration_micros(started.elapsed());
+        }
+        let action_and_response_mode_started = timing.as_ref().map(|_| Instant::now());
+        let mut actions = action_matches(&lower, &lower_tokens);
         suppress_explanation_complement_actions(&mut actions, &lower);
         suppress_nominal_action_modifiers(&mut actions, &lower);
         if continuation_constraint_marker(&lower).is_some() {
@@ -1358,7 +1560,7 @@ impl NativeLanguageCircuit {
         if let Some((start, end, marker)) = retarget_carrier_marker(&lower) {
             let prior =
                 uniquely_recent_replayable_context_goal(&context.active_goals).or_else(|| {
-                    set_member_selection(&lower)
+                    set_member_choice
                         .is_some()
                         .then(|| shared_replayable_context_operation(&context.active_goals))
                         .flatten()
@@ -1377,7 +1579,7 @@ impl NativeLanguageCircuit {
         } else if let Some((start, end, marker)) = operation_ellipsis_marker(&lower) {
             let prior =
                 uniquely_recent_replayable_context_goal(&context.active_goals).or_else(|| {
-                    set_member_selection(&lower)
+                    set_member_choice
                         .is_some()
                         .then(|| shared_replayable_context_operation(&context.active_goals))
                         .flatten()
@@ -1403,7 +1605,7 @@ impl NativeLanguageCircuit {
                 }
             }
         }
-        if let Some((start, end, marker)) = continuation_constraint_marker(&lower) {
+        if let Some((start, end, marker)) = continuation_marker {
             if let Some(prior) = uniquely_recent_replayable_context_goal(&context.active_goals) {
                 if !actions.iter().any(|action| {
                     action.inherited_goal_id.as_deref() == Some(prior.goal_id.as_str())
@@ -1421,9 +1623,9 @@ impl NativeLanguageCircuit {
             }
         }
         actions = non_overlapping_action_matches(actions);
-        let ordinal_context_entity = ordinal_goal_index(&lower)
+        let ordinal_context_entity = ordinal_goal
             .and_then(|ordinal| context_entities.get(ordinal.saturating_sub(1)));
-        let ordinal_context = ordinal_goal_index(&lower).and_then(|ordinal| {
+        let ordinal_context = ordinal_goal.and_then(|ordinal| {
             let mut goals = context.active_goals.iter().collect::<Vec<_>>();
             goals.sort_by(|left, right| {
                 left.introduced_turn
@@ -1495,9 +1697,9 @@ impl NativeLanguageCircuit {
             Some(NativeResponseModeIR::ReportedOutcome)
         } else if competing_outcome_reports {
             Some(NativeResponseModeIR::CompetingOutcomeReports)
-        } else if asks_what_is_certain(&lower) {
+        } else if source_certainty_query {
             Some(NativeResponseModeIR::SourceCertaintyQuery)
-        } else if asks_outcome_alternative(&lower) {
+        } else if outcome_alternative_query {
             Some(NativeResponseModeIR::OutcomeAlternativeQuery)
         } else if asks_for_result_contents(&lower) || asks_for_findings_over_plan(&lower) {
             Some(NativeResponseModeIR::EvidenceResultQuery)
@@ -1543,6 +1745,12 @@ impl NativeLanguageCircuit {
             });
             entity_id
         });
+        if let (Some(timing), Some(started)) =
+            (timing.as_deref_mut(), action_and_response_mode_started)
+        {
+            timing.action_and_response_mode_micros = native_duration_micros(started.elapsed());
+        }
+        let argument_context_started = timing.as_ref().map(|_| Instant::now());
         let mut events = Vec::new();
         let mut bindings = Vec::new();
         if let Some((goal, entity_id)) = verified_result_context.zip(verified_result_entity_id) {
@@ -1564,20 +1772,60 @@ impl NativeLanguageCircuit {
             });
         }
         let mut unresolved = Vec::new();
-        if context_entity_ambiguity {
+        // The native action path owns only its argument requirements. A
+        // descriptive/corrective turn without an action or result query must
+        // leave reference adjudication to its semantic consumer instead of
+        // vetoing that consumer with an unused action-context ambiguity.
+        if context_entity_ambiguity && (!actions.is_empty() || verified_result_query) {
             unresolved.push("AMBIGUOUS_DIALOGUE_CONTEXT_ENTITY".to_string());
         }
-        if actions.is_empty()
-            && !verified_result_query
-            && !action_outcome_report
-            && !competing_outcome_reports
-            && underspecified_problem_disclosure(&lower, &entities)
-        {
-            unresolved.push("UNDERSPECIFIED_PROBLEM_DISCLOSURE".to_string());
-        }
+        // A reported problem is content, not a missing request. Only an actual
+        // interpretation/binding failure may populate `unresolved`; lexical
+        // sentiment or a negative state cannot manufacture a clarification goal.
         let coordinated_groups = coordinated_entity_groups(&entities, &lower);
         let mut last_coordinated_group = Vec::<String>::new();
+        // Action vocabulary is intentionally incomplete. Its nearest-action
+        // windows must not span a different grammar-owned clause merely because
+        // that clause's predicate has no native action lexeme.
+        let owned_argument_structure;
+        let argument_structure = match exact_source_analysis {
+            Some(analysis) => analysis,
+            None => {
+                owned_argument_structure =
+                    crate::compositional_semantics::CompositionalSemanticAnalyzer.analyze(source);
+                &owned_argument_structure
+            }
+        };
+        let multiple_matrix_clauses = argument_structure
+            .clause_graph
+            .nodes
+            .iter()
+            .filter(|node| node.function.permits_independent_directive())
+            .count()
+            > 1;
+        let incomplete_native_clause_coverage = multiple_matrix_clauses
+            && argument_structure
+                .clause_graph
+                .nodes
+                .iter()
+                .filter(|node| node.function.permits_independent_directive())
+                .any(|node| {
+                    argument_structure
+                        .frames
+                        .iter()
+                        .find(|frame| frame.frame_id == node.anchor_frame_id)
+                        .is_some_and(|frame| {
+                            !actions.iter().any(|action| {
+                                action.start == frame.source_start_byte
+                                    && action.canonical_predicate == frame.canonical_predicate
+                            })
+                        })
+                });
 
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), argument_context_started) {
+            timing.argument_context_micros = native_duration_micros(started.elapsed());
+        }
+        let event_binding_started = timing.as_ref().map(|_| Instant::now());
         for (index, action) in actions.iter().enumerate() {
             let previous_end = index
                 .checked_sub(1)
@@ -1586,12 +1834,32 @@ impl NativeLanguageCircuit {
             let next_start = actions
                 .get(index + 1)
                 .map_or(source.len(), |next| next.start);
-            let left = connector_left_boundary(&lower, previous_end, action.start);
+            let owned_frame = incomplete_native_clause_coverage
+                .then(|| {
+                    argument_structure.frames.iter().find(|frame| {
+                        frame.source_start_byte == action.start
+                            && frame.canonical_predicate == action.canonical_predicate
+                    })
+                })
+                .flatten();
+            let owned_clause = owned_frame
+                .and_then(|frame| {
+                    argument_structure
+                        .clause_graph
+                        .node_for_frame(&frame.frame_id)
+                })
+                .filter(|node| node.function.permits_independent_directive());
+            let left = owned_clause.map_or_else(
+                || connector_left_boundary(&lower, previous_end, action.start),
+                |node| node.source_start_byte,
+            );
             // A sequencing connective between two objects does not terminate
             // the theme span when the utterance contains only one predicate
             // ("check A and then B"). Connector boundaries separate actions,
             // not coordinated arguments of the same action.
-            let right = if actions.len() == 1 {
+            let right = if let Some(node) = owned_clause {
+                node.source_end_byte
+            } else if actions.len() == 1 {
                 source.len()
             } else {
                 connector_right_boundary(&lower, action.end, next_start)
@@ -1648,6 +1916,47 @@ impl NativeLanguageCircuit {
                 })
                 .map(|entity| entity.entity_id.clone())
                 .collect::<Vec<_>>();
+            if let Some((frame, clause)) = owned_frame.zip(owned_clause) {
+                let theme = frame.theme.trim();
+                // Explicit arguments constrain entity selection. Context can
+                // still fill genuine pronouns/ellipsis, but cannot substitute
+                // an actor belonging to an adjacent content question.
+                if !theme.is_empty() && !contains_context_reference_marker(&theme.to_lowercase()) {
+                    if let Some(offset) = lower
+                        .get(left..right)
+                        .and_then(|span| span.rfind(&theme.to_lowercase()))
+                    {
+                        let start = left + offset;
+                        let end = start + theme.len();
+                        if end <= clause.source_end_byte && source.get(start..end).is_some() {
+                            local.retain(|id| {
+                                entities.iter().any(|entity| {
+                                    &entity.entity_id == id
+                                        && entity.start_byte >= start
+                                        && entity.end_byte <= end
+                                })
+                            });
+                            if local.is_empty() {
+                                let id = format!("NX{:03}", entities.len() + 1);
+                                entities.push(NativeEntityIR {
+                                    entity_id: id.clone(),
+                                    surface: source[start..end].to_string(),
+                                    canonical_concept: context_subject_concept(theme),
+                                    start_byte: start,
+                                    end_byte: end,
+                                    rejected_by_contrast: false,
+                                    confidence_millis: 900,
+                                    evidence: vec![format!(
+                                        "CLAUSE_OWNED_THEME:{}",
+                                        frame.frame_id
+                                    )],
+                                });
+                                local.push(id);
+                            }
+                        }
+                    }
+                }
+            }
             if action.inherited_goal_id.is_some() {
                 local.retain(|entity_id| {
                     entities
@@ -1937,6 +2246,10 @@ impl NativeLanguageCircuit {
             }
         }
 
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), event_binding_started) {
+            timing.event_binding_micros = native_duration_micros(started.elapsed());
+        }
+        let finalization_started = timing.as_ref().map(|_| Instant::now());
         let mut selected_live_goals = Vec::new();
         for event in events
             .iter()
@@ -1954,15 +2267,7 @@ impl NativeLanguageCircuit {
                         .find(|entity| &entity.entity_id == entity_id)
                 })
                 .collect::<Vec<_>>();
-            let subject = selected_entities
-                .iter()
-                .map(|entity| entity.surface.as_str())
-                .collect::<Vec<_>>()
-                .join(if language == LanguageCodeIR::Korean {
-                    "와 "
-                } else {
-                    " and "
-                });
+            let subject = goal_subject_surface(source, language, &selected_entities);
             selected_live_goals.push(NativeGoalIR {
                 goal_id: format!("NG{:03}", selected_live_goals.len() + 1),
                 source_event_id: event.event_id.clone(),
@@ -2031,17 +2336,23 @@ impl NativeLanguageCircuit {
         };
         turn.selected_semantic_sha256 = selected_semantic_sha256(&turn);
         turn.circuit_sha256 = native_turn_sha256(&turn);
+        if let (Some(timing), Some(started)) = (timing.as_deref_mut(), finalization_started) {
+            timing.finalization_micros = native_duration_micros(started.elapsed());
+        }
         debug_assert!(turn.validate_for_source(source));
         turn
     }
 }
 
-fn action_matches(lower: &str) -> Vec<ActionMatch> {
+fn action_matches(lower: &str, tokens: &[TokenSpan]) -> Vec<ActionMatch> {
     let mut candidates = Vec::new();
     for lexeme in ACTION_LEXEMES {
         for (start, _) in lower.match_indices(lexeme.surface) {
             let end = start + lexeme.surface.len();
             if lexeme.surface.is_ascii() && !ascii_word_boundaries(lower, start, end) {
+                continue;
+            }
+            if !lexeme.surface.is_ascii() && nominal_lexical_use(lower, start, end, tokens) {
                 continue;
             }
             candidates.push(ActionMatch {
@@ -2072,6 +2383,32 @@ fn action_matches(lower: &str) -> Vec<ActionMatch> {
     }
     selected.sort_by_key(|candidate| candidate.start);
     selected
+}
+
+/// A lexical action label inside an indexed noun is not an imperative. Preserve
+/// bare nominal requests, but distinguish subject/topic/genitive morphology and
+/// compounds from the event head. Actual governing requests are parsed separately.
+fn nominal_lexical_use(source: &str, start: usize, end: usize, tokens: &[TokenSpan]) -> bool {
+    let Some(token) = tokens
+        .iter()
+        .find(|t| t.start <= start && end <= t.end)
+    else {
+        return false;
+    };
+    let lookup = crate::lexical_knowledge_pack::builtin_pack().lookup(&token.surface);
+    if lookup.truncated {
+        return false;
+    }
+    lookup.matches.iter().any(|m| {
+        m.matched_form == token.surface
+            && matches!(m.entry.pos.as_str(), "명사" | "대명사" | "의존 명사")
+            && (m.entry.lemma != source[start..end]
+                || m.morphology.grammar_rule == "KO_NOMINAL_PARTICLE"
+                    && matches!(
+                        m.morphology.ending.as_str(),
+                        "이" | "가" | "은" | "는" | "의"
+                    ))
+    })
 }
 
 /// Projects an event from a productive grammatical construction. The lexical
@@ -2697,6 +3034,10 @@ fn token_spans(source: &str) -> Vec<TokenSpan> {
 
 fn extract_entities(source: &str, lower: &str) -> Vec<NativeEntityIR> {
     let tokens = token_spans(source);
+    extract_entities_with_tokens(&tokens, lower)
+}
+
+fn extract_entities_with_tokens(tokens: &[TokenSpan], lower: &str) -> Vec<NativeEntityIR> {
     let mut spans = Vec::<(usize, usize, String, String, Vec<String>)>::new();
     let mut covered_resource_tokens = BTreeSet::new();
     for (index, token) in tokens.iter().enumerate() {
@@ -2890,6 +3231,7 @@ fn is_proper_entity_token(surface: &str) -> bool {
             .is_some_and(|head| head == lower)
     });
     !action_head
+        && !crate::typed_coreference::is_pronominal(&lower)
         && !matches!(
             lower.as_str(),
             "i" | "the"
@@ -2988,8 +3330,7 @@ fn is_lifecycle_query_target(intent: PlanIntentIR) -> bool {
 }
 
 fn resource_kind(surface: &str) -> Option<&'static str> {
-    let lower = surface.to_lowercase();
-    [
+    const ENGLISH: [(&str, &str); 23] = [
         ("cache", "C_CACHE"),
         ("log", "C_LOG"),
         ("queue", "C_QUEUE"),
@@ -3013,6 +3354,8 @@ fn resource_kind(surface: &str) -> Option<&'static str> {
         ("task", "C_TASK"),
         ("issue", "C_ISSUE"),
         ("problem", "C_PROBLEM"),
+    ];
+    const KOREAN: [(&str, &str); 19] = [
         ("캐시", "C_CACHE"),
         ("로그", "C_LOG"),
         ("큐", "C_QUEUE"),
@@ -3032,14 +3375,35 @@ fn resource_kind(surface: &str) -> Option<&'static str> {
         ("설명", "C_EXPLANATION"),
         ("작업", "C_TASK"),
         ("문제", "C_PROBLEM"),
-    ]
-    .into_iter()
-    .find_map(|(surface, kind)| {
-        (lower == surface
-            || lower == format!("{surface}s")
-            || lower.starts_with(surface) && korean_particle(&lower[surface.len()..]))
-        .then_some(kind)
-    })
+    ];
+    let first = surface.chars().next()?;
+    if first.is_ascii() {
+        return ENGLISH.iter().find_map(|(stem, kind)| {
+            let plural = surface.is_ascii()
+                && surface.len() == stem.len() + 1
+                && surface[..stem.len()].eq_ignore_ascii_case(stem)
+                && matches!(surface.as_bytes()[stem.len()], b's' | b'S');
+            (surface.eq_ignore_ascii_case(stem)
+                || plural
+                || surface
+                    .get(..stem.len())
+                    .is_some_and(|prefix| prefix.eq_ignore_ascii_case(stem))
+                    && surface
+                        .get(stem.len()..)
+                        .is_some_and(korean_particle))
+            .then_some(*kind)
+        });
+    }
+    match first {
+        '캐' | '로' | '큐' | '서' | '워' | '게' | '보' | '인' | '마' | '파' | '폴' | '코'
+        | '결' | '답' | '설' | '작' | '문' => KOREAN.iter().find_map(|(stem, kind)| {
+            surface
+                .strip_prefix(*stem)
+                .is_some_and(korean_particle)
+                .then_some(*kind)
+        }),
+        _ => None,
+    }
 }
 
 fn resource_surface(surface: &str) -> String {
@@ -3675,44 +4039,6 @@ fn reports_completed_user_action(text: &str) -> bool {
     first_person && completed_action && !text.trim_end().ends_with('?')
 }
 
-fn underspecified_problem_disclosure(text: &str, entities: &[NativeEntityIR]) -> bool {
-    if entities.is_empty()
-        || text.trim_end().ends_with('?')
-        || REPORTED_SCOPE_MARKERS
-            .iter()
-            .any(|marker| text.contains(marker))
-    {
-        return false;
-    }
-    let problem_state = [
-        "acting up",
-        "seems wrong",
-        "seems odd",
-        "is broken",
-        "malfunction",
-        "이상하네",
-        "이상해",
-        "문제가 있",
-        "고장",
-    ]
-    .iter()
-    .any(|marker| text.contains(marker));
-    let personal_affect = [
-        "tired",
-        "exhausted",
-        "drained",
-        "frustrated",
-        "지친",
-        "진이 빠",
-        "힘들",
-        "답답",
-        "짜증",
-    ]
-    .iter()
-    .any(|marker| text.contains(marker));
-    problem_state && !personal_affect
-}
-
 fn reports_competing_outcomes(text: &str) -> bool {
     let reports = [" says ", " said ", " reports ", " reported ", "다고 했"]
         .iter()
@@ -3825,12 +4151,103 @@ fn sha256_serialized(value: &impl Serialize) -> String {
 mod tests {
     use super::*;
 
+    #[test]
+    fn resource_kind_preserves_case_plural_and_korean_particle_recognition() {
+        assert_eq!(resource_kind("cache"), Some("C_CACHE"));
+        assert_eq!(resource_kind("CACHES"), Some("C_CACHE"));
+        assert_eq!(resource_kind("cache를"), Some("C_CACHE"));
+        assert_eq!(resource_kind("서비스에서"), Some("C_SERVICE"));
+        assert_eq!(resource_kind("PG사"), None);
+        assert_eq!(resource_kind("무관한"), None);
+    }
+
+    #[test]
+    fn exact_source_compositional_analysis_preserves_native_turn() {
+        let source = "문서를 검토하고 오류가 있으면 수정해 줘.";
+        let analysis =
+            crate::compositional_semantics::CompositionalSemanticAnalyzer.analyze(source);
+        let context = NativeDialogueContextIR::default();
+        assert_eq!(
+            NativeLanguageCircuit.analyze_with_context(source, &context),
+            NativeLanguageCircuit.analyze_with_context_and_compositional_analysis(
+                source,
+                &context,
+                Some(&analysis),
+            ),
+        );
+    }
+
+    #[test]
+    fn capitalization_cannot_promote_pronouns_into_named_entities() {
+        for surface in ["I", "We", "You", "He", "She", "It", "They", "Her", "His"] {
+            assert!(!is_proper_entity_token(surface), "{surface}");
+        }
+        for surface in ["Mira", "Weaver", "Iris", "Youville"] {
+            assert!(is_proper_entity_token(surface), "{surface}");
+        }
+        let turn = NativeLanguageCircuit.analyze("We understand how it works.");
+        assert!(turn.entities.is_empty());
+        let context = NativeDialogueContextIR {
+            active_entities: ["Aster", "Beryl"]
+                .into_iter()
+                .enumerate()
+                .map(|(i, name)| NativeContextEntityIR {
+                    referent_id: format!("TEST-{i}"),
+                    surface: name.into(),
+                    introduced_turn: 1,
+                    last_mentioned_turn: 1,
+                })
+                .collect(),
+            ..NativeDialogueContextIR::default()
+        };
+        let description = NativeLanguageCircuit.analyze_with_context("It was different.", &context);
+        assert!(description.unresolved.is_empty());
+        assert!(description.selected_live_goals.is_empty());
+        let action = NativeLanguageCircuit.analyze_with_context("Inspect it.", &context);
+        assert!(action
+            .unresolved
+            .iter()
+            .any(|s| s == "AMBIGUOUS_DIALOGUE_CONTEXT_ENTITY"));
+    }
+
     fn selected(source: &str) -> NativeGoalIR {
         let turn = NativeLanguageCircuit.analyze(source);
         assert!(turn.validate_for_source(source), "{turn:#?}");
         turn.authoritative_single_live_goal()
             .expect("one live goal")
             .clone()
+    }
+
+    #[test]
+    fn korean_compound_theme_preserves_its_explicit_source_span() {
+        let source = "Beryl 설정 파일을 만들어";
+        let beryl_end = "Beryl".len();
+        let file_start = source.find("파일").expect("file span");
+        let file_end = file_start + "파일".len();
+        let beryl = NativeEntityIR {
+            entity_id: "N-1".to_string(),
+            surface: "Beryl".to_string(),
+            canonical_concept: "C_BERYL".to_string(),
+            start_byte: 0,
+            end_byte: beryl_end,
+            rejected_by_contrast: false,
+            confidence_millis: 900,
+            evidence: vec!["TEST".to_string()],
+        };
+        let file = NativeEntityIR {
+            entity_id: "N-2".to_string(),
+            surface: "파일".to_string(),
+            canonical_concept: "C_FILE".to_string(),
+            start_byte: file_start,
+            end_byte: file_end,
+            rejected_by_contrast: false,
+            confidence_millis: 900,
+            evidence: vec!["TEST".to_string()],
+        };
+        assert_eq!(
+            goal_subject_surface(source, LanguageCodeIR::Korean, &[&beryl, &file]),
+            "Beryl 설정 파일"
+        );
     }
 
     #[test]
@@ -4205,10 +4622,8 @@ mod tests {
     #[test]
     fn problem_disclosure_and_action_report_choose_response_goals_without_execution() {
         let disclosure = NativeLanguageCircuit.analyze("The Alder cache is acting up again...");
-        assert_eq!(
-            disclosure.response_goal,
-            NativeResponseGoalIR::AskClarification
-        );
+        assert_eq!(disclosure.response_goal, NativeResponseGoalIR::Acknowledge);
+        assert!(disclosure.unresolved.is_empty());
         assert!(disclosure.selected_live_goals.is_empty());
         assert!(!disclosure.language_can_execute);
 

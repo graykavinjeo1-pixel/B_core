@@ -1,0 +1,9 @@
+{
+  "bindings": [
+    {"primitive_id":"ABP_0001","entry_id":"71280","sense_id":"1","source_ref":"NIKL:71280:1"},
+    {"primitive_id":"ABP_0001","entry_id":"88442","sense_id":"1","source_ref":"SUPPLIED_SYNONYM_LINK:NIKL:88442:1->71280:1"}
+  ],
+  "expressions": [
+    {"primitive_id":"ABP_0001","action_ko":"휴식","action_en":"rest","effect_ko":"피로 완화","effect_en":"fatigue relief"}
+  ]
+}

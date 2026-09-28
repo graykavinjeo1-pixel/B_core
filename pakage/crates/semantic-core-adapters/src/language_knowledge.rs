@@ -6,7 +6,7 @@ use sha2::{Digest, Sha256};
 
 pub const LANGUAGE_KNOWLEDGE_SCHEMA: &str = "B_CORE_LANGUAGE_KNOWLEDGE_IR_1";
 pub const LANGUAGE_DIALOGUE_DIRECTIVE_ANALYSIS_SCHEMA: &str =
-    "B_CORE_LANGUAGE_DIALOGUE_DIRECTIVE_ANALYSIS_IR_1";
+    "B_CORE_LANGUAGE_DIALOGUE_DIRECTIVE_ANALYSIS_IR_3";
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -63,6 +63,7 @@ pub enum PragmaticFunctionIR {
 pub enum LanguageDialogueDirectiveAtomIR {
     AssistantResponseTarget,
     SetOperator,
+    ProhibitOperator,
     ClauseInitialSetOperator,
     ResponseLengthConcise,
     ResponseLengthDetailed,
@@ -94,6 +95,7 @@ pub enum LanguageDialogueDirectiveValueIR {
 pub struct LanguageDialogueDirectiveFrameIR {
     pub axis: LanguageDialogueDirectiveAxisIR,
     pub value: LanguageDialogueDirectiveValueIR,
+    pub prohibited: bool,
     pub evidence_knowledge_ids: Vec<String>,
     pub confidence_millis: u16,
     pub semantic_authority: bool,
@@ -163,6 +165,94 @@ pub struct LanguageKnowledgeEntryIR {
     pub pragmatic_function: Option<PragmaticFunctionIR>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub dialogue_directive_atom: Option<LanguageDialogueDirectiveAtomIR>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub morphology: Option<LanguageMorphologyIR>,
+}
+
+/// Supplied linguistic knowledge, separate from the concept/value attached to
+/// the entry. A dictionary descriptive predicate X다 can modify an act as X게.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
+pub enum LanguageMorphologyIR {
+    KoreanDescriptiveAdverb,
+}
+
+#[derive(Debug, Clone)]
+struct CompiledSurfaceForm {
+    surface: String,
+    bounded: bool,
+}
+
+impl CompiledSurfaceForm {
+    fn matches(&self, text: &str, language: LanguageCodeIR) -> bool {
+        if !self.bounded {
+            return surface_matches(text, &self.surface, language);
+        }
+        text.match_indices(&self.surface).any(|(start, _)| {
+            let word = |c: char| c.is_alphanumeric() || c == '_';
+            !text[..start].chars().next_back().is_some_and(word)
+                && !text[start + self.surface.len()..]
+                    .chars()
+                    .next()
+                    .is_some_and(word)
+        })
+    }
+}
+
+fn compile_surface_forms(entry: &LanguageKnowledgeEntryIR) -> Vec<CompiledSurfaceForm> {
+    let mut forms = Vec::new();
+    for surface in &entry.surface_forms {
+        let surface = normalize(surface);
+        let stem = entry.morphology.and_then(|grammar| match grammar {
+            LanguageMorphologyIR::KoreanDescriptiveAdverb => surface.strip_suffix('다'),
+        });
+        if let Some(stem) = stem {
+            forms.push(CompiledSurfaceForm {
+                surface: format!("{stem}게"),
+                bounded: true,
+            });
+        }
+        forms.push(CompiledSurfaceForm {
+            bounded: stem.is_some(),
+            surface,
+        });
+    }
+    forms
+}
+
+/// Content-request parsing uses the same supplied morphology as directive
+/// grounding. This immutable derived index is built once, not per sentence.
+pub(crate) fn korean_derived_response_manner(
+    surface: &str,
+) -> Option<LanguageDialogueDirectiveValueIR> {
+    static FORMS: std::sync::OnceLock<BTreeMap<String, LanguageDialogueDirectiveValueIR>> =
+        std::sync::OnceLock::new();
+    FORMS
+        .get_or_init(|| {
+            builtin_entries()
+                .iter()
+                .filter_map(|entry| {
+                    let value = match entry.dialogue_directive_atom? {
+                        LanguageDialogueDirectiveAtomIR::ResponseLengthDetailed => {
+                            LanguageDialogueDirectiveValueIR::Detailed
+                        }
+                        LanguageDialogueDirectiveAtomIR::ResponseLengthConcise => {
+                            LanguageDialogueDirectiveValueIR::Concise
+                        }
+                        _ => return None,
+                    };
+                    Some(
+                        compile_surface_forms(entry)
+                            .into_iter()
+                            .filter(|form| form.bounded && form.surface.ends_with('게'))
+                            .map(move |form| (form.surface, value)),
+                    )
+                })
+                .flatten()
+                .collect()
+        })
+        .get(surface)
+        .copied()
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -207,6 +297,7 @@ pub enum LanguageKnowledgeError {
 #[derive(Debug, Clone)]
 pub struct LanguageKnowledgeBase {
     entries: BTreeMap<String, LanguageKnowledgeEntryIR>,
+    compiled_forms: BTreeMap<String, Vec<CompiledSurfaceForm>>,
 }
 
 impl Default for LanguageKnowledgeBase {
@@ -219,6 +310,7 @@ impl LanguageKnowledgeBase {
     pub fn bilingual_builtin() -> Self {
         let mut knowledge = Self {
             entries: BTreeMap::new(),
+            compiled_forms: BTreeMap::new(),
         };
         for entry in builtin_entries() {
             knowledge
@@ -239,6 +331,8 @@ impl LanguageKnowledgeBase {
             }
             return Err(LanguageKnowledgeError::IdentityConflict);
         }
+        self.compiled_forms
+            .insert(entry.knowledge_id.clone(), compile_surface_forms(&entry));
         self.entries.insert(entry.knowledge_id.clone(), entry);
         Ok(true)
     }
@@ -256,10 +350,9 @@ impl LanguageKnowledgeBase {
             .entries
             .values()
             .filter(|entry| {
-                entry
-                    .surface_forms
+                self.compiled_forms[&entry.knowledge_id]
                     .iter()
-                    .any(|form| surface_matches(&normalized_text, form, entry.language))
+                    .any(|form| form.matches(&normalized_text, entry.language))
             })
             .cloned()
             .collect::<Vec<_>>();
@@ -341,10 +434,72 @@ impl LanguageKnowledgeBase {
     /// directive. Quoted material is excluded, contradictory values remain
     /// unresolved, and the result cannot authorize semantics or execution.
     pub fn analyze_dialogue_directives(&self, text: &str) -> LanguageDialogueDirectiveAnalysisIR {
+        let unquoted = strip_quoted_spans(text).to_lowercase();
+        let mut result = LanguageDialogueDirectiveAnalysisIR {
+            schema: LANGUAGE_DIALOGUE_DIRECTIVE_ANALYSIS_SCHEMA.to_string(),
+            source_text_sha256: String::new(),
+            matched_knowledge_ids: Vec::new(),
+            frames: Vec::new(),
+            unresolved_axes: Vec::new(),
+            semantic_authority: false,
+            external_execution_authorized: false,
+            analysis_sha256: String::new(),
+        };
+        // Coordinated clauses have separate operator scope. Shared-target
+        // ellipsis is unresolved here; a negation must not leak across them.
+        for clause in unquoted
+            .split(['.', '!', '?', ';', '\n'])
+            .flat_map(|clause| clause.split(" and "))
+            .flat_map(|clause| clause.split(" but "))
+            .flat_map(|clause| clause.split(" 그리고 "))
+            .flat_map(|clause| clause.split(" 하지만 "))
+            .filter(|clause| !clause.trim().is_empty())
+        {
+            let parsed = self.analyze_directive_clause(clause);
+            result
+                .matched_knowledge_ids
+                .extend(parsed.matched_knowledge_ids);
+            result.unresolved_axes.extend(parsed.unresolved_axes);
+            for frame in parsed.frames {
+                if let Some(prior) = result
+                    .frames
+                    .iter_mut()
+                    .find(|prior| prior.axis == frame.axis)
+                {
+                    if prior.value != frame.value || prior.prohibited != frame.prohibited {
+                        result.unresolved_axes.push(frame.axis);
+                    } else {
+                        prior
+                            .evidence_knowledge_ids
+                            .extend(frame.evidence_knowledge_ids);
+                        prior.evidence_knowledge_ids.sort();
+                        prior.evidence_knowledge_ids.dedup();
+                    }
+                } else {
+                    result.frames.push(frame);
+                }
+            }
+        }
+        result.matched_knowledge_ids.sort();
+        result.matched_knowledge_ids.dedup();
+        result.unresolved_axes.sort();
+        result.unresolved_axes.dedup();
+        result
+            .frames
+            .retain(|frame| !result.unresolved_axes.contains(&frame.axis));
+        result.source_text_sha256 = sha256(text.trim().as_bytes());
+        result.analysis_sha256.clear();
+        result.analysis_sha256 = sha256_json(&result);
+        debug_assert!(result.validate_source(text));
+        result
+    }
+
+    fn analyze_directive_clause(&self, text: &str) -> LanguageDialogueDirectiveAnalysisIR {
         let unquoted = normalize(&strip_quoted_spans(text));
         let mut matched_knowledge_ids = Vec::new();
         let mut target_ids = Vec::new();
         let mut operator_ids = Vec::new();
+        let mut prohibited = false;
         let mut values = BTreeMap::<
             LanguageDialogueDirectiveAxisIR,
             BTreeMap<LanguageDialogueDirectiveValueIR, Vec<String>>,
@@ -363,16 +518,28 @@ impl LanguageKnowledgeBase {
             let atom = entry
                 .dialogue_directive_atom
                 .expect("filtered directive atom");
-            let matched_form = entry
-                .surface_forms
+            let matched_form = self.compiled_forms[&entry.knowledge_id]
                 .iter()
                 .filter(|form| match atom {
-                    LanguageDialogueDirectiveAtomIR::ClauseInitialSetOperator => {
-                        clause_initial_surface_matches(&unquoted, form, entry.language)
+                    LanguageDialogueDirectiveAtomIR::ProhibitOperator => {
+                        if entry.language == LanguageCodeIR::Korean {
+                            form.surface.ends_with('지')
+                                && unquoted.match_indices(&form.surface).any(|(start, _)| {
+                                    crate::compositional_semantics::korean_prohibitive_tail(
+                                        &unquoted[start + form.surface.len() - "지".len()..],
+                                    )
+                                })
+                        } else {
+                            let clause = unquoted.strip_prefix("please ").unwrap_or(&unquoted);
+                            clause_initial_surface_matches(clause, &form.surface, entry.language)
+                        }
                     }
-                    _ => surface_matches(&unquoted, form, entry.language),
+                    LanguageDialogueDirectiveAtomIR::ClauseInitialSetOperator => {
+                        clause_initial_surface_matches(&unquoted, &form.surface, entry.language)
+                    }
+                    _ => form.matches(&unquoted, entry.language),
                 })
-                .map(|form| normalize(form))
+                .map(|form| form.surface.clone())
                 .max_by_key(|form| form.len());
             let Some(matched_form) = matched_form else {
                 continue;
@@ -384,6 +551,10 @@ impl LanguageKnowledgeBase {
                 }
                 LanguageDialogueDirectiveAtomIR::SetOperator
                 | LanguageDialogueDirectiveAtomIR::ClauseInitialSetOperator => {
+                    operator_ids.push(entry.knowledge_id.clone());
+                }
+                LanguageDialogueDirectiveAtomIR::ProhibitOperator => {
+                    prohibited = true;
                     operator_ids.push(entry.knowledge_id.clone());
                 }
                 LanguageDialogueDirectiveAtomIR::ResponseLengthConcise => {
@@ -462,6 +633,11 @@ impl LanguageKnowledgeBase {
         operator_ids.dedup();
         let mut frames = Vec::new();
         let mut unresolved_axes = Vec::new();
+        if prohibited && values.len() > 1 {
+            // NOT(A AND B) does not imply NOT(A) AND NOT(B).
+            unresolved_axes.extend(values.keys().copied());
+            values.clear();
+        }
         if !target_ids.is_empty() && !operator_ids.is_empty() {
             for (axis, axis_values) in values {
                 if axis_values.len() == 1 {
@@ -477,6 +653,7 @@ impl LanguageKnowledgeBase {
                     frames.push(LanguageDialogueDirectiveFrameIR {
                         axis,
                         value: *value,
+                        prohibited,
                         evidence_knowledge_ids,
                         confidence_millis: 960,
                         semantic_authority: false,
@@ -533,6 +710,16 @@ impl LanguageKnowledgeBase {
 fn validate_entry(entry: &LanguageKnowledgeEntryIR) -> Result<(), LanguageKnowledgeError> {
     if entry.schema != LANGUAGE_KNOWLEDGE_SCHEMA {
         return Err(LanguageKnowledgeError::InvalidSchema);
+    }
+    if entry.morphology.is_some()
+        && (entry.language != LanguageCodeIR::Korean
+            || !entry.surface_forms.iter().any(|form| {
+                form.strip_suffix('다').is_some_and(|stem| {
+                    !stem.is_empty() && stem.chars().all(|c| ('가'..='힣').contains(&c))
+                })
+            }))
+    {
+        return Err(LanguageKnowledgeError::InvalidSurfaceForms);
     }
     if entry.knowledge_id.is_empty()
         || entry.knowledge_id.len() > 128
@@ -721,6 +908,7 @@ fn entry(
         intent_hint,
         pragmatic_function,
         dialogue_directive_atom: None,
+        morphology: None,
     }
 }
 
@@ -749,6 +937,25 @@ fn directive_entry(
     entry
 }
 
+fn korean_quality_directive_entry(
+    id: &str,
+    forms: &[&str],
+    concept: &str,
+    atom: LanguageDialogueDirectiveAtomIR,
+) -> LanguageKnowledgeEntryIR {
+    let mut entry = directive_entry(
+        id,
+        LanguageCodeIR::Korean,
+        LanguageKnowledgeCategoryIR::Word,
+        LanguageRegisterIR::Neutral,
+        forms,
+        concept,
+        atom,
+    );
+    entry.morphology = Some(LanguageMorphologyIR::KoreanDescriptiveAdverb);
+    entry
+}
+
 #[allow(clippy::too_many_lines)]
 fn builtin_entries() -> Vec<LanguageKnowledgeEntryIR> {
     use LanguageCodeIR::{English as En, Korean as Ko};
@@ -770,6 +977,24 @@ fn builtin_entries() -> Vec<LanguageKnowledgeEntryIR> {
             LanguageDialogueDirectiveAtomIR::AssistantResponseTarget,
         ),
         directive_entry(
+            "KO.DIRECTIVE.OPERATOR.PROHIBIT",
+            Ko,
+            Grammar,
+            Neutral,
+            &["하지", "답하지"],
+            "prohibit_dialogue_directive",
+            LanguageDialogueDirectiveAtomIR::ProhibitOperator,
+        ),
+        directive_entry(
+            "EN.DIRECTIVE.OPERATOR.PROHIBIT",
+            En,
+            Grammar,
+            Neutral,
+            &["do not", "don't", "never"],
+            "prohibit_dialogue_directive",
+            LanguageDialogueDirectiveAtomIR::ProhibitOperator,
+        ),
+        directive_entry(
             "KO.DIRECTIVE.OPERATOR.SET",
             Ko,
             Grammar,
@@ -778,21 +1003,15 @@ fn builtin_entries() -> Vec<LanguageKnowledgeEntryIR> {
             "set_dialogue_directive",
             LanguageDialogueDirectiveAtomIR::SetOperator,
         ),
-        directive_entry(
+        korean_quality_directive_entry(
             "KO.DIRECTIVE.VALUE.CONCISE",
-            Ko,
-            Word,
-            Neutral,
-            &["짧", "간결하게", "간단히", "핵심만"],
+            &["짧", "짧다", "간결하다", "간단하다", "간단히", "핵심만"],
             "concise_response_length",
             LanguageDialogueDirectiveAtomIR::ResponseLengthConcise,
         ),
-        directive_entry(
+        korean_quality_directive_entry(
             "KO.DIRECTIVE.VALUE.DETAILED",
-            Ko,
-            Word,
-            Neutral,
-            &["자세히", "상세하게", "구체적으로"],
+            &["자세하다", "상세하다", "자세히", "구체적으로"],
             "detailed_response_length",
             LanguageDialogueDirectiveAtomIR::ResponseLengthDetailed,
         ),
@@ -864,7 +1083,14 @@ fn builtin_entries() -> Vec<LanguageKnowledgeEntryIR> {
             En,
             Word,
             Neutral,
-            &["briefly", "concisely", "short", "concise", "to the point"],
+            &[
+                "brief",
+                "briefly",
+                "concisely",
+                "short",
+                "concise",
+                "to the point",
+            ],
             "concise_response_length",
             LanguageDialogueDirectiveAtomIR::ResponseLengthConcise,
         ),
@@ -1495,6 +1721,68 @@ mod tests {
     use super::*;
 
     #[test]
+    fn prohibition_is_a_scoped_operator_not_a_reversed_lexical_value() {
+        let knowledge = LanguageKnowledgeBase::default();
+        for (text, value) in [
+            (
+                "답변을 자세하게 하지 마.",
+                LanguageDialogueDirectiveValueIR::Detailed,
+            ),
+            (
+                "응답은 간결하게 하지 마세요.",
+                LanguageDialogueDirectiveValueIR::Concise,
+            ),
+            (
+                "대답은 표로 하지 말아줘.",
+                LanguageDialogueDirectiveValueIR::Table,
+            ),
+            (
+                "Do not make the response detailed.",
+                LanguageDialogueDirectiveValueIR::Detailed,
+            ),
+            (
+                "Please don't answer briefly.",
+                LanguageDialogueDirectiveValueIR::Concise,
+            ),
+            (
+                "Never make the reply in a table.",
+                LanguageDialogueDirectiveValueIR::Table,
+            ),
+        ] {
+            let parsed = knowledge.analyze_dialogue_directives(text);
+            assert!(parsed.validate_source(text));
+            assert_eq!(parsed.frames.len(), 1, "{text}: {parsed:?}");
+            assert_eq!(parsed.frames[0].value, value);
+            assert!(parsed.frames[0].prohibited);
+        }
+        for text in [
+            "답변을 자세하게 하지 말라고 했어.",
+            "She said do not make the response detailed.",
+            "‘답변은 상세하게 하지 마’라는 문장을 읽어.",
+        ] {
+            assert!(
+                knowledge
+                    .analyze_dialogue_directives(text)
+                    .frames
+                    .is_empty(),
+                "{text}"
+            );
+        }
+        for text in [
+            "Keep the response detailed. Do not delete the file.",
+            "Do not delete the file and keep the response detailed.",
+        ] {
+            let parsed = knowledge.analyze_dialogue_directives(text);
+            assert_eq!(parsed.frames.len(), 1, "{text}");
+            assert!(!parsed.frames[0].prohibited, "{text}");
+        }
+        let ambiguous =
+            knowledge.analyze_dialogue_directives("Do not make the response short in a table.");
+        assert!(ambiguous.frames.is_empty());
+        assert_eq!(ambiguous.unresolved_axes.len(), 2);
+    }
+
+    #[test]
     fn knowledge_is_typed_across_language_and_register_categories() {
         let stats = LanguageKnowledgeBase::default().statistics();
         assert!(stats.korean_entries >= 15);
@@ -1616,5 +1904,80 @@ mod tests {
             format_conflict.unresolved_axes,
             vec![LanguageDialogueDirectiveAxisIR::ResponseFormat]
         );
+    }
+
+    #[test]
+    fn supplied_descriptive_morphology_transfers_without_listing_surface_sentences() {
+        let mut knowledge = LanguageKnowledgeBase::default();
+        for (root, atom, value) in [
+            (
+                "너름하다",
+                LanguageDialogueDirectiveAtomIR::ResponseLengthDetailed,
+                LanguageDialogueDirectiveValueIR::Detailed,
+            ),
+            (
+                "도늠하다",
+                LanguageDialogueDirectiveAtomIR::ResponseLengthConcise,
+                LanguageDialogueDirectiveValueIR::Concise,
+            ),
+        ] {
+            let mut entry = korean_quality_directive_entry(
+                &format!("TEST.ROOT.{}", atom as u8),
+                &[root],
+                "supplied_quality",
+                atom,
+            );
+            assert!(knowledge.inject(entry.clone()).unwrap());
+            assert!(!knowledge.inject(entry.clone()).unwrap());
+            let form = format!("{}게", root.strip_suffix('다').unwrap());
+            assert!(!entry.surface_forms.contains(&form));
+            for target in ["답변은", "응답을", "대답은"] {
+                for operator in ["해줘", "해주세요", "말해줘", "하지 마", "하지 마세요"]
+                {
+                    // A lexical root and licensed morphology are reused across
+                    // independently selected target/operator words.
+                    let text = format!("{target} {form} {operator}.");
+                    let analysis = knowledge.analyze_dialogue_directives(&text);
+                    assert!(analysis.validate_source(&text));
+                    assert_eq!(analysis.frames.len(), 1, "{text}");
+                    assert_eq!(analysis.frames[0].value, value);
+                    assert_eq!(analysis.frames[0].prohibited, operator.starts_with("하지"));
+                    assert!(analysis.frames[0]
+                        .evidence_knowledge_ids
+                        .contains(&entry.knowledge_id));
+                    assert!(knowledge
+                        .understand(&text)
+                        .unwrap()
+                        .matched_knowledge_ids
+                        .contains(&entry.knowledge_id));
+                }
+            }
+            for text in [
+                format!("답변은 초{form} 해줘."),
+                format!("답변은 {form}끝 해줘."),
+                format!("‘답변은 {form} 해줘’라는 문장을 읽어."),
+            ] {
+                assert!(
+                    knowledge
+                        .analyze_dialogue_directives(&text)
+                        .frames
+                        .is_empty(),
+                    "{text}"
+                );
+            }
+            entry.language = LanguageCodeIR::English;
+            assert_eq!(
+                validate_entry(&entry),
+                Err(LanguageKnowledgeError::InvalidSurfaceForms)
+            );
+        }
+        for (form, value) in [
+            ("자세하게", LanguageDialogueDirectiveValueIR::Detailed),
+            ("상세하게", LanguageDialogueDirectiveValueIR::Detailed),
+            ("간결하게", LanguageDialogueDirectiveValueIR::Concise),
+            ("간단하게", LanguageDialogueDirectiveValueIR::Concise),
+        ] {
+            assert_eq!(korean_derived_response_manner(form), Some(value));
+        }
     }
 }

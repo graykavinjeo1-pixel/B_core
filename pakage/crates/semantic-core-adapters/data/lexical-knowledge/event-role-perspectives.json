@@ -1,0 +1,23 @@
+{
+  "schema": "B_CORE_EVENT_ROLE_PERSPECTIVES_1",
+  "authorship": "SUPPLIED_LINGUISTIC_SEMANTICS_NOT_AUTONOMOUS_DISCOVERY",
+  "relations": [
+    {
+      "relation_id": "TEMPORARY_USE_PARTICIPATION_1",
+      "evidence": ["NIKL:92475:1", "NIKL:92475:2", "NIKL:46996:1", "NIKL:17824:1"],
+      "required_participants": ["PROVIDER", "USER", "ITEM"],
+      "perspectives": [
+        {
+          "perspective_id": "PROVIDER_VIEW",
+          "lexical_entry_ids": ["92475", "46996"],
+          "roles": {"AGENT":"PROVIDER", "RECIPIENT":"USER", "THEME":"ITEM", "LOCATION":"PLACE", "TIME":"TIME", "DURATION":"DURATION"}
+        },
+        {
+          "perspective_id": "USER_VIEW",
+          "lexical_entry_ids": ["17824"],
+          "roles": {"AGENT":"USER", "SOURCE":"PROVIDER", "THEME":"ITEM", "LOCATION":"PLACE", "TIME":"TIME", "DURATION":"DURATION"}
+        }
+      ]
+    }
+  ]
+}
