@@ -2136,16 +2136,16 @@ fn decision_choice_options(question_source: &str) -> Option<Vec<String>> {
         .or_else(|| before_middle.rsplit_once("으로 ").map(|(_, value)| value))
         .unwrap_or(before_middle)
         .trim();
-    let options = if alternatives.contains(" 또는 ") {
-        alternatives.split(" 또는 ").collect::<Vec<_>>()
-    } else if alternatives.contains("과 ") {
-        alternatives.split("과 ").collect::<Vec<_>>()
-    } else if alternatives.contains("와 ") {
-        alternatives.split("와 ").collect::<Vec<_>>()
-    } else {
-        return None;
-    };
-    let options = options
+    // The conjunctions compose, so normalize each bounded coordination
+    // separator before splitting. This keeps a three-way A, B 또는 C question
+    // from treating "A, B" as one fabricated alternative.
+    let normalized = alternatives
+        .replace(" 또는 ", "|")
+        .replace("과 ", "|")
+        .replace("와 ", "|")
+        .replace(',', "|");
+    let options = normalized
+        .split('|')
         .into_iter()
         .map(str::trim)
         .filter(|option| !option.is_empty() && option.chars().count() <= 128)
@@ -2162,7 +2162,7 @@ fn choice_feature_tokens(surface: &str) -> std::collections::BTreeSet<String> {
         .map(|token| token.trim_matches(['.', '!', '?', '？', '。', '"', '\'', '“', '”']))
         .filter(|token| token.chars().count() >= 2 && token.chars().count() <= 32)
         .filter(|token| {
-            ["한", "은", "운", "는", "적인"]
+            ["한", "찬", "은", "운", "는", "적인"]
                 .iter()
                 .any(|ending| token.ends_with(ending))
         })
@@ -2327,6 +2327,34 @@ mod tests {
         assert_eq!(inquiry.inline_context.len(), 1);
         assert!(inquiry.choice_selection.is_none());
         assert!(inquiry.validate());
+    }
+
+    #[test]
+    fn decision_choice_supports_active_features_and_three_way_coordination() {
+        let active = decision_inquiry(
+            "소개팅 저녁으로 조용한 식당과 활기찬 식당 중 어디가 좋을까요? 상대는 활기찬 곳을 선호해요.",
+        )
+        .expect("decision inquiry");
+        let active_selection = active.choice_selection.expect("active match");
+        assert_eq!(
+            active_selection.options[active_selection.selected_option_index].source_text,
+            "활기찬 식당"
+        );
+
+        let three_way = decision_inquiry(
+            "소개팅 저녁으로 조용한 식당, 활기찬 식당 또는 야외 식당 중 어디가 좋을까요? 상대는 조용한 곳을 선호해요.",
+        )
+        .expect("decision inquiry");
+        let three_way_selection = three_way
+            .choice_selection
+            .as_ref()
+            .expect("three-way match");
+        assert_eq!(three_way_selection.options.len(), 3);
+        assert_eq!(
+            three_way_selection.options[three_way_selection.selected_option_index].source_text,
+            "조용한 식당"
+        );
+        assert!(three_way.validate());
     }
 
     #[test]
