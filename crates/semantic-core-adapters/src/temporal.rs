@@ -1269,9 +1269,14 @@ fn korean_nominal_time_event(text: &str) -> bool {
         return false;
     }
     let lower = text.trim_end_matches(['.', '!', '?']).trim();
+    // Time-bound commitments and deadlines are ordinary temporal events even
+    // when Korean realizes them with a lexical predicate rather than a
+    // copula: `자료는 오늘 오후 5시까지 보내야 해`.  This stays bounded by
+    // an explicit time expression and a remaining Korean nominal, so a bare
+    // clock reading cannot become an event.
     if ![
-        "야", "이야", "예요", "이에요", "입니다", "였어", "였어요", "있어", "있어요",
-        "있습니다",
+        "있습니다", "이에요", "있어요", "입니다", "였어요", "됩니다", "해야 해요", "해야 해",
+        "이야", "예요", "였어", "있어", "해요", "합니다", "된다", "돼요", "돼", "해", "야",
     ]
     .iter()
     .any(|ending| lower.ends_with(ending))
@@ -1612,11 +1617,21 @@ fn clock_time(text: &str) -> Option<(String, String)> {
                     .and_then(|minute_end| after_hour[..minute_end].trim().parse::<u32>().ok())
                     .filter(|minute| *minute < 60)
                     .unwrap_or(0);
-                let surface = if minute == 0 {
+                let deadline = if minute == 0 {
+                    after_hour.trim_start().starts_with("까지")
+                } else {
+                    after_hour[minute_end_after_hour(after_hour).unwrap_or(0)..]
+                        .trim_start()
+                        .starts_with("까지")
+                };
+                let mut surface = if minute == 0 {
                     format!("{marker} {hour}시")
                 } else {
                     format!("{marker} {hour}시 {minute}분")
                 };
+                if deadline {
+                    surface.push_str("까지");
+                }
                 return Some((
                     surface,
                     format!("TIME:{normalized_hour:02}:{minute:02}"),
@@ -1625,6 +1640,16 @@ fn clock_time(text: &str) -> Option<(String, String)> {
         }
     }
     None
+}
+
+fn minute_end_after_hour(after_hour: &str) -> Option<usize> {
+    let minute_end = after_hour.find('분')?;
+    after_hour[..minute_end]
+        .trim()
+        .parse::<u32>()
+        .ok()
+        .filter(|minute| *minute < 60)?;
+    Some(minute_end + '분'.len_utf8())
 }
 
 fn trim_event_surface(text: &str) -> String {
@@ -1746,6 +1771,40 @@ mod tests {
             TemporalAnswerDispositionIR::AnsweredFromTemporalGraph
         );
         assert_eq!(answer.event_evidence.len(), 1);
+    }
+
+    #[test]
+    fn korean_time_bound_commitment_is_a_typed_event_and_beats_a_shared_head_noun() {
+        let analyzer = TemporalSemanticAnalyzer;
+        let mut graph = TemporalGraphIR::default();
+        graph.apply_turn(&analyzer.analyze_turn("내일 오전 10시에 팀 회의가 있어.", 1, None));
+        let prior = graph.clone();
+        graph.apply_turn(&analyzer.analyze_turn(
+            "회의 자료는 오늘 오후 5시까지 보내야 해.",
+            2,
+            Some(&prior),
+        ));
+        assert_eq!(graph.events.len(), 2);
+        let answer = TemporalQaEngine
+            .answer(
+                "회의 자료는 언제까지 보내야 해?",
+                Some(&graph),
+                LanguageCodeIR::Korean,
+            )
+            .expect("recognized Korean deadline question");
+        assert_eq!(
+            answer.disposition,
+            TemporalAnswerDispositionIR::AnsweredFromTemporalGraph
+        );
+        assert_eq!(answer.event_evidence.len(), 1);
+        assert!(answer.event_evidence[0].surface.contains("회의 자료"));
+        assert_eq!(
+            answer.event_evidence[0]
+                .event_time
+                .as_ref()
+                .map(|time| time.normalized_value.as_str()),
+            Some("DAY_OFFSET:0;TIME:17:00")
+        );
     }
 
     #[test]

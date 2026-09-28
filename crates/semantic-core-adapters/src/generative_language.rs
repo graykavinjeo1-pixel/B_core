@@ -14377,8 +14377,8 @@ fn temporal_event_label(source: &str, time_surface: &str) -> String {
     // `이야` must not be consumed as bare `야`, or a preceding topic marker
     // remains attached to the recovered event nominal.
     let nominal_ending = [
-        "있습니다", "이에요", "있어요", "입니다", "였어요", "이야", "예요", "였어", "있어",
-        "야",
+        "있습니다", "이에요", "있어요", "입니다", "였어요", "해야 해요", "해야 해", "이야",
+        "예요", "였어", "있어", "해요", "합니다", "해", "야",
     ]
     .iter()
     .find(|ending| source.ends_with(**ending));
@@ -14409,6 +14409,21 @@ fn temporal_event_label(source: &str, time_surface: &str) -> String {
         if let Some(stem) = remaining.strip_suffix(suffix) {
             remaining = stem.trim().to_string();
             break;
+        }
+    }
+    // A time-bound Korean commitment frequently puts the referent in topic
+    // position and realizes the obligation with a verb: `회의 자료는 오늘
+    // 오후 5시까지 보내야 해`.  Once the typed time span is removed, retain
+    // the topic nominal rather than treating the remaining predicate as its
+    // name.  This is structural and applies to unseen task nouns alike.
+    if !existence_predicate {
+        for marker in ["은 ", "는 "] {
+            if let Some((topic, _predicate)) = remaining.split_once(marker) {
+                if !topic.trim().is_empty() {
+                    remaining = topic.trim().to_string();
+                    break;
+                }
+            }
         }
     }
     if existence_predicate {
@@ -14795,6 +14810,13 @@ mod tests {
         assert_eq!(
             temporal_event_label("치과 예약은 오후 2시야.", "오후 2시"),
             "치과 예약"
+        );
+        assert_eq!(
+            temporal_event_label(
+                "회의 자료는 오늘 오후 5시까지 보내야 해.",
+                "오늘 오후 5시까지"
+            ),
+            "회의 자료"
         );
         assert_eq!(
             temporal_event_label("The backup completed yesterday.", "yesterday"),
