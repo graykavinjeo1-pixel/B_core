@@ -269,6 +269,20 @@ pub struct DecisionChoiceSelectionIR {
     pub matching_features: Vec<String>,
     #[serde(default)]
     pub excluded_features: Vec<String>,
+    /// Direct option descriptions supplied by the user can establish that a
+    /// particular offered option has a stated feature. This is dialogue
+    /// evidence only: no attribute is inferred from the option's name or from
+    /// outside knowledge.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub option_evidence: Option<DecisionOptionEvidenceIR>,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DecisionOptionEvidenceIR {
+    pub source_text: String,
+    pub source_sha256: String,
+    pub option_index: usize,
+    pub matched_feature_keys: Vec<String>,
 }
 
 impl DecisionChoiceSelectionIR {
@@ -293,7 +307,9 @@ impl DecisionChoiceSelectionIR {
                     .iter()
                     .all(|prior| prior.source_sha256 != option.source_sha256)
             })
-            && (!self.matching_features.is_empty() || !self.excluded_features.is_empty())
+            && (!self.matching_features.is_empty()
+                || !self.excluded_features.is_empty()
+                || self.option_evidence.is_some())
             && self.matching_features.len() <= 4
             && self.matching_features.iter().all(|feature| {
                 feature.chars().count() >= 2
@@ -315,6 +331,18 @@ impl DecisionChoiceSelectionIR {
                     })
             })
             && self.excluded_features.windows(2).all(|pair| pair[0] < pair[1])
+            && self.option_evidence.as_ref().is_none_or(|evidence| {
+                evidence.option_index == self.selected_option_index
+                    && evidence.source_sha256 == decision_source_sha256(&evidence.source_text)
+                    && decision_context_sources(inquiry)
+                        .into_iter()
+                        .any(|source| source == evidence.source_text)
+                    && (1..=4).contains(&evidence.matched_feature_keys.len())
+                    && evidence.matched_feature_keys.windows(2).all(|pair| pair[0] < pair[1])
+                    && evidence.matched_feature_keys.iter().all(|feature| {
+                        feature.chars().count() >= 2 && feature.chars().count() <= 32
+                    })
+            })
             && decision_choice_selection(
                 question_source,
                 &decision_context_sources(inquiry),
@@ -2203,14 +2231,37 @@ pub(crate) fn decision_prior_context(source: &str, turn: u64) -> Option<Decision
         && !text.contains(['?', '？', '"', '“', '”', '‘', '’', '`', '\n', ';'])
         && text.chars().count() <= 512
         && decision_inquiry(text).is_none()
-        && ["원해", "원하고", "싶어", "싶고", "좋겠어", "중요해", "피하고", "선호해"]
+        && (["원해", "원하고", "원한다고", "싶어", "싶고", "좋겠어", "중요해", "피하고", "선호해", "선호한다고", "좋아한다고"]
             .iter()
-            .any(|marker| lower.contains(marker)))
+            .any(|marker| lower.contains(marker))
+            || korean_parallel_option_description(text)))
         .then(|| DecisionPriorContextIR {
             source_text: text.to_string(),
             source_sha256: decision_source_sha256(text),
             turn,
         })
+}
+
+/// Retain a short user-supplied contrast such as `샐러드는 가볍고 제육덮밥은
+/// 든든해.` long enough to answer a later choice. The source is not world
+/// knowledge: it becomes usable only when a later question offers the same
+/// option surface and its directly attached descriptor matches a stated
+/// criterion.
+fn korean_parallel_option_description(text: &str) -> bool {
+    let topic_count = text
+        .split_whitespace()
+        .map(|token| token.trim_matches(['.', '!', '。', ',', ':']))
+        .filter(|token| {
+            token.chars().count() >= 2
+                && token.chars().all(is_korean_syllable)
+                && ["은", "는", "이", "가"].iter().any(|ending| token.ends_with(ending))
+        })
+        .count();
+    topic_count >= 2
+        && text
+            .split_whitespace()
+            .map(|token| token.trim_matches(['.', '!', '。', ',', ':']))
+            .any(is_korean_feature_surface)
 }
 
 /// Extract a source-local two-to-four-way Korean choice frame.  This is only
@@ -2253,17 +2304,132 @@ fn choice_feature_tokens(surface: &str) -> std::collections::BTreeSet<String> {
         .split(|character: char| character.is_whitespace() || matches!(character, ',' | ':' | '(' | ')'))
         .map(|token| token.trim_matches(['.', '!', '?', '？', '。', '"', '\'', '“', '”']))
         .filter(|token| token.chars().count() >= 2 && token.chars().count() <= 32)
-        .filter(|token| {
-            // Keep choice support source-bound: these are only reusable when
-            // the exact normalized surface also occurs in one option. Korean
-            // conditions are often adverbial (`정중하게`, `조용히`) rather than
-            // adnominal, so excluding them erased explicit user criteria.
-            ["한", "찬", "은", "운", "는", "적인", "하게", "히"]
-                .iter()
-                .any(|ending| token.ends_with(ending))
-        })
+        .filter(|token| is_korean_feature_surface(token))
         .map(str::to_string)
         .collect()
+}
+
+fn is_korean_syllable(character: char) -> bool {
+    ('가'..='힣').contains(&character)
+}
+
+fn is_korean_feature_surface(token: &str) -> bool {
+    // Keep choice support source-bound: these are only reusable when the
+    // option and its descriptor occur in the user's own input. Korean
+    // conditions can be adverbial (`정중하게`, `가볍게`) or predicate-connected
+    // (`가볍고`, `든든해`).
+    token.chars().all(is_korean_syllable)
+        && ["한", "찬", "은", "운", "는", "적인", "하게", "히", "게", "고", "해"]
+            .iter()
+            .any(|ending| token.ends_with(ending))
+}
+
+fn korean_feature_keys(surface: &str) -> std::collections::BTreeSet<String> {
+    let mut keys = std::collections::BTreeSet::new();
+    let surface = surface.trim();
+    if !is_korean_feature_surface(surface) {
+        return keys;
+    }
+    keys.insert(surface.to_string());
+    for ending in ["하게", "게", "고", "해", "한", "찬", "은", "운", "는", "적인", "히"] {
+        if let Some(stem) = surface.strip_suffix(ending) {
+            if stem.chars().count() >= 2 && stem.chars().all(is_korean_syllable) {
+                keys.insert(stem.to_string());
+            }
+        }
+    }
+    keys
+}
+
+fn direct_option_feature_keys(
+    option: &str,
+    source: &str,
+    all_options: &[String],
+) -> std::collections::BTreeSet<String> {
+    let mut keys = std::collections::BTreeSet::new();
+    for marker in ["은", "는", "이", "가"] {
+        let needle = format!("{option}{marker}");
+        let mut offset = 0;
+        while let Some(found) = source[offset..].find(&needle) {
+            let start = offset + found;
+            let end = start + needle.len();
+            let preceding = source[..start].chars().next_back();
+            let following = source[end..].chars().next();
+            let left_boundary = preceding.is_none_or(|character| {
+                character.is_whitespace() || matches!(character, '.' | '!' | '?' | ',' | ':' | ';')
+            });
+            let right_boundary = following.is_none_or(|character| {
+                character.is_whitespace() || matches!(character, '.' | '!' | '?' | ',' | ':' | ';')
+            });
+            if left_boundary && right_boundary {
+                for token in source[end..]
+                    .split_whitespace()
+                    .take(4)
+                    .map(|token| token.trim_matches(['.', '!', '?', '。', ',', ':']))
+                {
+                    if all_options.iter().any(|other| {
+                        ["은", "는", "이", "가"]
+                            .iter()
+                            .any(|particle| token == format!("{other}{particle}"))
+                    }) {
+                        break;
+                    }
+                    keys.extend(korean_feature_keys(token));
+                }
+            }
+            offset = end;
+        }
+    }
+    keys
+}
+
+fn option_descriptor_selection(
+    options: &[String],
+    contexts: &[&str],
+) -> Option<(usize, DecisionOptionEvidenceIR)> {
+    let desired_keys = contexts
+        .iter()
+        // A source that directly describes an offered option contributes
+        // evidence about that option, not a new user criterion. Otherwise
+        // `샐러드는 가볍고 제육덮밥은 든든해` would incorrectly make both
+        // alternatives look desired merely because it names both properties.
+        .filter(|context| {
+            !options
+                .iter()
+                .any(|option| !direct_option_feature_keys(option, context, options).is_empty())
+        })
+        .filter(|context| !choice_context_is_avoidance(context))
+        .flat_map(|context| choice_feature_tokens(context))
+        .flat_map(|feature| korean_feature_keys(&feature))
+        .collect::<std::collections::BTreeSet<_>>();
+    if desired_keys.is_empty() {
+        return None;
+    }
+    let matched = options
+        .iter()
+        .enumerate()
+        .filter_map(|(option_index, option)| {
+            let mut best = None;
+            for source in contexts {
+                let keys = direct_option_feature_keys(option, source, options);
+                let common = keys
+                    .intersection(&desired_keys)
+                    .cloned()
+                    .collect::<Vec<_>>();
+                if !common.is_empty() {
+                    best = Some(DecisionOptionEvidenceIR {
+                        source_text: (*source).to_string(),
+                        source_sha256: decision_source_sha256(source),
+                        option_index,
+                        matched_feature_keys: common,
+                    });
+                    break;
+                }
+            }
+            best.map(|evidence| (option_index, evidence))
+        })
+        .collect::<Vec<_>>();
+    (matched.len() == 1).then(|| matched.into_iter().next().expect("one match"))
 }
 
 fn choice_context_is_avoidance(surface: &str) -> bool {
@@ -2326,6 +2492,7 @@ fn decision_choice_selection(
             selected_option_index,
             matching_features: matching_features.clone(),
             excluded_features: selected_exclusions,
+            option_evidence: None,
         });
     }
     let highest = admissible.iter().map(|(_, (score, _, _))| *score).max()?;
@@ -2335,7 +2502,22 @@ fn decision_choice_selection(
         .filter(|(_, (score, _, excluded))| *score == highest && excluded.is_empty())
         .collect::<Vec<_>>();
     if highest == 0 || selected.len() != 1 {
-        return None;
+        let (selected_option_index, option_evidence) = option_descriptor_selection(&options, contexts)?;
+        return Some(DecisionChoiceSelectionIR {
+            question_source: question_source.to_string(),
+            question_source_sha256: decision_source_sha256(question_source),
+            options: options
+                .into_iter()
+                .map(|source_text| DecisionChoiceOptionIR {
+                    source_sha256: decision_source_sha256(&source_text),
+                    source_text,
+                })
+                .collect(),
+            selected_option_index,
+            matching_features: Vec::new(),
+            excluded_features: Vec::new(),
+            option_evidence: Some(option_evidence),
+        });
     }
     let (selected_option_index, (_, matching_features, _)) = selected[0];
     Some(DecisionChoiceSelectionIR {
@@ -2351,6 +2533,7 @@ fn decision_choice_selection(
         selected_option_index,
         matching_features: matching_features.clone(),
         excluded_features: Vec::new(),
+        option_evidence: None,
     })
 }
 
@@ -2529,6 +2712,62 @@ mod tests {
         );
         assert_eq!(selection.matching_features, vec!["정중하게"]);
         assert!(inquiry.validate());
+    }
+
+    #[test]
+    fn decision_choice_uses_only_a_user_stated_option_descriptor() {
+        let selection = decision_choice_selection(
+            "샐러드와 제육덮밥 중 무엇을 먹을까?",
+            &[
+                "점심은 가볍게 먹고 싶어.",
+                "샐러드는 가볍고 제육덮밥은 든든해.",
+            ],
+        )
+        .expect("one source-described option matches the preference");
+        assert_eq!(
+            selection.options[selection.selected_option_index].source_text,
+            "샐러드"
+        );
+        assert!(selection.matching_features.is_empty());
+        let evidence = selection.option_evidence.expect("source-bound descriptor evidence");
+        assert_eq!(evidence.source_text, "샐러드는 가볍고 제육덮밥은 든든해.");
+        assert_eq!(evidence.option_index, 0);
+        assert_eq!(evidence.matched_feature_keys, vec!["가볍"]);
+        assert!(decision_choice_selection(
+            "샐러드와 제육덮밥 중 무엇을 먹을까?",
+            &["점심은 가볍게 먹고 싶어."],
+        )
+        .is_none());
+    }
+
+    #[test]
+    fn korean_parallel_option_description_is_retained_without_becoming_a_world_fact() {
+        assert!(decision_prior_context(
+            "샐러드는 가볍고 제육덮밥은 든든해.",
+            2
+        )
+        .is_some());
+        assert!(decision_prior_context("샐러드가 좋아.", 2).is_none());
+    }
+
+    #[test]
+    fn reported_preference_is_source_bound_choice_context() {
+        let reported = decision_prior_context("상대는 조용한 곳을 선호한다고 했어.", 1)
+            .expect("reported preference retained as dialogue-local context");
+        let inquiry = decision_inquiry(
+            "소개팅 저녁으로 조용한 이탈리안 식당과 활기찬 펍 중 어디가 좋을까?",
+        )
+        .expect("choice inquiry");
+        let bound = inquiry
+            .with_prior_context(&[reported], 2)
+            .expect("source-bound preference applies to a following choice");
+        let selection = bound.choice_selection.expect("explicit feature match");
+        assert_eq!(
+            selection.options[selection.selected_option_index].source_text,
+            "조용한 이탈리안 식당"
+        );
+        assert_eq!(selection.matching_features, vec!["조용한"]);
+        assert!(selection.option_evidence.is_none());
     }
 
     #[test]

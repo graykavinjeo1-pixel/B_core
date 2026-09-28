@@ -11743,7 +11743,7 @@ mod tests {
             inquiry.context_evidence[0].source_text,
             "매운 음식은 못 먹고 조용한 곳을 좋아해요."
         );
-        assert!(second.output.text.contains("기준으로 이어서 보겠"));
+        assert!(second.output.text.contains("기준으로 이어서 볼"));
         assert!(second
             .pragmatic_interpretation
             .illocutionary_commitments
@@ -11838,6 +11838,38 @@ mod tests {
         assert!(response.output.text.starts_with("말해 준 조건으로 보면,"));
         assert!(response.output.text.contains("조용한 식당 쪽이 더 맞아."));
         assert!(!response.output.text.contains("맞습니다."));
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
+    }
+
+    #[test]
+    fn source_described_choice_properties_bind_to_a_prior_preference() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        for (turn, text) in [
+            (1, "점심은 가볍게 먹고 싶어."),
+            (2, "샐러드는 가볍고 제육덮밥은 든든해."),
+        ] {
+            let request = conversation_request("CHAT-SOURCE-DESCRIBED-CHOICE", turn, text);
+            api.process_conversation_turn(&request)
+                .expect("source-bound decision context");
+        }
+        let choice = conversation_request(
+            "CHAT-SOURCE-DESCRIBED-CHOICE",
+            3,
+            "샐러드와 제육덮밥 중 무엇을 먹을까?",
+        );
+        let response = api
+            .process_conversation_turn(&choice)
+            .expect("source-described choice response");
+        assert!(response.validate_against(&choice));
+        let selection = response
+            .discourse_answer
+            .as_ref()
+            .and_then(|answer| answer.decision_inquiry.as_ref())
+            .and_then(|inquiry| inquiry.choice_selection.as_ref())
+            .expect("source-bound choice selection");
+        assert_eq!(selection.options[selection.selected_option_index].source_text, "샐러드");
+        assert!(selection.option_evidence.is_some());
+        assert!(response.output.text.contains("샐러드 쪽이 더 맞아."));
         assert_eq!(response.output.unsupported_freeform_claims, 0);
     }
 

@@ -254,7 +254,7 @@ fn generate_decision_context_received(
         language,
         "C_DECISION_CONTEXT_EVIDENCE",
         if korean {
-            "말씀해 주신 조건"
+            "말해 준 조건"
         } else {
             "the conditions you provided"
         },
@@ -1439,7 +1439,7 @@ pub(super) fn realize_world_clause(
             );
             push_grammar_token(
                 &mut output,
-                "기준으로 이어서 보겠습니다.",
+                "기준으로 이어서 볼게.",
                 "KO.DECISION.CONTEXT.BOUND",
                 &clause.event_node_id,
             );
