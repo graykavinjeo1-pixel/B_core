@@ -488,6 +488,7 @@ impl ConversationTurnResponseIR {
                     // without turning the condition into a world fact.
                     && (self.conversation_contract.answer_only()
                         || !inquiry.context_evidence.is_empty()
+                        || !inquiry.inline_context.is_empty()
                         || inquiry.clarification_reply.is_some()
                         || inquiry.resumption.as_ref().is_some_and(|r| self.conversation_contract.assertion_only || r.update.is_bound_boolean_answer()))
                     && (self.pragmatic_interpretation.pragmatic_intent_graph.selected_utterance_intent()
@@ -497,6 +498,7 @@ impl ConversationTurnResponseIR {
                         || inquiry.context_evidence.last().is_some_and(|context|
                             context.turn == request.turn_index
                                 && context.source_text == request.raw_text)
+                        || !inquiry.inline_context.is_empty()
                         || inquiry.explanation_of.as_ref().is_some_and(|o|
                             o.asked_turn < request.turn_index && request.turn_index - o.asked_turn <= 3))
                     && self.conversation_state.answer_focus.as_ref().is_some_and(|f|
@@ -11736,6 +11738,28 @@ mod tests {
         assert_eq!(continued.source_text, "그럼 어디가 좋을까요?");
         assert!(!third.output.text.contains("조건은 아직 모르"));
         assert_eq!(third.output.unsupported_freeform_claims, 0);
+    }
+
+    #[test]
+    fn postposed_decision_context_is_not_downgraded_to_acknowledgement() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let request = conversation_request(
+            "CHAT-INLINE-DECISION-CONTEXT",
+            1,
+            "소개팅 저녁으로 조용한 식당과 활기찬 식당 중 어디가 좋을까요? 상대는 조용한 곳을 선호해요.",
+        );
+        let response = api
+            .process_conversation_turn(&request)
+            .expect("inline decision context");
+        assert!(response.validate_against(&request));
+        let inquiry = response
+            .discourse_answer
+            .as_ref()
+            .and_then(|answer| answer.decision_inquiry.as_ref())
+            .expect("decision inquiry");
+        assert_eq!(inquiry.inline_context.len(), 1);
+        assert!(response.output.text.contains("기준으로 이어서 보겠"));
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
     }
 
     #[test]

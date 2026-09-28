@@ -177,6 +177,11 @@ pub struct DecisionInquiryIR {
     /// choice can use the same stated criteria without promoting them to facts.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub context_evidence: Vec<DecisionContextEvidenceIR>,
+    /// Declarative context supplied in the same user turn as the decision
+    /// question.  It is provenance-bound dialogue context, never a world
+    /// observation or a surface template.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub inline_context: Vec<DecisionInlineContextIR>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -205,6 +210,23 @@ impl DecisionContextEvidenceIR {
     }
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DecisionInlineContextIR {
+    pub source_text: String,
+    pub source_sha256: String,
+}
+
+impl DecisionInlineContextIR {
+    fn validate_for(&self, inquiry: &DecisionInquiryIR) -> bool {
+        !self.source_text.trim().is_empty()
+            && self.source_text.chars().count() <= 2048
+            && self.source_sha256 == decision_source_sha256(&self.source_text)
+            && inquiry.source_text.contains(&self.source_text)
+            && !self.source_text.contains(['?', '？', '"', '“', '”', '‘', '’', '`', '\n', ';'])
+            && decision_inquiry(&self.source_text).is_none()
+    }
+}
+
 /// A response to an emitted information request, not an observation of the
 /// world. Retains a flat question origin; followups never extend its lifetime.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -227,7 +249,19 @@ pub struct DecisionInquiryOriginIR {
 
 impl DecisionInquiryIR {
     pub fn validate(&self) -> bool {
-        if self.context_evidence.len() > 3
+        if self.inline_context.len() > 3
+            || !self
+                .inline_context
+                .iter()
+                .all(|context| context.validate_for(self))
+            || self
+                .inline_context
+                .iter()
+                .enumerate()
+                .any(|(index, context)| self.inline_context[..index]
+                    .iter()
+                    .any(|prior| prior.source_sha256 == context.source_sha256))
+            || self.context_evidence.len() > 3
             || !self
                 .context_evidence
                 .iter()
@@ -253,6 +287,7 @@ impl DecisionInquiryIR {
                 && self.missing_input == original.missing_input
                 && (is_condition_reply || self.continues_context)
                 && self.proposed_action == original.proposed_action
+                && self.inline_context == original.inline_context
                 && self.explanation_of.is_none()
                 && self.assessment.is_none()
                 && self.knowledge_gap.is_none()
@@ -386,6 +421,7 @@ impl DecisionInquiryIR {
             return false;
         };
         original.context_evidence = self.context_evidence.clone();
+        original.inline_context = self.inline_context.clone();
         original == *self
     }
 
@@ -453,6 +489,7 @@ impl DecisionInquiryIR {
             return None;
         }
         next.context_evidence = prior.context_evidence.clone();
+        next.inline_context = prior.inline_context.clone();
         next.validate().then_some(next)
     }
 
@@ -502,6 +539,7 @@ impl DecisionInquiryIR {
             resumption: prior.resumption.clone(),
             clarification_reply: None,
             context_evidence: Vec::new(),
+            inline_context: Vec::new(),
         })
     }
 
@@ -699,6 +737,38 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
     // interrogative unit while retaining the entire source in the sealed
     // inquiry so replay still detects any tampering with the context.
     let source = source.trim();
+    let units = source
+        .split(['.', '!', '?', '。', '？'])
+        .map(str::trim)
+        .filter(|unit| !unit.is_empty())
+        .collect::<Vec<_>>();
+    // Natural dialogue can put the decision request first and append its
+    // relevant situation afterwards.  If exactly one independently bounded
+    // unit is a decision inquiry, retain the complete source as its evidence
+    // instead of dropping to a generic acknowledgement solely because the
+    // request is not sentence-final.  Multiple decision units remain
+    // deliberately unresolved: selecting one would discard a user request.
+    if units.len() > 1 && source.matches(['?', '？']).count() <= 1 {
+        let mut inquiries = units
+            .iter()
+            .enumerate()
+            .filter_map(|(index, unit)| decision_inquiry(unit).map(|inquiry| (index, inquiry)))
+            .collect::<Vec<_>>();
+        if inquiries.len() == 1 {
+            let (decision_index, mut inquiry) = inquiries.remove(0);
+            inquiry.inline_context = units
+                .iter()
+                .enumerate()
+                .filter(|(index, _)| *index != decision_index)
+                .map(|(_, unit)| DecisionInlineContextIR {
+                    source_text: (*unit).to_string(),
+                    source_sha256: decision_source_sha256(unit),
+                })
+                .collect();
+            inquiry.source_text = source.to_string();
+            return Some(inquiry);
+        }
+    }
     let terminal_source = source
         .trim_end_matches(['?', '.', '!', '？', '。'])
         .rsplit(['.', '!', '?', '。', '？'])
@@ -751,6 +821,7 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
                 resumption: None,
                 clarification_reply: None,
                 context_evidence: Vec::new(),
+                inline_context: Vec::new(),
             });
         }
     }
@@ -828,6 +899,7 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
         resumption: None,
         clarification_reply: None,
         context_evidence: Vec::new(),
+        inline_context: Vec::new(),
     })
 }
 
@@ -2031,6 +2103,17 @@ mod tests {
             graph.selected().map(|candidate| candidate.expected_response),
             Some(ExpectedResponseKindIR::DecisionSupport)
         );
+    }
+
+    #[test]
+    fn decision_inquiry_retains_postposed_situation_after_one_question() {
+        let source = "소개팅 저녁으로 조용한 식당과 활기찬 식당 중 어디가 좋을까요? 상대는 조용한 곳을 선호해요.";
+        let inquiry = decision_inquiry(source).expect("one bounded decision unit");
+        assert_eq!(inquiry.source_text, source);
+        assert_eq!(inquiry.missing_input, DecisionInputIR::Preference);
+        assert_eq!(inquiry.inline_context.len(), 1);
+        assert_eq!(inquiry.inline_context[0].source_text, "상대는 조용한 곳을 선호해요");
+        assert!(inquiry.validate());
     }
 
     #[test]
