@@ -1464,7 +1464,11 @@ pub(super) fn realize_world_clause(
         if context.language == LanguageCodeIR::Korean {
             push_grammar_token(
                 &mut output,
-                "제시된 조건에는",
+                if context.register == LanguageRegisterIR::Formal {
+                    "말씀해 주신 조건으로 보면,"
+                } else {
+                    "말해 준 조건으로 보면,"
+                },
                 "KO.DECISION.CHOICE.CONTEXT",
                 &clause.event_node_id,
             );
@@ -1475,7 +1479,11 @@ pub(super) fn realize_world_clause(
             );
             push_grammar_token(
                 &mut output,
-                "쪽이 더 맞습니다.",
+                if context.register == LanguageRegisterIR::Formal {
+                    "쪽이 더 맞습니다."
+                } else {
+                    "쪽이 더 맞아."
+                },
                 "KO.DECISION.CHOICE.RESULT",
                 &clause.event_node_id,
             );

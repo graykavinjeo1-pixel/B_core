@@ -4217,12 +4217,22 @@ impl CognitiveApi {
                 && pipeline_routing.has(PipelineSignal::ActionStateCandidate),
             PipelineSignal::ActionStateOwnsTurn,
         );
-        let candidate_temporal_analysis = if pipeline_routing.allows_temporal_analysis() {
-            let temporal_surface = if reference_resolution.ambiguous_reference_surfaces.is_empty() {
-                &reference_resolution.resolved_semantic_text
-            } else {
-                &normalization.semantic_surface_text
-            };
+        let temporal_surface = if reference_resolution.ambiguous_reference_surfaces.is_empty() {
+            &reference_resolution.resolved_semantic_text
+        } else {
+            &normalization.semantic_surface_text
+        };
+        // A stated Korean deadline or an agreed schedule can look like an
+        // action request to the action-state analyzer. Both are source-bound
+        // temporal evidence, so retain only these grammar-bound declarative
+        // forms before ordinary action routing can discard them.
+        let declared_temporal_record = crate::temporal::korean_time_bound_commitment(temporal_surface)
+            || crate::temporal::korean_agreed_schedule(temporal_surface);
+        let candidate_temporal_analysis = if pipeline_routing.allows_temporal_analysis()
+            || (declared_temporal_record
+                && !pipeline_routing.has(PipelineSignal::QuestionAnswer)
+                && !pipeline_routing.has(PipelineSignal::AmbiguousInput))
+        {
             self.temporal_analyzer.analyze_turn(
                 temporal_surface,
                 request.turn_index,
@@ -4237,6 +4247,7 @@ impl CognitiveApi {
             !candidate_temporal_analysis.relations.is_empty() && query_function_reference_only;
         if pipeline_routing.has(PipelineSignal::QuestionAnswer)
             || temporal_deictic_reference_resolved
+            || (declared_temporal_record && !candidate_temporal_analysis.events.is_empty())
         {
             disposition = ConversationTurnDispositionIR::Grounded;
         }
@@ -4246,6 +4257,9 @@ impl CognitiveApi {
         // contributors, before planning and response arbitration consume it.
         if action_state_analysis.query_requested
             && !action_state_analysis.unresolved_ambiguities.is_empty()
+            // A predicate inside a declared deadline or agreed schedule is
+            // not an action request for us to execute or clarify.
+            && !(declared_temporal_record && !candidate_temporal_analysis.events.is_empty())
         {
             disposition = ConversationTurnDispositionIR::ClarificationRequired;
         }
@@ -11796,8 +11810,35 @@ mod tests {
             selection.options[selection.selected_option_index].source_text,
             "조용한 식당"
         );
+        assert!(second.output.text.starts_with("말씀해 주신 조건으로 보면,"));
         assert!(second.output.text.contains("조용한 식당 쪽이 더 맞"));
+        assert!(second.output.text.ends_with("쪽이 더 맞습니다."));
         assert_eq!(second.output.unsupported_freeform_claims, 0);
+    }
+
+    #[test]
+    fn casual_korean_choice_keeps_the_informal_register() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let preference = conversation_request(
+            "CHAT-CASUAL-DECISION-REGISTER",
+            1,
+            "상대는 조용한 곳을 선호해.",
+        );
+        api.process_conversation_turn(&preference)
+            .expect("casual preference");
+        let choice = conversation_request(
+            "CHAT-CASUAL-DECISION-REGISTER",
+            2,
+            "소개팅 저녁으로 조용한 식당과 활기찬 식당 중 어디가 좋을까?",
+        );
+        let response = api
+            .process_conversation_turn(&choice)
+            .expect("casual decision response");
+        assert!(response.validate_against(&choice));
+        assert!(response.output.text.starts_with("말해 준 조건으로 보면,"));
+        assert!(response.output.text.contains("조용한 식당 쪽이 더 맞아."));
+        assert!(!response.output.text.contains("맞습니다."));
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
     }
 
     #[test]
@@ -11824,6 +11865,7 @@ mod tests {
             "조용한 식당"
         );
         assert!(response.output.text.contains("조용한 식당 쪽이 더 맞"));
+        assert!(response.output.text.ends_with("쪽이 더 맞습니다."));
         assert_eq!(response.output.unsupported_freeform_claims, 0);
     }
 
@@ -13434,6 +13476,76 @@ mod tests {
         assert!(response.output.text.contains("회의"));
         assert!(response.output.text.contains("오후 4시"));
         assert!(!response.output.text.contains("TIME:16:00"));
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
+    }
+
+    #[test]
+    fn korean_deadline_commitment_survives_action_state_routing_and_answers_from_memory() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let statement = api
+            .process_conversation_turn(&conversation_request(
+                "CHAT-TEMPORAL-KOREAN-DEADLINE",
+                1,
+                "오늘 오후 5시까지 보고서를 보내야 해.",
+            ))
+            .expect("Korean deadline statement");
+        assert_eq!(statement.conversation_state.temporal_graph.events.len(), 1);
+        assert!(statement.conversation_state.temporal_graph.events[0]
+            .surface
+            .contains("보고서"));
+        let response = api
+            .process_conversation_turn(&conversation_request(
+                "CHAT-TEMPORAL-KOREAN-DEADLINE",
+                2,
+                "보고서는 언제까지 보내야 해?",
+            ))
+            .expect("Korean deadline answer");
+        let answer = response
+            .temporal_answer
+            .expect("typed temporal deadline answer");
+        assert_eq!(
+            answer.disposition,
+            crate::temporal::TemporalAnswerDispositionIR::AnsweredFromTemporalGraph
+        );
+        assert_eq!(answer.event_evidence.len(), 1);
+        assert_eq!(
+            answer.event_evidence[0]
+                .event_time
+                .as_ref()
+                .map(|time| time.normalized_value.as_str()),
+            Some("DAY_OFFSET:0;TIME:17:00")
+        );
+        assert!(response.output.text.contains("오늘 오후 5시"));
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
+    }
+
+    #[test]
+    fn korean_agreed_schedule_survives_action_routing_and_answers_clock_question() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let statement = api
+            .process_conversation_turn(&conversation_request(
+                "CHAT-TEMPORAL-KOREAN-AGREEMENT",
+                1,
+                "소개팅은 오늘 저녁 7시에 조용한 식당에서 보기로 했어.",
+            ))
+            .expect("Korean agreed schedule statement");
+        assert_eq!(statement.conversation_state.temporal_graph.events.len(), 1);
+        let response = api
+            .process_conversation_turn(&conversation_request(
+                "CHAT-TEMPORAL-KOREAN-AGREEMENT",
+                2,
+                "소개팅은 몇 시야?",
+            ))
+            .expect("Korean agreed schedule answer");
+        assert_eq!(
+            response
+                .temporal_answer
+                .as_ref()
+                .map(|answer| answer.disposition),
+            Some(crate::temporal::TemporalAnswerDispositionIR::AnsweredFromTemporalGraph)
+        );
+        assert!(response.output.text.contains("소개팅"));
+        assert!(response.output.text.contains("오늘 저녁 7시"));
         assert_eq!(response.output.unsupported_freeform_claims, 0);
     }
 

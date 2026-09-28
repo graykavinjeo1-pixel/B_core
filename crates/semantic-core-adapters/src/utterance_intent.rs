@@ -2254,7 +2254,11 @@ fn choice_feature_tokens(surface: &str) -> std::collections::BTreeSet<String> {
         .map(|token| token.trim_matches(['.', '!', '?', '？', '。', '"', '\'', '“', '”']))
         .filter(|token| token.chars().count() >= 2 && token.chars().count() <= 32)
         .filter(|token| {
-            ["한", "찬", "은", "운", "는", "적인"]
+            // Keep choice support source-bound: these are only reusable when
+            // the exact normalized surface also occurs in one option. Korean
+            // conditions are often adverbial (`정중하게`, `조용히`) rather than
+            // adnominal, so excluding them erased explicit user criteria.
+            ["한", "찬", "은", "운", "는", "적인", "하게", "히"]
                 .iter()
                 .any(|ending| token.ends_with(ending))
         })
@@ -2507,6 +2511,24 @@ mod tests {
             "조용한 식당"
         );
         assert!(three_way.validate());
+    }
+
+    #[test]
+    fn decision_choice_reuses_an_explicit_adverbial_condition_without_inference() {
+        let inquiry = decision_inquiry(
+            "바로 수락하기와 정중하게 거절하기 중 어느 쪽이 좋을까요? 정중하게 거절하고 싶어요.",
+        )
+        .expect("decision inquiry");
+        let selection = inquiry
+            .choice_selection
+            .as_ref()
+            .expect("literal adverbial match");
+        assert_eq!(
+            selection.options[selection.selected_option_index].source_text,
+            "정중하게 거절하기"
+        );
+        assert_eq!(selection.matching_features, vec!["정중하게"]);
+        assert!(inquiry.validate());
     }
 
     #[test]

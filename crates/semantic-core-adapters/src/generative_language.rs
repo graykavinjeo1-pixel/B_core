@@ -14377,8 +14377,9 @@ fn temporal_event_label(source: &str, time_surface: &str) -> String {
     // `이야` must not be consumed as bare `야`, or a preceding topic marker
     // remains attached to the recovered event nominal.
     let nominal_ending = [
-        "있습니다", "이에요", "있어요", "입니다", "였어요", "해야 해요", "해야 해", "이야",
-        "예요", "였어", "있어", "해요", "합니다", "해", "야",
+        "있습니다", "이에요", "있어요", "입니다", "였어요", "야 해요", "야 해", "야 합니다",
+        "야 돼요", "야 돼", "야 된다", "기로 했어요", "기로 했어", "기로 했습니다", "기로 했다",
+        "이야", "예요", "였어", "있어", "해요", "합니다", "해", "야",
     ]
     .iter()
     .find(|ending| source.ends_with(**ending));
@@ -14423,6 +14424,26 @@ fn temporal_event_label(source: &str, time_surface: &str) -> String {
                 if !topic.trim().is_empty() {
                     remaining = topic.trim().to_string();
                     break;
+                }
+            }
+        }
+        // A deadline can place its referent as the direct object rather than
+        // a topic: `오늘 5시까지 보고서를 보내야 해`.  Recover the complete
+        // object phrase before its predicate, without naming or classifying
+        // the lexical action. This is limited to an overt Korean accusative
+        // particle, so missing objects are never guessed.
+        if !remaining.contains("은 ") && !remaining.contains("는 ") {
+            let tokens = remaining.split_whitespace().collect::<Vec<_>>();
+            if let Some(index) = tokens
+                .iter()
+                .rposition(|token| token.ends_with('을') || token.ends_with('를'))
+            {
+                let mut object = tokens[..=index].join(" ");
+                if object.ends_with('을') || object.ends_with('를') {
+                    object.pop();
+                }
+                if !object.trim().is_empty() {
+                    remaining = object.trim().to_string();
                 }
             }
         }
@@ -14840,6 +14861,20 @@ mod tests {
                 "오늘 오후 5시까지"
             ),
             "회의 자료"
+        );
+        assert_eq!(
+            temporal_event_label(
+                "오늘 오후 5시까지 최종 보고서를 보내야 해.",
+                "오늘 오후 5시까지"
+            ),
+            "최종 보고서"
+        );
+        assert_eq!(
+            temporal_event_label(
+                "소개팅은 오늘 저녁 7시에 조용한 식당에서 보기로 했어.",
+                "오늘 저녁 7시"
+            ),
+            "소개팅"
         );
         assert_eq!(
             temporal_event_label("내일 오전 9시에 병원 예약이 있어.", "내일 오전 10시"),

@@ -1245,6 +1245,8 @@ fn event_like(text: &str) -> bool {
     ]
     .iter()
     .any(|marker| text.contains(marker))
+        || korean_time_bound_commitment(text)
+        || korean_agreed_schedule(text)
         // A scheduled event can be stated with a nominal Korean copula
         // rather than an event verb: `회의 시간이 오후 4시야`, `내일 오후
         // 2시에 치과 예약이 있어`.  This is deliberately gated by both a
@@ -1252,6 +1254,59 @@ fn event_like(text: &str) -> bool {
         // it does not turn a bare clock reading such as `오늘은 4시야` into
         // an event record.
         || korean_nominal_time_event(text)
+}
+
+/// A deadline-bearing commitment is a temporal record even when its
+/// predicate is lexical rather than a copula.  Keep this grammar-bound: an
+/// explicit temporal expression and a Korean obligation ending are both
+/// required, so an imperative such as `오늘 5시까지 보내` cannot silently
+/// become a record of a completed or established event.
+pub(crate) fn korean_time_bound_commitment(text: &str) -> bool {
+    let Some(time) = extract_time(text) else {
+        return false;
+    };
+    if !matches!(
+        time.kind,
+        TemporalExpressionKindIR::ClockTime
+            | TemporalExpressionKindIR::CalendarDate
+            | TemporalExpressionKindIR::RelativeDay
+            | TemporalExpressionKindIR::RelativeWeek
+            | TemporalExpressionKindIR::Composite
+    ) {
+        return false;
+    }
+    let lower = text.trim_end_matches(['.', '!', '?']).trim();
+    if !["야 해요", "야 해", "야 합니다", "야 돼요", "야 돼", "야 된다"]
+        .iter()
+        .any(|ending| lower.ends_with(ending))
+    {
+        return false;
+    }
+    has_non_temporal_korean_nominal(lower)
+}
+
+/// A time-qualified `기로 했다` form records an agreed future schedule. The
+/// agreement morphology and a recoverable time are both required; an isolated
+/// future plan or an imperative is not enough to create dialogue evidence.
+pub(crate) fn korean_agreed_schedule(text: &str) -> bool {
+    let Some(time) = extract_time(text) else {
+        return false;
+    };
+    if !matches!(
+        time.kind,
+        TemporalExpressionKindIR::ClockTime
+            | TemporalExpressionKindIR::CalendarDate
+            | TemporalExpressionKindIR::RelativeDay
+            | TemporalExpressionKindIR::RelativeWeek
+            | TemporalExpressionKindIR::Composite
+    ) {
+        return false;
+    }
+    let lower = text.trim_end_matches(['.', '!', '?']).trim();
+    ["기로 했어요", "기로 했어", "기로 했습니다", "기로 했다"]
+        .iter()
+        .any(|ending| lower.ends_with(ending))
+        && has_non_temporal_korean_nominal(lower)
 }
 
 fn korean_nominal_time_event(text: &str) -> bool {
@@ -1269,14 +1324,12 @@ fn korean_nominal_time_event(text: &str) -> bool {
         return false;
     }
     let lower = text.trim_end_matches(['.', '!', '?']).trim();
-    // Time-bound commitments and deadlines are ordinary temporal events even
-    // when Korean realizes them with a lexical predicate rather than a
-    // copula: `자료는 오늘 오후 5시까지 보내야 해`.  This stays bounded by
-    // an explicit time expression and a remaining Korean nominal, so a bare
-    // clock reading cannot become an event.
+    // Nominal schedule statements use a copula. Lexical deadline predicates
+    // are handled by `korean_time_bound_commitment` above, keeping imperative
+    // language outside the temporal ledger.
     if ![
-        "있습니다", "이에요", "있어요", "입니다", "였어요", "됩니다", "해야 해요", "해야 해",
-        "이야", "예요", "였어", "있어", "해요", "합니다", "된다", "돼요", "돼", "해", "야",
+        "있습니다", "이에요", "있어요", "입니다", "였어요", "됩니다", "이야", "예요", "였어",
+        "있어", "해요", "합니다", "된다", "돼요", "돼", "해", "야",
     ]
     .iter()
     .any(|ending| lower.ends_with(ending))
@@ -1286,6 +1339,10 @@ fn korean_nominal_time_event(text: &str) -> bool {
     // Require a non-temporal Korean nominal to remain after known time words
     // and particles are removed.  This is a grammar condition, not a list of
     // calendar-event nouns, so unseen event names use the same path.
+    has_non_temporal_korean_nominal(lower)
+}
+
+fn has_non_temporal_korean_nominal(lower: &str) -> bool {
     let non_temporal = lower
         .split_whitespace()
         .filter(|token| {
@@ -1605,7 +1662,10 @@ fn clock_time(text: &str) -> Option<(String, String)> {
             }
         }
     }
-    for (marker, add) in [("오전", 0_u32), ("오후", 12_u32)] {
+    // Korean day-part expressions can carry the same meridiem information as
+    // 오전/오후. Keep the mapping deliberately narrow; forms such as `밤
+    // 12시` need separate ambiguity handling and are not normalized here.
+    for (marker, add) in [("오전", 0_u32), ("오후", 12_u32), ("저녁", 12_u32)] {
         if let Some(position) = text.find(marker) {
             let rest = &text[position + marker.len()..];
             if let Some(hour_end) = rest.find('시') {
@@ -1805,6 +1865,51 @@ mod tests {
                 .map(|time| time.normalized_value.as_str()),
             Some("DAY_OFFSET:0;TIME:17:00")
         );
+    }
+
+    #[test]
+    fn korean_time_qualified_agreement_is_a_typed_schedule_event() {
+        let analysis = TemporalSemanticAnalyzer.analyze_turn(
+            "소개팅은 오늘 저녁 7시에 조용한 식당에서 보기로 했어.",
+            1,
+            None,
+        );
+        assert_eq!(analysis.events.len(), 1);
+        assert_eq!(
+            analysis.events[0]
+                .event_time
+                .as_ref()
+                .map(|time| time.normalized_value.as_str()),
+            Some("DAY_OFFSET:0;TIME:19:00")
+        );
+        assert!(TemporalSemanticAnalyzer
+            .analyze_turn("소개팅은 오늘 저녁 7시에 봐.", 2, None)
+            .events
+            .is_empty());
+    }
+
+    #[test]
+    fn korean_deadline_commitment_is_grammar_bound_and_does_not_record_an_imperative() {
+        let declared = TemporalSemanticAnalyzer.analyze_turn(
+            "오늘 오후 5시까지 보고서를 보내야 해.",
+            1,
+            None,
+        );
+        assert_eq!(declared.events.len(), 1);
+        assert!(declared.events[0].surface.contains("보고서"));
+        assert_eq!(
+            declared.events[0]
+                .event_time
+                .as_ref()
+                .map(|time| time.normalized_value.as_str()),
+            Some("DAY_OFFSET:0;TIME:17:00")
+        );
+        let imperative = TemporalSemanticAnalyzer.analyze_turn(
+            "오늘 오후 5시까지 보고서를 보내.",
+            2,
+            None,
+        );
+        assert!(imperative.events.is_empty());
     }
 
     #[test]
