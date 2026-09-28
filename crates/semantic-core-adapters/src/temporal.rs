@@ -119,6 +119,21 @@ impl TemporalGraphIR {
     pub fn apply_turn(&mut self, analysis: &TemporalTurnAnalysisIR) {
         let mut event_id_remap = std::collections::BTreeMap::<String, String>::new();
         for event in &analysis.events {
+            // A correction analyzer is allowed to reuse one prior event id
+            // only when it has already established an unambiguous, bounded
+            // source event.  Update that record in place so an obsolete time
+            // cannot become a second equally valid answer.
+            if let Some(index) = self.events.iter().position(|existing| {
+                existing.event_id == event.event_id
+                    && existing.normalized_key == event.normalized_key
+                    && existing.modal_world == event.modal_world
+                    && event.report_turn > existing.report_turn
+            }) {
+                event_id_remap.insert(event.event_id.clone(), self.events[index].event_id.clone());
+                self.events[index].event_time.clone_from(&event.event_time);
+                self.events[index].report_turn = event.report_turn;
+                continue;
+            }
             let matching_index = self.events.iter().position(|existing| {
                 existing.normalized_key == event.normalized_key
                     && existing.modal_world == event.modal_world
@@ -392,6 +407,12 @@ impl TemporalSemanticAnalyzer {
                 }
             }
         }
+        if let Some(correction) = corrected_time_event(&normalized, turn_index, prior) {
+            return TemporalTurnAnalysisIR {
+                events: vec![correction],
+                relations: Vec::new(),
+            };
+        }
         event_from_surface(turn_index, 1, &normalized).map_or_else(
             TemporalTurnAnalysisIR::default,
             |event| TemporalTurnAnalysisIR {
@@ -400,6 +421,44 @@ impl TemporalSemanticAnalyzer {
             },
         )
     }
+}
+
+fn corrected_time_event(
+    text: &str,
+    turn: u64,
+    prior: Option<&TemporalGraphIR>,
+) -> Option<TemporalEventIR> {
+    // A value update must carry an explicit repair signal.  A later,
+    // unrelated time statement is evidence for another event, not permission
+    // to overwrite the most recent one.
+    let correction = text.starts_with("아니")
+        && (text.contains("바뀌") || text.contains("변경"));
+    if !correction {
+        return None;
+    }
+    let time = extract_time(text)?;
+    let candidates = prior?
+        .events
+        .iter()
+        .filter(|event| {
+            event.modal_world == ModalWorldIR::Actual
+                && event.event_time.is_some()
+                && turn.saturating_sub(event.report_turn) <= 8
+        })
+        .collect::<Vec<_>>();
+    let [prior_event] = candidates.as_slice() else {
+        return None;
+    };
+    Some(TemporalEventIR {
+        event_id: prior_event.event_id.clone(),
+        surface: prior_event.surface.clone(),
+        normalized_key: prior_event.normalized_key.clone(),
+        event_time: Some(time),
+        report_turn: turn,
+        modal_world: prior_event.modal_world,
+        dialogue_truth_established: false,
+        external_execution_authorized: false,
+    })
 }
 
 #[derive(Debug)]
@@ -1701,6 +1760,48 @@ mod tests {
         assert_eq!(time.kind, TemporalExpressionKindIR::Composite);
         assert_eq!(time.surface, "내일 오후 2시");
         assert_eq!(time.normalized_value, "DAY_OFFSET:+1;TIME:14:00");
+    }
+
+    #[test]
+    fn explicit_unambiguous_time_correction_replaces_the_recorded_value() {
+        let mut graph = TemporalGraphIR::default();
+        graph.apply_turn(&TemporalSemanticAnalyzer.analyze_turn(
+            "회의 시간이 오후 3시야.",
+            1,
+            None,
+        ));
+        let prior = graph.clone();
+        graph.apply_turn(&TemporalSemanticAnalyzer.analyze_turn(
+            "아니, 오후 4시로 바뀌었어.",
+            2,
+            Some(&prior),
+        ));
+        assert_eq!(graph.events.len(), 1);
+        assert_eq!(
+            graph.events[0]
+                .event_time
+                .as_ref()
+                .map(|time| time.normalized_value.as_str()),
+            Some("TIME:16:00")
+        );
+        assert_eq!(graph.events[0].report_turn, 2);
+    }
+
+    #[test]
+    fn time_correction_abstains_without_one_recent_temporal_antecedent() {
+        let analyzer = TemporalSemanticAnalyzer;
+        assert!(analyzer
+            .analyze_turn("아니, 오후 4시로 바뀌었어.", 1, None)
+            .events
+            .is_empty());
+        let mut graph = TemporalGraphIR::default();
+        graph.apply_turn(&analyzer.analyze_turn("회의 시간이 오후 3시야.", 1, None));
+        let prior = graph.clone();
+        graph.apply_turn(&analyzer.analyze_turn("치과 예약은 오후 2시야.", 2, Some(&prior)));
+        assert!(analyzer
+            .analyze_turn("아니, 오후 4시로 바뀌었어.", 3, Some(&graph))
+            .events
+            .is_empty());
     }
 
     #[test]

@@ -14373,9 +14373,12 @@ fn temporal_event_label(source: &str, time_surface: &str) -> String {
         .trim()
         .trim_end_matches(['.', '!', '?'])
         .trim();
+    // Match compound endings before their final syllable.  In particular,
+    // `이야` must not be consumed as bare `야`, or a preceding topic marker
+    // remains attached to the recovered event nominal.
     let nominal_ending = [
-        "야", "이야", "예요", "이에요", "입니다", "였어", "였어요", "있어", "있어요",
-        "있습니다",
+        "있습니다", "이에요", "있어요", "입니다", "였어요", "이야", "예요", "였어", "있어",
+        "야",
     ]
     .iter()
     .find(|ending| source.ends_with(**ending));
@@ -14384,6 +14387,13 @@ fn temporal_event_label(source: &str, time_surface: &str) -> String {
     };
     let existence_predicate = ending.starts_with('있');
     let mut remaining = source.replacen(time_surface, "", 1);
+    // After a source-bound correction, the active time differs from the time
+    // that originally appeared in the event surface.  Remove that original
+    // Korean clock span by grammar as well, so it cannot become part of the
+    // event label (for example, `회의 시간이 오후 3시야` after a change to 4시).
+    if remaining == source {
+        remaining = remove_korean_clock_span(source).unwrap_or_else(|| source.to_string());
+    }
     remaining = remaining
         .trim()
         .trim_end_matches(ending)
@@ -14408,8 +14418,43 @@ fn temporal_event_label(source: &str, time_surface: &str) -> String {
             .unwrap_or(&remaining)
             .trim()
             .to_string();
+    } else {
+        // A copular nominal-time assertion commonly leaves the event as a
+        // topic after its clock expression has been removed: `치과 예약은
+        // 오후 2시야` -> `치과 예약은`.  The topic particle is grammatical
+        // structure, not part of the event label.
+        remaining = remaining
+            .strip_suffix('은')
+            .or_else(|| remaining.strip_suffix('는'))
+            .unwrap_or(&remaining)
+            .trim()
+            .to_string();
     }
     (!remaining.is_empty()).then_some(remaining).unwrap_or_else(|| source.to_string())
+}
+
+fn remove_korean_clock_span(source: &str) -> Option<String> {
+    for marker in ["오전", "오후"] {
+        let Some(start) = source.find(marker) else {
+            continue;
+        };
+        let after_marker = &source[start + marker.len()..];
+        let Some(hour_end) = after_marker.find('시') else {
+            continue;
+        };
+        if after_marker[..hour_end].trim().parse::<u32>().is_err() {
+            continue;
+        }
+        let mut end = start + marker.len() + hour_end + '시'.len_utf8();
+        let after_hour = &source[end..];
+        if let Some(minute_end) = after_hour.find('분') {
+            if after_hour[..minute_end].trim().parse::<u32>().is_ok() {
+                end += minute_end + '분'.len_utf8();
+            }
+        }
+        return Some(format!("{}{}", &source[..start], &source[end..]));
+    }
+    None
 }
 
 pub(crate) fn dialogue_attribution_surface(
@@ -14741,6 +14786,14 @@ mod tests {
         );
         assert_eq!(
             temporal_event_label("내일 오후 2시 45분에 치과 예약이 있어.", "내일 오후 2시 45분"),
+            "치과 예약"
+        );
+        assert_eq!(
+            temporal_event_label("회의 시간이 오후 3시야.", "오후 4시"),
+            "회의"
+        );
+        assert_eq!(
+            temporal_event_label("치과 예약은 오후 2시야.", "오후 2시"),
             "치과 예약"
         );
         assert_eq!(

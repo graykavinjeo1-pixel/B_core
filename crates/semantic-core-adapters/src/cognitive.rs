@@ -13378,6 +13378,49 @@ mod tests {
     }
 
     #[test]
+    fn korean_nominal_schedule_time_correction_replaces_one_unambiguous_record() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        api.process_conversation_turn(&conversation_request(
+            "CHAT-TEMPORAL-KOREAN-CORRECTION",
+            1,
+            "회의 시간이 오후 3시야.",
+        ))
+        .expect("initial schedule time");
+        let correction = api
+            .process_conversation_turn(&conversation_request(
+                "CHAT-TEMPORAL-KOREAN-CORRECTION",
+                2,
+                "아니, 오후 4시로 바뀌었어.",
+            ))
+            .expect("unambiguous correction");
+        assert_eq!(correction.conversation_state.temporal_graph.events.len(), 1);
+        assert_eq!(
+            correction.conversation_state.temporal_graph.events[0]
+                .event_time
+                .as_ref()
+                .map(|time| time.normalized_value.as_str()),
+            Some("TIME:16:00")
+        );
+        let response = api
+            .process_conversation_turn(&conversation_request(
+                "CHAT-TEMPORAL-KOREAN-CORRECTION",
+                3,
+                "회의는 몇 시야?",
+            ))
+            .expect("corrected schedule answer");
+        assert_eq!(
+            response
+                .temporal_answer
+                .as_ref()
+                .and_then(|answer| answer.event_evidence.first())
+                .and_then(|event| event.event_time.as_ref())
+                .map(|time| time.normalized_value.as_str()),
+            Some("TIME:16:00")
+        );
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
+    }
+
+    #[test]
     fn conversational_frontend_repairs_surface_noise_before_semantic_planning() {
         let mut api = CognitiveApi::new_embedded().unwrap();
         let response = api
