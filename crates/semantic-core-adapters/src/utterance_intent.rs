@@ -267,6 +267,8 @@ pub struct DecisionChoiceSelectionIR {
     pub options: Vec<DecisionChoiceOptionIR>,
     pub selected_option_index: usize,
     pub matching_features: Vec<String>,
+    #[serde(default)]
+    pub excluded_features: Vec<String>,
 }
 
 impl DecisionChoiceSelectionIR {
@@ -291,7 +293,7 @@ impl DecisionChoiceSelectionIR {
                     .iter()
                     .all(|prior| prior.source_sha256 != option.source_sha256)
             })
-            && !self.matching_features.is_empty()
+            && (!self.matching_features.is_empty() || !self.excluded_features.is_empty())
             && self.matching_features.len() <= 4
             && self.matching_features.iter().all(|feature| {
                 feature.chars().count() >= 2
@@ -301,6 +303,18 @@ impl DecisionChoiceSelectionIR {
                         .contains(feature)
             })
             && self.matching_features.windows(2).all(|pair| pair[0] < pair[1])
+            && self.excluded_features.len() <= 4
+            && self.excluded_features.iter().all(|feature| {
+                feature.chars().count() >= 2
+                    && feature.chars().count() <= 32
+                    && !self.options[self.selected_option_index]
+                        .source_text
+                        .contains(feature)
+                    && self.options.iter().enumerate().any(|(index, option)| {
+                        index != self.selected_option_index && option.source_text.contains(feature)
+                    })
+            })
+            && self.excluded_features.windows(2).all(|pair| pair[0] < pair[1])
             && decision_choice_selection(
                 question_source,
                 &decision_context_sources(inquiry),
@@ -2248,6 +2262,12 @@ fn choice_feature_tokens(surface: &str) -> std::collections::BTreeSet<String> {
         .collect()
 }
 
+fn choice_context_is_avoidance(surface: &str) -> bool {
+    ["피하", "원하지 않", "싫어", "못 먹"]
+        .iter()
+        .any(|marker| surface.contains(marker))
+}
+
 fn decision_choice_selection(
     question_source: &str,
     contexts: &[&str],
@@ -2255,9 +2275,15 @@ fn decision_choice_selection(
     let options = decision_choice_options(question_source)?;
     let context_features = contexts
         .iter()
+        .filter(|context| !choice_context_is_avoidance(context))
         .flat_map(|context| choice_feature_tokens(context))
         .collect::<std::collections::BTreeSet<_>>();
-    if context_features.is_empty() {
+    let excluded_features = contexts
+        .iter()
+        .filter(|context| choice_context_is_avoidance(context))
+        .flat_map(|context| choice_feature_tokens(context))
+        .collect::<std::collections::BTreeSet<_>>();
+    if context_features.is_empty() && excluded_features.is_empty() {
         return None;
     }
     let scored = options
@@ -2267,19 +2293,47 @@ fn decision_choice_selection(
                 .intersection(&context_features)
                 .cloned()
                 .collect::<Vec<_>>();
-            (matching_features.len(), matching_features)
+            let excluded = choice_feature_tokens(option)
+                .intersection(&excluded_features)
+                .cloned()
+                .collect::<Vec<_>>();
+            (matching_features.len(), matching_features, excluded)
         })
         .collect::<Vec<_>>();
-    let highest = scored.iter().map(|(score, _)| *score).max()?;
+    let admissible = scored
+        .iter()
+        .enumerate()
+        .filter(|(_, (_, _, excluded))| excluded.is_empty())
+        .collect::<Vec<_>>();
+    if admissible.len() == 1 && !excluded_features.is_empty() {
+        let (selected_option_index, (_, matching_features, _)) = admissible[0];
+        let selected_exclusions = scored
+            .iter()
+            .flat_map(|(_, _, excluded)| excluded.iter().cloned())
+            .collect::<std::collections::BTreeSet<_>>()
+            .into_iter()
+            .collect::<Vec<_>>();
+        return Some(DecisionChoiceSelectionIR {
+            question_source: question_source.to_string(),
+            question_source_sha256: decision_source_sha256(question_source),
+            options: options.into_iter().map(|source_text| DecisionChoiceOptionIR {
+                source_sha256: decision_source_sha256(&source_text), source_text,
+            }).collect(),
+            selected_option_index,
+            matching_features: matching_features.clone(),
+            excluded_features: selected_exclusions,
+        });
+    }
+    let highest = admissible.iter().map(|(_, (score, _, _))| *score).max()?;
     let selected = scored
         .iter()
         .enumerate()
-        .filter(|(_, (score, _))| *score == highest)
+        .filter(|(_, (score, _, excluded))| *score == highest && excluded.is_empty())
         .collect::<Vec<_>>();
     if highest == 0 || selected.len() != 1 {
         return None;
     }
-    let (selected_option_index, (_, matching_features)) = selected[0];
+    let (selected_option_index, (_, matching_features, _)) = selected[0];
     Some(DecisionChoiceSelectionIR {
         question_source: question_source.to_string(),
         question_source_sha256: decision_source_sha256(question_source),
@@ -2292,12 +2346,32 @@ fn decision_choice_selection(
             .collect(),
         selected_option_index,
         matching_features: matching_features.clone(),
+        excluded_features: Vec::new(),
     })
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn choice_selection_respects_explicit_avoidance_direction() {
+        let selection = decision_choice_selection(
+            "매운 라면과 담백한 죽 중 무엇을 먹을까?",
+            &["매운 음식은 피하고 싶어."],
+        )
+        .expect("one option remains after the stated avoidance");
+        assert_eq!(selection.options[selection.selected_option_index].source_text, "담백한 죽");
+        assert_eq!(selection.excluded_features, vec!["매운"]);
+        let inquiry = decision_inquiry("매운 라면과 담백한 죽 중 무엇을 먹을까?")
+            .expect("decision inquiry");
+        let prior = DecisionPriorContextIR {
+            source_text: "매운 음식은 피하고 싶어.".to_string(),
+            source_sha256: decision_source_sha256("매운 음식은 피하고 싶어."),
+            turn: 1,
+        };
+        assert!(inquiry.with_prior_context(&[prior], 2).is_some());
+    }
 
     #[test]
     fn decision_inquiry_uses_question_role_and_mood_not_task_verbs() {
