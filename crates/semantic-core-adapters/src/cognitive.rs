@@ -3787,7 +3787,15 @@ impl CognitiveApi {
                 pragmatic_interpretation
                     .pragmatic_intent_graph
                     .selected_utterance_intent()
-                    .filter(|_| !crate::discourse_qa::non_actual_world_question(&request.raw_text))
+                    // A possibility in the user's situation description must
+                    // not erase a terminal, typed request for decision help.
+                    // The decision inquiry remains response-only and carries
+                    // no actual-world assertion from that possibility.
+                    .filter(|_| {
+                        !crate::discourse_qa::non_actual_world_question(&request.raw_text)
+                            || crate::utterance_intent::decision_inquiry(&request.raw_text)
+                                .is_some()
+                    })
                     .filter(|i| {
                         i.expected_response
                             == crate::utterance_intent::ExpectedResponseKindIR::DecisionSupport
@@ -4920,6 +4928,13 @@ impl CognitiveApi {
             &action_state_analysis,
             &conversation_state.action_state_ledger,
         );
+        let decision_support_response = pragmatic_interpretation
+            .pragmatic_intent_graph
+            .selected_utterance_intent()
+            .is_some_and(|intent| {
+                intent.expected_response
+                    == crate::utterance_intent::ExpectedResponseKindIR::DecisionSupport
+            });
         let typed_response_boundary_mode =
             if pipeline_routing.has(PipelineSignal::FutureNotificationOwnsTurn) {
                 None
@@ -4958,7 +4973,14 @@ impl CognitiveApi {
                 && action_state_analysis.unresolved_ambiguities.is_empty()
             {
                 Some(NativeResponseModeIR::VerificationStatusQuery)
-            } else if discourse_answer.is_some() && mixed_task_frames.is_none() {
+            // A decision-support turn can still produce a generic discourse
+            // lookup object while the typed decision inquiry owns the actual
+            // response. Do not reinterpret that bounded advice request as a
+            // query for a previously recorded fact.
+            } else if discourse_answer.is_some()
+                && mixed_task_frames.is_none()
+                && !decision_support_response
+            {
                 Some(NativeResponseModeIR::SourceCertaintyQuery)
             } else {
                 None
@@ -11529,6 +11551,44 @@ mod tests {
             context_tags: Vec::new(),
             max_plan_steps: 12,
         }
+    }
+
+    #[test]
+    fn terminal_advice_question_after_situation_is_not_routed_to_record_lookup() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let source = "점심 메뉴를 추천받고 싶어요. 저녁에는 처음 만나는 사람과 식사할 계획인데, 어떤 순서로 준비하면 좋을까요?";
+        let response = api
+            .process_conversation_turn(&conversation_request(
+                "CHAT-TERMINAL-ADVICE-QUESTION",
+                1,
+                source,
+            ))
+            .expect("decision-support response");
+
+        assert!(response.validate_against(&conversation_request(
+            "CHAT-TERMINAL-ADVICE-QUESTION",
+            1,
+            source,
+        )));
+        assert_eq!(
+            response
+                .pragmatic_interpretation
+                .pragmatic_intent_graph
+                .selected_utterance_intent()
+                .map(|intent| intent.expected_response),
+            Some(crate::utterance_intent::ExpectedResponseKindIR::DecisionSupport)
+        );
+        assert_eq!(
+            response.native_language_circuit.response_goal,
+            NativeResponseGoalIR::Acknowledge
+        );
+        assert!(response
+            .discourse_answer
+            .as_ref()
+            .and_then(|answer| answer.decision_inquiry.as_ref())
+            .is_some());
+        assert!(!response.output.text.contains("대화 기록을 찾지 못"));
+        assert_eq!(response.output.unsupported_freeform_claims, 0);
     }
 
     #[test]

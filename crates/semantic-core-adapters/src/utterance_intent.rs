@@ -558,7 +558,22 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
     {
         return None;
     }
-    let normalized = source.trim().to_lowercase();
+    // A user may establish a situation and then ask one terminal question in
+    // the same turn. The prior declarative material is context for that
+    // question, not a second action to execute. Analyze only the final
+    // interrogative unit while retaining the entire source in the sealed
+    // inquiry so replay still detects any tampering with the context.
+    let source = source.trim();
+    let terminal_source = source
+        .trim_end_matches(['?', '.', '!', '？', '。'])
+        .rsplit(['.', '!', '?', '。', '？'])
+        .next()
+        .unwrap_or(source)
+        .trim();
+    if terminal_source.is_empty() {
+        return None;
+    }
+    let normalized = terminal_source.to_lowercase();
     let mut text = normalized.trim_end_matches(['?', '.', '!']).trim();
     if text.contains(['?', '.', '!']) {
         return None;
@@ -582,10 +597,12 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
         }
     }
     let words = text.split_whitespace().collect::<Vec<_>>();
-    if source.trim().ends_with('?') {
+    if source.ends_with(['?', '？']) {
         // Case folding is only for the envelope. Named arguments must retain
         // their original spelling through memory, follow-up and realization.
-        let original = source.trim().trim_end_matches(['?', '.', '!']).trim();
+        let original = terminal_source
+            .trim_end_matches(['?', '.', '!', '？', '。'])
+            .trim();
         let original_body = original.get(context_prefix_bytes..)?;
         if let Some(proposed_action) = action_evaluation_target(original_body) {
             return Some(DecisionInquiryIR {
@@ -643,6 +660,12 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
         .any(|ending| text.ends_with(ending))
         || text.starts_with("recommend ")
         || text.starts_with("please recommend ");
+    // Permission-shaped deliberatives are requests for help choosing a course,
+    // even without an overt WH word. They remain response-only: this records a
+    // missing preference/constraint and never grants the proposed action.
+    let korean_permission_deliberative = ["도 될까요", "도 될까", "도 되나요"]
+        .iter()
+        .any(|ending| text.ends_with(ending));
     let wh = korean_wh.filter(|_| ko_deliberative).or(english_wh);
     let missing_input = match wh {
         Some("언제" | "when") => DecisionInputIR::Deadline,
@@ -652,6 +675,7 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
         }
         Some(_) => DecisionInputIR::Preference,
         None if recommendation_imperative => DecisionInputIR::Preference,
+        None if korean_permission_deliberative => DecisionInputIR::Preference,
         _ => return None,
     };
     Some(DecisionInquiryIR {
@@ -1831,6 +1855,7 @@ mod tests {
             ("How should we proceed?", DecisionInputIR::Constraints),
             ("하나만 추천해줘.", DecisionInputIR::Preference),
             ("Please recommend a book.", DecisionInputIR::Preference),
+            ("식사 뒤에 카페를 제안해도 될까요?", DecisionInputIR::Preference),
         ] {
             let inquiry = decision_inquiry(text).unwrap();
             assert_eq!(inquiry.missing_input, expected, "{text}");
@@ -1847,6 +1872,21 @@ mod tests {
             tampered.source_text = "파일을 삭제해.".into();
             assert!(!tampered.validate());
         }
+    }
+
+    #[test]
+    fn decision_inquiry_keeps_prior_situation_but_uses_terminal_question() {
+        let source = "점심 메뉴를 추천받고 싶어요. 저녁에는 처음 만나는 사람과 식사할 계획인데, 어떤 순서로 준비하면 좋을까요?";
+        let inquiry = decision_inquiry(source).expect("terminal advice question");
+        assert_eq!(inquiry.source_text, source);
+        assert_eq!(inquiry.missing_input, DecisionInputIR::Preference);
+        assert!(inquiry.validate());
+
+        let graph = UtteranceIntentAnalyzer.analyze(source, None, &[]);
+        assert_eq!(
+            graph.selected().map(|candidate| candidate.expected_response),
+            Some(ExpectedResponseKindIR::DecisionSupport)
+        );
     }
 
     #[test]
