@@ -74,6 +74,7 @@ pub const DISCOURSE_GROUP_UPDATE_SCHEMA: &str = "B_CORE_DISCOURSE_GROUP_UPDATE_I
 const MAX_ALTERNATIVES: usize = 8;
 const MAX_ACTIVE_REFERENTS: usize = 8;
 const MAX_ACTIVE_GOALS: usize = 8;
+const MAX_DECISION_PRIOR_CONTEXT: usize = 3;
 const MAX_ACTIVE_DISCOURSE_PROGRAMS: usize = 8;
 const MAX_DEFERRED_COMMITMENTS: usize = 16;
 const MAX_ACTIVE_TOPICS: usize = 8;
@@ -2166,6 +2167,8 @@ pub struct ConversationStateIR {
     pub topic_context_graph: TopicContextGraphIR,
     #[serde(default)]
     pub active_goals: Vec<ConversationGoalFrameIR>,
+    #[serde(default)]
+    pub decision_prior_context: Vec<crate::utterance_intent::DecisionPriorContextIR>,
     #[serde(default)]
     pub active_discourse_programs: Vec<DiscourseProgramIR>,
     #[serde(default)]
@@ -5134,6 +5137,24 @@ impl ConversationMemory {
         state
             .dialogue_relation_graph
             .synchronize_with_ledger(request.turn_index, &state.epistemic_ledger);
+        state.decision_prior_context.retain(|context| {
+            request.turn_index >= context.turn && request.turn_index - context.turn <= 3
+        });
+        if let Some(context) = crate::utterance_intent::decision_prior_context(
+            &request.raw_text,
+            request.turn_index,
+        ) {
+            state
+                .decision_prior_context
+                .retain(|prior| prior.source_sha256 != context.source_sha256);
+            state.decision_prior_context.push(context);
+            state
+                .decision_prior_context
+                .sort_by(|left, right| left.turn.cmp(&right.turn));
+            state
+                .decision_prior_context
+                .truncate(MAX_DECISION_PRIOR_CONTEXT);
+        }
         state.completed_turns = request.turn_index;
         state.preferred_language = language.or(state.preferred_language);
         state.unresolved_reference_count = unresolved_reference_count;
@@ -8564,6 +8585,7 @@ fn empty_state(conversation_id: &str) -> ConversationStateIR {
         discourse_focus: DiscourseFocusStateIR::default(),
         topic_context_graph: TopicContextGraphIR::default(),
         active_goals: Vec::new(),
+        decision_prior_context: Vec::new(),
         active_discourse_programs: Vec::new(),
         action_state_ledger: ActionStateLedgerIR::default(),
         deferred_action_commitments: Vec::new(),
@@ -8600,6 +8622,7 @@ fn state_hash(state: &ConversationStateIR) -> Result<String, ConversationFronten
         ),
         (
             &state.active_goals,
+            &state.decision_prior_context,
             &state.active_discourse_programs,
             &state.action_state_ledger,
             &state.deferred_action_commitments,
@@ -8817,6 +8840,15 @@ fn validate_conversation_state_with_hash(
             !focus.validate(state.completed_turns) || !focus.validate_proposition_in(state)
         })
         || state.conversation_id.trim().is_empty()
+        || state.decision_prior_context.len() > MAX_DECISION_PRIOR_CONTEXT
+        || state
+            .decision_prior_context
+            .iter()
+            .any(|context| !context.validate() || context.turn > state.completed_turns)
+        || state
+            .decision_prior_context
+            .windows(2)
+            .any(|pair| pair[0].turn >= pair[1].turn)
         || state.active_referents.len() > MAX_ACTIVE_REFERENTS
         || unique_referents.len() != state.active_referents.len()
         || state.active_referents.iter().any(|referent| {

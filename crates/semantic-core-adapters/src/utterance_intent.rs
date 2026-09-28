@@ -182,6 +182,10 @@ pub struct DecisionInquiryIR {
     /// observation or a surface template.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub inline_context: Vec<DecisionInlineContextIR>,
+    /// User-stated goals or avoidances from immediately preceding turns. They
+    /// remain dialogue-local decision evidence, never world facts.
+    #[serde(default)]
+    pub prior_context: Vec<DecisionPriorContextIR>,
     /// A source-bound choice conclusion.  It exists only when one offered
     /// alternative has a uniquely supported structural feature match with the
     /// retained decision context.
@@ -219,6 +223,24 @@ impl DecisionContextEvidenceIR {
 pub struct DecisionInlineContextIR {
     pub source_text: String,
     pub source_sha256: String,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DecisionPriorContextIR {
+    pub source_text: String,
+    pub source_sha256: String,
+    pub turn: u64,
+}
+
+impl DecisionPriorContextIR {
+    pub fn validate(&self) -> bool {
+        self.turn > 0
+            && !self.source_text.trim().is_empty()
+            && self.source_text.chars().count() <= 512
+            && self.source_sha256 == decision_source_sha256(&self.source_text)
+            && !self.source_text.contains(['?', '？', '"', '“', '”', '‘', '’', '`', '\n', ';'])
+            && decision_inquiry(&self.source_text).is_none()
+    }
 }
 
 impl DecisionInlineContextIR {
@@ -311,6 +333,9 @@ pub struct DecisionInquiryOriginIR {
 impl DecisionInquiryIR {
     pub fn validate(&self) -> bool {
         if self.inline_context.len() > 3
+            || self.prior_context.len() > 3
+            || !self.prior_context.iter().all(DecisionPriorContextIR::validate)
+            || self.prior_context.windows(2).any(|pair| pair[0].turn >= pair[1].turn)
             || !self
                 .inline_context
                 .iter()
@@ -489,8 +514,32 @@ impl DecisionInquiryIR {
         };
         original.context_evidence = self.context_evidence.clone();
         original.inline_context = self.inline_context.clone();
+        original.prior_context = self.prior_context.clone();
         original.choice_selection = self.choice_selection.clone();
         original == *self
+    }
+
+    pub(crate) fn with_prior_context(
+        mut self,
+        contexts: &[DecisionPriorContextIR],
+        question_turn: u64,
+    ) -> Option<Self> {
+        if !self.validate()
+            || !self.context_evidence.is_empty()
+            || !self.prior_context.is_empty()
+            || contexts.is_empty()
+            || contexts.len() > 3
+            || contexts.iter().any(|context| {
+                !context.validate()
+                    || context.turn >= question_turn
+                    || question_turn - context.turn > 3
+            })
+        {
+            return None;
+        }
+        self.prior_context = contexts.to_vec();
+        self.choice_selection = decision_choice_selection(&self.source_text, &decision_context_sources(&self));
+        self.validate().then_some(self)
     }
 
     /// Bind a declarative response to the current decision question without
@@ -619,6 +668,7 @@ impl DecisionInquiryIR {
             clarification_reply: None,
             context_evidence: Vec::new(),
             inline_context: Vec::new(),
+            prior_context: Vec::new(),
             choice_selection: None,
         })
     }
@@ -906,6 +956,7 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
                 clarification_reply: None,
                 context_evidence: Vec::new(),
                 inline_context: Vec::new(),
+                prior_context: Vec::new(),
                 choice_selection: None,
             });
         }
@@ -985,6 +1036,7 @@ pub(crate) fn decision_inquiry(source: &str) -> Option<DecisionInquiryIR> {
         clarification_reply: None,
         context_evidence: Vec::new(),
         inline_context: Vec::new(),
+        prior_context: Vec::new(),
         choice_selection: None,
     })
 }
@@ -2114,11 +2166,37 @@ fn decision_context_sources(inquiry: &DecisionInquiryIR) -> Vec<&str> {
         .map(|context| context.source_text.as_str())
         .chain(
             inquiry
+                .prior_context
+                .iter()
+                .map(|context| context.source_text.as_str()),
+        )
+        .chain(
+            inquiry
                 .context_evidence
                 .iter()
                 .map(|context| context.source_text.as_str()),
         )
         .collect()
+}
+
+/// A bounded detector for explicit user goals/avoidances. This deliberately
+/// records the original utterance only; it neither classifies a food, person,
+/// or action nor asserts that any candidate satisfies the stated criterion.
+pub(crate) fn decision_prior_context(source: &str, turn: u64) -> Option<DecisionPriorContextIR> {
+    let text = source.trim();
+    let lower = text.to_lowercase();
+    (turn > 0
+        && !text.contains(['?', '？', '"', '“', '”', '‘', '’', '`', '\n', ';'])
+        && text.chars().count() <= 512
+        && decision_inquiry(text).is_none()
+        && ["원해", "원하고", "싶어", "싶고", "좋겠어", "중요해", "피하고", "선호해"]
+            .iter()
+            .any(|marker| lower.contains(marker)))
+        .then(|| DecisionPriorContextIR {
+            source_text: text.to_string(),
+            source_sha256: decision_source_sha256(text),
+            turn,
+        })
 }
 
 /// Extract a source-local two-to-four-way Korean choice frame.  This is only

@@ -3858,6 +3858,24 @@ impl CognitiveApi {
                     })
                     .and_then(|_| crate::utterance_intent::decision_inquiry(&request.raw_text))
             });
+        // A goal or avoidance stated just before a choice question is not a
+        // world fact, but it is valid source-bound decision context. Retain it
+        // only within the short conversation window enforced by the state and
+        // only when the question has no stronger inline or post-question
+        // context of its own.
+        let decision_inquiry = decision_inquiry.map(|inquiry| {
+            if !inquiry.inline_context.is_empty() || !inquiry.context_evidence.is_empty() {
+                return inquiry;
+            }
+            let prior_context = self
+                .conversation_memory
+                .state(&request.conversation_id)
+                .map(|state| state.decision_prior_context.clone())
+                .unwrap_or_default();
+            inquiry.clone()
+                .with_prior_context(&prior_context, request.turn_index)
+                .unwrap_or(inquiry)
+        });
         mark_stage!("NATIVE_PRAGMATIC_AND_ACTION_POST_ANALYSIS");
         let world_answer = if conversation_contract.suppresses_answer() {
             None
@@ -11738,6 +11756,48 @@ mod tests {
         assert_eq!(continued.source_text, "그럼 어디가 좋을까요?");
         assert!(!third.output.text.contains("조건은 아직 모르"));
         assert_eq!(third.output.unsupported_freeform_claims, 0);
+    }
+
+    #[test]
+    fn prior_stated_preference_binds_to_a_later_choice_without_becoming_world_truth() {
+        let mut api = CognitiveApi::new_embedded().unwrap();
+        let preference = conversation_request(
+            "CHAT-PRIOR-DECISION-CONTEXT",
+            1,
+            "상대는 조용한 곳을 선호해요.",
+        );
+        let first = api
+            .process_conversation_turn(&preference)
+            .expect("preference turn");
+        assert!(first.validate_against(&preference));
+        assert_eq!(first.conversation_state.decision_prior_context.len(), 1);
+        assert_eq!(
+            first.conversation_state.decision_prior_context[0].source_text,
+            "상대는 조용한 곳을 선호해요."
+        );
+
+        let choice = conversation_request(
+            "CHAT-PRIOR-DECISION-CONTEXT",
+            2,
+            "소개팅 저녁으로 조용한 식당과 활기찬 식당 중 어디가 좋을까요?",
+        );
+        let second = api
+            .process_conversation_turn(&choice)
+            .expect("choice with prior preference");
+        assert!(second.validate_against(&choice));
+        let inquiry = second
+            .discourse_answer
+            .as_ref()
+            .and_then(|answer| answer.decision_inquiry.as_ref())
+            .expect("decision inquiry");
+        assert_eq!(inquiry.prior_context.len(), 1);
+        let selection = inquiry.choice_selection.as_ref().expect("selection");
+        assert_eq!(
+            selection.options[selection.selected_option_index].source_text,
+            "조용한 식당"
+        );
+        assert!(second.output.text.contains("조용한 식당 쪽이 더 맞"));
+        assert_eq!(second.output.unsupported_freeform_claims, 0);
     }
 
     #[test]

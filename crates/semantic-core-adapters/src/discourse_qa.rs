@@ -4539,6 +4539,7 @@ mod tests {
             discourse_focus: Default::default(),
             topic_context_graph: Default::default(),
             active_goals: Vec::new(),
+            decision_prior_context: Vec::new(),
             active_discourse_programs: Vec::new(),
             action_state_ledger: Default::default(),
             deferred_action_commitments: Vec::new(),
