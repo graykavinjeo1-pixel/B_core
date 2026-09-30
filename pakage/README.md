@@ -307,8 +307,11 @@ runtime boundary canaries listed below remain in this portable package.
 The dependency direction is `semantic-core-adapters` ->
 `dockable-semantic-core`. Raw language does not enter the core, adapters do not
 own semantic state, and language reports cannot establish verified execution.
-The default build is Rust-only. `python-paddle-ocr` is an optional compatibility
-feature and is disabled by default.
+The default build is Rust-only. `python-paddle-ocr` remains an optional generic
+compatibility feature. `python-bcore-native-ocr` is the owned document OCR
+adapter and is also disabled by default; it accepts separately versioned local
+detector/recognizer artifacts and returns confidence-, geometry-, review- and
+provenance-bound observations without semantic or execution authority.
 
 ## Validate
 

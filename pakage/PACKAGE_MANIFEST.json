@@ -411,7 +411,8 @@
     "scope": "THIS_REPAIR_RUST_SOURCES_ONLY_OTHER_PREEXISTING_PACKAGE_EDITS_PRESERVED",
     "root_package_hash_mismatches": 0,
     "default_runtime": "RUST_ONLY",
-    "python_paddle_ocr": "OPTIONAL_DISABLED_BY_DEFAULT"
+    "python_paddle_ocr": "OPTIONAL_DISABLED_BY_DEFAULT",
+    "python_bcore_native_ocr": "OPTIONAL_OWNED_PERCEPTION_ADAPTER_DISABLED_BY_DEFAULT"
   },
   "prebuilt_canary": {
     "path": "bin/core-x0-canary.exe",

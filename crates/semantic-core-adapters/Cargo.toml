@@ -612,6 +612,7 @@ path = "src/persona_contrastive_train_main.rs"
 # local Python runtime.
 default = []
 python-paddle-ocr = []
+python-bcore-native-ocr = []
 
 [dependencies]
 dockable-semantic-core = { path = "../dockable-semantic-core", version = "0.1.0" }

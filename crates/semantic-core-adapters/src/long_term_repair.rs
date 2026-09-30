@@ -834,15 +834,163 @@ fn decode_text(bytes: &[u8]) -> Result<String, &'static str> {
 }
 
 fn extract_pdf(path: &Path) -> Result<(String, String), (EvidenceStatusIR, &'static str)> {
-    std::panic::catch_unwind(|| pdf_extract::extract_text(path))
-        .map_err(|_| {
-            (
+    match std::panic::catch_unwind(|| pdf_extract::extract_text(path)) {
+        Ok(Ok(text)) if !text.trim().is_empty() => Ok((text, "RUST_PDF_EXTRACT_0_12".to_string())),
+        Ok(Ok(text)) => {
+            #[cfg(feature = "python-bcore-native-ocr")]
+            if let Ok(result) = extract_bcore_native_ocr(path) {
+                return Ok(result);
+            }
+            Ok((text, "RUST_PDF_EXTRACT_0_12".to_string()))
+        }
+        Ok(Err(_)) => {
+            #[cfg(feature = "python-bcore-native-ocr")]
+            if let Ok(result) = extract_bcore_native_ocr(path) {
+                return Ok(result);
+            }
+            Err((EvidenceStatusIR::ReadFailed, "PDF_PARSE_FAILED"))
+        }
+        Err(_) => {
+            #[cfg(feature = "python-bcore-native-ocr")]
+            if let Ok(result) = extract_bcore_native_ocr(path) {
+                return Ok(result);
+            }
+            Err((
                 EvidenceStatusIR::ReadFailed,
                 "PDF_EXTRACTOR_PANIC_CONTAINED",
+            ))
+        }
+    }
+}
+
+#[cfg(feature = "python-bcore-native-ocr")]
+fn extract_bcore_native_ocr(
+    path: &Path,
+) -> Result<(String, String), (EvidenceStatusIR, &'static str)> {
+    let detector = std::env::var_os("B_CORE_NATIVE_OCR_DETECTOR").ok_or((
+        EvidenceStatusIR::ExtractorUnavailable,
+        "B_CORE_NATIVE_OCR_DETECTOR_NOT_CONFIGURED",
+    ))?;
+    let recognizer = std::env::var_os("B_CORE_NATIVE_OCR_RECOGNIZER").ok_or((
+        EvidenceStatusIR::ExtractorUnavailable,
+        "B_CORE_NATIVE_OCR_RECOGNIZER_NOT_CONFIGURED",
+    ))?;
+    let device = std::env::var("B_CORE_NATIVE_OCR_DEVICE").unwrap_or_else(|_| "gpu:0".to_string());
+    let python_home = std::env::var_os("B_CORE_NATIVE_OCR_HOME")
+        .map(std::path::PathBuf::from)
+        .unwrap_or_else(|| std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("python"));
+
+    let mut python_paths = vec![python_home];
+    if let Some(existing) = std::env::var_os("PYTHONPATH") {
+        python_paths.extend(std::env::split_paths(&existing));
+    }
+    let python_path = std::env::join_paths(python_paths).map_err(|_| {
+        (
+            EvidenceStatusIR::ExtractorUnavailable,
+            "B_CORE_NATIVE_OCR_PYTHONPATH_INVALID",
+        )
+    })?;
+
+    let mut candidates = Vec::<(String, Vec<String>)>::new();
+    if let Ok(program) = std::env::var("B_CORE_NATIVE_OCR_PYTHON") {
+        if !program.trim().is_empty() {
+            candidates.push((program, Vec::new()));
+        }
+    }
+    candidates.extend([
+        ("python".to_string(), Vec::new()),
+        ("py".to_string(), vec!["-3".to_string()]),
+    ]);
+
+    for (program, prefix) in candidates {
+        let output = match Command::new(&program)
+            .args(&prefix)
+            .args(["-m", "bcore_native_ocr.adapter_cli"])
+            .arg(path)
+            .arg("--detector")
+            .arg(&detector)
+            .arg("--recognizer")
+            .arg(&recognizer)
+            .arg("--device")
+            .arg(&device)
+            .env("PYTHONPATH", &python_path)
+            .output()
+        {
+            Ok(output) => output,
+            Err(error) if error.kind() == std::io::ErrorKind::NotFound => continue,
+            Err(_) => {
+                return Err((
+                    EvidenceStatusIR::ReadFailed,
+                    "B_CORE_NATIVE_OCR_START_FAILED",
+                ));
+            }
+        };
+        if !output.status.success() {
+            continue;
+        }
+        let stdout = String::from_utf8(output.stdout).map_err(|_| {
+            (
+                EvidenceStatusIR::ReadFailed,
+                "B_CORE_NATIVE_OCR_OUTPUT_NOT_UTF8",
             )
-        })?
-        .map(|text| (text, "RUST_PDF_EXTRACT_0_12".to_string()))
-        .map_err(|_| (EvidenceStatusIR::ReadFailed, "PDF_PARSE_FAILED"))
+        })?;
+        let Some(payload) = stdout
+            .lines()
+            .rev()
+            .find_map(|line| line.strip_prefix("B_CORE_NATIVE_OCR_JSON="))
+        else {
+            continue;
+        };
+        let rows = serde_json::from_str::<Vec<serde_json::Value>>(payload).map_err(|_| {
+            (
+                EvidenceStatusIR::ReadFailed,
+                "B_CORE_NATIVE_OCR_JSON_INVALID",
+            )
+        })?;
+        let mut text = String::new();
+        let mut current_page = None;
+        for row in rows {
+            let value = row
+                .get("text")
+                .and_then(serde_json::Value::as_str)
+                .unwrap_or("")
+                .trim();
+            if value.is_empty() {
+                continue;
+            }
+            let page = row
+                .get("page")
+                .and_then(serde_json::Value::as_u64)
+                .unwrap_or(0);
+            if current_page != Some(page) {
+                text.push_str(&format!("[[B_CORE_SECTION:{page}]]\n"));
+                current_page = Some(page);
+            }
+            let confidence = row
+                .get("score")
+                .and_then(serde_json::Value::as_f64)
+                .unwrap_or(0.0)
+                .clamp(0.0, 1.0);
+            let geometry = serde_json::json!({
+                "box": row.get("box").cloned().unwrap_or(serde_json::Value::Array(Vec::new())),
+                "status": row.get("status").cloned().unwrap_or(serde_json::Value::Null),
+                "decisionStatus": row.get("decisionStatus").cloned().unwrap_or(serde_json::Value::Null),
+                "factAuthority": row.get("factAuthority").cloned().unwrap_or(serde_json::Value::Bool(false)),
+                "evidenceId": row.get("evidenceId").cloned().unwrap_or(serde_json::Value::Null),
+                "source": row.get("source").cloned().unwrap_or(serde_json::Value::Null),
+            });
+            text.push_str(&format!(
+                "[[B_CORE_OCR|{confidence:.3}|{geometry}|]]{value}\n"
+            ));
+        }
+        if !text.trim().is_empty() {
+            return Ok((text, "B_CORE_NATIVE_OCR_1".to_string()));
+        }
+    }
+    Err((
+        EvidenceStatusIR::ExtractorUnavailable,
+        "B_CORE_NATIVE_OCR_UNAVAILABLE",
+    ))
 }
 
 fn extract_hwp(path: &Path) -> Result<(String, String), (EvidenceStatusIR, &'static str)> {
