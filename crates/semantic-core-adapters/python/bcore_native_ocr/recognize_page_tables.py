@@ -1809,7 +1809,7 @@ def _orientation_score(
     recognizer_width_bin: int = 32,
     scan_layout_hint: bool = False,
     maximum_regions: int = 32,
-) -> tuple[float, dict[str, float | int]]:
+) -> tuple[float, dict[str, float | int], np.ndarray]:
     masks = _predict(detector, source, canvas, threshold)
     geometry = reconstruct_table_geometry(masks, np.asarray(source))
     candidates = [
@@ -1832,7 +1832,11 @@ def _orientation_score(
     )
     useful = [(text, confidence) for text, confidence in readings if SEMANTIC_CHARACTER.search(text)]
     if not useful:
-        return -100.0, {"regions": len(candidates), "usefulReadings": 0, "medianConfidence": 0.0}
+        return (
+            -100.0,
+            {"regions": len(candidates), "usefulReadings": 0, "medianConfidence": 0.0},
+            masks,
+        )
     confidences = [confidence for _, confidence in useful]
     language_scores = [language_model.score(text) for text, _ in useful] if language_model else []
     useful_ratio = len(useful) / max(1, len(candidates))
@@ -1847,14 +1851,18 @@ def _orientation_score(
         + max(-6.0, min(0.0, median_language)) * 0.045
         + layout_coverage * 0.20
     )
-    return score, {
-        "regions": len(candidates),
-        "usefulReadings": len(useful),
-        "usefulRatio": useful_ratio,
-        "medianConfidence": median_confidence,
-        "medianLanguageScore": median_language,
-        "horizontalTextCoverage": layout_coverage,
-    }
+    return (
+        score,
+        {
+            "regions": len(candidates),
+            "usefulReadings": len(useful),
+            "usefulRatio": useful_ratio,
+            "medianConfidence": median_confidence,
+            "medianLanguageScore": median_language,
+            "horizontalTextCoverage": layout_coverage,
+        },
+        masks,
+    )
 
 
 def _normalize_orientation(
@@ -1868,7 +1876,7 @@ def _normalize_orientation(
     recognizer_batch_size: int = 12,
     recognizer_width_bin: int = 32,
     scan_layout_hint: bool = False,
-) -> tuple[Image.Image, dict[str, object]]:
+) -> tuple[Image.Image, dict[str, object], np.ndarray]:
     evaluations: dict[str, dict[str, object]] = {}
     candidate_angles, axis_prefilter = _orientation_candidate_angles(source)
     candidates = {
@@ -1880,8 +1888,9 @@ def _normalize_orientation(
     # every observed signal is already decisive.  Any weak, sparse, or
     # conflicting page falls through to the existing full 32-region audit.
     probe_evaluations: dict[str, dict[str, object]] = {}
+    probe_masks: dict[int, np.ndarray] = {}
     for angle, candidate in candidates.items():
-        score, metrics = _orientation_score(
+        score, metrics, masks = _orientation_score(
             detector,
             recognizer,
             codec,
@@ -1895,6 +1904,7 @@ def _normalize_orientation(
             maximum_regions=6,
         )
         probe_evaluations[str(angle)] = {"score": score, **metrics}
+        probe_masks[angle] = masks
     probe_selected = max(
         candidates,
         key=lambda angle: float(probe_evaluations[str(angle)]["score"]),
@@ -1913,16 +1923,21 @@ def _normalize_orientation(
         and float(probe_metrics["usefulRatio"]) >= 0.95
         and float(probe_metrics["medianConfidence"]) >= 0.985
     ):
-        return candidates[probe_selected], {
-            "mode": "native-high-confidence-probe",
-            "selectedDegrees": probe_selected,
-            "axisPrefilter": axis_prefilter,
-            "candidates": probe_evaluations,
-            "probeMargin": probe_margin,
-            "fullAuditSkipped": True,
-        }
+        return (
+            candidates[probe_selected],
+            {
+                "mode": "native-high-confidence-probe",
+                "selectedDegrees": probe_selected,
+                "axisPrefilter": axis_prefilter,
+                "candidates": probe_evaluations,
+                "probeMargin": probe_margin,
+                "fullAuditSkipped": True,
+            },
+            probe_masks[probe_selected],
+        )
+    full_masks: dict[int, np.ndarray] = {}
     for angle, candidate in candidates.items():
-        score, metrics = _orientation_score(
+        score, metrics, masks = _orientation_score(
             detector,
             recognizer,
             codec,
@@ -1935,16 +1950,21 @@ def _normalize_orientation(
             scan_layout_hint,
         )
         evaluations[str(angle)] = {"score": score, **metrics}
+        full_masks[angle] = masks
     selected_angle = max(candidates, key=lambda angle: float(evaluations[str(angle)]["score"]))
-    return candidates[selected_angle], {
-        "mode": "native-recognizer-language-consensus",
-        "selectedDegrees": selected_angle,
-        "axisPrefilter": axis_prefilter,
-        "candidates": evaluations,
-        "probe": probe_evaluations,
-        "probeMargin": probe_margin,
-        "fullAuditSkipped": False,
-    }
+    return (
+        candidates[selected_angle],
+        {
+            "mode": "native-recognizer-language-consensus",
+            "selectedDegrees": selected_angle,
+            "axisPrefilter": axis_prefilter,
+            "candidates": evaluations,
+            "probe": probe_evaluations,
+            "probeMargin": probe_margin,
+            "fullAuditSkipped": False,
+        },
+        full_masks[selected_angle],
+    )
 
 
 def _recover_region_padding(
@@ -2709,9 +2729,10 @@ def main(argv: list[str] | None = None) -> None:
                     else "scan"
                 )
                 page_started = time.perf_counter()
+                orientation_detector_masks: np.ndarray | None = None
                 if arguments.orientation == "auto":
                     unrotated_source = source
-                    source, orientation = _normalize_orientation(
+                    source, orientation, orientation_detector_masks = _normalize_orientation(
                         detector,
                         recognizer,
                         codec,
@@ -2769,6 +2790,11 @@ def main(argv: list[str] | None = None) -> None:
                         source = rotate_for_orientation(
                             unrotated_source, decision.selected_degrees
                         )
+                        # The native scorer's detector output belongs to a
+                        # different page rotation.  Never reuse it across an
+                        # observer override, even when the two images look
+                        # superficially similar.
+                        orientation_detector_masks = None
                 else:
                     selected_degrees = int(arguments.orientation)
                     source = rotate_for_orientation(source, selected_degrees)
@@ -2794,7 +2820,17 @@ def main(argv: list[str] | None = None) -> None:
                     )
                 orientation_at = time.perf_counter()
                 started = time.perf_counter()
-                masks = _predict(detector, source, int(detector_metadata["canvas"]), arguments.threshold)
+                reused_orientation_detector_masks = orientation_detector_masks is not None
+                masks = (
+                    orientation_detector_masks
+                    if orientation_detector_masks is not None
+                    else _predict(
+                        detector,
+                        source,
+                        int(detector_metadata["canvas"]),
+                        arguments.threshold,
+                    )
+                )
                 recovery_applied = arguments.scan_rule_recovery == "on" or (
                     arguments.scan_rule_recovery == "auto" and page_kind == "scan"
                 )
@@ -3937,6 +3973,7 @@ def main(argv: list[str] | None = None) -> None:
                     "latency": {
                         "orientationMilliseconds": (orientation_at - page_started) * 1000,
                         "detectorMilliseconds": (detected_at - started) * 1000,
+                        "reusedOrientationDetectorMasks": reused_orientation_detector_masks,
                         "geometryMilliseconds": (geometry_at - detected_at) * 1000,
                         "regionRecognitionMilliseconds": (regions_at - geometry_at) * 1000,
                         "rowAndBeamMilliseconds": (native_completed_at - regions_at) * 1000,
