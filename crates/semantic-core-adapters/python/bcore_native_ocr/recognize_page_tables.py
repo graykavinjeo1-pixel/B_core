@@ -2591,11 +2591,12 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--orientation", choices=("auto", "0", "90", "180", "270"), default="auto")
     parser.add_argument(
         "--orientation-observer",
-        choices=("auto", "off", "paddlex"),
-        default="auto",
+        choices=("auto", "off", "paddlex", "shadow"),
+        default="off",
         help=(
             "Use an already-installed independent document-orientation classifier. "
-            "Auto never downloads a model and falls back to native-only evidence."
+            "Shadow records its evidence but never changes the native decision; "
+            "auto never downloads a model and falls back to native-only evidence."
         ),
     )
     parser.add_argument(
@@ -2806,9 +2807,9 @@ def main(argv: list[str] | None = None) -> None:
             )
             orientation_observer_status = "loaded-local-model"
         except FileNotFoundError:
-            if arguments.orientation_observer == "paddlex":
+            if arguments.orientation_observer in {"paddlex", "shadow"}:
                 parser.error(
-                    "--orientation-observer paddlex requires a locally installed model"
+                    "--orientation-observer paddlex/shadow requires a locally installed model"
                 )
             orientation_observer_status = "local-model-unavailable"
     independent_ocr_observer = None
@@ -2982,14 +2983,25 @@ def main(argv: list[str] | None = None) -> None:
                         observer_degrees, observer_confidence = observe_orientation(
                             orientation_observer, unrotated_source
                         )
+                    observer_participates_in_decision = (
+                        arguments.orientation_observer != "shadow"
+                    )
                     decision = choose_orientation(
                         native_degrees=int(orientation["selectedDegrees"]),
                         native_margin=score_margin,
                         native_candidates={
                             int(value) for value in orientation["candidates"]
                         },
-                        observer_degrees=observer_degrees,
-                        observer_confidence=observer_confidence,
+                        observer_degrees=(
+                            observer_degrees
+                            if observer_participates_in_decision
+                            else None
+                        ),
+                        observer_confidence=(
+                            observer_confidence
+                            if observer_participates_in_decision
+                            else None
+                        ),
                         observer_minimum_confidence=arguments.orientation_observer_min_confidence,
                         observer_strong_confidence=arguments.orientation_observer_strong_confidence,
                         native_ambiguity_margin=arguments.orientation_native_ambiguity_margin,
@@ -3001,6 +3013,17 @@ def main(argv: list[str] | None = None) -> None:
                         **decision.receipt(),
                         "observer": "PP-LCNet_x1_0_doc_ori",
                         "observerStatus": orientation_observer_status,
+                        "observerMode": arguments.orientation_observer,
+                        "observerObservation": (
+                            {
+                                "selectedDegrees": observer_degrees,
+                                "confidence": observer_confidence,
+                                "participatedInDecision": observer_participates_in_decision,
+                            }
+                            if observer_degrees is not None
+                            and observer_confidence is not None
+                            else None
+                        ),
                         "modelPath": (
                             str(arguments.orientation_observer_model.resolve())
                             if orientation_observer is not None

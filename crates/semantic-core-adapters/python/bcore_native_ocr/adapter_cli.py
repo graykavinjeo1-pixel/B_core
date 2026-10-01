@@ -84,6 +84,8 @@ def _run_native_reader(
         device,
         "--independent-ocr-observer",
         "off",
+        "--orientation-observer",
+        "off",
         "--high-confidence-row-fast-path",
         "--high-confidence-row-floor",
         "0.95",
