@@ -35,38 +35,6 @@ class ResidualBlock(nn.Layer):
         return functional.silu(inputs + self.second(self.first(inputs)))
 
 
-class BCoreOrientationClassifier(nn.Layer):
-    """Small page-level orientation observer owned by B_Core.
-
-    It sees a low-resolution whole-page image and predicts the correction
-    angle 0/90/180/270.  This is intentionally separate from text recognition:
-    technical drawings and sparse forms should not let a few accidental CTC
-    confidences decide the entire page orientation.
-    """
-
-    def __init__(self, class_count: int = 4):
-        super().__init__()
-        self.visual = nn.Sequential(
-            ConvNormAct(1, 16, (2, 2)),
-            ConvNormAct(16, 32, (2, 2)),
-            ResidualBlock(32),
-            ConvNormAct(32, 64, (2, 2)),
-            ResidualBlock(64),
-            ConvNormAct(64, 96, (2, 2)),
-            ResidualBlock(96),
-            ConvNormAct(96, 128, (2, 2)),
-        )
-        # A global mean discards whether headings and folios are above or
-        # below the page.  A small fixed spatial grid preserves that evidence
-        # while remaining far cheaper than a text recognizer.
-        self.spatial_pool = nn.AdaptiveAvgPool2D((4, 4))
-        self.output = nn.Linear(128 * 4 * 4, class_count)
-
-    def forward(self, images: paddle.Tensor) -> paddle.Tensor:
-        features = self.visual(images)
-        pooled = self.spatial_pool(features).flatten(start_axis=1)
-        return self.output(pooled)
-
 
 class BCoreLineRecognizer(nn.Layer):
     """Unicode-character CTC recognizer for one rectified text line."""

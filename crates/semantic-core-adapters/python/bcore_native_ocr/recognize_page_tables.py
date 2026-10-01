@@ -45,11 +45,6 @@ from .models import (
 from .ocr_language_model import CharacterLanguageModel
 from .ocr_lexicon import OcrLexicon
 from .domain_ontology import load_long_term_repair_ontology
-from .orientation_ensemble import (
-    choose_orientation,
-    load_paddlex_orientation_observer,
-    observe_orientation,
-)
 from .paddlex_ocr_observer import (
     align_observer_to_rows,
     load_local_paddlex_ocr_observer,
@@ -98,7 +93,6 @@ _PRIMARY_MODEL_CACHE: dict[
     tuple[str, str, str],
     tuple[dict, BCoreDocumentDetector, object, BCoreLineRecognizer],
 ] = {}
-_ORIENTATION_OBSERVER_CACHE: dict[str, object] = {}
 
 
 def load_warm_primary_models(
@@ -149,17 +143,6 @@ def load_warm_primary_models(
     _PRIMARY_MODEL_CACHE[key] = loaded
     return loaded
 
-
-def load_warm_orientation_observer(model_path: Path) -> object:
-    """Load the optional local orientation observer once per worker process."""
-
-    key = str(model_path.resolve())
-    cached = _ORIENTATION_OBSERVER_CACHE.get(key)
-    if cached is not None:
-        return cached
-    observer = load_paddlex_orientation_observer(model_path)
-    _ORIENTATION_OBSERVER_CACHE[key] = observer
-    return observer
 
 
 logging.getLogger("pdfminer").setLevel(logging.ERROR)
@@ -1965,51 +1948,9 @@ def _normalize_orientation(
     recognizer_batch_size: int = 12,
     recognizer_width_bin: int = 32,
     scan_layout_hint: bool = False,
-    zero_degree_fast_path: bool = False,
-    zero_degree_min_confidence: float = 0.995,
 ) -> tuple[Image.Image, dict[str, object], np.ndarray]:
     evaluations: dict[str, dict[str, object]] = {}
     candidate_angles, axis_prefilter = _orientation_candidate_angles(source)
-    cached_zero_masks: np.ndarray | None = None
-    if zero_degree_fast_path and 0 in candidate_angles:
-        # This is an all-or-nothing 0-degree proof, not a generic orientation
-        # classifier.  It uses only layout-neutral geometry and the existing
-        # recognizer, then falls back to the complete candidate comparison for
-        # every sparse, malformed, or merely less-than-near-certain page.
-        zero_score, zero_metrics, cached_zero_masks = _orientation_score(
-            detector,
-            recognizer,
-            codec,
-            source,
-            canvas,
-            threshold,
-            language_model,
-            recognizer_batch_size,
-            recognizer_width_bin,
-            scan_layout_hint,
-            maximum_regions=4,
-        )
-        if (
-            int(zero_metrics["regions"]) >= 4
-            and float(zero_metrics["usefulRatio"]) == 1.0
-            and float(zero_metrics["validReadingRatio"]) == 1.0
-            and float(zero_metrics["medianConfidence"]) >= zero_degree_min_confidence
-            and float(zero_metrics["horizontalTextCoverage"]) >= 0.95
-        ):
-            return (
-                source,
-                {
-                    "mode": "native-zero-degree-high-confidence-probe",
-                    "selectedDegrees": 0,
-                    "axisPrefilter": axis_prefilter,
-                    "candidates": {"0": {"score": zero_score, **zero_metrics}},
-                    "candidateDetectorPasses": 1,
-                    "candidateDetectorBatchSize": 1,
-                    "fullAuditSkipped": True,
-                    "zeroDegreeFastPath": True,
-                },
-                cached_zero_masks,
-            )
     candidates = {
         angle: rotate_for_orientation(source, angle)
         for angle in candidate_angles
@@ -2018,11 +1959,7 @@ def _normalize_orientation(
     # inspect the same detector output as the probe, rather than issue another
     # equivalent GPU forward pass for every candidate rotation.
     candidate_masks = {
-        angle: (
-            cached_zero_masks
-            if angle == 0 and cached_zero_masks is not None
-            else _predict(detector, candidate, canvas, threshold)
-        )
+        angle: _predict(detector, candidate, canvas, threshold)
         for angle, candidate in candidates.items()
     }
     # Most ordinary documents need only discriminate upright from upside-down.
@@ -2590,42 +2527,10 @@ def main(argv: list[str] | None = None) -> None:
     )
     parser.add_argument("--orientation", choices=("auto", "0", "90", "180", "270"), default="auto")
     parser.add_argument(
-        "--orientation-observer",
-        choices=("auto", "off", "paddlex", "shadow"),
-        default="off",
-        help=(
-            "Use an already-installed independent document-orientation classifier. "
-            "Shadow records its evidence but never changes the native decision; "
-            "auto never downloads a model and falls back to native-only evidence."
-        ),
-    )
-    parser.add_argument(
-        "--orientation-observer-model",
-        type=Path,
-        default=Path.home()
-        / ".paddlex"
-        / "official_models"
-        / "PP-LCNet_x1_0_doc_ori",
-    )
-    parser.add_argument("--orientation-observer-min-confidence", type=float, default=0.55)
-    parser.add_argument("--orientation-observer-strong-confidence", type=float, default=0.80)
-    parser.add_argument("--orientation-native-ambiguity-margin", type=float, default=0.15)
-    parser.add_argument("--orientation-observer-review-confidence", type=float, default=0.70)
-    parser.add_argument(
-        "--orientation-zero-degree-fast-path",
-        action=argparse.BooleanOptionalAction,
-        default=False,
-        help=(
-            "For horizontal scan pages, accept only a near-certain 0-degree "
-            "native proof before evaluating other rotations. Any incomplete or "
-            "ambiguous signal falls back to the full orientation consensus."
-        ),
-    )
-    parser.add_argument(
-        "--orientation-zero-degree-min-confidence",
+        "--orientation-native-ambiguity-margin",
         type=float,
-        default=0.995,
-        help="Minimum median owned-recognizer confidence for the 0-degree fast proof.",
+        default=0.15,
+        help="Minimum native candidate-score margin required to avoid review.",
     )
     parser.add_argument(
         "--independent-ocr-observer",
@@ -2745,17 +2650,8 @@ def main(argv: list[str] | None = None) -> None:
         parser.error("--korean-specialist-max-disagreement-edits must be non-negative")
     if not 0.0 <= arguments.korean_specialist_wake_threshold <= 1.0:
         parser.error("--korean-specialist-wake-threshold must be between 0 and 1")
-    for name in (
-        "orientation_observer_min_confidence",
-        "orientation_observer_strong_confidence",
-        "orientation_observer_review_confidence",
-    ):
-        if not 0.0 <= getattr(arguments, name) <= 1.0:
-            parser.error(f"--{name.replace('_', '-')} must be between 0 and 1")
     if arguments.orientation_native_ambiguity_margin < 0.0:
         parser.error("--orientation-native-ambiguity-margin must be non-negative")
-    if not 0.0 <= arguments.orientation_zero_degree_min_confidence <= 1.0:
-        parser.error("--orientation-zero-degree-min-confidence must be between 0 and 1")
     if not 0.0 <= arguments.independent_ocr_min_confidence <= 1.0:
         parser.error("--independent-ocr-min-confidence must be between 0 and 1")
     if not 0.0 <= arguments.independent_ocr_bcore_min_confidence <= 1.0:
@@ -2798,20 +2694,6 @@ def main(argv: list[str] | None = None) -> None:
     korean_language_specialist_codec = None
     numeric_anchor = None
     numeric_anchor_codec = None
-    orientation_observer = None
-    orientation_observer_status = "disabled"
-    if arguments.orientation == "auto" and arguments.orientation_observer != "off":
-        try:
-            orientation_observer = load_warm_orientation_observer(
-                arguments.orientation_observer_model
-            )
-            orientation_observer_status = "loaded-local-model"
-        except FileNotFoundError:
-            if arguments.orientation_observer in {"paddlex", "shadow"}:
-                parser.error(
-                    "--orientation-observer paddlex/shadow requires a locally installed model"
-                )
-            orientation_observer_status = "local-model-unavailable"
     independent_ocr_observer = None
     independent_ocr_observer_status = (
         "disabled"
@@ -2953,92 +2835,22 @@ def main(argv: list[str] | None = None) -> None:
                         arguments.recognizer_batch_size,
                         arguments.recognizer_width_bin,
                         page_kind == "scan",
-                        arguments.orientation_zero_degree_fast_path,
-                        arguments.orientation_zero_degree_min_confidence,
                     )
-                    if orientation.get("zeroDegreeFastPath"):
-                        # The fast gate proves 0 degrees through independent
-                        # layout and readable-glyph conditions. It does not
-                        # calculate unobserved candidate scores, so record a
-                        # conservative decision lower bound rather than
-                        # pretending the one-candidate score range is zero.
-                        score_margin = arguments.orientation_native_ambiguity_margin
-                        orientation["scoreMarginIsLowerBound"] = True
-                        orientation["scoreMarginProof"] = "zero_degree_fast_gate"
-                    else:
-                        candidate_scores = [
-                            float(candidate["score"])
-                            for candidate in orientation["candidates"].values()
-                        ]
-                        score_margin = max(candidate_scores) - min(candidate_scores)
+                    candidate_scores = [
+                        float(candidate["score"])
+                        for candidate in orientation["candidates"].values()
+                    ]
+                    score_margin = max(candidate_scores) - min(candidate_scores)
                     orientation["scoreMargin"] = score_margin
                     # A PDF is a container, not an orientation contract. Scanned
                     # reports commonly mix portrait, landscape and upside-down
                     # inserts. Reusing one page's decision silently corrupts later
                     # pages, so every page must establish its own orientation.
                     orientation["decisionScope"] = "page"
-                    observer_degrees = None
-                    observer_confidence = None
-                    if orientation_observer is not None:
-                        observer_degrees, observer_confidence = observe_orientation(
-                            orientation_observer, unrotated_source
-                        )
-                    observer_participates_in_decision = (
-                        arguments.orientation_observer != "shadow"
-                    )
-                    decision = choose_orientation(
-                        native_degrees=int(orientation["selectedDegrees"]),
-                        native_margin=score_margin,
-                        native_candidates={
-                            int(value) for value in orientation["candidates"]
-                        },
-                        observer_degrees=(
-                            observer_degrees
-                            if observer_participates_in_decision
-                            else None
-                        ),
-                        observer_confidence=(
-                            observer_confidence
-                            if observer_participates_in_decision
-                            else None
-                        ),
-                        observer_minimum_confidence=arguments.orientation_observer_min_confidence,
-                        observer_strong_confidence=arguments.orientation_observer_strong_confidence,
-                        native_ambiguity_margin=arguments.orientation_native_ambiguity_margin,
-                        review_confidence=arguments.orientation_observer_review_confidence,
-                    )
                     orientation["nativeSelectedDegrees"] = orientation["selectedDegrees"]
-                    orientation["selectedDegrees"] = decision.selected_degrees
-                    orientation["ensemble"] = {
-                        **decision.receipt(),
-                        "observer": "PP-LCNet_x1_0_doc_ori",
-                        "observerStatus": orientation_observer_status,
-                        "observerMode": arguments.orientation_observer,
-                        "observerObservation": (
-                            {
-                                "selectedDegrees": observer_degrees,
-                                "confidence": observer_confidence,
-                                "participatedInDecision": observer_participates_in_decision,
-                            }
-                            if observer_degrees is not None
-                            and observer_confidence is not None
-                            else None
-                        ),
-                        "modelPath": (
-                            str(arguments.orientation_observer_model.resolve())
-                            if orientation_observer is not None
-                            else None
-                        ),
-                    }
-                    if decision.selected_degrees != decision.native_degrees:
-                        source = rotate_for_orientation(
-                            unrotated_source, decision.selected_degrees
-                        )
-                        # The native scorer's detector output belongs to a
-                        # different page rotation.  Never reuse it across an
-                        # observer override, even when the two images look
-                        # superficially similar.
-                        orientation_detector_masks = None
+                    orientation["needsReview"] = (
+                        score_margin < arguments.orientation_native_ambiguity_margin
+                    )
                 else:
                     selected_degrees = int(arguments.orientation)
                     source = rotate_for_orientation(source, selected_degrees)
@@ -3595,7 +3407,7 @@ def main(argv: list[str] | None = None) -> None:
                         "ctc_beam": row.get("beamLanguageScore", -20.0),
                     }[row["selectedReading"]]
                     row["validationIssues"] = validate_ocr_text(row["text"])
-                    if orientation.get("ensemble", {}).get("needsReview"):
+                    if orientation.get("needsReview", False):
                         row["validationIssues"] = sorted(
                             set(row["validationIssues"])
                             | {"ORIENTATION_DISAGREEMENT"}
@@ -3841,7 +3653,7 @@ def main(argv: list[str] | None = None) -> None:
                         )
                     cell["visualCandidates"] = normalized_candidates
                     cell["validationIssues"] = validate_ocr_text(cell["text"])
-                    if orientation.get("ensemble", {}).get("needsReview"):
+                    if orientation.get("needsReview", False):
                         cell["validationIssues"] = sorted(
                             set(cell["validationIssues"])
                             | {"ORIENTATION_DISAGREEMENT"}
@@ -3943,7 +3755,7 @@ def main(argv: list[str] | None = None) -> None:
                     / max(1, len(text_rows))
                 )
                 orientation_needs_review = bool(
-                    orientation.get("ensemble", {}).get("needsReview")
+                    orientation.get("needsReview", False)
                 )
                 observer_should_wake = (
                     arguments.independent_ocr_observer == "review"

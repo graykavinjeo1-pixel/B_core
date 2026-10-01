@@ -84,12 +84,9 @@ def _run_native_reader(
         device,
         "--independent-ocr-observer",
         "off",
-        "--orientation-observer",
-        "off",
         "--high-confidence-row-fast-path",
         "--high-confidence-row-floor",
         "0.95",
-        "--orientation-zero-degree-fast-path",
     ]
     # `recognize_page_tables` emits per-page research receipts to stdout.
     # Those receipts remain in its temporary output files; the process
