@@ -1,0 +1,24 @@
+{
+  "schema": "B_CORE_NATIVE_OCR_INTERPOLATED_CHECKPOINT_1",
+  "topology": "conv-residual-bigru-refinement-ctc",
+  "anchor": "bootstrap-component-refinement-v60-full-0001",
+  "adapted": "bootstrap-component-refinement-v61-mixed-0001",
+  "alpha": 0.5,
+  "anchorSha256": "6991a74137544311c2da53930d18e08ba888518af052e34187c71fb98fbe2657",
+  "adaptedSha256": "211f2c3f3aa8b6e831c591a967af44e38ea52e3cfe9577df905b1edb0131e994",
+  "recognitionGeometry": {
+    "lineHeight": 48,
+    "maxWidth": 960,
+    "horizontalScale": 1.0,
+    "horizontalDownsample": 4
+  },
+  "inferenceGeometryFrom": "bootstrap-component-refinement-v61-mixed-0001",
+  "contentNormalization": {
+    "measurementUnitAliases": true,
+    "collapseWhitespace": true,
+    "stripOuterWhitespace": true,
+    "preserveCharactersAndPunctuation": true
+  },
+  "productionAuthority": false,
+  "selectionRequiresIndependentRegressionGate": true
+}

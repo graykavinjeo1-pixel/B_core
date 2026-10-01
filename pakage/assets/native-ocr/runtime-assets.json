@@ -1,0 +1,20 @@
+{
+  "schema": "B_CORE_NATIVE_OCR_RUNTIME_ASSETS_1",
+  "detector": {
+    "checkpoint": "table-detector-scanaug-0003",
+    "files": {
+      "model.json": "sha256:0b764f01c3f28bea2ed82c545d74f6a04849f2fefd0d5f7fc4087ecc30c9a785",
+      "detector.pdparams": "sha256:72c52911978c6c4cca38fafc17b7c1f046a61f1689b919b42e77232444d3775a"
+    }
+  },
+  "recognizer": {
+    "checkpoint": "bootstrap-component-refinement-v60-v61-a050-fixed",
+    "files": {
+      "model.json": "sha256:923f5cd283dc40e03b4496584c9a1874462f18fde1b4ede1ed6e734d67ad848b",
+      "codec.json": "sha256:ed929e1ae28668c9227dca27b6b2a6e73a020490a5ffc5b5635a7830201ad097",
+      "recognizer.pdparams": "sha256:b669843581f0704a9a7386c627bf9093bb51137ef3daf299d51d8316e866d192"
+    }
+  },
+  "authority": "FAIL_CLOSED_REVIEW_GATED",
+  "externalRuntimeRequired": false
+}

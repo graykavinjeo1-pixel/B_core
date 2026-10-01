@@ -867,14 +867,46 @@ fn extract_pdf(path: &Path) -> Result<(String, String), (EvidenceStatusIR, &'sta
 fn extract_bcore_native_ocr(
     path: &Path,
 ) -> Result<(String, String), (EvidenceStatusIR, &'static str)> {
-    let detector = std::env::var_os("B_CORE_NATIVE_OCR_DETECTOR").ok_or((
-        EvidenceStatusIR::ExtractorUnavailable,
-        "B_CORE_NATIVE_OCR_DETECTOR_NOT_CONFIGURED",
-    ))?;
-    let recognizer = std::env::var_os("B_CORE_NATIVE_OCR_RECOGNIZER").ok_or((
-        EvidenceStatusIR::ExtractorUnavailable,
-        "B_CORE_NATIVE_OCR_RECOGNIZER_NOT_CONFIGURED",
-    ))?;
+    let bundled_asset_root = std::env::var_os("B_CORE_NATIVE_OCR_ASSET_ROOT")
+        .map(std::path::PathBuf::from)
+        .unwrap_or_else(|| {
+            std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+                .join("..")
+                .join("..")
+                .join("assets")
+                .join("native-ocr")
+        });
+    let detector = std::env::var_os("B_CORE_NATIVE_OCR_DETECTOR")
+        .map(std::path::PathBuf::from)
+        .unwrap_or_else(|| {
+            bundled_asset_root
+                .join("models")
+                .join("table-detector-scanaug-0003")
+        });
+    let recognizer = std::env::var_os("B_CORE_NATIVE_OCR_RECOGNIZER")
+        .map(std::path::PathBuf::from)
+        .unwrap_or_else(|| {
+            bundled_asset_root
+                .join("models")
+                .join("bootstrap-component-refinement-v60-v61-a050-fixed")
+        });
+    if !detector.join("model.json").is_file()
+        || !detector.join("detector.pdparams").is_file()
+    {
+        return Err((
+            EvidenceStatusIR::ExtractorUnavailable,
+            "B_CORE_NATIVE_OCR_DETECTOR_NOT_CONFIGURED",
+        ));
+    }
+    if !recognizer.join("model.json").is_file()
+        || !recognizer.join("codec.json").is_file()
+        || !recognizer.join("recognizer.pdparams").is_file()
+    {
+        return Err((
+            EvidenceStatusIR::ExtractorUnavailable,
+            "B_CORE_NATIVE_OCR_RECOGNIZER_NOT_CONFIGURED",
+        ));
+    }
     let device = std::env::var("B_CORE_NATIVE_OCR_DEVICE").unwrap_or_else(|_| "gpu:0".to_string());
     let python_home = std::env::var_os("B_CORE_NATIVE_OCR_HOME")
         .map(std::path::PathBuf::from)
@@ -908,9 +940,9 @@ fn extract_bcore_native_ocr(
             .args(["-m", "bcore_native_ocr.adapter_cli"])
             .arg(path)
             .arg("--detector")
-            .arg(&detector)
+            .arg(detector.as_os_str())
             .arg("--recognizer")
-            .arg(&recognizer)
+            .arg(recognizer.as_os_str())
             .arg("--device")
             .arg(&device)
             .env("PYTHONPATH", &python_path)
