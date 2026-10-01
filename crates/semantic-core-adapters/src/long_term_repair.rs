@@ -4,6 +4,13 @@ use std::io::Read;
 use std::path::Path;
 use std::process::Command;
 
+#[cfg(feature = "python-bcore-native-ocr")]
+use std::{
+    io::{BufRead, BufReader, BufWriter, Write},
+    process::{Child, ChildStdin, ChildStdout, Stdio},
+    sync::{Mutex, OnceLock},
+};
+
 use dockable_semantic_core::{
     AssessmentVerdictIR, DeliberationFactIR, DockableCore, QualityCriterionIR, SwarmDeliberationIR,
     SwarmDeliberationRequestIR, SWARM_DELIBERATION_REQUEST_SCHEMA,
@@ -23,6 +30,130 @@ const MAX_EVIDENCE_FILES: usize = 64;
 const MAX_EVIDENCE_BYTES: u64 = 64 * 1024 * 1024;
 const REQUIRED_PAGE_COUNT: usize = 50;
 const REQUIRED_PLAN_YEARS: u16 = 40;
+
+#[cfg(feature = "python-bcore-native-ocr")]
+#[derive(Clone, Debug, PartialEq, Eq)]
+struct NativeOcrWorkerConfig {
+    program: String,
+    prefix: Vec<String>,
+    python_path: std::ffi::OsString,
+    detector: std::path::PathBuf,
+    recognizer: std::path::PathBuf,
+    device: String,
+}
+
+#[cfg(feature = "python-bcore-native-ocr")]
+struct NativeOcrWorker {
+    config: NativeOcrWorkerConfig,
+    child: Child,
+    stdin: BufWriter<ChildStdin>,
+    stdout: BufReader<ChildStdout>,
+    next_request_id: u64,
+}
+
+#[cfg(feature = "python-bcore-native-ocr")]
+impl NativeOcrWorker {
+    fn spawn(config: NativeOcrWorkerConfig) -> std::io::Result<Self> {
+        let mut child = Command::new(&config.program)
+            .args(&config.prefix)
+            .args(["-m", "bcore_native_ocr.adapter_cli", "--serve"])
+            .env("PYTHONPATH", &config.python_path)
+            .stdin(Stdio::piped())
+            .stdout(Stdio::piped())
+            // The worker protocol is stdout-only.  OCR library diagnostics
+            // must never corrupt a response frame or become document facts.
+            .stderr(Stdio::null())
+            .spawn()?;
+        let stdin = child
+            .stdin
+            .take()
+            .ok_or_else(|| std::io::Error::other("B_CORE_NATIVE_OCR_WORKER_STDIN_UNAVAILABLE"))?;
+        let stdout = child
+            .stdout
+            .take()
+            .ok_or_else(|| std::io::Error::other("B_CORE_NATIVE_OCR_WORKER_STDOUT_UNAVAILABLE"))?;
+        Ok(Self {
+            config,
+            child,
+            stdin: BufWriter::new(stdin),
+            stdout: BufReader::new(stdout),
+            next_request_id: 0,
+        })
+    }
+
+    fn request(&mut self, path: &Path) -> Result<Vec<serde_json::Value>, ()> {
+        self.next_request_id = self.next_request_id.saturating_add(1);
+        let request_id = format!("native-ocr-{}", self.next_request_id);
+        let request = serde_json::json!({
+            "requestId": request_id,
+            "input": path,
+            "detector": self.config.detector,
+            "recognizer": self.config.recognizer,
+            "device": self.config.device,
+        });
+        serde_json::to_writer(&mut self.stdin, &request).map_err(|_| ())?;
+        self.stdin.write_all(b"\n").map_err(|_| ())?;
+        self.stdin.flush().map_err(|_| ())?;
+        let mut line = String::new();
+        if self.stdout.read_line(&mut line).map_err(|_| ())? == 0 {
+            return Err(());
+        }
+        let response = serde_json::from_str::<serde_json::Value>(&line).map_err(|_| ())?;
+        if response
+            .get("requestId")
+            .and_then(serde_json::Value::as_str)
+            != Some(&request_id)
+            || response.get("status").and_then(serde_json::Value::as_str) != Some("ok")
+        {
+            return Err(());
+        }
+        response
+            .get("rows")
+            .and_then(serde_json::Value::as_array)
+            .cloned()
+            .ok_or(())
+    }
+
+    fn terminate(&mut self) {
+        let _ = self.child.kill();
+        let _ = self.child.wait();
+    }
+}
+
+#[cfg(feature = "python-bcore-native-ocr")]
+impl Drop for NativeOcrWorker {
+    fn drop(&mut self) {
+        self.terminate();
+    }
+}
+
+#[cfg(feature = "python-bcore-native-ocr")]
+static NATIVE_OCR_WORKER: OnceLock<Mutex<Option<NativeOcrWorker>>> = OnceLock::new();
+
+#[cfg(feature = "python-bcore-native-ocr")]
+fn request_native_ocr_worker(
+    config: NativeOcrWorkerConfig,
+    path: &Path,
+) -> Result<Vec<serde_json::Value>, ()> {
+    let worker = NATIVE_OCR_WORKER.get_or_init(|| Mutex::new(None));
+    let mut guard = worker.lock().map_err(|_| ())?;
+    let needs_restart = guard
+        .as_ref()
+        .is_none_or(|existing| existing.config != config);
+    if needs_restart {
+        if let Some(mut existing) = guard.take() {
+            existing.terminate();
+        }
+        *guard = Some(NativeOcrWorker::spawn(config).map_err(|_| ())?);
+    }
+    let result = guard.as_mut().ok_or(())?.request(path);
+    if result.is_err() {
+        if let Some(mut failed) = guard.take() {
+            failed.terminate();
+        }
+    }
+    result
+}
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
@@ -890,9 +1021,7 @@ fn extract_bcore_native_ocr(
                 .join("models")
                 .join("bootstrap-component-refinement-v60-v61-a050-fixed")
         });
-    if !detector.join("model.json").is_file()
-        || !detector.join("detector.pdparams").is_file()
-    {
+    if !detector.join("model.json").is_file() || !detector.join("detector.pdparams").is_file() {
         return Err((
             EvidenceStatusIR::ExtractorUnavailable,
             "B_CORE_NATIVE_OCR_DETECTOR_NOT_CONFIGURED",
@@ -935,50 +1064,17 @@ fn extract_bcore_native_ocr(
     ]);
 
     for (program, prefix) in candidates {
-        let output = match Command::new(&program)
-            .args(&prefix)
-            .args(["-m", "bcore_native_ocr.adapter_cli"])
-            .arg(path)
-            .arg("--detector")
-            .arg(detector.as_os_str())
-            .arg("--recognizer")
-            .arg(recognizer.as_os_str())
-            .arg("--device")
-            .arg(&device)
-            .env("PYTHONPATH", &python_path)
-            .output()
-        {
-            Ok(output) => output,
-            Err(error) if error.kind() == std::io::ErrorKind::NotFound => continue,
-            Err(_) => {
-                return Err((
-                    EvidenceStatusIR::ReadFailed,
-                    "B_CORE_NATIVE_OCR_START_FAILED",
-                ));
-            }
+        let config = NativeOcrWorkerConfig {
+            program,
+            prefix,
+            python_path: python_path.clone(),
+            detector: detector.clone(),
+            recognizer: recognizer.clone(),
+            device: device.clone(),
         };
-        if !output.status.success() {
-            continue;
-        }
-        let stdout = String::from_utf8(output.stdout).map_err(|_| {
-            (
-                EvidenceStatusIR::ReadFailed,
-                "B_CORE_NATIVE_OCR_OUTPUT_NOT_UTF8",
-            )
-        })?;
-        let Some(payload) = stdout
-            .lines()
-            .rev()
-            .find_map(|line| line.strip_prefix("B_CORE_NATIVE_OCR_JSON="))
-        else {
+        let Ok(rows) = request_native_ocr_worker(config, path) else {
             continue;
         };
-        let rows = serde_json::from_str::<Vec<serde_json::Value>>(payload).map_err(|_| {
-            (
-                EvidenceStatusIR::ReadFailed,
-                "B_CORE_NATIVE_OCR_JSON_INVALID",
-            )
-        })?;
         let mut text = String::new();
         let mut current_page = None;
         for row in rows {

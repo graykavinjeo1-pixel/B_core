@@ -50,6 +50,59 @@ def _render_page(pdf: Path, page_number: int, dpi: int, output: Path) -> None:
     )
 
 
+def _render_pages(
+    pdf: Path,
+    page_numbers: list[int],
+    dpi: int,
+    output_directory: Path,
+) -> dict[int, Path]:
+    """Render requested PDF pages in contiguous local batches.
+
+    The detector still receives the exact Poppler raster used by the
+    single-page reference path.  This only removes one `pdftoppm` process
+    launch per page, which was a material part of clean-document latency.
+    Non-contiguous callers are split into contiguous runs, so a request for
+    two distant pages never rasterizes the pages between them.
+    """
+
+    ordered = sorted(set(page_numbers))
+    if not ordered or any(page < 1 for page in ordered):
+        raise ValueError("B_CORE_OCR_RENDER_PAGE_REQUEST_INVALID")
+    output_directory.mkdir(parents=True, exist_ok=True)
+    runs: list[list[int]] = []
+    for page in ordered:
+        if not runs or page != runs[-1][-1] + 1:
+            runs.append([page])
+        else:
+            runs[-1].append(page)
+    rendered: dict[int, Path] = {}
+    for run_index, run in enumerate(runs):
+        prefix = output_directory / f"pages-{run_index:04d}"
+        subprocess.run(
+            [
+                "pdftoppm",
+                "-f",
+                str(run[0]),
+                "-l",
+                str(run[-1]),
+                "-r",
+                str(dpi),
+                "-png",
+                str(pdf),
+                str(prefix),
+            ],
+            check=True,
+            capture_output=True,
+        )
+        generated = sorted(prefix.parent.glob(f"{prefix.name}-*.png"))
+        if len(generated) != len(run):
+            raise RuntimeError("B_CORE_OCR_RENDER_BATCH_OUTPUT_MISMATCH")
+        rendered.update(zip(run, generated))
+    if set(rendered) != set(ordered):
+        raise RuntimeError("B_CORE_OCR_RENDER_BATCH_PAGE_MISMATCH")
+    return rendered
+
+
 def _predict(model, source: Image.Image, canvas: int, threshold: float) -> np.ndarray:
     grayscale = source.convert("L")
     scale = min(canvas / grayscale.width, canvas / grayscale.height)

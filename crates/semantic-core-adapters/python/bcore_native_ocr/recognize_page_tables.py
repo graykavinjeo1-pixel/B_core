@@ -17,6 +17,11 @@ import paddle
 import pdfplumber
 from PIL import Image, ImageEnhance, ImageFilter, ImageOps
 
+try:
+    import cv2
+except ModuleNotFoundError:  # pragma: no cover - the bounded fallback is tested below.
+    cv2 = None
+
 from .borderless_table import (
     arithmetic_candidate_expansion_indices,
     reconstruct_repeated_numeric_tables,
@@ -53,7 +58,7 @@ from .paddlex_ocr_observer import (
     resolve_review_with_owned_model_consensus,
     verify_observations_with_bcore,
 )
-from .predict_table_overlay import _predict, _render_page
+from .predict_table_overlay import _predict, _render_pages
 from .recognition_geometry import (
     HORIZONTAL_SCALE,
     LINE_HEIGHT,
@@ -93,6 +98,7 @@ _PRIMARY_MODEL_CACHE: dict[
     tuple[str, str, str],
     tuple[dict, BCoreDocumentDetector, object, BCoreLineRecognizer],
 ] = {}
+_ORIENTATION_OBSERVER_CACHE: dict[str, object] = {}
 
 
 def load_warm_primary_models(
@@ -142,6 +148,18 @@ def load_warm_primary_models(
     loaded = (detector_metadata, detector, codec, recognizer)
     _PRIMARY_MODEL_CACHE[key] = loaded
     return loaded
+
+
+def load_warm_orientation_observer(model_path: Path) -> object:
+    """Load the optional local orientation observer once per worker process."""
+
+    key = str(model_path.resolve())
+    cached = _ORIENTATION_OBSERVER_CACHE.get(key)
+    if cached is not None:
+        return cached
+    observer = load_paddlex_orientation_observer(model_path)
+    _ORIENTATION_OBSERVER_CACHE[key] = observer
+    return observer
 
 
 logging.getLogger("pdfminer").setLevel(logging.ERROR)
@@ -940,6 +958,32 @@ def _read_crop(
 def _connected_components(mask: np.ndarray) -> list[tuple[int, int, int, int, int]]:
     """Return 8-connected component boxes as x0, y0, x1, y1, area."""
 
+    # Glyph evidence and checkbox recovery are invoked for every region and
+    # row.  The original Python flood fill made their cost proportional to
+    # every ink pixel, often exceeding the recognizer's own GPU work on a
+    # clean page.  OpenCV's native connected-components implementation has
+    # the same 8-neighbour semantics and returns the same geometric contract.
+    # It is an optional acceleration only: a minimal local runtime without
+    # OpenCV keeps the exact bounded Python implementation below.
+    if cv2 is not None:
+        source = np.ascontiguousarray(mask.astype(np.uint8, copy=False))
+        component_count, _labels, statistics, _centroids = cv2.connectedComponentsWithStats(
+            source,
+            connectivity=8,
+        )
+        return [
+            (
+                int(statistics[label, cv2.CC_STAT_LEFT]),
+                int(statistics[label, cv2.CC_STAT_TOP]),
+                int(statistics[label, cv2.CC_STAT_LEFT]
+                    + statistics[label, cv2.CC_STAT_WIDTH]),
+                int(statistics[label, cv2.CC_STAT_TOP]
+                    + statistics[label, cv2.CC_STAT_HEIGHT]),
+                int(statistics[label, cv2.CC_STAT_AREA]),
+            )
+            for label in range(1, component_count)
+        ]
+
     height, width = mask.shape
     visited = np.zeros(mask.shape, dtype=bool)
     components = []
@@ -1338,6 +1382,12 @@ def recover_dense_title_readings(
         raise ValueError("crops and primary_readings must have identical lengths")
     eligible: list[tuple[int, dict[str, float], list[Image.Image]]] = []
     for index, crop in enumerate(crops):
+        # The selector requires an absolute +0.04 confidence increase.  Since
+        # confidence is bounded by one, a reading above 0.96 can never be
+        # replaced.  Do not run the three deterministic rereads when their
+        # result is mathematically unable to affect the evidence.
+        if float(primary_readings[index][1]) > 0.96:
+            continue
         metrics = _dense_title_visual_metrics(crop)
         if (
             metrics["inkDensity"] >= 0.44
@@ -1758,6 +1808,7 @@ def _orientation_score(
     recognizer_batch_size: int = 12,
     recognizer_width_bin: int = 32,
     scan_layout_hint: bool = False,
+    maximum_regions: int = 32,
 ) -> tuple[float, dict[str, float | int]]:
     masks = _predict(detector, source, canvas, threshold)
     geometry = reconstruct_table_geometry(masks, np.asarray(source))
@@ -1766,9 +1817,12 @@ def _orientation_score(
         for region in geometry["textRegions"]
         if region["x1"] - region["x0"] >= 6 and region["y1"] - region["y0"] >= 3
     ]
-    if len(candidates) > 32:
-        step = len(candidates) / 32
-        candidates = [candidates[min(len(candidates) - 1, int(index * step))] for index in range(32)]
+    if len(candidates) > maximum_regions:
+        step = len(candidates) / maximum_regions
+        candidates = [
+            candidates[min(len(candidates) - 1, int(index * step))]
+            for index in range(maximum_regions)
+        ]
     readings = _read_crops_batch(
         recognizer,
         codec,
@@ -1821,6 +1875,52 @@ def _normalize_orientation(
         angle: rotate_for_orientation(source, angle)
         for angle in candidate_angles
     }
+    # Most ordinary documents need only discriminate upright from upside-down.
+    # Probe evenly distributed regions first and accept that result only when
+    # every observed signal is already decisive.  Any weak, sparse, or
+    # conflicting page falls through to the existing full 32-region audit.
+    probe_evaluations: dict[str, dict[str, object]] = {}
+    for angle, candidate in candidates.items():
+        score, metrics = _orientation_score(
+            detector,
+            recognizer,
+            codec,
+            candidate,
+            canvas,
+            threshold,
+            language_model,
+            recognizer_batch_size,
+            recognizer_width_bin,
+            scan_layout_hint,
+            maximum_regions=6,
+        )
+        probe_evaluations[str(angle)] = {"score": score, **metrics}
+    probe_selected = max(
+        candidates,
+        key=lambda angle: float(probe_evaluations[str(angle)]["score"]),
+    )
+    probe_scores = sorted(
+        (float(value["score"]) for value in probe_evaluations.values()),
+        reverse=True,
+    )
+    probe_margin = (
+        probe_scores[0] - probe_scores[1] if len(probe_scores) > 1 else float("inf")
+    )
+    probe_metrics = probe_evaluations[str(probe_selected)]
+    if (
+        probe_margin >= 0.25
+        and int(probe_metrics["regions"]) >= 4
+        and float(probe_metrics["usefulRatio"]) >= 0.95
+        and float(probe_metrics["medianConfidence"]) >= 0.985
+    ):
+        return candidates[probe_selected], {
+            "mode": "native-high-confidence-probe",
+            "selectedDegrees": probe_selected,
+            "axisPrefilter": axis_prefilter,
+            "candidates": probe_evaluations,
+            "probeMargin": probe_margin,
+            "fullAuditSkipped": True,
+        }
     for angle, candidate in candidates.items():
         score, metrics = _orientation_score(
             detector,
@@ -1841,6 +1941,9 @@ def _normalize_orientation(
         "selectedDegrees": selected_angle,
         "axisPrefilter": axis_prefilter,
         "candidates": evaluations,
+        "probe": probe_evaluations,
+        "probeMargin": probe_margin,
+        "fullAuditSkipped": False,
     }
 
 
@@ -2217,7 +2320,7 @@ def _beam_read_crop(
     )
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("pdf", type=Path)
     parser.add_argument("--detector", type=Path, required=True)
@@ -2422,9 +2525,27 @@ def main() -> None:
             "selection remains confidence-, completeness-, and fact-gated."
         ),
     )
-    arguments = parser.parse_args()
+    parser.add_argument(
+        "--high-confidence-row-fast-path",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help=(
+            "For non-tabular scan pages only, stop after every direct row reading "
+            "independently satisfies the normal evidence gate. Ambiguous pages keep "
+            "the full region-plus-row verification path."
+        ),
+    )
+    parser.add_argument(
+        "--high-confidence-row-floor",
+        type=float,
+        default=0.985,
+        help="Minimum direct-row confidence for the non-tabular fast-path gate.",
+    )
+    arguments = parser.parse_args(argv)
     if arguments.recognizer_batch_size < 1:
         parser.error("--recognizer-batch-size must be at least 1")
+    if not 0.0 <= arguments.high_confidence_row_floor <= 1.0:
+        parser.error("--high-confidence-row-floor must be between 0 and 1")
     if arguments.arithmetic_candidate_limit < 1:
         parser.error("--arithmetic-candidate-limit must be at least 1")
     if arguments.arithmetic_beam_width < 1:
@@ -2494,7 +2615,7 @@ def main() -> None:
     orientation_observer_status = "disabled"
     if arguments.orientation == "auto" and arguments.orientation_observer != "off":
         try:
-            orientation_observer = load_paddlex_orientation_observer(
+            orientation_observer = load_warm_orientation_observer(
                 arguments.orientation_observer_model
             )
             orientation_observer_status = "loaded-local-model"
@@ -2564,9 +2685,15 @@ def main() -> None:
         paddle.no_grad(),
         pdfplumber.open(arguments.pdf.resolve()) as pdf_document,
     ):
-        for page_number in [int(value) for value in arguments.pages.split(",")]:
-            rendered = Path(temporary) / f"page-{page_number:04}.png"
-            _render_page(arguments.pdf.resolve(), page_number, arguments.dpi, rendered)
+        page_numbers = [int(value) for value in arguments.pages.split(",")]
+        rendered_pages = _render_pages(
+            arguments.pdf.resolve(),
+            page_numbers,
+            arguments.dpi,
+            Path(temporary),
+        )
+        for page_number in page_numbers:
+            rendered = rendered_pages[page_number]
             with Image.open(rendered) as opened:
                 source = opened.convert("L")
                 vector_words = pdf_document.pages[page_number - 1].extract_words(
@@ -3010,20 +3137,78 @@ def main() -> None:
                     len(refined) > len(primary)
                     for primary, refined in zip(primary_row_groups, row_crop_groups)
                 )
+                fast_region_only_rows = [False] * len(geometry["textRows"])
+                if (
+                    arguments.high_confidence_row_fast_path
+                    and not geometry["cells"]
+                    and specialist_pair is None
+                    and korean_language_specialist is None
+                    and numeric_anchor is None
+                    and language_model is None
+                ):
+                    for row_index, (row, segment_count) in enumerate(
+                        zip(geometry["textRows"], row_segment_counts)
+                    ):
+                        joined_regions = _regions_for_joined_row(
+                            row["regions"], page_width=source.width
+                        )
+                        joined_text = " ".join(
+                            str(region.get("text") or "")
+                            for region in joined_regions
+                        ).strip()
+                        normalized_text = recover_fragmented_spacing(
+                            normalize_numeric_token_glyph_confusions(joined_text)
+                        )
+                        fast_region_only_rows[row_index] = bool(
+                            segment_count == 1
+                            and len(joined_regions) == len(row["regions"])
+                            and joined_text
+                            and not validate_ocr_text(normalized_text)
+                            and all(
+                                float(region.get("confidence") or 0.0)
+                                >= arguments.high_confidence_row_floor
+                                and bool(
+                                    region.get("visualTextEvidence", {}).get(
+                                        "hasGlyphEvidence"
+                                    )
+                                )
+                                for region in joined_regions
+                            )
+                        )
+                fallback_row_indices = [
+                    index
+                    for index, is_fast in enumerate(fast_region_only_rows)
+                    if not is_fast
+                ]
                 row_routing_start = len(routing_reasons)
+                fallback_segment_counts = [
+                    row_segment_counts[index] for index in fallback_row_indices
+                ]
                 direct_segment_readings = read_primary(
-                    [segment for group in row_crop_groups for segment in group],
+                    [
+                        segment
+                        for index in fallback_row_indices
+                        for segment in row_crop_groups[index]
+                    ],
                     max_width=arguments.row_recognizer_max_width,
                 )
-                direct_readings = _join_segmented_readings(
+                fallback_direct_readings = _join_segmented_readings(
                     direct_segment_readings,
-                    row_segment_counts,
+                    fallback_segment_counts,
                 )
+                direct_readings = [("", 0.0)] * len(geometry["textRows"])
+                for row_index, reading in zip(
+                    fallback_row_indices, fallback_direct_readings
+                ):
+                    direct_readings[row_index] = reading
                 segment_routing_reasons = routing_reasons[row_routing_start:]
                 row_routing_reasons: list[str] = []
                 if segment_routing_reasons:
                     reason_offset = 0
-                    for count in row_segment_counts:
+                    for row_index, count in enumerate(row_segment_counts):
+                        if fast_region_only_rows[row_index]:
+                            row_routing_reasons.append("high_confidence_region_join")
+                            continue
                         grouped = segment_routing_reasons[
                             reason_offset : reason_offset + count
                         ]
@@ -3757,6 +3942,7 @@ def main() -> None:
                         "rowAndBeamMilliseconds": (native_completed_at - regions_at) * 1000,
                         "beamMilliseconds": beam_milliseconds,
                         "beamRows": beam_rows,
+                        "highConfidenceRegionJoinRows": sum(fast_region_only_rows),
                         "paddingRecoveryRegions": padding_recovery_regions,
                         "cellBeamMilliseconds": cell_beam_milliseconds,
                         "cellBeamAttempts": cell_beam_attempts,
