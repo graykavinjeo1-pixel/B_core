@@ -89,6 +89,61 @@ from .text_validation import (
 )
 
 
+_PRIMARY_MODEL_CACHE: dict[
+    tuple[str, str, str],
+    tuple[dict, BCoreDocumentDetector, object, BCoreLineRecognizer],
+] = {}
+
+
+def load_warm_primary_models(
+    detector_path: Path,
+    recognizer_path: Path,
+    device: str,
+) -> tuple[dict, BCoreDocumentDetector, object, BCoreLineRecognizer]:
+    """Load and warm the owned OCR pair once per process.
+
+    The HTTP runtime calls the existing reader repeatedly in one process.  A
+    path/device keyed cache prevents every document from rereading weights and
+    reallocating the same GPU tensors.
+    """
+    detector_path = detector_path.resolve()
+    recognizer_path = recognizer_path.resolve()
+    key = (str(detector_path), str(recognizer_path), device)
+    cached = _PRIMARY_MODEL_CACHE.get(key)
+    if cached is not None:
+        return cached
+    paddle.set_device(device)
+    detector_metadata = json.loads(
+        (detector_path / "model.json").read_text(encoding="utf-8")
+    )
+    detector = BCoreDocumentDetector()
+    detector.set_state_dict(paddle.load(str(detector_path / "detector.pdparams")))
+    detector.eval()
+    codec = load_codec(recognizer_path / "codec.json")
+    recognizer = BCoreLineRecognizer(codec.size)
+    recognizer.set_state_dict(
+        paddle.load(str(recognizer_path / "recognizer.pdparams"))
+    )
+    recognizer.eval()
+    with paddle.no_grad():
+        detector(
+            paddle.zeros(
+                [
+                    1,
+                    1,
+                    int(detector_metadata["canvas"]),
+                    int(detector_metadata["canvas"]),
+                ],
+                dtype="float32",
+            )
+        )
+        recognizer(paddle.zeros([1, 1, 48, 128], dtype="float32"))
+        synchronize_accelerator(device)
+    loaded = (detector_metadata, detector, codec, recognizer)
+    _PRIMARY_MODEL_CACHE[key] = loaded
+    return loaded
+
+
 logging.getLogger("pdfminer").setLevel(logging.ERROR)
 
 
@@ -2414,15 +2469,11 @@ def main() -> None:
             "choose only one of --specialist-recognizer, "
             "--korean-language-specialist or --numeric-anchor-recognizer"
         )
-    paddle.set_device(arguments.device)
-    detector_metadata = json.loads((arguments.detector / "model.json").read_text(encoding="utf-8"))
-    detector = BCoreDocumentDetector()
-    detector.set_state_dict(paddle.load(str(arguments.detector / "detector.pdparams")))
-    detector.eval()
-    codec = load_codec(arguments.recognizer / "codec.json")
-    recognizer = BCoreLineRecognizer(codec.size)
-    recognizer.set_state_dict(paddle.load(str(arguments.recognizer / "recognizer.pdparams")))
-    recognizer.eval()
+    detector_metadata, detector, codec, recognizer = load_warm_primary_models(
+        arguments.detector,
+        arguments.recognizer,
+        arguments.device,
+    )
     language_model = CharacterLanguageModel.load(arguments.language_model) if arguments.language_model else None
     lexicon = OcrLexicon.load(arguments.lexicon) if arguments.lexicon else None
     domain_ontology = (
@@ -2497,8 +2548,6 @@ def main() -> None:
         )
         numeric_anchor.eval()
     with paddle.no_grad():
-        detector(paddle.zeros([1, 1, int(detector_metadata["canvas"]), int(detector_metadata["canvas"])], dtype="float32"))
-        recognizer(paddle.zeros([1, 1, 48, 128], dtype="float32"))
         if specialist_pair is not None:
             specialist_pair.forward_pair(
                 paddle.zeros([1, 1, 48, 128], dtype="float32"),
