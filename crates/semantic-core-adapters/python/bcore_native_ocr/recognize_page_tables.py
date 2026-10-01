@@ -351,6 +351,91 @@ def select_approved_text_evidence(
     }
 
 
+def build_trusted_vector_fast_receipt(
+    *,
+    pdf_name: str,
+    page_number: int,
+    detector_name: str,
+    recognizer_name: str,
+    dpi: int,
+    threshold: float,
+    vector_word_count: int,
+    vector_text_evidence: dict,
+    elapsed_milliseconds: float,
+) -> dict:
+    """Emit exact embedded-PDF text without a redundant raster OCR pass.
+
+    A trustworthy PDF text layer is already a source-preserving, coordinate
+    carrying text authority.  Rendering it and asking a lossy visual
+    recognizer to rediscover the same glyphs adds latency and can only weaken
+    the approved fact source.  This route is intentionally all-or-nothing:
+    callers may use it only after ``compile_vector_text_evidence`` has passed
+    its existing trust checks.  Every other page stays on the full visual
+    pipeline unchanged.
+    """
+
+    if not vector_text_evidence.get("preferredForTextFacts"):
+        raise ValueError("B_CORE_OCR_VECTOR_FAST_PATH_WITHOUT_TRUST")
+    approved_text_evidence = select_approved_text_evidence(
+        vector_text_evidence, []
+    )
+    compiled = compile_approved_text_evidence(approved_text_evidence["rows"])
+    approved_text_evidence["rows"] = compiled["rows"]
+    approved_text_evidence["compilation"] = {
+        key: value for key, value in compiled.items() if key != "rows"
+    }
+    return {
+        "schema": "B_CORE_NATIVE_OCR_TABLE_READ_1",
+        "source": pdf_name,
+        "page": page_number,
+        "detector": detector_name,
+        "recognizer": recognizer_name,
+        "specialistRecognizer": None,
+        "koreanLanguageSpecialist": None,
+        "numericAnchorRecognizer": None,
+        "recognizerBatching": None,
+        "threshold": threshold,
+        "dpi": dpi,
+        "pageKind": "vector",
+        "vectorTextWords": vector_word_count,
+        "vectorTextEvidence": vector_text_evidence,
+        "approvedTextEvidence": approved_text_evidence,
+        "fastPath": {
+            "mode": "trusted_embedded_pdf_text",
+            "rasterRendered": False,
+            "detectorInvoked": False,
+            "recognizerInvoked": False,
+            "contract": (
+                "trusted embedded PDF text remains the exact primary evidence; "
+                "visual OCR is not invoked redundantly"
+            ),
+        },
+        "scanRuleRecovery": {"mode": "not-applicable", "applied": False, "diagnostics": {}},
+        "scanTextDetection": {"requestedMode": "not-applicable", "mode": "not-applicable", "applied": False},
+        "nativeRegionConsensus": {"approved": 0, "needsReview": 0},
+        "orientation": {
+            "mode": "not-applicable-trusted-embedded-text",
+            "selectedDegrees": 0,
+            "decisionScope": "embedded-pdf-coordinate-space",
+        },
+        "elapsedMilliseconds": elapsed_milliseconds,
+        "latency": {
+            "vectorExtractionMilliseconds": elapsed_milliseconds,
+            "orientationMilliseconds": 0.0,
+            "detectorMilliseconds": 0.0,
+            "geometryMilliseconds": 0.0,
+            "regionRecognitionMilliseconds": 0.0,
+            "rowAndBeamMilliseconds": 0.0,
+            "numericAuditMilliseconds": 0.0,
+            "independentObserverMilliseconds": 0.0,
+        },
+        "geometry": {"textRegions": [], "textRows": [], "cells": []},
+        "structuredEvidence": {"mode": "not-applicable-trusted-embedded-text"},
+        "domainOntology": {"enabled": False, "annotatedCells": 0, "resolvedCells": 0, "suggestedCells": 0, "ambiguousCells": 0},
+        "independentOcrObserver": {"activated": False, "status": "not-applicable"},
+    }
+
+
 def compile_native_region_consensus(
     regions: list[dict],
     anchor_readings: list[tuple[str, float]],
@@ -1840,6 +1925,7 @@ def _orientation_score(
             masks,
         )
     confidences = [confidence for _, confidence in useful]
+    valid_readings = sum(not validate_ocr_text(text) for text, _ in useful)
     language_scores = [language_model.score(text) for text, _ in useful] if language_model else []
     useful_ratio = len(useful) / max(1, len(candidates))
     median_confidence = statistics.median(confidences)
@@ -1859,6 +1945,7 @@ def _orientation_score(
             "regions": len(candidates),
             "usefulReadings": len(useful),
             "usefulRatio": useful_ratio,
+            "validReadingRatio": valid_readings / max(1, len(useful)),
             "medianConfidence": median_confidence,
             "medianLanguageScore": median_language,
             "horizontalTextCoverage": layout_coverage,
@@ -1878,9 +1965,51 @@ def _normalize_orientation(
     recognizer_batch_size: int = 12,
     recognizer_width_bin: int = 32,
     scan_layout_hint: bool = False,
+    zero_degree_fast_path: bool = False,
+    zero_degree_min_confidence: float = 0.995,
 ) -> tuple[Image.Image, dict[str, object], np.ndarray]:
     evaluations: dict[str, dict[str, object]] = {}
     candidate_angles, axis_prefilter = _orientation_candidate_angles(source)
+    cached_zero_masks: np.ndarray | None = None
+    if zero_degree_fast_path and 0 in candidate_angles:
+        # This is an all-or-nothing 0-degree proof, not a generic orientation
+        # classifier.  It uses only layout-neutral geometry and the existing
+        # recognizer, then falls back to the complete candidate comparison for
+        # every sparse, malformed, or merely less-than-near-certain page.
+        zero_score, zero_metrics, cached_zero_masks = _orientation_score(
+            detector,
+            recognizer,
+            codec,
+            source,
+            canvas,
+            threshold,
+            language_model,
+            recognizer_batch_size,
+            recognizer_width_bin,
+            scan_layout_hint,
+            maximum_regions=4,
+        )
+        if (
+            int(zero_metrics["regions"]) >= 4
+            and float(zero_metrics["usefulRatio"]) == 1.0
+            and float(zero_metrics["validReadingRatio"]) == 1.0
+            and float(zero_metrics["medianConfidence"]) >= zero_degree_min_confidence
+            and float(zero_metrics["horizontalTextCoverage"]) >= 0.95
+        ):
+            return (
+                source,
+                {
+                    "mode": "native-zero-degree-high-confidence-probe",
+                    "selectedDegrees": 0,
+                    "axisPrefilter": axis_prefilter,
+                    "candidates": {"0": {"score": zero_score, **zero_metrics}},
+                    "candidateDetectorPasses": 1,
+                    "candidateDetectorBatchSize": 1,
+                    "fullAuditSkipped": True,
+                    "zeroDegreeFastPath": True,
+                },
+                cached_zero_masks,
+            )
     candidates = {
         angle: rotate_for_orientation(source, angle)
         for angle in candidate_angles
@@ -1889,7 +2018,11 @@ def _normalize_orientation(
     # inspect the same detector output as the probe, rather than issue another
     # equivalent GPU forward pass for every candidate rotation.
     candidate_masks = {
-        angle: _predict(detector, candidate, canvas, threshold)
+        angle: (
+            cached_zero_masks
+            if angle == 0 and cached_zero_masks is not None
+            else _predict(detector, candidate, canvas, threshold)
+        )
         for angle, candidate in candidates.items()
     }
     # Most ordinary documents need only discriminate upright from upside-down.
@@ -2478,6 +2611,22 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--orientation-native-ambiguity-margin", type=float, default=0.15)
     parser.add_argument("--orientation-observer-review-confidence", type=float, default=0.70)
     parser.add_argument(
+        "--orientation-zero-degree-fast-path",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help=(
+            "For horizontal scan pages, accept only a near-certain 0-degree "
+            "native proof before evaluating other rotations. Any incomplete or "
+            "ambiguous signal falls back to the full orientation consensus."
+        ),
+    )
+    parser.add_argument(
+        "--orientation-zero-degree-min-confidence",
+        type=float,
+        default=0.995,
+        help="Minimum median owned-recognizer confidence for the 0-degree fast proof.",
+    )
+    parser.add_argument(
         "--independent-ocr-observer",
         choices=("off", "auto", "review"),
         default="off",
@@ -2604,6 +2753,8 @@ def main(argv: list[str] | None = None) -> None:
             parser.error(f"--{name.replace('_', '-')} must be between 0 and 1")
     if arguments.orientation_native_ambiguity_margin < 0.0:
         parser.error("--orientation-native-ambiguity-margin must be non-negative")
+    if not 0.0 <= arguments.orientation_zero_degree_min_confidence <= 1.0:
+        parser.error("--orientation-zero-degree-min-confidence must be between 0 and 1")
     if not 0.0 <= arguments.independent_ocr_min_confidence <= 1.0:
         parser.error("--independent-ocr-min-confidence must be between 0 and 1")
     if not 0.0 <= arguments.independent_ocr_bcore_min_confidence <= 1.0:
@@ -2721,28 +2872,71 @@ def main(argv: list[str] | None = None) -> None:
         pdfplumber.open(arguments.pdf.resolve()) as pdf_document,
     ):
         page_numbers = [int(value) for value in arguments.pages.split(",")]
-        rendered_pages = _render_pages(
-            arguments.pdf.resolve(),
-            page_numbers,
-            arguments.dpi,
-            Path(temporary),
+        vector_preflight: dict[int, tuple[int, dict, float]] = {}
+        raster_page_numbers: list[int] = []
+        for page_number in page_numbers:
+            preflight_started = time.perf_counter()
+            vector_words = pdf_document.pages[page_number - 1].extract_words(
+                x_tolerance=1.5,
+                y_tolerance=3.0,
+                keep_blank_chars=False,
+            )
+            vector_word_count = len(vector_words)
+            vector_text_evidence = compile_vector_text_evidence(vector_words)
+            vector_preflight[page_number] = (
+                vector_word_count,
+                vector_text_evidence,
+                (time.perf_counter() - preflight_started) * 1000,
+            )
+            if not vector_text_evidence["preferredForTextFacts"]:
+                raster_page_numbers.append(page_number)
+        rendered_pages = (
+            _render_pages(
+                arguments.pdf.resolve(),
+                raster_page_numbers,
+                arguments.dpi,
+                Path(temporary),
+            )
+            if raster_page_numbers
+            else {}
         )
         for page_number in page_numbers:
+            vector_word_count, vector_text_evidence, vector_elapsed = vector_preflight[
+                page_number
+            ]
+            if vector_text_evidence["preferredForTextFacts"]:
+                receipt = build_trusted_vector_fast_receipt(
+                    pdf_name=arguments.pdf.name,
+                    page_number=page_number,
+                    detector_name=arguments.detector.name,
+                    recognizer_name=arguments.recognizer.name,
+                    dpi=arguments.dpi,
+                    threshold=arguments.threshold,
+                    vector_word_count=vector_word_count,
+                    vector_text_evidence=vector_text_evidence,
+                    elapsed_milliseconds=vector_elapsed,
+                )
+                (arguments.output / f"p{page_number:04}.json").write_text(
+                    json.dumps(receipt, ensure_ascii=False, indent=2), encoding="utf-8"
+                )
+                print(
+                    json.dumps(
+                        {
+                            "page": page_number,
+                            "textRegions": 0,
+                            "textRows": 0,
+                            "cells": 0,
+                            "milliseconds": receipt["elapsedMilliseconds"],
+                            "fastPath": "trusted_embedded_pdf_text",
+                        },
+                        separators=(",", ":"),
+                    )
+                )
+                continue
             rendered = rendered_pages[page_number]
             with Image.open(rendered) as opened:
                 source = opened.convert("L")
-                vector_words = pdf_document.pages[page_number - 1].extract_words(
-                    x_tolerance=1.5,
-                    y_tolerance=3.0,
-                    keep_blank_chars=False,
-                )
-                vector_word_count = len(vector_words)
-                vector_text_evidence = compile_vector_text_evidence(vector_words)
-                page_kind = (
-                    "vector"
-                    if vector_word_count >= 8 and vector_text_evidence["trustworthy"]
-                    else "scan"
-                )
+                page_kind = "scan"
                 page_started = time.perf_counter()
                 orientation_detector_masks: np.ndarray | None = None
                 if arguments.orientation == "auto":
@@ -2758,12 +2952,24 @@ def main(argv: list[str] | None = None) -> None:
                         arguments.recognizer_batch_size,
                         arguments.recognizer_width_bin,
                         page_kind == "scan",
+                        arguments.orientation_zero_degree_fast_path,
+                        arguments.orientation_zero_degree_min_confidence,
                     )
-                    candidate_scores = [
-                        float(candidate["score"])
-                        for candidate in orientation["candidates"].values()
-                    ]
-                    score_margin = max(candidate_scores) - min(candidate_scores)
+                    if orientation.get("zeroDegreeFastPath"):
+                        # The fast gate proves 0 degrees through independent
+                        # layout and readable-glyph conditions. It does not
+                        # calculate unobserved candidate scores, so record a
+                        # conservative decision lower bound rather than
+                        # pretending the one-candidate score range is zero.
+                        score_margin = arguments.orientation_native_ambiguity_margin
+                        orientation["scoreMarginIsLowerBound"] = True
+                        orientation["scoreMarginProof"] = "zero_degree_fast_gate"
+                    else:
+                        candidate_scores = [
+                            float(candidate["score"])
+                            for candidate in orientation["candidates"].values()
+                        ]
+                        score_margin = max(candidate_scores) - min(candidate_scores)
                     orientation["scoreMargin"] = score_margin
                     # A PDF is a container, not an orientation contract. Scanned
                     # reports commonly mix portrait, landscape and upside-down
