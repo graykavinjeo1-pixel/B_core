@@ -103,7 +103,12 @@ def _render_pages(
     return rendered
 
 
-def _predict(model, source: Image.Image, canvas: int, threshold: float) -> np.ndarray:
+def _prepare_prediction_input(
+    source: Image.Image,
+    canvas: int,
+) -> tuple[Image.Image, np.ndarray, tuple[int, int, int, int]]:
+    """Prepare one fixed-canvas detector tensor and its source-space crop map."""
+
     grayscale = source.convert("L")
     scale = min(canvas / grayscale.width, canvas / grayscale.height)
     resized_size = (max(1, round(grayscale.width * scale)), max(1, round(grayscale.height * scale)))
@@ -112,11 +117,20 @@ def _predict(model, source: Image.Image, canvas: int, threshold: float) -> np.nd
     offset = ((canvas - resized.width) // 2, (canvas - resized.height) // 2)
     page.paste(resized, offset)
     values = np.asarray(page, dtype="float32") / 127.5 - 1.0
-    inputs = paddle.to_tensor(values[None, None, :, :])
-    with paddle.no_grad():
-        probabilities = functional.sigmoid(model(inputs)).numpy()[0]
     x0, y0 = offset[0] // 2, offset[1] // 2
     width, height = max(1, resized_size[0] // 2), max(1, resized_size[1] // 2)
+    return grayscale, values, (x0, y0, width, height)
+
+
+def _masks_from_probabilities(
+    probabilities: np.ndarray,
+    grayscale: Image.Image,
+    crop: tuple[int, int, int, int],
+    threshold: float,
+) -> np.ndarray:
+    """Map fixed-canvas detector output back to one unmodified source page."""
+
+    x0, y0, width, height = crop
     cropped = probabilities[:, y0 : y0 + height, x0 : x0 + width]
     channels = []
     for channel in cropped:
@@ -124,6 +138,43 @@ def _predict(model, source: Image.Image, canvas: int, threshold: float) -> np.nd
         mask = mask.resize(grayscale.size, Image.Resampling.BILINEAR)
         channels.append(np.asarray(mask, dtype="float32") / 255.0 >= threshold)
     return np.stack(channels, axis=0)
+
+
+def _predict_batch(
+    model,
+    sources: list[Image.Image],
+    canvas: int,
+    threshold: float,
+    batch_size: int = 8,
+) -> list[np.ndarray]:
+    """Run fixed-canvas detector inference over independent pages in bounded batches.
+
+    Each source keeps its own raster preparation and source-space projection;
+    batching shares only the neural forward pass.  The caller remains
+    responsible for proving output equivalence before enabling this substrate
+    in a fact-producing path.
+    """
+
+    if batch_size < 1:
+        raise ValueError("B_CORE_OCR_DETECTOR_BATCH_SIZE_INVALID")
+    prepared = [_prepare_prediction_input(source, canvas) for source in sources]
+    masks: list[np.ndarray] = []
+    for start in range(0, len(prepared), batch_size):
+        batch = prepared[start : start + batch_size]
+        values = np.stack([item[1] for item in batch], axis=0)[:, None, :, :]
+        with paddle.no_grad():
+            probabilities = functional.sigmoid(model(paddle.to_tensor(values))).numpy()
+        masks.extend(
+            _masks_from_probabilities(probability, grayscale, crop, threshold)
+            for probability, (grayscale, _values, crop) in zip(probabilities, batch)
+        )
+    return masks
+
+
+def _predict(model, source: Image.Image, canvas: int, threshold: float) -> np.ndarray:
+    """Single-page compatibility wrapper for the bounded batch substrate."""
+
+    return _predict_batch(model, [source], canvas, threshold, batch_size=1)[0]
 
 
 def _overlay(source: Image.Image, masks: np.ndarray) -> Image.Image:

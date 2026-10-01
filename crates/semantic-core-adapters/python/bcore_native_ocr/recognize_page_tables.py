@@ -1809,8 +1809,10 @@ def _orientation_score(
     recognizer_width_bin: int = 32,
     scan_layout_hint: bool = False,
     maximum_regions: int = 32,
+    masks: np.ndarray | None = None,
 ) -> tuple[float, dict[str, float | int], np.ndarray]:
-    masks = _predict(detector, source, canvas, threshold)
+    if masks is None:
+        masks = _predict(detector, source, canvas, threshold)
     geometry = reconstruct_table_geometry(masks, np.asarray(source))
     candidates = [
         region
@@ -1883,6 +1885,13 @@ def _normalize_orientation(
         angle: rotate_for_orientation(source, angle)
         for angle in candidate_angles
     }
+    # A full audit changes only how many text regions are sampled.  It must
+    # inspect the same detector output as the probe, rather than issue another
+    # equivalent GPU forward pass for every candidate rotation.
+    candidate_masks = {
+        angle: _predict(detector, candidate, canvas, threshold)
+        for angle, candidate in candidates.items()
+    }
     # Most ordinary documents need only discriminate upright from upside-down.
     # Probe evenly distributed regions first and accept that result only when
     # every observed signal is already decisive.  Any weak, sparse, or
@@ -1902,6 +1911,7 @@ def _normalize_orientation(
             recognizer_width_bin,
             scan_layout_hint,
             maximum_regions=6,
+            masks=candidate_masks[angle],
         )
         probe_evaluations[str(angle)] = {"score": score, **metrics}
         probe_masks[angle] = masks
@@ -1948,6 +1958,7 @@ def _normalize_orientation(
             recognizer_batch_size,
             recognizer_width_bin,
             scan_layout_hint,
+            masks=candidate_masks[angle],
         )
         evaluations[str(angle)] = {"score": score, **metrics}
         full_masks[angle] = masks
