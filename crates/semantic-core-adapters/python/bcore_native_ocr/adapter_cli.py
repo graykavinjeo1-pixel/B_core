@@ -69,8 +69,13 @@ def _collect_rows(output: Path) -> list[dict[str, object]]:
             text = str(row.get("text", "")).strip()
             if not text:
                 continue
+            source = str(row.get("source", "native_raster_ocr"))
+            replacement_ratio = text.count("\ufffd") / max(1, len(text))
+            encoding_integrity = replacement_ratio == 0.0
             confidence = float(row.get("confidence", 0.0))
-            fact_authority = bool(row.get("factAuthority", False))
+            fact_authority = bool(row.get("factAuthority", False)) and encoding_integrity
+            if fact_authority and source == "embedded_pdf_text" and confidence <= 0.0:
+                confidence = 1.0
             rows.append(
                 {
                     "text": text,
@@ -81,7 +86,7 @@ def _collect_rows(output: Path) -> list[dict[str, object]]:
                     "decisionStatus": row.get("decisionStatus", "MANUAL_REVIEW"),
                     "factAuthority": fact_authority,
                     "evidenceId": row.get("evidenceId"),
-                    "source": row.get("source", "native_raster_ocr"),
+                    "source": source,
                 }
             )
     return rows
