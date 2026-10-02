@@ -1079,6 +1079,20 @@ def _connected_components(mask: np.ndarray) -> list[tuple[int, int, int, int, in
     return components
 
 
+def _uint8_linear_quantile(pixels: np.ndarray, probability: float) -> float:
+    """Compute NumPy's linear quantile from the fixed uint8 histogram."""
+
+    if pixels.dtype != np.uint8 or not pixels.size:
+        raise ValueError("B_CORE_OCR_UINT8_QUANTILE_INPUT_INVALID")
+    ranks = np.cumsum(np.bincount(pixels.ravel(), minlength=256))
+    position = (pixels.size - 1) * probability
+    lower = int(np.floor(position))
+    upper = int(np.ceil(position))
+    low_value = int(np.searchsorted(ranks, lower + 1))
+    high_value = int(np.searchsorted(ranks, upper + 1))
+    return float(low_value + (position - lower) * (high_value - low_value))
+
+
 def visual_glyph_evidence(crop: Image.Image) -> dict[str, int | float | bool]:
     """Verify that a crop contains glyph-like ink rather than only page rules.
 
@@ -1090,7 +1104,7 @@ def visual_glyph_evidence(crop: Image.Image) -> dict[str, int | float | bool]:
 
     grayscale = crop.convert("L")
     pixels = np.asarray(grayscale)
-    threshold = min(210, int(np.quantile(pixels, 0.20)) + 70)
+    threshold = min(210, int(_uint8_linear_quantile(pixels, 0.20)) + 70)
     ink = pixels < threshold
     original_ink = int(ink.sum())
     rule_rows = ink.mean(axis=1) >= 0.88
@@ -1305,6 +1319,36 @@ def _decode_logits(logits: paddle.Tensor, codec) -> tuple[str, float]:
     return text, sum(emitted_confidence) / max(1, len(emitted_confidence))
 
 
+def _decode_logits_batch(
+    logits: paddle.Tensor, lengths: list[int], codec
+) -> list[tuple[str, float]]:
+    """Decode a recognizer batch with two device transfers, not two per row.
+
+    Valid lengths are applied before CTC collapse so padded features cannot
+    emit text.  The token and confidence calculations intentionally match
+    :func:`_decode_logits` exactly.
+    """
+
+    probabilities = paddle.nn.functional.softmax(logits, axis=-1)
+    token_ids = probabilities.argmax(axis=-1).numpy()
+    maximum = probabilities.max(axis=-1).numpy()
+    readings: list[tuple[str, float]] = []
+    for index, length in enumerate(lengths):
+        ids = token_ids[index, :length].tolist()
+        confidences = maximum[index, :length]
+        emitted_confidence = []
+        previous = None
+        for token, confidence in zip(ids, confidences):
+            if token != 0 and token != previous:
+                emitted_confidence.append(float(confidence))
+            previous = token
+        text = canonicalize_ocr_content(codec.decode_ctc(ids))
+        readings.append(
+            (text, sum(emitted_confidence) / max(1, len(emitted_confidence)))
+        )
+    return readings
+
+
 def _read_crops_batch(
     recognizer,
     codec,
@@ -1368,10 +1412,7 @@ def _read_crops_batch(
                 paddle.to_tensor(input_widths, dtype="int64"),
             )
             lengths = feature_widths.numpy().tolist()
-            decoded = [
-                _decode_logits(logits[index, : lengths[index]], codec)
-                for index in range(len(batch_indices))
-            ]
+            decoded = _decode_logits_batch(logits, lengths, codec)
         except MemoryError:
             if len(batch_indices) == 1:
                 raise

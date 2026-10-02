@@ -2,8 +2,17 @@
 
 from __future__ import annotations
 
+from bisect import insort
+
 import cv2
 import numpy as np
+
+
+def _sorted_median(values: list[float]) -> float:
+    middle = len(values) // 2
+    if len(values) % 2:
+        return float(values[middle])
+    return float((values[middle - 1] + values[middle]) / 2)
 
 
 def _runs(active: np.ndarray, maximum_gap: int) -> list[tuple[int, int]]:
@@ -49,18 +58,19 @@ def detect_scan_text_support(gray: np.ndarray) -> tuple[np.ndarray, dict[str, in
     component_count, labels, statistics, _ = cv2.connectedComponentsWithStats(
         (ink > 0).astype("uint8"), connectivity=8
     )
-    glyph_ink = np.zeros_like(ink)
-    removed_large_components = 0
-    for component in range(1, component_count):
-        x, y, component_width, component_height, area = statistics[component]
-        if (
-            component_height > height * 0.14
-            or component_width > width * 0.96
-            or area > height * width * 0.06
-        ):
-            removed_large_components += 1
-            continue
-        glyph_ink[labels == component] = 255
+    # The former per-component ``labels == component`` scanned the whole page
+    # once for every connected component.  A dense page can contain thousands
+    # of glyphs, making the orientation check slower than OCR itself.  Build
+    # the same keep/reject decision by component ID, then map all pixels once.
+    rejected = (
+        (statistics[:, cv2.CC_STAT_HEIGHT] > height * 0.14)
+        | (statistics[:, cv2.CC_STAT_WIDTH] > width * 0.96)
+        | (statistics[:, cv2.CC_STAT_AREA] > height * width * 0.06)
+    )
+    removed_large_components = int(np.count_nonzero(rejected[1:]))
+    keep = ~rejected
+    keep[0] = False  # background never contributes ink
+    glyph_ink = (keep[labels].astype(np.uint8) * 255)
 
     support = np.zeros_like(ink)
     accepted = 0
@@ -110,7 +120,9 @@ def detect_scan_text_support(gray: np.ndarray) -> tuple[np.ndarray, dict[str, in
 
 def detect_component_cluster_text_support(
     gray: np.ndarray,
-) -> tuple[np.ndarray, dict[str, object]]:
+    *,
+    include_support: bool = True,
+) -> tuple[np.ndarray | None, dict[str, object]]:
     """Detect scan text by clustering glyph components into visual lines.
 
     This is intentionally independent from :func:`detect_scan_text_support`'s
@@ -163,8 +175,11 @@ def detect_component_cluster_text_support(
         best = None
         best_distance = float("inf")
         for line in lines:
-            line_height = float(np.median([item["height"] for item in line["components"]]))
-            line_center = float(np.median([item["cy"] for item in line["components"]]))
+            # These medians only change when a glyph joins this line.  Reading
+            # cached values avoids recomputing them for every unrelated line
+            # considered by every later glyph (quadratic on dense tables).
+            line_height = float(line["medianHeight"])
+            line_center = float(line["medianCenter"])
             distance = abs(float(component["cy"]) - line_center)
             # Compare against the robust center/height of member glyphs, not
             # the accumulated line envelope.  Envelope overlap permits one
@@ -179,14 +194,24 @@ def detect_component_cluster_text_support(
                     "components": [component],
                     "y0": component["y0"],
                     "y1": component["y1"],
+                    "medianHeight": float(component["height"]),
+                    "medianCenter": float(component["cy"]),
+                    "sortedHeights": [float(component["height"])],
+                    "sortedCenters": [float(component["cy"])],
                 }
             )
         else:
             best["components"].append(component)
             best["y0"] = min(int(best["y0"]), int(component["y0"]))
             best["y1"] = max(int(best["y1"]), int(component["y1"]))
+            insort(best["sortedHeights"], float(component["height"]))
+            insort(best["sortedCenters"], float(component["cy"]))
+            best["medianHeight"] = _sorted_median(best["sortedHeights"])
+            best["medianCenter"] = _sorted_median(best["sortedCenters"])
 
-    support = np.zeros_like(ink)
+    # The multiview caller consumes only region boxes. Avoid allocating and
+    # painting a page-sized mask for every intermediate filtered view.
+    support = np.zeros_like(ink) if include_support else None
     regions: list[dict[str, int]] = []
     accepted_groups = 0
     rejected_groups = 0
@@ -222,15 +247,16 @@ def detect_component_cluster_text_support(
                 "y1": min(height - 1, y1 + padding_y),
             }
             regions.append(region)
-            cv2.rectangle(
-                support,
-                (region["x0"], region["y0"]),
-                (region["x1"], region["y1"]),
-                255,
-                thickness=-1,
-            )
+            if support is not None:
+                cv2.rectangle(
+                    support,
+                    (region["x0"], region["y0"]),
+                    (region["x1"], region["y1"]),
+                    255,
+                    thickness=-1,
+                )
             accepted_groups += 1
-    return support.astype(bool), {
+    return (support.astype(bool) if support is not None else None), {
         "otsuThreshold": float(otsu_threshold),
         "acceptedGlyphComponents": len(components),
         "lineClusters": len(lines),
@@ -273,11 +299,23 @@ def merge_component_region_views(
     if not region_views:
         return [], {"clusters": 0, "original": 0, "enhancedConsensus": 0}
     clusters: list[dict[str, object]] = []
+    # Candidate boxes must overlap vertically before their area overlap can
+    # exceed the acceptance threshold. Index immutable representative boxes
+    # by Y band instead of comparing every region against every prior cluster.
+    # Candidate IDs are sorted below to retain the previous stable tie order.
+    band_height = 64
+    bands: dict[int, list[int]] = {}
     for view_index, regions in enumerate(region_views):
         for region in regions:
+            candidate_ids = sorted({
+                cluster_id
+                for band in range(region["y0"] // band_height, region["y1"] // band_height + 1)
+                for cluster_id in bands.get(band, ())
+            })
             eligible = [
                 cluster
-                for cluster in clusters
+                for cluster_id in candidate_ids
+                for cluster in (clusters[cluster_id],)
                 if view_index not in cluster["views"]
                 and _region_overlap(cluster["representative"], region) >= 0.55
             ]
@@ -300,6 +338,9 @@ def merge_component_region_views(
                         "hasOriginal": view_index == 0,
                     }
                 )
+                cluster_id = len(clusters) - 1
+                for band in range(region["y0"] // band_height, region["y1"] // band_height + 1):
+                    bands.setdefault(band, []).append(cluster_id)
                 continue
             match["regions"].append(dict(region))
             match["views"].add(view_index)
@@ -348,7 +389,7 @@ def detect_multiview_component_text_support(
     observations = []
     diagnostics = []
     for name, view in (("original", image), ("clahe", clahe), ("unsharp", sharpened)):
-        _, details = detect_component_cluster_text_support(view)
+        _, details = detect_component_cluster_text_support(view, include_support=False)
         regions = list(details.pop("regions"))
         observations.append(regions)
         diagnostics.append({"view": name, "regions": len(regions), **details})
@@ -371,18 +412,31 @@ def detect_multiview_component_text_support(
     }
 
 
-def horizontal_text_coverage(gray: np.ndarray) -> float:
-    """Measure wide text-line support for coarse orientation selection."""
+def horizontal_text_coverages(
+    gray: np.ndarray, min_aspect_ratios: tuple[float, ...],
+) -> tuple[float, ...]:
+    """Reuse one visual support pass for several axis-shape hypotheses."""
+
+    if not min_aspect_ratios or any(ratio <= 1.0 for ratio in min_aspect_ratios):
+        raise ValueError("B_CORE_TEXT_COVERAGE_ASPECT_INVALID")
 
     support, _ = detect_scan_text_support(gray)
     contours, _ = cv2.findContours(
         (support.astype("uint8") * 255), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
     )
     width = max(1, support.shape[1])
-    wide_width = sum(
-        box_width
-        for contour in contours
-        for _, _, box_width, box_height in [cv2.boundingRect(contour)]
-        if box_width >= box_height * 2
+    boxes = [cv2.boundingRect(contour) for contour in contours]
+    return tuple(
+        min(1.0, sum(
+            box_width for _, _, box_width, box_height in boxes
+            if box_width >= box_height * ratio
+        ) / width)
+        for ratio in min_aspect_ratios
     )
-    return min(1.0, wide_width / width)
+
+
+def horizontal_text_coverage(gray: np.ndarray,
+                             min_aspect_ratio: float = 2.0) -> float:
+    """Measure wide text-line support for coarse orientation selection."""
+
+    return horizontal_text_coverages(gray, (min_aspect_ratio,))[0]
